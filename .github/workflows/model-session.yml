@@ -1,0 +1,50 @@
+name: Model session 001 - baseline and LoRA
+
+# First push of this file starts one research experiment. Later runs are manual.
+on:
+  push:
+    paths:
+      - .github/workflows/model-session.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU-only dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+      - name: Validate source and split
+        run: |
+          python -m unittest discover -s tests -v
+          python -m tinycoder train --dry-run
+      - name: Baseline evaluation
+        run: python -m tinycoder eval --device cpu --max-new-tokens 96 --report outputs/before.json
+      - name: Fine-tune session 001 on CPU
+        run: python -m tinycoder train --cpu --epochs 1 --output checkpoints/session-001
+      - name: Tuned evaluation
+        run: python -m tinycoder eval --device cpu --adapter checkpoints/session-001 --max-new-tokens 96 --report outputs/after.json
+      - name: Preserve experiment reports and adapter
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session-001-results
+          path: |
+            outputs/
+            checkpoints/session-001/
+          if-no-files-found: warn
+          retention-days: 14
+
