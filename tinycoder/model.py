@@ -5,7 +5,8 @@ from __future__ import annotations
 from .data import prompt_tokens
 
 
-def load_inference(model_id: str, adapter: str | None = None, device: str = "auto"):
+def load_inference(model_id: str, adapter: str | None = None, device: str = "auto",
+                   edit: str | None = None):
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -18,6 +19,10 @@ def load_inference(model_id: str, adapter: str | None = None, device: str = "aut
 
         model = PeftModel.from_pretrained(model, adapter)
     model = model.to(device).eval()
+    if edit:
+        from .direct_edit import apply_saved_edit
+
+        apply_saved_edit(model, model_id, edit)
     return model, tokenizer, device
 
 

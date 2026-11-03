@@ -2,6 +2,8 @@
 
 A beginner-friendly experiment for **running, inspecting and gradually fine-tuning a very small coding AI**. The repository contains the software and training examples; it intentionally **does not commit pretrained model weights**.
 
+**Current direction (Session 002 onward): DIRECT WEIGHT EDITING, with no training.** The earlier LoRA session is preserved as historical research, not our active approach. Directly editing tensor values is real and reversible, but it is not a shortcut to the general intelligence of a larger model.
+
 ## Which AI are we starting with?
 
 | Model | Size | Purpose |
@@ -33,6 +35,22 @@ The first real model command downloads weights from Hugging Face into the local 
 python -m tinycoder chat "Write a Python function to find prime numbers"
 ```
 
+### Direct edit: change one weight row yourself (our active method)
+
+This is a simple **gradient-free, single-token** edit to the model's output-weight matrix. It uses the final hidden vector for a specific prompt to calculate an additive row update that increases the target token's logit. It changes actual base-model weights in memory, then saves a small reversible delta — no backpropagation, optimizer, fine-tuning or new adapter.
+
+```powershell
+python -m tinycoder edit "Write only Python code defining max_of_three(a, b, c), returning the greatest argument." --target-token def --boost 2 --output edits/direct-001
+python -m tinycoder chat "Write only Python code defining max_of_three(a, b, c), returning the greatest argument." --edit edits/direct-001
+python -m tinycoder eval --edit edits/direct-001 --report outputs/direct-after.json
+```
+
+See `edits/direct-001/edit.json` for the exact targeted token, weight-delta size and before/after logits. Remove `--edit` to return to the untouched model. The original weight checkpoint remains intact. One token being more probable **does not mean better code**, so inspect generated answers on multiple prompts and check for regressions. This is a teaching demonstration, **not an implementation of ROME or MEMIT**.
+
+You can run the same direct-edit demonstration in GitHub-hosted compute using **Actions → Direct weight edit 001**; the workflow saves `direct-001-results`. The initial push of this workflow triggers the first run.
+
+For more sophisticated targeted weight edits, read the original research on [ROME](https://papers.nips.cc/paper_files/paper/2022/hash/6f1d43d5a82a37e89b0665b33bf3a182-Abstract-Conference.html) and [MEMIT](https://openreview.net/forum?id=MkbcAHIYgyS). Those methods primarily edit *specific factual associations*, not broad coding competence.
+
 Or inspect the smaller **completion-only** model:
 
 ```powershell
@@ -56,7 +74,7 @@ python -m tinycoder eval --report outputs/before.json
 
 The four held-out challenges live in `data/eval.jsonl`. **This first benchmark checks only Python syntax and the expected top-level function name**, not whether the function actually works. Keep and manually review the generated answers. We will add isolated functional tests in later sessions; do not execute untrusted AI-generated code directly on your laptop.
 
-### 3. Train a small adapter (changes trainable parameters)
+### Archived approach: LoRA training (not used for new sessions)
 
 Edit or add carefully reviewed prompt/answer examples in `data/train.jsonl`. The 12 included examples are only a **smoke-test dataset**, too small to support claims of improved general coding ability. Do not include secrets, proprietary code, or evaluation prompts in training data.
 
@@ -89,9 +107,9 @@ The statistics show layer names, tensor shapes, means, standard deviations, and 
 | 000 | 12 toy examples / 4 held-out prompts | Baseline only | AST checks + manual review | **Not yet run** |
 | 001 | Same toy training examples | LoRA r=8 on attention q/v projections | Re-run held-out tests | **Not yet run** |
 
-### Run the entire first experiment in GitHub Actions
+### Historical first experiment in GitHub Actions
 
-The `.github/workflows/model-session.yml` workflow performs baseline evaluation, CPU LoRA training and tuned evaluation on a GitHub-hosted runner. It was configured to run once when first added; future runs can be started manually from **Actions → Model session 001 → Run workflow**. The workflow times out after 45 minutes; download or training may fail due to runner limits. Check the job log and download `session-001-results` from the run if it succeeds. This experiment uses GitHub-hosted compute, not your laptop. No improvement is assumed until results are examined.
+The `.github/workflows/model-session.yml` workflow records the earlier LoRA experiment. **Do not re-run it for our new direct-edit plan.** Our active workflow is `direct-edit-session.yml`. The older reports remain useful as a comparison, but no improvement is assumed.
 
 ## Project layout
 
@@ -99,6 +117,7 @@ The `.github/workflows/model-session.yml` workflow performs baseline evaluation,
 - `tinycoder/data.py`: JSONL validation and answer-only training labels
 - `tinycoder/__main__.py`: `chat`, `train`, `eval`, `inspect` commands
 - `tinycoder/evaluation.py`: non-executing static checks
+- `tinycoder/direct_edit.py`: direct, reversible row-level weight editing without training
 - `data/train.jsonl`: starter demonstrations (not a serious training corpus)
 - `data/eval.jsonl`: held-out prompts
 - `tests/`: offline unit tests; `.github/workflows/`: CI

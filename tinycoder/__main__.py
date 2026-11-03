@@ -14,8 +14,8 @@ from .evaluation import static_check
 def chat(args):
     from .model import generate, load_inference
 
-    model, tokenizer, device = load_inference(args.model, args.adapter, args.device)
-    print(f"Model: {args.model} | device: {device} | adapter: {args.adapter or 'none'}")
+    model, tokenizer, device = load_inference(args.model, args.adapter, args.device, args.edit)
+    print(f"Model: {args.model} | device: {device} | edit: {args.edit or 'none'} | adapter: {args.adapter or 'none'}")
     print(generate(model, tokenizer, args.prompt, args.max_new_tokens, args.temperature))
 
 
@@ -26,7 +26,7 @@ def evaluate(args):
     for i, item in enumerate(examples, start=1):
         if not isinstance(item.get("expected_function"), str) or not item["expected_function"]:
             raise ValueError(f"Evaluation row {i} needs 'expected_function'")
-    model, tokenizer, device = load_inference(args.model, args.adapter, args.device)
+    model, tokenizer, device = load_inference(args.model, args.adapter, args.device, args.edit)
     results = []
     for i, item in enumerate(examples, start=1):
         answer = generate(model, tokenizer, item["prompt"], args.max_new_tokens)
@@ -37,6 +37,7 @@ def evaluate(args):
     report = {
         "model": args.model,
         "adapter": args.adapter,
+        "edit": args.edit,
         "device": device,
         "evaluation_type": "AST syntax plus top-level function name; NOT a functional correctness test",
         "static_pass": count,
@@ -147,7 +148,7 @@ def train(args):
 def inspect(args):
     from .model import load_inference
 
-    model, _, device = load_inference(args.model, args.adapter, args.device)
+    model, _, device = load_inference(args.model, args.adapter, args.device, args.edit)
     print(f"Model: {args.model} | device: {device}")
     printed = 0
     for name, param in model.named_parameters():
@@ -164,6 +165,17 @@ def inspect(args):
               "LoRA weights are only present when --adapter is supplied.")
 
 
+def direct_edit(args):
+    from .direct_edit import create_edit
+    from .model import load_inference
+
+    model, tokenizer, device = load_inference(args.model, device=args.device)
+    report = create_edit(model, tokenizer, args.model, args.prompt, args.target_token,
+                         args.boost, args.output)
+    print(f"Directly changed an output weight row on {device}; no training took place.")
+    print(json.dumps(report, indent=2))
+
+
 def main():
     parser = argparse.ArgumentParser(description="TinyCoder: small model, measurable training experiments")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -172,6 +184,7 @@ def main():
         command.add_argument("--model", default=DEFAULT_MODEL,
                              help=f"Default: {DEFAULT_MODEL}; tiny comparison: {TINY_MODEL}")
         command.add_argument("--adapter", help="Path to a trained LoRA adapter")
+        command.add_argument("--edit", help="Path to a saved direct weight edit")
         command.add_argument("--device", choices=["auto", "cpu", "cuda", "mps"], default="auto")
 
     p = commands.add_parser("chat", help="Generate a coding answer locally")
@@ -208,6 +221,15 @@ def main():
     p.add_argument("--filter", default="lora_", help="Parameter name substring (default: LoRA only)")
     p.add_argument("--limit", type=int, default=20)
     p.set_defaults(func=inspect)
+
+    p = commands.add_parser("edit", help="Directly change one output weight row, no training")
+    p.add_argument("prompt", help="Prompt whose next-token distribution should be changed")
+    p.add_argument("--target-token", required=True, help="One tokenizer token to make more likely")
+    p.add_argument("--boost", type=float, default=2.0, help="Requested next-token logit increase, max 5")
+    p.add_argument("--model", default=DEFAULT_MODEL)
+    p.add_argument("--device", choices=["auto", "cpu", "cuda", "mps"], default="auto")
+    p.add_argument("--output", default="edits/direct-001")
+    p.set_defaults(func=direct_edit)
 
     args = parser.parse_args()
     if args.command == "chat" and (args.max_new_tokens <= 0 or args.temperature < 0):
