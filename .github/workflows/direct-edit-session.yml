@@ -1,0 +1,48 @@
+name: Direct weight edit 001 - no training
+
+# The new editing experiment runs once when this workflow is added.
+on:
+  push:
+    paths:
+      - .github/workflows/direct-edit-session.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  direct-edit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU inference dependencies
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+      - name: Validate code and sample data
+        run: python -m unittest discover -s tests -v
+      - name: Read-only before snapshot
+        run: python -m tinycoder eval --device cpu --max-new-tokens 96 --report outputs/direct-before.json
+      - name: Edit a real output weight row directly - no gradients or optimizer
+        run: |
+          python -m tinycoder edit 'Write only Python code defining max_of_three(a, b, c), returning the greatest argument.' --target-token def --boost 2 --device cpu --output edits/direct-001
+      - name: Compare with the directly edited base model
+        run: python -m tinycoder eval --device cpu --edit edits/direct-001 --max-new-tokens 96 --report outputs/direct-after.json
+      - name: Save reversible edit and before-after reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: direct-001-results
+          path: |
+            edits/direct-001/
+            outputs/
+          if-no-files-found: warn
+          retention-days: 14
+
