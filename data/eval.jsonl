@@ -1,0 +1,4 @@
+{"id":"max_of_three","prompt":"Write only Python code defining max_of_three(a, b, c), returning the greatest argument.","expected_function":"max_of_three"}
+{"id":"sum_squares","prompt":"Write only Python code defining sum_squares(numbers), returning the sum of each number squared.","expected_function":"sum_squares"}
+{"id":"word_frequency","prompt":"Write only Python code defining word_frequency(text), returning a dictionary counting lowercase whitespace-separated words.","expected_function":"word_frequency"}
+{"id":"gcd","prompt":"Write only Python code defining gcd(a, b), returning the nonnegative greatest common divisor of two integers without imports.","expected_function":"gcd"}
