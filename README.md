@@ -89,6 +89,10 @@ The statistics show layer names, tensor shapes, means, standard deviations, and 
 | 000 | 12 toy examples / 4 held-out prompts | Baseline only | AST checks + manual review | **Not yet run** |
 | 001 | Same toy training examples | LoRA r=8 on attention q/v projections | Re-run held-out tests | **Not yet run** |
 
+### Run the entire first experiment in GitHub Actions
+
+The `.github/workflows/model-session.yml` workflow performs baseline evaluation, CPU LoRA training and tuned evaluation on a GitHub-hosted runner. It was configured to run once when first added; future runs can be started manually from **Actions → Model session 001 → Run workflow**. The workflow times out after 45 minutes; download or training may fail due to runner limits. Check the job log and download `session-001-results` from the run if it succeeds. This experiment uses GitHub-hosted compute, not your laptop. No improvement is assumed until results are examined.
+
 ## Project layout
 
 - `tinycoder/model.py`: model loading and local generation
