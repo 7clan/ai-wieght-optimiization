@@ -1,27 +1,33 @@
 # TinyCoder Weight Lab
 
-<!-- SESSION016-PENDING-START -->
-## Session 016 — adaptive execution-guided search (pending)
+## Session 016 — adaptive execution-guided search (measured)
 
-Branch `exp/14-execution-guided-search` evaluates candidate generation,
-public-test filtering, early stopping and one feedback-conditioned repair
-round on the **same frozen 100 tasks** as Session015. All generation uses the
-original 0.5B **base** checkpoint without gradients, weight edits or scaling.
-The untouched greedy baseline predictions are reused from Session015 to avoid
-extra CPU inference. Evaluation code remains in restricted Docker.
+Same **Qwen2.5-Coder-0.5B base**, no trained/editable parameters. The
+Session015 untouched 100-task greedy control is reused exactly, saving compute
+and preserving the same test inputs. The searched variants begin with greedy
+and generate one sampled solution ONLY if public checks fail. They use original
+MBPP public assertions or independently derived web smoke tests, then
+optionally sample additional solutions
+(`search4`) and attempt one error-conditioned repair. Extra sampling stops
+after public validation succeeds. Final MBPP+ expanded tests are never used
+for candidate selection.
 
-The `search2` track samples one additional candidate only for tasks whose
-greedy completion fails public checks, and
-`search4` adaptively explores up to two more candidates only after
-failed public checks. Both attempt at most one repair on remaining failures.
-Only original MBPP public test_list and task-spec-derived custom web smoke
-tests guide selection; EvalPlus expanded tests run at final scoring only.
+| Variant | MBPP+ execution | React execution | Express execution | Overall selected solve@1 | Syntax valid | New output tokens |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| baseline | 28/50 | 1/25 | 0/25 | 29/100 | 65/100 | reused |
+| search2 | 28/50 | 10/25 | 4/25 | 42/100 | 85/100 | 13172 |
+| search4 | 32/50 | 16/25 | 6/25 | 54/100 | 97/100 | 22329 | 
 
-**No scores have yet been measured.** The [pending report](experiments/session016_search_report.json)
-contains null values and will be replaced only when both full Docker tracks
-complete and a collector verifies the 100 exact task IDs, actual assertions,
-and generated token budgets.
-<!-- SESSION016-PENDING-END -->
+These are **system-level** final-selection results after additional compute,
+not comparable single-sample model pass@1. Original MBPP public tests are
+available to the search procedure; hidden EvalPlus plus inputs and canonical
+solutions remain inaccessible. React/Express tests are custom specifications,
+not independent third-party benchmarks; public smoke checks can necessarily
+overlap semantically with the final tests for constant-return and Boolean tasks.
+
+Read the [verified report](experiments/session016_search_report.json) and
+[all final task-level predictions](experiments/session016_search_predictions.json).
+Candidate-level records are available in the workflow artifacts.
 
 ## Session 015 — context-gated orthogonal subspaces (measured)
 

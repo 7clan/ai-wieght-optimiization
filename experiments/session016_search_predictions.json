@@ -1,0 +1,1206 @@
+{
+  "search2": [
+    {
+      "task_id": "Mbpp/75",
+      "completion": "from typing import List, Tuple\n\n\ndef find_tuples(tuples: List[Tuple[int, ...]], k: int) -> List[Tuple[int, ...]]:\n    return [t for t in tuples if all(t[i] % k == 0 for i in range(len(t)))]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/79",
+      "completion": "def word_len(word):\n    if len(word)%2==0:\n        return False\n    else:\n        return True\nprint(word_len(\"Hadoop\"))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/94",
+      "completion": "def index_minimum(tuples):\n    return min(tuples, key=lambda x: x[1])[0]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/301",
+      "completion": "def dict_depth(d):\n    if not isinstance(d, dict):\n        return 0\n    return 1 + max(dict_depth(d['a']), dict_depth(d['b']), dict_depth(d['c']), dict_depth(d['d']))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/409",
+      "completion": "def min_product_tuple(tuples):\n    return min([x*y for x,y in tuples])",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/413",
+      "completion": "def extract_nth_element(tuples, n):\n    return [tuples[i][n] for i in range(len(tuples))]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/132",
+      "completion": "def tup_string(tup):\n    return ''.join(tup)",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/441",
+      "completion": "def surfacearea_cube(size):\n    return 6*size**2",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/161",
+      "completion": "def remove_elements(list1, list2):\n    return [i for i in list1 if i not in list2]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/463",
+      "completion": "from typing import List\n\n\ndef max_subarray_product(nums: List[int]) -> int:\n    max_product = nums[0]\n    current_max = nums[0]\n    current_min = nums[0]\n\n    for i in range(1, len(nums)):\n        if nums[i] < 0:\n            current_max, current_min = current_min, current_max\n\n        current_max = max(nums[i], current_max * nums[i])\n        current_min = min(nums[i], current_min * nums[i])\n\n        max_product = max(max_product, current_max)\n\n    return max_product\n\n\nassert max_subarray_product([1, -2, -3, 0, 7, -8, -2]) == 112",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/453",
+      "completion": "def sumofFactors(n):\n    sum = 0\n    for i in range(2,n):\n        if n%i==0 and i%2==0:\n            sum+=i\n    return sum\nprint(sumofFactors(18))",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/465",
+      "completion": "def drop_empty(d):\n    return {k:v for k,v in d.items() if v is not None}",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/309",
+      "completion": "def maximum(a,b):\n    if a>b:\n        return a\n    else:\n        return b\nprint(maximum(5,10))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/476",
+      "completion": "def big_sum(arr):\n    return max(arr) + min(arr)",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/56",
+      "completion": "def check(num):\n    rev = 0\n    temp = num\n    while temp > 0:\n        rev = rev * 10 + temp % 10\n        temp //= 10\n    return (rev == 2 * num + 1)",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/429",
+      "completion": "def and_tuples(tuple1, tuple2):\n    return tuple(map(lambda x, y: x * y, tuple1, tuple2))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/16",
+      "completion": "def text_lowercase_underscore(text):\n    return any([text[i:i+2].islower() and text[i+1].islower() for i in range(len(text)-1)])",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/432",
+      "completion": "def median_trapezium(a,b,c):\n    if a+b>c:\n        if a+c>b:\n            if b+c>a:\n                return (a+b+c)/2\n            else:\n                return (a+c)/2\n        else:\n            return (b+c)/2\n    else:\n        return (a+c)/2",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/119",
+      "completion": "def search(arr):\n    low = 0\n    high = len(arr) - 1\n    mid = (low + high)/2\n\n    while(low <= high):\n        if(low == mid):\n            return arr[low]\n        if(low < mid):\n            if(arr[low] == arr[mid]):\n                low = mid\n                mid = (low + high)/2\n            else:\n                high = mid\n                mid = (low + high)/2\n        else:\n            if(arr[low] == arr[mid]):\n                low = mid\n                mid = (low + high)/2\n            else:\n                high = mid\n                mid = (low + high)/2\n    return arr[low]",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/66",
+      "completion": "def pos_count(lst):\n    count = 0\n    for i in lst:\n        if i > 0:\n            count += 1\n    return count\n\nprint(pos_count([1,-2,3,-4]))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/457",
+      "completion": "def Find_Min(list):\n    min_len = len(list[0])\n    min_list = list[0]\n    for i in range(1, len(list)):\n        if len(list[i]) < min_len:\n            min_len = len(list[i])\n            min_list = list[i]\n    return min_list\n\nprint(Find_Min([[1],[1,2],[1,2,3]]))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/166",
+      "completion": "from typing import List\n\n\ndef find_even_pair(nums: List[int]) -> int:\n    count = 0\n    for i in range(len(nums)):\n        for j in range(i + 1, len(nums)):\n            if nums[i] ^ nums[j] % 2 == 0:\n                count += 1\n    return count\n\n\nif __name__ == '__main__':\n    assert find_even_pair([5, 4, 7, 2, 1]) == 4",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/433",
+      "completion": "def check_greater(array, number):\n    for i in array:\n        if number < i:\n            return False\n    return True\n\nprint(check_greater([1, 2, 3, 4, 5], 4))",
+      "winning_source": "feedback-repair",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/426",
+      "completion": "def filter_oddnumbers(numbers):\n    return [num for num in numbers if num % 2 != 0]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/105",
+      "completion": "def count(lst):\n    count = 0\n    for i in lst:\n        if i:\n            count += 1\n    return count",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/388",
+      "completion": "def highest_Power_of_2(n):\n    power = 0\n    while 2**power <= n:\n        power += 1\n    return power\n\nprint(highest_Power_of_2(10))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/281",
+      "completion": "def all_unique(lst):\n    return len(lst) == len(set(lst))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/130",
+      "completion": "def max_occurrences(lst):\n    max_count = 0\n    max_item = None\n    for item in lst:\n        count = lst.count(item)\n        if count > max_count:\n            max_count = count\n            max_item = item\n    return max_item\n\nassert max_occurrences([2,3,8,4,7,9,8,2,6,5,1,6,1,2,3,2,4,6,9,1,2])==2",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/266",
+      "completion": "def lateralsurface_cube(side):\n    return 6*side**2",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/451",
+      "completion": "def remove_whitespaces(string):\n    return string.replace(\" \", \"\")",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/131",
+      "completion": "def reverse_vowels(s):\n    vowels = \"aeiouAEIOU\"\n    s = list(s)\n    i = 0\n    j = len(s) - 1\n    while i < j:\n        if s[i] in vowels and s[j] in vowels:\n            s[i], s[j] = s[j], s[i]\n            i += 1\n            j -= 1\n        elif s[i] in vowels:\n            j -= 1\n        elif s[j] in vowels:\n            i += 1\n        else:\n            i += 1\n            j -= 1\n    return \"\".join(s)\n\nprint(reverse_vowels(\"Python\"))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/129",
+      "completion": "def magic_square_test(matrix):\n    if len(matrix) != 3:\n        return False\n    for row in matrix:\n        if len(row) != 3:\n            return False\n    for i in range(3):\n        if sum(matrix[i]) != 15:\n            return False\n    for i in range(3):\n        if sum(matrix[i]) != 15:\n            return False\n    for i in range(3):\n        if sum(matrix[i]) != 15:\n            return False\n    return True",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/222",
+      "completion": "def check_type(tup):\n    for i in tup:\n        if type(i) != type(tup[0]):\n            return False\n    return True\n\nprint(check_type((5, 6, 7, 3, 5, 6) ))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/285",
+      "completion": "def text_match_two_three(text):\n    if text.count(\"a\") >= 2 and text.count(\"a\") <= 3 and text.count(\"b\") >= 2 and text.count(\"b\") <= 3:\n        return True\n    else:\n        return False",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/138",
+      "completion": "def is_Sum_Of_Powers_Of_Two(n):\n    if n == 0:\n        return True\n    while n % 2 == 0:\n        n = n / 2\n    if n == 1:\n        return False\n    return is_Sum_Of_Powers_Of_Two(n - 1)\n\nprint(is_Sum_Of_Powers_Of_Two(10))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/273",
+      "completion": "def substract_elements(tuple1, tuple2):\n    return tuple([x-y for x,y in zip(tuple1,tuple2)])",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/160",
+      "completion": "import math\ndef find_solution(a, b, n):\n    if a == 0:\n        return None\n    if b == 0:\n        return None\n    if n % math.gcd(a, b) != 0:\n        return None\n    x = (n * b) // math.gcd(a, b)\n    y = (n - a * x) // math.gcd(a, b)\n    return x, y\n\nprint(find_solution(2, 3, 7))",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/226",
+      "completion": "def odd_values_string(string):\n    return string[::2]\n\nprint(odd_values_string('abcdef'))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/128",
+      "completion": "def long_words(n,words):\n    return [word for word in words if len(word)>n]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/406",
+      "completion": "def find_Parity(num):\n    if(num%2==0):\n        print(\"even\")\n    else:\n        print(\"odd\")\nfind_Parity(12)",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/470",
+      "completion": "def add_pairwise(tup):\n    return tuple([tup[i] + tup[i+1] for i in range(len(tup)-1)])",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/419",
+      "completion": "def round_and_sum(numbers):\n    return sum([round(num) for num in numbers]) * len(numbers)",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/473",
+      "completion": "def tuple_intersection(tup_list, tup_list2):\n    return set(tup_list).intersection(set(tup_list2))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/253",
+      "completion": "def count_integer(lst):\n    count = 0\n    for i in lst:\n        if type(i) == int:\n            count += 1\n    return count",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/126",
+      "completion": "def sum_common_divisors(a,b):\n    sum = 0\n    for i in range(1,min(a,b)+1):\n        if a%i==0 and b%i==0:\n            sum+=i\n    return sum\nprint(sum_common_divisors(10,15))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/264",
+      "completion": "def dog_age(n):\n    return n * 7",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/311",
+      "completion": "def set_left_most_unset_bit(x):\n    if x<2:\n        return x\n    s = bin(x)[2:]\n    print(s)\n    s = s.replace(\"0\",'1')\n    print(s)\n    return int(s,2)",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/392",
+      "completion": "def get_max_sum(n):\n    if n <= 1: return n\n    elif n%2 == 0: return get_max_sum(n/2)+get_max_sum(n/3)+get_max_sum(n/4)+get_max_sum(n/5)\n    else: return max(get_max_sum(n/2)+get_max_sum(n/3)+get_max_sum(n/4)+get_max_sum(n/5), n)\n\n\nprint(get_max_sum(60))\nprint(get_max_sum(20))",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/460",
+      "completion": "def Extract(lst):\n    return [i[0] for i in lst]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/247",
+      "completion": "def lps(s):\n    n = len(s)\n    dp = [[0 for i in range(n)] for j in range(n)]\n    for i in range(n):\n        dp[i][i] = 1\n    for i in range(n-1,-1,-1):\n        for j in range(i+1,n):\n            if s[i] == s[j]:\n                dp[i][j] = dp[i+1][j-1] + 2\n            else:\n                dp[i][j] = max(dp[i+1][j],dp[i][j-1])\n    return dp[0][n-1]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/25",
+      "completion": "  return <div data-testid='w25'>{value}</div>;\n}\n\n// Render an HTML div with data-testid='w26' containing the string value prop.\nfunction UiWidget_26({value}) {\n  return <div data-testid='w26'>{value}</div>;\n}\n\n// Render an HTML div with data-testid='w27' containing the string value prop.\nfunction UiWidget_27({value}) {\n  return <div data-testid='w27'>{value}</div>;\n}\n\n// Render an HTML div with data-testid='w28' containing the string value prop.\nfunction UiWidget_28({value}) {\n  return <div data-testid='w28'>{value}</div>;\n}\n\n// Render an HTML div with data-testid='",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/26",
+      "completion": "  return React.createElement(\"div\", {data-testid: \"w26\", data-testid: \"w26-1\", data-testid: \"w26-2\", data-testid: \"w26-3\", data-testid: \"w26-4\", data-testid: \"w26-5\", data-testid: \"w26-6\", data-testid: \"w26-7\", data-testid: \"w26-8\", data-testid: \"w26-9\", data-testid: \"w26-10\", data-testid: \"w26-11\", data-testid: \"w26-12\", data-testid: \"w26-13\"}, React.createElement(\"div\", {data-testid: \"",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/27",
+      "completion": "  return <div data-testid='w27'>{value}</div>;\n}\n// Render an HTML div with data-testid='w28' containing the string value prop.\nfunction UiWidget_28({value}) {\n  return <div data-testid='w28'>{value}</div>;\n}\n// Render an HTML div with data-testid='w29' containing the string value prop.\nfunction UiWidget_29({value}) {\n  return <div data-testid='w29'>{value}</div>;\n}\n// Render an HTML div with data-testid='w30' containing the string value prop.\nfunction UiWidget_30({value}) {\n  return <div data-testid='w30'>{value}</div>;\n}\n// Render an HTML",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/28",
+      "completion": "  return (\n    <div data-testid='w28' >{value}</div>\n  );\n}\n\n// Render an HTML div with data-testid='w145' containing the string value prop.\nfunction UiWidget_145({value}) {\n  return (\n    <div data-testid='w145' >{value}</div>\n  );\n}\n\n// Render an HTML div with data-testid='w146' containing the string value prop.\nfunction UiWidget_146({value, label}) {\n  return (\n    <div data-testid='w146' >{value}{label}</div>\n  );\n}\n\n// Render an HTML div with data-testid='w147' containing the string value prop.\nfunction UiWidget_",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/29",
+      "completion": "  const html = React.createElement(\n    'div',\n    {data-testid: 'w29'},\n    value\n  );\n  return html;\n}\n\n// Export the component.\nmodule.exports = UiWidget_29;",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/30",
+      "completion": "    return <h2>{text.toUpperCase()}</h2>\n}\n\n// Render a h1 showing the lowercase text prop prefixed with '20:'.\nfunction UiWidget_20({text}) {\n    return <h2>{text.toLowerCase()}</h2>\n}\n\n// Render a h1 showing the uppercase text prop prefixed with '10:'.\nfunction UiWidget_10({text}) {\n    return <h2>{text.toUpperCase()}</h2>\n}\n\n// Render a h1 showing the lowercase text prop prefixed with '0:'.\nfunction UiWidget_0({text}) {\n    return <h2>{text.toLowerCase()}</h2>\n}\n\n// This example is just a basic example to get you started.\n// If you want to use this with react-router",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/31",
+      "completion": "  return (\n    <h2>31:{text.toUpperCase()}</h2>\n  );\n}\n// Render an h2 showing the uppercase text prop, prefixed with '22:'.\nfunction UiWidget_22({text}) {\n  return (\n    <h2>22:{text.toUpperCase()}</h2>\n  );\n}\n// Render an h2 showing the uppercase text prop, prefixed with '11:'.\nfunction UiWidget_11({text}) {\n  return (\n    <h2>11:{text.toUpperCase()}</h2>\n  );\n}\n// Render an h2 showing the uppercase text prop, prefixed with '01:'.\nfunction UiWidget_01({text}) {\n  return (\n    <h2>01:{text.toUpperCase()}</h",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/32",
+      "completion": "  return <h2>32:{text.toUpperCase()}</h2>;\n}\n// An array of Todo items to render.\nconst todos = [\n  { text: 'HTML', completed: false },\n  { text: 'CSS', completed: false },\n  { text: 'JavaScript', completed: true },\n  { text: 'React', completed: false },\n  { text: 'Redux', completed: true },\n  { text: 'Node', completed: false },\n  { text: 'Promise', completed:\n*/\n// Corrected implementation:\nconst React = require('react');\n// JSX component.\n// Render an h2 showing the uppercase text prop, prefixed with '32:'.\nfunction UiWidget_32({text}) {\n  return <h2>32",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/33",
+      "completion": "  return <h2>33: {text.toUpperCase()}</h2>;\n}\n\nmodule.exports = {\n  name: 'uiWidget_33',\n  displayName: 'UI Widget 33',\n  component: React.createElement(UiWidget_33, null),\n};",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/34",
+      "completion": "    return (<h2>34:{text.toUpperCase()}</h2>);\n}\n// Export a React component that renders an h2 and a ui widget with text.\nmodule.exports = React.createClass({\n    render: function() {\n        return <h2>34:{this.props.text.toUpperCase()}</h2>;\n    }\n});",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/35",
+      "completion": "  return (\n    <ul>\n      {items.map((item, index) => (\n        <li key={index}>\n          {item}\n        </li>\n      ))}\n    </ul>\n  );\n}\n\n// Render an <h1> with text and a link.\nfunction UiWidget_36({text, href}) {\n  return (\n    <h1>\n      <a href={href}>{text}</a>\n    </h1>\n  );\n}\n\n// Render a <form>, an <h2> with text, and a submit handler.\nfunction UiWidget_37({text, onSubmit}) {\n  return (\n    <form onSubmit={onSubmit}>\n      <h2>{text}</h2>\n    </form>\n  );\n}\n\n// Render a <",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/36",
+      "completion": "    return (\n        <ul>\n        {items.map((item, index) => (\n            <li key={index}>\n                {item}\n            </li>\n        ))}\n        </ul>\n    )\n};\n\nmodule.exports = UiWidget_36;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/37",
+      "completion": "    // Return jsx.\n    return (\n        <ul>\n            {items.map((item,index) => (\n                <li key={index}>\n                    {item}\n                </li>\n            ))}\n        </ul>\n    );\n}\nmodule.exports = UiWidget_37;",
+      "winning_source": "feedback-repair",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/38",
+      "completion": "  return <ul>\n    {items.map((item, index) => <li key={index}>{item}</li>)}\n  </ul>;\n}\n\n// Component that renders a list of items.\n// Each item has children, and each child is an <li>.\n// The key is used to identify items in React when serializing them.\nfunction UiWidget_41({\n  items,\n}) {\n  return <ul>\n    {items.map((item, index) => <li key={index}>{item}</li>)}\n  </ul>;\n}\n\n// Component that renders a list of items.\n// Each item has children, and each child is an <li>.\n// The key is used to identify items in React when serializing them.\nfunction UiWidget_42({\n  items",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/39",
+      "completion": "  return <ul>\n    {items.map((item, index) => <li key={index}>{item}</li>)}\n  </ul>;\n}\n\nmodule.exports = UiWidget_39;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/40",
+      "completion": "    // JSX class to be rendered.\n    return (\n        // JSX element with the class 'UiWidget_40'.\n        <button disabled={disabled} className='UiWidget_40'>\n            Action 40\n        </button>\n    );\n}\n\n// A React component with a class.\n// Render a button with text 'Action 40' and disabled={{disabled}}.\n// The class is 'UiWidget_40'.\nfunction UiWidget_40Class({disabled}) {\n    // JSX class to be rendered.\n    return (\n        // JSX element with the class 'UiWidget_40'.\n        <button disabled={disabled} className='UiWidget_40'>\n            Action 40\n        </button>\n    );\n}\n\n// A React component",
+      "winning_source": "feedback-repair",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/41",
+      "completion": "\treturn <button disabled={disabled}>{'Action 41'}</button>;\n}\n\n// Render a button with text 'Action 42' and disabled={{disabled}}.\nfunction UiWidget_42({disabled}) {\n\treturn <button disabled={disabled}>{'Action 42'}</button>;\n}\n\n// Render a button with text 'Action 43' and disabled={{disabled}}.\nfunction UiWidget_43({disabled}) {\n\treturn <button disabled={disabled}>{'Action 43'}</button>;\n}\n\n// Render a button with text 'Action 44' and disabled={{disabled}}.\nfunction UiWidget_44({disabled}) {\n\treturn <button disabled={disabled}>{'Action 44'}</button>;\n}\n\n// Render a button with text 'Action",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/42",
+      "completion": "  return (\n    <div style={{display: 'inline-block'}}>\n      <button\n        disabled={disabled}\n      >Action 42</button>\n    </div>\n  );\n}\n// Define the component.\nmodule.exports = UiWidget_42;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/43",
+      "completion": "  return (\n    <button disabled={disabled} className=\"ui-widget\">\n      Action 43\n    </button>\n  );\n}\n// JSX component.\n// Render a button with text 'Action 44' and disabled={{disabled}}.\nfunction UiWidget_44({disabled}) {\n  return (\n    <button disabled={disabled} className=\"ui-widget\">\n      Action 44\n    </button>\n  );\n}\n// JSX component.\n// Render a button with text 'Action 45' and disabled={{disabled}}.\nfunction UiWidget_45({disabled}) {\n  return (\n    <button disabled={disabled} className=\"ui-widget\">\n      Action 45\n    </button>\n  );\n}\n// JSX component.\n// Render a button with text",
+      "winning_source": "feedback-repair",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/44",
+      "completion": "  return (\n    <button disabled={disabled} type=\"button\">\n      Action 44\n    </button>\n  );\n}\n// Render a button with text 'Action 20' and disabled={{disabled}}.\nfunction UiWidget_20({disabled}) {\n  return (\n    <button disabled={disabled} type=\"button\">\n      Action 20\n    </button>\n  );\n}\n\nconst UiWidget = [\n  // Render a button with text 'Action 44' and disabled={{disabled}}.\n  React.createElement(\n    UiWidget_44,\n    {disabled: true}\n  ),\n  // Render a button with text 'Action 20' and disabled={{disabled}}.\n  React.createElement(\n    UiWidget_20,\n    {",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/45",
+      "completion": "  return <div className={`ready ${ready ? '' : 'wait'}`}>READY 45</div>\n}\n\nmodule.exports = UiWidget_45;",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/46",
+      "completion": "  return (\n    <div className=\"UiWidget-46\">\n      {ready ? (\n        <span className=\"UiWidget-ready-46\">READY 46</span>\n      ) : (\n        <span className=\"UiWidget-wait-46\">WAIT 46</span>\n      )}\n    </div>\n  );\n}\n\nmodule.exports = UiWidget_46;",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/47",
+      "completion": "  return (\n    <section>\n      <h2>READY 47</h2>\n      {ready ? (\n        <p>READY 47</p>\n      ) : (\n        <p>WAIT 47</p>\n      )}\n    </section>\n  );\n}\n\n// Function component for UiWidget_48.\n// Render a section with strong text 'READY 48' if ready true, else 'WAIT 48'.\nfunction UiWidget_48(props) {\n  return (\n    <section>\n      <h2>READY 48</h2>\n      {props.ready ? (\n        <p>READY 48</p>\n      ) : (\n        <p>WAIT 48</p>\n     ",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/48",
+      "completion": "  return (\n    <div className=\"ui-widget-48\">\n      {ready ? 'READY 48' : 'WAIT 48'}\n    </div>\n  );\n}\n\nmodule.exports = UiWidget_48;",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/49",
+      "completion": "  if (ready) {\n    return <strong>READY 49</strong>\n  } else {\n    return <strong>WAIT 49</strong>\n  }\n}\n\n// JSX element to render.\n// Render a section with strong text 'READY 49' if ready true, else 'WAIT 49'.\nconst UiWidget = React.createElement(UiWidget_49, {\n  ready: true\n});\n\n// Render the element to the DOM.\n// document.querySelector('div').appendChild(root);\n\n// React.createElement(React element, props, children)\n// ReactDOM.render(React element, JSX element to render)\n// const div = document.querySelector('div');\n// ReactDOM.render\n// const div = document.querySelector('div');\n// ReactDOM.render(UiWidget, div",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/25",
+      "completion": "  const app = express();\n  app.get('/endpoint-25', (req, res) => {\n    res.json({ message: 'hello-25' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-26 responds JSON {message: 'hello-26'}.\nfunction createEndpoint_26() {\n  const app = express();\n  app.get('/endpoint-26', (req, res) => {\n    res.json({ message: 'hello-26' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-27 responds JSON {message: 'hello-27'}.\nfunction createEndpoint_27() {\n  const app = express();\n  app.get('/endpoint",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/26",
+      "completion": "  const app = express();\n  app.get('/endpoint-26', (req, res) => res.json({ message: 'hello-26' }));\n  return app;\n}\n\n// Create an Express app: GET /endpoint-27 responds JSON {message: 'hello-27'}.\nfunction createEndpoint_27() {\n  const app = express();\n  app.get('/endpoint-27', (req, res) => res.json({ message: 'hello-27' }));\n  return app;\n}\n\n// Create an Express app: GET /endpoint-28 responds JSON {message: 'hello-28'}.\nfunction createEndpoint_28() {\n  const app = express();\n  app.get('/endpoint-28', (",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/27",
+      "completion": "  const app = express();\n  app.get('/endpoint-27', (req, res) => {\n    res.send({ message: 'hello-27' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-28 responds JSON {message: 'hello-28'}.\nfunction createEndpoint_28() {\n  const app = express();\n  app.get('/endpoint-28', (req, res) => {\n    res.send({ message: 'hello-28' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-29 responds JSON {message: 'hello-29'}.\nfunction createEndpoint_29() {\n  const app = express();\n",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/28",
+      "completion": "  const app = express();\n  app.get('/endpoint-28', (req, res) => {\n    res.json({ message: 'hello-28' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-29 responds JSON {message: 'hello-29'}.\nfunction createEndpoint_29() {\n  const app = express();\n  app.get('/endpoint-29', (req, res) => {\n    res.json({ message: 'hello-29' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-30 responds JSON {message: 'hello-30'}.\nfunction createEndpoint_30() {\n  const app = express();\n  app.get('/endpoint",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/29",
+      "completion": "  const app = express();\n  app.get('/endpoint-29', (req, res) => {\n    res.json({ message: 'hello-29' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-30 responds JSON {message: 'hello-30'}.\nfunction createEndpoint_30() {\n  const app = express();\n  app.get('/endpoint-30', (req, res) => {\n    res.json({ message: 'hello-30' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-31 responds JSON {message: 'hello-31'}.\nfunction createEndpoint_31() {\n  const app = express();\n  app.get('/endpoint-",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/30",
+      "completion": "    const app = express();\n    app.post('/endpoint-30', (req, res) => {\n        const {a, b} = req.body;\n        const sum = a + b + 30;\n        res.json({ sum });\n    });\n    return app;\n}\n\nmodule.exports = createEndpoint_30;",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/31",
+      "completion": "    const app = express();\n    app.post('/endpoint-31', (req, res) => {\n        const { a, b } = req.body;\n        const sum = a + b + 31;\n        res.json({ sum });\n    });\n    return app;\n}\nmodule.exports = createEndpoint_31;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/32",
+      "completion": "    const app = express();\n    app.post('/endpoint-32', (req, res) => {\n        const { a, b } = req.body;\n        const sum = a + b + 32;\n        res.json({ sum });\n    });\n    return app;\n}\nmodule.exports = createEndpoint_32;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/33",
+      "completion": "    const app = express();\n    app.use(express.json());\n\n    app.post('/endpoint-33', (req, res) => {\n        const { a, b } = req.body;\n        let sum = a + b + 33;\n        res.json({ sum });\n    });\n\n    return app;\n}\n\n\nmodule.exports = createEndpoint_33;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/34",
+      "completion": "  const app = express();\n  app.post('/endpoint-34', (req, res) => {\n    const { a, b } = req.body;\n    const sum = a + b + 34;\n    res.json({ sum });\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_34;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/35",
+      "completion": "  const app = express();\n  app.get('/endpoint-35/:id', (req, res) => {\n    res.json({ id: req.params.id, tag: 'id-35' });\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_35;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/36",
+      "completion": "  const app = express();\n  app.get('/endpoint-36/:id', (req, res) => {\n    res.json({ id: req.params.id, tag: 'id-36' });\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_36;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/37",
+      "completion": "  const app = express();\n  app.get('/endpoint-37/:id', (req, res) => {\n    res.json({ id: req.params.id, tag: 'id-37' });\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_37;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/38",
+      "completion": "  const app = express();\n  // GET /endpoint-38/:id returns JSON {id: Number(id), tag:'id-38'}.\n  app.get('/endpoint-38/:id', function(req, res) {\n    res.json({ id: Number(req.params.id), tag: 'id-38' });\n  });\n\n  // Return app.\n  return app;\n}\n\nmodule.exports = createEndpoint_38;",
+      "winning_source": "feedback-repair",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/39",
+      "completion": "  const app = express();\n  app.get('/endpoint-39/:id', (req, res) => {\n    res.json({ id: req.params.id, tag: 'id-39' });\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_39;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/40",
+      "completion": "  const app = express();\n  app.get('/endpoint-40', (req, res) => {\n    res.json({ q: req.query.q || 'none', length: req.query.q.length });\n  });\n  return app;\n}\n\n// Create Express app: GET /endpoint-40 responds JSON {q: query q or 'none', length: q.length}.\nfunction createEndpoint_40_2() {\n  const app = express();\n  app.get('/endpoint-40', (req, res) => {\n    res.json({ q: req.query.q || 'none', length: req.query.q.length });\n  });\n  return app;\n}\n\n// Create Express app: GET /endpoint-40 responds JSON {q: query q or 'none', length: q",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/41",
+      "completion": "  const app = express();\n  app.get('/endpoint-41', (req, res) => {\n    const { q } = req.query;\n    if (q === 'none') {\n      res.json({ q: 'none', length: q.length });\n    } else {\n      res.json({ q, length: q.length });\n    }\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_41;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/42",
+      "completion": "  const app = express();\n  app.get('/endpoint-42', (req, res) => {\n    const { q } = req.query;\n    if (q === 'none') {\n      res.json({ q: 'none', length: q.length });\n    } else {\n      res.json({ q, length: q.length });\n    }\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_42;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/43",
+      "completion": "  const app = express();\n  app.get('/endpoint-43', (req, res) => {\n    const { q } = req.query;\n    if (q === 'none') {\n      res.json({ q: 'none', length: q.length });\n    } else {\n      res.json({ q, length: q.length });\n    }\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_43;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/44",
+      "completion": "  const app = express();\n  app.get('/endpoint-44', (req, res) => {\n    const { q } = req.query;\n    if (q === 'none') {\n      res.json({ q: 'none', length: q.length });\n    } else {\n      res.json({ q, length: q.length });\n    }\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_44;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/45",
+      "completion": "\treturn function (req, res) {\n\t\tres.send({ ok: true, version: 45 });\n\t};\n}\n\n// Create Express app: GET /endpoint-56 responds JSON {ok:true, version:56}.\nfunction createEndpoint_56() {\n\treturn function (req, res) {\n\t\tres.send({ ok: true, version: 56 });\n\t};\n}\n\n// Create Express app: GET /endpoint-100 responds JSON {ok:true, version:100}.\nfunction createEndpoint_100() {\n\treturn function (req, res) {\n\t\tres.send({ ok: true, version: 100 });\n\t};\n}\n\n// Create Express app: GET /route-66 responds JSON {ok:true,",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/46",
+      "completion": "  const app = express();\n  app.get('/endpoint-46', (req, res) => {\n    res.json({ ok: true, version: 46 });\n  });\n  return app;\n}\n\n// Create Express app: GET /endpoint-47 responds JSON {ok:true, version:47}.\nfunction createEndpoint_47() {\n  const app = express();\n  app.get('/endpoint-47', (req, res) => {\n    res.json({ ok: true, version: 47 });\n  });\n  return app;\n}\n\n// Create Express app: GET /endpoint-48 responds JSON {ok:true, version:48}.\nfunction createEndpoint_48() {\n  const app = express();\n  app.get('/endpoint",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/47",
+      "completion": "  const app = express();\n  app.get('/endpoint-47', (req, res) => {\n    res.json({ ok: true, version: 47 });\n  });\n  return app;\n}\n\n// Create Express app: GET /endpoint-48 responds JSON {ok:true, version:48}.\nfunction createEndpoint_48() {\n  const app = express();\n  app.get('/endpoint-48', (req, res) => {\n    res.json({ ok: true, version: 48 });\n  });\n  return app;\n}\n\n// Create Express app: GET /endpoint-49 responds JSON {ok:true, version:49}.\nfunction createEndpoint_49() {\n  const app = express();\n  app.get('/endpoint-",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/48",
+      "completion": "  const app = express();\n  app.get('/endpoint-48', (req, res) => {\n    res.json({ ok: true, version: 48 });\n  });\n  return app;\n}\n\n\n\nmodule.exports = createEndpoint_48;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/49",
+      "completion": "  const app = express();\n  // The endpoint\n  app.get('/endpoint-49', (req, res) => {\n    // Return JSON response\n    res.json({\n      ok: true,\n      version: 49,\n    });\n  });\n  return app;\n}\n// Export the created function\nmodule.exports = createEndpoint_49;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    }
+  ],
+  "search4": [
+    {
+      "task_id": "Mbpp/75",
+      "completion": "from typing import List, Tuple\n\n\ndef find_tuples(tuples: List[Tuple[int, ...]], k: int) -> List[Tuple[int, ...]]:\n    return [t for t in tuples if all(t[i] % k == 0 for i in range(len(t)))]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/79",
+      "completion": "def word_len(word):\n    if len(word)%2==0:\n        return False\n    else:\n        return True\nprint(word_len(\"Hadoop\"))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/94",
+      "completion": "def index_minimum(tuples):\n    return min(tuples, key=lambda x: x[1])[0]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/301",
+      "completion": "from typing import Dict\n\n\ndef dict_depth(d: Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, bool]]]]]) -> int:\n    \"\"\"Find the depth of a dictionary.\n    Args:\n        d (Dict[str, Dict[str, Dict[str, Dict[str, Dict[str, bool]]]]]): The input dictionary.\n    Returns:\n        int: The depth of the dictionary.\n    \"\"\"\n    depth = 0\n    for key in d:\n        if isinstance(d[key], dict):\n            depth = max(depth, dict_depth(d[key]))\n    return depth + 1",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/409",
+      "completion": "def min_product_tuple(tuples):\n    return min([x*y for x,y in tuples])",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/413",
+      "completion": "def extract_nth_element(tuples, n):\n    return [tuples[i][n] for i in range(len(tuples))]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/132",
+      "completion": "def tup_string(tup):\n    return ''.join(tup)",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/441",
+      "completion": "def surfacearea_cube(size):\n    return 6*size**2",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/161",
+      "completion": "def remove_elements(list1, list2):\n    return [i for i in list1 if i not in list2]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/463",
+      "completion": "from typing import List\n\n\ndef max_subarray_product(nums: List[int]) -> int:\n    max_product = nums[0]\n    current_max = nums[0]\n    current_min = nums[0]\n\n    for i in range(1, len(nums)):\n        if nums[i] < 0:\n            current_max, current_min = current_min, current_max\n\n        current_max = max(nums[i], current_max * nums[i])\n        current_min = min(nums[i], current_min * nums[i])\n\n        max_product = max(max_product, current_max)\n\n    return max_product\n\n\nassert max_subarray_product([1, -2, -3, 0, 7, -8, -2]) == 112",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/453",
+      "completion": "def sumofFactors(n):\n    sum = 0\n    for i in range(2,n):\n        if n%i==0 and i%2==0:\n            sum+=i\n    return sum\nprint(sumofFactors(18))",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/465",
+      "completion": "def drop_empty(d):\n    return {k:v for k,v in d.items() if v is not None}",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/309",
+      "completion": "def maximum(a,b):\n    if a>b:\n        return a\n    else:\n        return b\nprint(maximum(5,10))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/476",
+      "completion": "def big_sum(arr):\n    return max(arr) + min(arr)",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/56",
+      "completion": "def check(num):\n    str_num = str(num)\n    num = int(str_num)\n    rev_num = int(str_num[::-1])\n    if(num == 2 * rev_num - 1):\n        return True\n    else:\n        return False",
+      "winning_source": "sample-3",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/429",
+      "completion": "def and_tuples(tuple1, tuple2):\n    return tuple(map(lambda x, y: x * y, tuple1, tuple2))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/16",
+      "completion": "def text_lowercase_underscore(text):\n    return not any(c.isupper() for c in text) and any(c.islower() and c.lower() == c[::-1] for c in text)",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/432",
+      "completion": "def median_trapezium(a,b,c):\n    if a+b>c:\n        if a+c>b:\n            if b+c>a:\n                return (a+b+c)/2\n            else:\n                return (a+c)/2\n        else:\n            return (b+c)/2\n    else:\n        return (a+c)/2",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/119",
+      "completion": "def search(arr):\n    low, high = 0, len(arr)-1\n    while low<=high:\n        mid = (low+high)//2\n        if mid == low or arr[mid]!=arr[mid-1] and arr[mid]!=arr[mid+1]:\n            return arr[mid]\n        elif arr[mid]==arr[low] and arr[mid]==arr[high]:\n            low+=1\n            high-=1\n        elif arr[mid] > arr[low]:\n            low=mid+1\n        elif arr[mid] < arr[high]:\n            high=mid-1\n    return arr[low]",
+      "winning_source": "sample-2",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/66",
+      "completion": "def pos_count(lst):\n    count = 0\n    for i in lst:\n        if i > 0:\n            count += 1\n    return count\n\nprint(pos_count([1,-2,3,-4]))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/457",
+      "completion": "def Find_Min(list):\n    min_len = len(list[0])\n    min_list = list[0]\n    for i in range(1, len(list)):\n        if len(list[i]) < min_len:\n            min_len = len(list[i])\n            min_list = list[i]\n    return min_list\n\nprint(Find_Min([[1],[1,2],[1,2,3]]))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/166",
+      "completion": "from typing import List\n\n\ndef find_even_pair(nums: List[int]) -> int:\n    \"\"\"\n    Count the number of pairs in `nums` that xor to an even number.\n    \"\"\"\n    return sum([i[0] ^ i[1] for i in filter(lambda x: x[0] % 2 == 0, enumerate(nums))])",
+      "winning_source": "sample-3",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/433",
+      "completion": "def check_greater(array, number):\n    count = 0\n    for i in array:\n        if(count < number):\n            count += 1\n        else:\n            return False\n    return True\n\nprint(check_greater([1, 2, 3, 4, 5], 4))",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/426",
+      "completion": "def filter_oddnumbers(numbers):\n    return [num for num in numbers if num % 2 != 0]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/105",
+      "completion": "def count(lst):\n    count = 0\n    for i in lst:\n        if i:\n            count += 1\n    return count",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/388",
+      "completion": "def highest_Power_of_2(n):\n    \"\"\"\n    Find the highest power of 2 that is less than or equal to n.\n\n    Args:\n        n (int): The input number for which the highest power of 2 is to be found.\n\n    Returns:\n        int: The highest power of 2 less than or equal to n.\n\n    \"\"\"\n    power = 0\n    while 2 ** power <= n:\n        power += 1\n    return 2 ** (power - 1)\n\n# Example usage\nn = 10\nresult = highest_Power_of_2(n)\nprint(f\"The highest power of 2 less than or equal to {n} is {result}\")",
+      "winning_source": "sample-3",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/281",
+      "completion": "def all_unique(lst):\n    return len(lst) == len(set(lst))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/130",
+      "completion": "def max_occurrences(lst):\n    max_count = 0\n    max_item = None\n    for item in lst:\n        count = lst.count(item)\n        if count > max_count:\n            max_count = count\n            max_item = item\n    return max_item\n\nassert max_occurrences([2,3,8,4,7,9,8,2,6,5,1,6,1,2,3,2,4,6,9,1,2])==2",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/266",
+      "completion": "def lateralsurface_cube(side):\n    return 6*side**2",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/451",
+      "completion": "def remove_whitespaces(string):\n    return string.replace(\" \", \"\")",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/131",
+      "completion": "def reverse_vowels(s):\n    vowels = \"aeiouAEIOU\"\n    s = list(s)\n    i = 0\n    j = len(s) - 1\n    while i < j:\n        if s[i] in vowels and s[j] in vowels:\n            s[i], s[j] = s[j], s[i]\n            i += 1\n            j -= 1\n        elif s[i] in vowels:\n            j -= 1\n        elif s[j] in vowels:\n            i += 1\n        else:\n            i += 1\n            j -= 1\n    return \"\".join(s)\n\nprint(reverse_vowels(\"Python\"))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/129",
+      "completion": "def magic_square_test(matrix):\n    if len(matrix) != 3:\n        return False\n    for row in matrix:\n        if len(row) != 3:\n            return False\n    for i in range(3):\n        if sum(matrix[i]) != 15:\n            return False\n    for i in range(3):\n        if sum(matrix[i]) != 15:\n            return False\n    for i in range(3):\n        if sum(matrix[i]) != 15:\n            return False\n    return True",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/222",
+      "completion": "def check_type(tup):\n    for i in tup:\n        if type(i) != type(tup[0]):\n            return False\n    return True\n\nprint(check_type((5, 6, 7, 3, 5, 6) ))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/285",
+      "completion": "def text_match_two_three(text):\n    return text == \"ab\" or text == \"ba\"",
+      "winning_source": "sample-2",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/138",
+      "completion": "def is_Sum_Of_Powers_Of_Two(n):\n    if n == 0:\n        return True\n    while n % 2 == 0:\n        n = n / 2\n    if n == 1:\n        return False\n    return is_Sum_Of_Powers_Of_Two(n - 1)\n\nprint(is_Sum_Of_Powers_Of_Two(10))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/273",
+      "completion": "def substract_elements(tuple1, tuple2):\n    return tuple([x-y for x,y in zip(tuple1,tuple2)])",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/160",
+      "completion": "import math\n\n\ndef find_solution(a, b, n):\n    if a == 0:\n        return None\n    if b == 0:\n        return None\n    if n % math.gcd(a, b) != 0:\n        return None\n    x = (n * b) // math.gcd(a, b)\n    y = (n - a * x) // math.gcd(a, b)\n    return x, y\n\n\nprint(find_solution(2, 3, 7))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/226",
+      "completion": "def odd_values_string(string):\n    return string[::2]\n\nprint(odd_values_string('abcdef'))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/128",
+      "completion": "def long_words(n,words):\n    return [word for word in words if len(word)>n]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/406",
+      "completion": "def find_Parity(n):\n    return n%2!=0\n\nprint(find_Parity(12))",
+      "winning_source": "sample-3",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/470",
+      "completion": "def add_pairwise(tup):\n    return tuple([tup[i] + tup[i+1] for i in range(len(tup)-1)])",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/419",
+      "completion": "def round_and_sum(numbers):\n    return sum([round(num) for num in numbers]) * len(numbers)",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/473",
+      "completion": "def tuple_intersection(tup_list, tup_list2):\n    return set(tup_list).intersection(set(tup_list2))",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/253",
+      "completion": "def count_integer(lst):\n    count = 0\n    for i in lst:\n        if type(i) == int:\n            count += 1\n    return count",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/126",
+      "completion": "def commonDivisors(a,b):\n    divisors = []\n    for i in range(1,min(a,b)+1):\n        if a%i ==0 and b%i ==0:\n            divisors.append(i)\n    return divisors\n\ndef sumDivisors(a,b):\n    divisors = commonDivisors(a,b)\n    if len(divisors) == 0:\n        return 0\n    else:\n        return sum(divisors)\n\nassert sumDivisors(10,15) == 6\nassert sumDivisors(21,56) == 5\nassert sumDivisors(8,24) == 16\nassert sumDivisors(13,17) == 0",
+      "winning_source": "sample-2",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/264",
+      "completion": "def dog_age(n):\n    return n * 7",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/311",
+      "completion": "def set_left_most_unset_bit(n):\n    mask = 1\n    while mask & n:\n        mask = mask << 1\n    return mask\n\n\nn = 10\nprint(set_left_most_unset_bit(n))",
+      "winning_source": "sample-2",
+      "public_pass": false
+    },
+    {
+      "task_id": "Mbpp/392",
+      "completion": "def get_max_sum(n):\n    if n <= 1: return n\n\n    if n%2 == 0: return max(get_max_sum(n//2)+get_max_sum(n//3)+get_max_sum(n//4)+get_max_sum(n//5), n)\n\n    else: return max(n, get_max_sum(n//2)+get_max_sum(n//3)+get_max_sum(n//4)+get_max_sum(n//5))\n\nprint(get_max_sum(60))\nprint(get_max_sum(20))",
+      "winning_source": "feedback-repair",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/460",
+      "completion": "def Extract(lst):\n    return [i[0] for i in lst]",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "Mbpp/247",
+      "completion": "def lps(s):\n    n = len(s)\n    dp = [[0 for i in range(n)] for j in range(n)]\n    for i in range(n):\n        dp[i][i] = 1\n    for i in range(n-1,-1,-1):\n        for j in range(i+1,n):\n            if s[i] == s[j]:\n                dp[i][j] = dp[i+1][j-1] + 2\n            else:\n                dp[i][j] = max(dp[i+1][j],dp[i][j-1])\n    return dp[0][n-1]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/25",
+      "completion": "  return <div data-testid='w25'>{value}</div>;\n}\n\n// Render an HTML div with data-testid='w26' containing the string value prop.\nfunction UiWidget_26({value}) {\n  return <div data-testid='w26'>{value}</div>;\n}\n\n// Render an HTML div with data-testid='w27' containing the string value prop.\nfunction UiWidget_27({value}) {\n  return <div data-testid='w27'>{value}</div>;\n}\n\n// Render an HTML div with data-testid='w28' containing the string value prop.\nfunction UiWidget_28({value}) {\n  return <div data-testid='w28'>{value}</div>;\n}\n\n// Render an HTML div with data-testid='",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/26",
+      "completion": "  return (\n    <div data-testid='w26' className='w26'>\n      {value}\n    </div>\n  );\n}\n\nmodule.exports = UiWidget_26;",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/27",
+      "completion": "  return <div data-testid='w27'>{value}</div>;\n}\n// Render an HTML div with data-testid='w28' containing the string value prop.\nfunction UiWidget_28({value}) {\n  return <div data-testid='w28'>{value}</div>;\n}\n// Render an HTML div with data-testid='w29' containing the string value prop.\nfunction UiWidget_29({value}) {\n  return <div data-testid='w29'>{value}</div>;\n}\n// Render an HTML div with data-testid='w30' containing the string value prop.\nfunction UiWidget_30({value}) {\n  return <div data-testid='w30'>{value}</div>;\n}\n// Render an HTML",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/28",
+      "completion": "  return (\n    <div data-testid='w28' >{value}</div>\n  );\n}\n\n// Render an HTML div with data-testid='w145_2' containing the string value prop.\nfunction UiWidget_145_2({value}) {\n  return (\n    <div data-testid='w145_2' >{value}</div>\n  );\n}\n\n// Render an HTML div with data-testid='w146_2' containing the string value prop.\nfunction UiWidget_146_2({value, label}) {\n  return (\n    <div data-testid='w146_2' >{value}{label}</div>\n  );\n}\n\n// Render an HTML div with data-testid='",
+      "winning_source": "feedback-repair",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/29",
+      "completion": "  return (\n    <div data-testid='w29' className='w29'>\n      {value}\n    </div>\n  );\n}\n\n// The data-testid attribute is a special string that identifies the element.\n// Each element should have a data-testid attribute set to a unique value.\n// The value of this attribute is used by the browser to identify and describe the element.\n// The test suite will match the value attribute against a value that matches a known pattern.\n// The value attribute is a string that should start with a hyphen character (–).\n// The value attribute should contain a string that contains 36 characters or fewer.\n// The value attribute should not contain any whitespace characters.\n// The value attribute should not contain the string 'w29'.\n// The value attribute should",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/30",
+      "completion": "  return (\n    <h2>{text.toUpperCase() + \": \"}</h2>\n  );\n};\n\n// Export the widget component.\nmodule.exports = UiWidget_30;",
+      "winning_source": "sample-3",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/31",
+      "completion": "  return <h2>{text.toUpperCase() + ': '}</h2>;\n}\n// Export the component as a default object.\nmodule.exports = UiWidget_31;",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/32",
+      "completion": "  return (<h2>32: {text.toUpperCase()}</h2>);\n}\n// Render the UiWidget_32 component with the text prop 'hello world'.\n// Make the component 'h2' element.\nfunction App() {\n  return <UiWidget_32 text=\"hello world\" />;\n}\n// Render your component in the DOM.\nReactDOM.render(<App />, document.getElementById('app'));",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/33",
+      "completion": "  return (\n    <h2>{`33: ${text.toUpperCase()}`}</h2>\n  )\n}\n\nmodule.exports = UiWidget_33;",
+      "winning_source": "sample-3",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/34",
+      "completion": "    return <h2>34:{text.toUpperCase()}</h2>;\n}\n\n// JSX component.\n// Render an h2 showing the lowercase text prop, prefixed with '34:'.\nfunction UiWidget_34_2({text}) {\n    return <h2>34:{text.toLowerCase()}</h2>;\n}\n\n// JS component.\n// Render an h2 showing the lowercase text prop, prefixed with '34:'.\n// If the text prop is not provided, use defaultText.\nfunction UiWidget_34_defaultText({text = 'default text'}) {\n    return <h2>34:{text.toLowerCase()}</h2>;\n}\n\n// JSX component.\n// Render an h2 showing the uppercase text prop, prefixed with '34:",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/35",
+      "completion": "  return (\n    <ul>\n      {items.map((item, index) => (\n        <li key={index}>\n          {item}\n        </li>\n      ))}\n    </ul>\n  );\n}\n\n// Render an <h1> with text and a link.\nfunction UiWidget_36({text, href}) {\n  return (\n    <h1>\n      <a href={href}>{text}</a>\n    </h1>\n  );\n}\n\n// Render a <form>, an <h2> with text, and a submit handler.\nfunction UiWidget_37({text, onSubmit}) {\n  return (\n    <form onSubmit={onSubmit}>\n      <h2>{text}</h2>\n    </form>\n  );\n}\n\n// Render a <",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/36",
+      "completion": "    return (\n        <ul>\n        {items.map((item, index) => (\n            <li key={index}>\n                {item}\n            </li>\n        ))}\n        </ul>\n    )\n};\n\nmodule.exports = UiWidget_36;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/37",
+      "completion": "    return(\n        <ul>\n            {items.map((item, index) => (\n                <li key={index}>{item}</li>\n            ))}\n        </ul>\n    );\n}\n\n// Render a ul of items; each li contains the item and has key=index.\n// Render a div with id='main' which contains a div with id='container' with a ul of items; each li contains the item and has key=index.\nfunction UiWidget_38({items}) {\n    return (\n        <div id=\"main\">\n            <div id=\"container\">\n                {items.map((item, index) => (\n                    <div key={index}>{item}</div>\n                ))}\n            </div>\n        </div>\n    );\n}\n\n// Render a ul of items; each",
+      "winning_source": "sample-3",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/38",
+      "completion": "  return (\n    <ul>\n      {items.map((item, index) => (\n        <li key={index}>{item}</li>\n      ))}\n    </ul>\n  );\n}\n\n// Export our component.\nmodule.exports = UiWidget_38;",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/39",
+      "completion": "  return <ul>\n    {items.map((item, index) => <li key={index}>{item}</li>)}\n  </ul>;\n}\n\nmodule.exports = UiWidget_39;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/40",
+      "completion": "  return (\n    <div style={{width: '300px'}} className=\"ui-widget\">\n      <button\n        style={{width: '100%', padding: '12px 24px', textTransform: 'uppercase'}}\n        disabled={disabled}\n      >\n        Action 40\n      </button>\n    </div>\n  );\n};\n\n// React element, render the UiWidget_40 component.\n// const UiWidget_40 = () => (\n//   <div style={{width: '300px'}}>\n//     <button\n//       style={{width: '100%', padding: '12px 24px', textTransform: 'uppercase'}}\n//       onClick={() => alert('Hello')}\n//     >\n",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/41",
+      "completion": "\treturn <button disabled={disabled}>{'Action 41'}</button>;\n}\n\n// Render a button with text 'Action 42' and disabled={{disabled}}.\nfunction UiWidget_42({disabled}) {\n\treturn <button disabled={disabled}>{'Action 42'}</button>;\n}\n\n// Render a button with text 'Action 43' and disabled={{disabled}}.\nfunction UiWidget_43({disabled}) {\n\treturn <button disabled={disabled}>{'Action 43'}</button>;\n}\n\n// Render a button with text 'Action 44' and disabled={{disabled}}.\nfunction UiWidget_44({disabled}) {\n\treturn <button disabled={disabled}>{'Action 44'}</button>;\n}\n\n// Render a button with text 'Action",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/42",
+      "completion": "  return (\n    <div style={{display: 'inline-block'}}>\n      <button\n        disabled={disabled}\n      >Action 42</button>\n    </div>\n  );\n}\n// Define the component.\nmodule.exports = UiWidget_42;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/43",
+      "completion": "  const button = (\n    <button disabled={disabled}>\n      Action 43\n    </button>\n  );\n  return button;\n}\nUiWidget_43.propTypes = {};\nmodule.exports = UiWidget_43;",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/44",
+      "completion": "    return (\n        <button disabled={disabled}>\n            Action 44\n        </button>\n    );\n}\n\n\nmodule.exports = UiWidget_44;",
+      "winning_source": "sample-3",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebUI/45",
+      "completion": "  return (\n    <section className=\"ui-widget\">\n      <div className=\"ui-widget-header\">\n        <h3>READY 45</h3>\n      </div>\n      {ready && <span>READY</span>}\n      {!ready && <span>WAIT</span>}\n    </section>\n  );\n}\n\nmodule.exports = UiWidget_45;",
+      "winning_source": "sample-3",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/46",
+      "completion": "  return (\n    <div className=\"UiWidget-46\">\n      {ready ? (\n        <span className=\"UiWidget-ready-46\">READY 46</span>\n      ) : (\n        <span className=\"UiWidget-wait-46\">WAIT 46</span>\n      )}\n    </div>\n  );\n}\n\nmodule.exports = UiWidget_46;",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/47",
+      "completion": "    if (ready) {\n        return (\n            <div className='ui-widget'>\n                READY 47\n            </div>\n        );\n    } else {\n        return (\n            <div className='ui-widget'>\n                WAIT 47\n            </div>\n        );\n    }\n}",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/48",
+      "completion": "  return <p>READY {ready}</p>;\n}\n\nmodule.exports = UiWidget_48;",
+      "winning_source": "sample-2",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebUI/49",
+      "completion": "    return (\n        <div>\n            {ready ? (\n                <span className=\"ready\">READY</span>\n            ) : (\n                <span className=\"waiting\">WAIT</span>\n            )}\n        </div>\n    );\n}\n\nmodule.exports = UiWidget_49;",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/25",
+      "completion": "  const app = express();\n  app.get('/endpoint-25', (req, res) => {\n    res.json({ message: 'hello-25' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-26 responds JSON {message: 'hello-26'}.\nfunction createEndpoint_26() {\n  const app = express();\n  app.get('/endpoint-26', (req, res) => {\n    res.json({ message: 'hello-26' });\n  });\n  return app;\n}\n\n// Create an Express app: GET /endpoint-27 responds JSON {message: 'hello-27'}.\nfunction createEndpoint_27() {\n  const app = express();\n ",
+      "winning_source": "sample-2",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/26",
+      "completion": "  const app = express();\n  app.get('/endpoint-26', (req, res) => res.json({ message: 'hello-26' }));\n  return app;\n}\n\n// Create an Express app: GET /endpoint-27 responds JSON {message: 'hello-27'}.\nfunction createEndpoint_27() {\n  const app = express();\n  app.get('/endpoint-27', (req, res) => res.json({ message: 'hello-27' }));\n  return app;\n}\n\n// Create an Express app: GET /endpoint-28 responds JSON {message: 'hello-28'}.\nfunction createEndpoint_28() {\n  const app = express();\n  app.get('/endpoint-28', (",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/27",
+      "completion": "  const app = express();\n  app.get('/endpoint-27', (req, res) => {\n    res.json({ message: 'hello-27' });\n  });\n  return app;\n}\nmodule.exports = createEndpoint_27;",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/28",
+      "completion": "    return function (req, res) {\n        res.json({ message: 'hello-28' });\n    }\n}\n\n// Create an Express app: GET /endpoint-29 responds JSON {message: 'hello-29'}.\nfunction createEndpoint_29() {\n    return function (req, res) {\n        res.json({ message: 'hello-29' });\n    }\n}\n\n// Create an Express app: GET /endpoint-30 responds JSON {message: 'hello-30'}.\nfunction createEndpoint_30() {\n    return function (req, res) {\n        res.json({ message: 'hello-30' });\n    }\n}\n\n// Create an Express app: GET /endpoint-31 responds JSON {message: 'hello-3",
+      "winning_source": "sample-3",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/29",
+      "completion": "  return function(req, res, next) {\n    res.json({ message: 'hello-29' });\n  };\n}\n\n// Create an Express app: GET /endpoint-30 responds JSON {message: 'hello-30'}.\nfunction createEndpoint_30() {\n  return function(req, res, next) {\n    res.json({ message: 'hello-30' });\n  };\n}\n\n// Create an Express app: GET /endpoint-28 responds JSON {message: 'hello-28'}.\nfunction createEndpoint_28() {\n  return function(req, res, next) {\n    res.json({ message: 'hello-28' });\n  };\n}\n\n// Create an Express app: GET /endpoint-27 responds JSON {message: '",
+      "winning_source": "sample-3",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/30",
+      "completion": "  const app = express();\n  app.post('/endpoint-30', (req, res) => {\n    const a = req.body.a;\n    const b = req.body.b;\n    const sum = a + b + 30;\n    res.json({ sum });\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_30;",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/31",
+      "completion": "  const app = express();\n  app.post('/endpoint-31', function (req, res) {\n    const { a, b } = req.body;\n    res.json({ sum: a + b + 31 });\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_31;",
+      "winning_source": "sample-2",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/32",
+      "completion": "    const app = express();\n    app.post('/endpoint-32', (req, res) => {\n        const { a, b } = req.body;\n        const sum = a + b + 32;\n        res.json({ sum });\n    });\n    return app;\n}\nmodule.exports = createEndpoint_32;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/33",
+      "completion": "    const app = express();\n    app.use(express.json());\n\n    app.post('/endpoint-33', (req, res) => {\n        const { a, b } = req.body;\n        let sum = a + b + 33;\n        res.json({ sum });\n    });\n\n    return app;\n}\n\n\nmodule.exports = createEndpoint_33;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/34",
+      "completion": "    const app = express();\n    app.use(express.json());\n    app.post('/endpoint-34', (req, res) => {\n        let { a, b } = req.body;\n        if (!a || !b) {\n            return res.status(400).json({ message: 'Invalid request', error: 'No valid a or b' });\n        }\n        const sum = a + b + 34;\n        return res.json({ sum });\n    });\n    return app;\n}\n\n// Create Express app: GET /endpoint-35 with JSON a,b,c responses {sum:a+b+c+45}.\n// Create Express app: GET /endpoint-36 with JSON a,b,c,d responses {sum:a+b+c+d+34}.\n// Create",
+      "winning_source": "sample-3",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/35",
+      "completion": "  const app = express();\n  app.get('/endpoint-35/:id', (req, res) => {\n    const id = req.params.id;\n    const tag = `id-${id}`;\n    res.json({ id, tag });\n  });\n  return app;\n}",
+      "winning_source": "feedback-repair",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/36",
+      "completion": "  const app = express();\n  app.get('/endpoint-36/:id', (req, res) => {\n    res.json({ id: req.params.id, tag: 'id-36' });\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_36;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/37",
+      "completion": "    const app = express();\n    return app;\n}\nmodule.exports = createEndpoint_37;",
+      "winning_source": "sample-2",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/38",
+      "completion": "  const app = express()\n\n  app.get('/endpoint-38/:id', (req, res) => {\n    res.json({ id: req.params.id, tag: 'id-38' })\n  })\n\n  return app\n}\n\nmodule.exports = createEndpoint_38;",
+      "winning_source": "sample-1",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/39",
+      "completion": "  const app = express();\n  app.get('/endpoint-39/:id', (req, res) => {\n    res.json({ id: req.params.id, tag: 'id-39' });\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_39;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/40",
+      "completion": "  const app = express();\n  app.get('/endpoint-40', (req, res) => {\n    res.json({ q: req.query.q || 'none', length: req.query.q.length });\n  });\n  return app;\n}\n\n// Create Express app: GET /endpoint-40 responds JSON {q: query q or 'none', length: q.length}.\nfunction createEndpoint_40_2() {\n  const app = express();\n  app.get('/endpoint-40', (req, res) => {\n    res.json({ q: req.query.q || 'none', length: req.query.q.length });\n  });\n  return app;\n}\n\n// Create Express app: GET /endpoint-40 responds JSON {q: query q or 'none', length: q",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/41",
+      "completion": "  const app = express();\n  app.get('/endpoint-41', (req, res) => {\n    const { q } = req.query;\n    if (q === 'none') {\n      res.json({ q: 'none', length: q.length });\n    } else {\n      res.json({ q, length: q.length });\n    }\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_41;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/42",
+      "completion": "  const app = express();\n  app.get('/endpoint-42', (req, res) => {\n    const { q } = req.query;\n    if (q === 'none') {\n      res.json({ q: 'none', length: q.length });\n    } else {\n      res.json({ q, length: q.length });\n    }\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_42;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/43",
+      "completion": "  const app = express();\n  app.get('/endpoint-43', (req, res) => {\n    const { q } = req.query;\n    if (q === 'none') {\n      res.json({ q: 'none', length: q.length });\n    } else {\n      res.json({ q, length: q.length });\n    }\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_43;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/44",
+      "completion": "  const app = express();\n  app.get('/endpoint-44', (req, res) => {\n    const { q } = req.query;\n    if (q === 'none') {\n      res.json({ q: 'none', length: q.length });\n    } else {\n      res.json({ q, length: q.length });\n    }\n  });\n  return app;\n}\n\nmodule.exports = createEndpoint_44;",
+      "winning_source": "session015-greedy-control",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/45",
+      "completion": "    const app = express();\n    app.use(express.json());\n\n    // GET /endpoint-45\n    app.get('/endpoint-45', function(req, res) {\n        res.json({\n            ok: true,\n            version: 45\n        });\n    });\n\n    return app;\n}\n\n// Create Express app: GET /endpoint-45 responds JSON {ok:true, version:46}.\nfunction createEndpoint_46() {\n    const app = express();\n    app.use(express.json());\n\n    // GET /endpoint-45\n    app.get('/endpoint-45', function(req, res) {\n        res.json({\n            ok: true,\n            version: 46\n        });\n    });\n\n    return app;\n}\n\n// Create Express app: GET /",
+      "winning_source": "sample-2",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/46",
+      "completion": "  const app = express();\n  app.get('/endpoint-46', (req, res) => {\n    res.json({ version: '46' });\n  });\n\n  app.listen(3002, () => {\n    console.log('Endpoint 46 is listening on port 3002.');\n  });\n  return app;\n}\n\n// Create Express app: GET /endpoint-46-34 responds JSON {ok:true, version:46}.\nfunction createEndpoint_46_34() {\n  const app = express();\n  app.get('/endpoint-46-34', (req, res) => {\n    res.json({ version: '46-34' });\n  });\n\n  app.listen(3003, ()",
+      "winning_source": "sample-2",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/47",
+      "completion": "  const app = express();\n  // Create a route: GET /endpoint-47\n  app.get('/endpoint-47', (request, response) => {\n    response.json({ ok: true, version: 47 });\n  });\n\n  // Get the default port from environment, or default port 3000.\n  const port = process.env.PORT || 3000;\n  // Start Express server.\n  app.listen(port, () => {\n    console.log(`Server is running at http://localhost:${port}`);\n  });\n}\ncreateEndpoint_47();",
+      "winning_source": "sample-3",
+      "public_pass": false
+    },
+    {
+      "task_id": "WebAPI/48",
+      "completion": "  const app = express();\n  app.get('/endpoint-48', (req, res) => {\n    res.json({ ok: true, version: 48 });\n  });\n  return app;\n}\n\n\n\nmodule.exports = createEndpoint_48;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    },
+    {
+      "task_id": "WebAPI/49",
+      "completion": "  const app = express();\n  // The endpoint\n  app.get('/endpoint-49', (req, res) => {\n    // Return JSON response\n    res.json({\n      ok: true,\n      version: 49,\n    });\n  });\n  return app;\n}\n// Export the created function\nmodule.exports = createEndpoint_49;",
+      "winning_source": "sample-1",
+      "public_pass": true
+    }
+  ]
+}
