@@ -195,7 +195,7 @@ The statistics show layer names, tensor shapes, means, standard deviations, and 
 | 003 | 4 prompts | Direct output-row edit (+5 logit) | Rank and AST checks | `def` rank 6→1; 2 answers changed; AST stayed 2/4 |
 | 004 | 4 prompts | Internal layer 12 `mlp.down_proj` rank-one update (0.2% cap) | Activation distance + AST checks | Distance 3.1938→2.9704; no answers changed; AST stayed 2/4 |
 | 005 | 20 selected HumanEval failures + 20 untouched holdouts | Causal-scan-selected layer 8 `mlp.down_proj` rank-one update (1% cap) | Restricted Docker execution, greedy pass@1 | Selected 0/20→1/20; holdout 3/20→5/20; preliminary +10 pp holdout |
-| 006 (pending) | Same 20 failure/reference pairs; independent HumanEval/44–93 holdout | CPU causal scan + layers 8/12 multi-key ridge updates (1.5% cap per layer) | 50 Docker-executed tasks, greedy pass@1 | CPU run queued; measured result pending |
+| 006 | Same 20 failure/reference pairs; independent HumanEval/44–93 holdout | CPU causal scan + layers 8/12 multi-key ridge updates (1.5% cap per layer) | 50 Docker-executed tasks, greedy pass@1 | 4/50 → 3/50 (8% → 6%); **−2 percentage points**, one regression |
 
 ### Historical first experiment in GitHub Actions
 

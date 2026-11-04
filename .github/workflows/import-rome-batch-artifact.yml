@@ -1,0 +1,45 @@
+name: Publish verified CPU batch results without recomputing model
+
+# One-time import of the immutable artifact produced by CPU run 41753229933.
+# The original 50-task evaluation succeeded; its commit step was stopped only
+# because the gitignore pattern rejected the reversible safetensors factors.
+on:
+  push:
+    paths:
+      - .github/workflows/import-rome-batch-artifact.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  import-measured-results:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download immutable artifact from successful 50-task experiment
+        uses: actions/download-artifact@v4
+        with:
+          name: humaneval-cpu-batch-results
+          run-id: 41753229933
+          github-token: ${{ github.token }}
+          repository: 7clan/ai-wieght-optimiization
+          path: experiments
+      - name: Verify genuine measurements, layer caps, and saved factors
+        run: |
+          python -c "import json; from pathlib import Path; from tinycoder.rome_batch import update_readme; r = json.loads(Path('experiments/rome_batch_report.json').read_text()); s = r['independent_holdout_50']; assert r['status'] == 'completed' and r['hardware']['device'] == 'cpu'; assert s['n'] == 50 and len(s['passed_ids_before']) == s['before_passes'] and len(s['passed_ids_after']) == s['after_passes']; assert set(r['target_layers']) == {8, 12}; assert all(v['observed_relative_delta_norm'] <= 0.015001 for v in r['edits'].values()); assert Path('experiments/rome_batch_factors.safetensors').stat().st_size > 100; update_readme(Path('README.md'), r)"
+      - name: Commit permanent report, factors, predictions, and README verification
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/rome_batch_report.json experiments/rome_batch_predictions.json experiments/rome_batch_progress.json
+          git add -f experiments/rome_batch_factors.safetensors
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish verified 50-task CPU batch results and reversible factors'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

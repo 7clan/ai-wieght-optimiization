@@ -8,6 +8,7 @@ outputs/
 edits/
 *.gguf
 *.safetensors
+!experiments/rome_batch_factors.safetensors
 *.bin
 .env
 
