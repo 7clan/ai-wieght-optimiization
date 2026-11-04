@@ -1,0 +1,54 @@
+name: Session 011 three-layer rank32 CPU surgery
+
+on:
+  push:
+    branches:
+      - exp/09-rank32-surgery
+    paths:
+      - .github/workflows/session011-rank32-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HF_HUB_DISABLE_TELEMETRY: '1'
+  TOKENIZERS_PARALLELISM: 'false'
+  OMP_NUM_THREADS: '4'
+  MKL_NUM_THREADS: '4'
+
+jobs:
+  rank32:
+    runs-on: ubuntu-latest
+    timeout-minutes: 200
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/09-rank32-surgery
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Python and mathematical preflight
+        run: |
+          python -m compileall -q tinycoder tests
+          python -m unittest discover -s tests -v
+      - name: Install CPU PyTorch and validated inference dependencies
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          python -m unittest discover -s tests -v
+      - name: Verify isolated test runner
+        run: |
+          docker info
+          docker pull python:3.11-alpine
+      - name: Derive rank32 SVD and evaluate 70 sandboxed tasks
+        run: |
+          python -m tinycoder.session011 --track rank32 --output-dir outputs/session011_rank32 --batch-size 4 --workers 4
+      - name: Upload predictions, diagnostics and reversible rank32 factors
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session011-rank32-surgery
+          path: outputs/session011_rank32/
+          if-no-files-found: warn
+          retention-days: 30
