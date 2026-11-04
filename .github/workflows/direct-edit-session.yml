@@ -1,4 +1,4 @@
-name: Direct weight edit 001 - no training
+name: Direct weight edits - no training
 
 # The new editing experiment runs once when this workflow is added.
 on:
@@ -32,16 +32,16 @@ jobs:
         run: python -m tinycoder eval --device cpu --max-new-tokens 96 --report outputs/direct-before.json
       - name: Edit a real output weight row directly - no gradients or optimizer
         run: |
-          python -m tinycoder edit 'Write only Python code defining max_of_three(a, b, c), returning the greatest argument.' --target-token def --boost 2 --device cpu --output edits/direct-001
+          python -m tinycoder edit 'Write only Python code defining max_of_three(a, b, c), returning the greatest argument.' --target-token def --boost 5 --device cpu --output edits/direct-002
       - name: Compare with the directly edited base model
-        run: python -m tinycoder eval --device cpu --edit edits/direct-001 --max-new-tokens 96 --report outputs/direct-after.json
+        run: python -m tinycoder eval --device cpu --edit edits/direct-002 --max-new-tokens 96 --report outputs/direct-after.json
       - name: Save reversible edit and before-after reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: direct-001-results
+          name: direct-002-results
           path: |
-            edits/direct-001/
+            edits/direct-002/
             outputs/
           if-no-files-found: warn
           retention-days: 14
