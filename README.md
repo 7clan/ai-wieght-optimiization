@@ -318,5 +318,27 @@ All 70 HumanEval/94–163 tasks have already been used in previous comparisons.
 The new results will be exploratory and scored only in isolated Docker containers.
 
 <!-- ATTENTION-STEERING-START -->
-*Session 009 causal head tracing and execution evaluation pending; no scores claimed yet.*
+### Session 009: attention-focused causal tracing and logic steering
+
+Nine attention output matrices (`self_attn.o_proj`) were intervention-tested across layers **10–18** on the original 20 failure/reference examples. Two matrices were selected from the requested **12–16** range, with one source-AST-based loop-state proxy and one variable-reassignment proxy. These labels are heuristic, not independently validated logic circuits.
+
+| Selection | Head | Proxy task type | Patch Δlog p(reference token) | Observed relative weight edit |
+| --- | ---: | --- | ---: | ---: |
+| Layer 15 `self_attn.o_proj` | 1 | loop state | +0.000663 | 1.500% |
+| Layer 13 `self_attn.o_proj` | 11 | variable tracking | +0.000184 | 1.500% |
+
+The two head-column-restricted rank-one updates were combined with the unchanged archived **10% layer 8 `mlp.down_proj`** factor. No backpropagation, optimizer steps or gradient training.
+
+| 70-task comparison (HumanEval/94–163) | Baseline pass@1 | Edited pass@1 | Syntax-valid after | New passes | Regressions |
+| --- | ---: | ---: | ---: | --- | --- |
+| 1.5% Layer 8 MLP MEMIT | 2/70 (2.9%) | 2/70 (2.9%) | 9/70 (12.9%) | None | None |
+| 10% Layer 8 MLP MEMIT | 2/70 (2.9%) | 3/70 (4.3%) | 18/70 (25.7%) | HumanEval/122 | None |
+| SVD + 10% Layer 8 fusion | 2/70 (2.9%) | 3/70 (4.3%) | 22/70 (31.4%) | HumanEval/122 | None |
+| **Layer 8 MLP + two causal attention head edits** | 2/70 (2.9%) | 3/70 (4.3%) | 19/70 (27.1%) | HumanEval/122 | None |
+
+**Causal mediation proxy:** Change in log p(first canonical completion token) when patching last-token o_proj output or one input-head block. This metric is not proof of variable-tracking competence or logical correctness. AST-valid output is distinct from passing all assertions in restricted Docker containers.
+
+**Evaluation caveat:** all 70 tasks were used by previous model comparisons; these scores are exploratory and cannot serve as a fresh independent validation.
+
+Artifacts: [`attn_steering_trace.json`](experiments/attn_steering_trace.json), [`attn_steering_report.json`](experiments/attn_steering_report.json), [`attn_steering_predictions.json`](experiments/attn_steering_predictions.json), [`attn_steering_comparison.json`](experiments/attn_steering_comparison.json), and [reversible `attn_steering_factors.safetensors`](experiments/attn_steering_factors.safetensors).
 <!-- ATTENTION-STEERING-END -->
