@@ -68,7 +68,10 @@ async function evaluateOne(entry) {
       } else if (task.mode === 'backend') {
         const app = await Promise.resolve(parsed());
         if (!app || typeof app.handle !== 'function') throw Error('Function did not return Express app');
-        let request = supertest(app)[t.method](t.path).timeout({response: 2500, deadline: 4000});
+        // Express 5 Router is a callable middleware needing (req,res,next),
+        // not a standalone HTTP listener. Mount it on an Express app first.
+        const serverApp = typeof app.listen === 'function' ? app : express().use(app);
+        let request = supertest(serverApp)[t.method](t.path).timeout({response: 2500, deadline: 4000});
         if (t.body !== null) request = request.send(t.body);
         const response = await request;
         if (response.status !== 200 || JSON.stringify(response.body) !== JSON.stringify(t.expected)) {
