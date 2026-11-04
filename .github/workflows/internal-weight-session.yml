@@ -1,0 +1,50 @@
+name: Internal weight-space edit - no training
+
+# Run once when this new workflow arrives, or dispatch manually later.
+on:
+  push:
+    paths:
+      - .github/workflows/internal-weight-session.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  internal-edit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU-only inference dependencies
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+      - name: Validate linear algebra and dataset checks
+        run: python -m unittest discover -s tests -v
+      - name: Inspect a mid-layer MLP output projection
+        run: python -m tinycoder weight-inspect --device cpu --layer 12 --matrix mlp.down_proj
+      - name: Save baseline responses
+        run: python -m tinycoder eval --device cpu --max-new-tokens 96 --report outputs/internal-before.json
+      - name: Apply bounded rank-one edit to raw internal weights - no gradients
+        run: |
+          python -m tinycoder weight-edit 'Write only Python code defining max_of_three(a, b, c), returning the greatest argument.' --reference-prompt 'For the following programming task, return only a bare Python function definition with no introductory words: max_of_three(a, b, c).' --layer 12 --matrix mlp.down_proj --alpha 0.5 --max-relative-change 0.002 --output edits/internal-001 --device cpu
+      - name: Recheck held-out prompt outputs with internal edit applied
+        run: python -m tinycoder eval --device cpu --weight-edit edits/internal-001 --max-new-tokens 96 --report outputs/internal-after.json
+      - name: Preserve reversible edit factors and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: internal-001-results
+          path: |
+            edits/internal-001/
+            outputs/
+          if-no-files-found: warn
+          retention-days: 14
+
