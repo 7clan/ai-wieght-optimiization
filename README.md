@@ -1,6 +1,6 @@
 # TinyCoder Weight Lab
 
-A beginner-friendly experiment for **running, inspecting and gradually fine-tuning a very small coding AI**. The repository contains the software and training examples; it intentionally **does not commit pretrained model weights**.
+A beginner-friendly experiment for **running, inspecting and directly editing weights in a very small coding AI**. The repository contains the software and examples; it intentionally **does not commit full pretrained model weights**.
 
 **Current direction (Session 002 onward): DIRECT WEIGHT EDITING, with no training.** The earlier LoRA session is preserved as historical research, not our active approach. Directly editing tensor values is real and reversible, but it is not a shortcut to the general intelligence of a larger model.
 
@@ -47,7 +47,9 @@ python -m tinycoder eval --edit edits/direct-001 --report outputs/direct-after.j
 
 See `edits/direct-001/edit.json` for the exact targeted token, weight-delta size and before/after logits. Remove `--edit` to return to the untouched model. The original weight checkpoint remains intact. One token being more probable **does not mean better code**, so inspect generated answers on multiple prompts and check for regressions. This is a teaching demonstration, **not an implementation of ROME or MEMIT**.
 
-You can run the same direct-edit demonstration in GitHub-hosted compute using **Actions → Direct weight edit 001**; the workflow saves `direct-001-results`. The initial push of this workflow triggers the first run.
+You can run the same direct-edit demonstration in GitHub-hosted compute using **Actions → Direct weight edits - no training**. Previous runs preserve their own artifacts. A push changing that workflow file starts a new experiment; future runs can also be started manually.
+
+**Measured Session 002 trial:** The first hosted direct edit raised token `def`'s next-token logit from 14.921803 to 16.921801 without changing any of the four generated responses. The workflow now tests a stronger but bounded +5 logit intervention, reports token rank, and saves `direct-002-results`. This can change the model's opening token, but does not establish better general coding ability.
 
 For more sophisticated targeted weight edits, read the original research on [ROME](https://papers.nips.cc/paper_files/paper/2022/hash/6f1d43d5a82a37e89b0665b33bf3a182-Abstract-Conference.html) and [MEMIT](https://openreview.net/forum?id=MkbcAHIYgyS). Those methods primarily edit *specific factual associations*, not broad coding competence.
 

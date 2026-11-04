@@ -58,6 +58,8 @@ def create_edit(model, tokenizer, model_id: str, prompt: str, target_token: str,
         hidden = before.hidden_states[-1][0, -1].detach().float()
         score_before = before.logits[0, -1, target_id].item()
         top_before = before.logits[0, -1].argmax().item()
+        rank_before = int((before.logits[0, -1] > score_before).sum().item()) + 1
+        highest_before = before.logits[0, -1, top_before].item()
         denom = torch.dot(hidden, hidden).item()
         if denom < 1e-10:
             raise ValueError("Hidden vector nearly zero; cannot safely edit")
@@ -66,6 +68,7 @@ def create_edit(model, tokenizer, model_id: str, prompt: str, target_token: str,
         after = model(input_ids=tokens, attention_mask=torch.ones_like(tokens))
         score_after = after.logits[0, -1, target_id].item()
         top_after = after.logits[0, -1].argmax().item()
+        rank_after = int((after.logits[0, -1] > score_after).sum().item()) + 1
     path = Path(output_directory)
     path.mkdir(parents=True, exist_ok=True)
     save_file({"delta": delta.cpu().contiguous()}, str(path / "edit.safetensors"))
@@ -79,6 +82,9 @@ def create_edit(model, tokenizer, model_id: str, prompt: str, target_token: str,
         "actual_logit_change": round(score_after - score_before, 6),
         "target_logit_before": round(score_before, 6),
         "target_logit_after": round(score_after, 6),
+        "highest_logit_before": round(highest_before, 6),
+        "target_rank_before": rank_before,
+        "target_rank_after": rank_after,
         "top_token_before": tokenizer.decode([top_before]),
         "top_token_after": tokenizer.decode([top_after]),
         "delta_l2_norm": round(delta.norm().item(), 9),
