@@ -320,3 +320,33 @@ The new results will be exploratory and scored only in isolated Docker container
 <!-- ATTENTION-STEERING-START -->
 *Session 009 causal head tracing and execution evaluation pending; no scores claimed yet.*
 <!-- ATTENTION-STEERING-END -->
+
+<!-- SESSION-011-COMPARISON-START -->
+### Session 011 — four-layer stress and rank-32 covariance surgery
+
+Both experiments used CPU direct weight edits derived only from 50 archived baseline failures below HumanEval/94. These 70 comparison tasks have appeared in earlier sessions and are **not an independent holdout**.
+
+| Variant | Execution pass@1 | AST-valid | Mean next-token entropy (nats) | Reference perplexity |
+| --- | ---: | ---: | ---: | ---: |
+| Unedited base | 2/70 (2.9%) | 7/70 | 0.400 | 1.71 |
+| 15% (completed) | 3/70 (4.3%) | 20/70 | 1.262 | 1.76 |
+| 30% (completed) | 0/70 (0.0%) | 43/70 | 1.334 | 1.94 |
+| 50% (completed) | 0/70 (0.0%) | 23/70 | 3.280 | 2.91 |
+| rank32 (completed) | 2/70 (2.9%) | 25/70 | 0.283 | 1.78 |
+
+All model-written code was assessed in a read-only, network-disabled Docker sandbox.
+Next-token entropy is averaged over 12 fixed prompts; reference perplexity uses 8 source solutions, up to 32 tokens each. All edits are reversible and do not use gradients or optimizers.
+The 24 stress factors are stored losslessly inside a compressed `.safetensors` container (XZ payload). To replay them, decode with `unpack_stress_factors_lossless()` from `tinycoder.collect_session011`, then load the recovered bytes with `safetensors.torch.load()`.
+
+- **15% passed IDs:** HumanEval/98, HumanEval/116, HumanEval/121.
+- **15% failed IDs:** HumanEval/94, HumanEval/95, HumanEval/96, HumanEval/97, HumanEval/99, HumanEval/100, HumanEval/101, HumanEval/102, HumanEval/103, HumanEval/104, HumanEval/105, HumanEval/106, HumanEval/107, HumanEval/108, HumanEval/109, HumanEval/110, HumanEval/111, HumanEval/112, HumanEval/113, HumanEval/114, HumanEval/115, HumanEval/117, HumanEval/118, HumanEval/119, HumanEval/120, HumanEval/122, HumanEval/123, HumanEval/124, HumanEval/125, HumanEval/126, HumanEval/127, HumanEval/128, HumanEval/129, HumanEval/130, HumanEval/131, HumanEval/132, HumanEval/133, HumanEval/134, HumanEval/135, HumanEval/136, HumanEval/137, HumanEval/138, HumanEval/139, HumanEval/140, HumanEval/141, HumanEval/142, HumanEval/143, HumanEval/144, HumanEval/145, HumanEval/146, HumanEval/147, HumanEval/148, HumanEval/149, HumanEval/150, HumanEval/151, HumanEval/152, HumanEval/153, HumanEval/154, HumanEval/155, HumanEval/156, HumanEval/157, HumanEval/158, HumanEval/159, HumanEval/160, HumanEval/161, HumanEval/162, HumanEval/163.
+- **30% passed IDs:** None.
+- **30% failed IDs:** HumanEval/94, HumanEval/95, HumanEval/96, HumanEval/97, HumanEval/98, HumanEval/99, HumanEval/100, HumanEval/101, HumanEval/102, HumanEval/103, HumanEval/104, HumanEval/105, HumanEval/106, HumanEval/107, HumanEval/108, HumanEval/109, HumanEval/110, HumanEval/111, HumanEval/112, HumanEval/113, HumanEval/114, HumanEval/115, HumanEval/116, HumanEval/117, HumanEval/118, HumanEval/119, HumanEval/120, HumanEval/121, HumanEval/122, HumanEval/123, HumanEval/124, HumanEval/125, HumanEval/126, HumanEval/127, HumanEval/128, HumanEval/129, HumanEval/130, HumanEval/131, HumanEval/132, HumanEval/133, HumanEval/134, HumanEval/135, HumanEval/136, HumanEval/137, HumanEval/138, HumanEval/139, HumanEval/140, HumanEval/141, HumanEval/142, HumanEval/143, HumanEval/144, HumanEval/145, HumanEval/146, HumanEval/147, HumanEval/148, HumanEval/149, HumanEval/150, HumanEval/151, HumanEval/152, HumanEval/153, HumanEval/154, HumanEval/155, HumanEval/156, HumanEval/157, HumanEval/158, HumanEval/159, HumanEval/160, HumanEval/161, HumanEval/162, HumanEval/163.
+- **50% passed IDs:** None.
+- **50% failed IDs:** HumanEval/94, HumanEval/95, HumanEval/96, HumanEval/97, HumanEval/98, HumanEval/99, HumanEval/100, HumanEval/101, HumanEval/102, HumanEval/103, HumanEval/104, HumanEval/105, HumanEval/106, HumanEval/107, HumanEval/108, HumanEval/109, HumanEval/110, HumanEval/111, HumanEval/112, HumanEval/113, HumanEval/114, HumanEval/115, HumanEval/116, HumanEval/117, HumanEval/118, HumanEval/119, HumanEval/120, HumanEval/121, HumanEval/122, HumanEval/123, HumanEval/124, HumanEval/125, HumanEval/126, HumanEval/127, HumanEval/128, HumanEval/129, HumanEval/130, HumanEval/131, HumanEval/132, HumanEval/133, HumanEval/134, HumanEval/135, HumanEval/136, HumanEval/137, HumanEval/138, HumanEval/139, HumanEval/140, HumanEval/141, HumanEval/142, HumanEval/143, HumanEval/144, HumanEval/145, HumanEval/146, HumanEval/147, HumanEval/148, HumanEval/149, HumanEval/150, HumanEval/151, HumanEval/152, HumanEval/153, HumanEval/154, HumanEval/155, HumanEval/156, HumanEval/157, HumanEval/158, HumanEval/159, HumanEval/160, HumanEval/161, HumanEval/162, HumanEval/163.
+- **rank32 passed IDs:** HumanEval/116, HumanEval/121.
+- **rank32 failed IDs:** HumanEval/94, HumanEval/95, HumanEval/96, HumanEval/97, HumanEval/98, HumanEval/99, HumanEval/100, HumanEval/101, HumanEval/102, HumanEval/103, HumanEval/104, HumanEval/105, HumanEval/106, HumanEval/107, HumanEval/108, HumanEval/109, HumanEval/110, HumanEval/111, HumanEval/112, HumanEval/113, HumanEval/114, HumanEval/115, HumanEval/117, HumanEval/118, HumanEval/119, HumanEval/120, HumanEval/122, HumanEval/123, HumanEval/124, HumanEval/125, HumanEval/126, HumanEval/127, HumanEval/128, HumanEval/129, HumanEval/130, HumanEval/131, HumanEval/132, HumanEval/133, HumanEval/134, HumanEval/135, HumanEval/136, HumanEval/137, HumanEval/138, HumanEval/139, HumanEval/140, HumanEval/141, HumanEval/142, HumanEval/143, HumanEval/144, HumanEval/145, HumanEval/146, HumanEval/147, HumanEval/148, HumanEval/149, HumanEval/150, HumanEval/151, HumanEval/152, HumanEval/153, HumanEval/154, HumanEval/155, HumanEval/156, HumanEval/157, HumanEval/158, HumanEval/159, HumanEval/160, HumanEval/161, HumanEval/162, HumanEval/163.
+
+Measured reports: [`experiments/unbounded_report.json`](experiments/unbounded_report.json) and the individual branch artifacts. The 15/30/50% points cannot identify a continuous breakdown threshold, and no positive capability claim follows from a finite sample.
+
+<!-- SESSION-011-COMPARISON-END -->
