@@ -248,7 +248,7 @@ def run_surgery(args):
     import torch
     from safetensors.torch import save_file
     from .rome_batch import generate_batches, parallel_execution
-    from .weight_space import target_linear, get_layer_weights, apply_weight_edit
+    from .weight_space import target_linear, get_layer_weights
 
     problems = fetch_problems()
     original = json.loads(Path(args.source_progress).read_text(encoding="utf-8"))
@@ -272,7 +272,13 @@ def run_surgery(args):
         left, right, metadata = derive_svd_rank8(
             before, [x["failed"][layer]["input"] for x in captures],
             [x["teacher"][layer]["input"] for x in captures], label_vectors)
-        apply_weight_edit(model, layer, "self_attn.o_proj", left, right)
+        target = target_linear(model, layer, "self_attn.o_proj")
+        if (left.shape != (target.out_features, RANK)
+                or right.shape != (RANK, target.in_features)):
+            raise ValueError("Rank-eight factors have incompatible projection dimensions")
+        with torch.no_grad():
+            target.weight.add_((left @ right).to(dtype=target.weight.dtype,
+                                                  device=target.weight.device))
         observed = float((torch.linalg.vector_norm((target_linear(model, layer, "self_attn.o_proj").weight - before).float())
                           / torch.linalg.vector_norm(before.float())).item())
         if observed > ATTENTION_CAP + 1e-6:
