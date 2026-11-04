@@ -57,6 +57,26 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Combine the resulting two attention factors with **exactly the archived 10% layer 8 `mlp.down_proj` factors** from commit `e100c62`; verify the original factor Git blob against that commit. Keep the base checkpoint unchanged.
 - Run the already-consumed HumanEval/94–163 70-task suite in isolated Docker containers; report pass@1 and separately `ast.parse` validity. **Never call this an independent generalization test.** Save per-task predictions and reversible factors.
 
+## Session 011: discrete multi-layer norm stress and rank-32 surgery
+
+- Maintain two independent branches from `main`: `exp/08-unbounded-norm`
+  changes only layers 6, 8, 10, 14 `mlp.down_proj`, and
+  `exp/09-rank32-surgery` changes only layer 8 `mlp.down_proj` and
+  layers 13, 15 `self_attn.o_proj`. Do not merge automatically.
+- Exactly 50 failure/reference activation pairs determine edits: four
+  previously verified failures below HumanEval/44 and 46 archived baseline
+  failures in HumanEval/44–93. No task 94–163 is an editing reference.
+- Apply direct multi-key regularized closed-form deltas; project each rank-32
+  update using thin-QR SVD. For the first branch measure 15%, 30%, and 50%
+  relative Frobenius changes, always reverting to pristine weights before the
+  next variant. Do not run backpropagation or model training.
+- Run generated Python only in read-only network-disabled Docker. Report
+  pass@1, AST-valid syntax, fixed-input token entropy, and reference perplexity
+  independently. Any non-finite variant has no valid execution score.
+- HumanEval/94–163 was reused in multiple past sessions; Session011 is an
+  exploratory benchmark, **not a fresh holdout**. Discrete stress levels
+  cannot reveal an exact continuous functional failure threshold.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
