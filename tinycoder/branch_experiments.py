@@ -227,8 +227,10 @@ def run(args):
                 observed = apply_batch_factors(model, 8, scaled_left, scaled_right,
                                                 threshold + 1e-6)
                 label = f"{threshold:.0%}"
-                factors[f"{label}.layer8.left"] = scaled_left.detach().cpu().contiguous()
-                factors[f"{label}.layer8.right"] = scaled_right.detach().cpu().contiguous()
+                # Store independent tensor memory for each stress threshold.
+                # safetensors refuses shared storage across checkpoint keys.
+                factors[f"{label}.layer8.left"] = scaled_left.detach().cpu().contiguous().clone()
+                factors[f"{label}.layer8.right"] = scaled_right.detach().cpu().contiguous().clone()
                 completions = generate_batches(model, tokenizer, holdout, device=device,
                                                batch_size=args.batch_size, max_new_tokens=args.max_new_tokens)
                 tests = parallel_execution(holdout, completions,
