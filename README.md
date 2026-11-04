@@ -1,14 +1,41 @@
 # TinyCoder Weight Lab
 
-<!-- SESSION015-PENDING-START -->
-### Session 015 — context-gated subspace masks (evaluation pending)
+## Session 015 — context-gated orthogonal subspaces (measured)
 
-The experimental branch [`exp/13-context-gated-subspaces`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/13-context-gated-subspaces) introduces inference-time, gradient-free conditional masks for exactly the archived Session014 Layer8/Layer16 rank32 factor pairs on the unchanged **Qwen2.5-Coder-0.5B base** model. Each `mlp.down_proj` receives a PyTorch forward pre-hook and paired output hook: `W_base@X + M(context)*(Left@Right)@X`, without ever changing the pretrained matrix. UI keywords route to Layer8; Express keywords route to Layer16; Python defaults to zero. The gate is swept at 0.0, 0.5 and 1.0.
+This experiment uses only the original Qwen2.5-Coder-0.5B base checkpoint
+and the **exact** Session014 rank32 factor file (SHA-256-verified). No
+optimization or training occurs. Static edits use in-memory weight changes;
+conditional edits use two `register_forward_pre_hook` and paired forward
+hooks, such that `W@X + M*(Left@Right)@X` is computed without changing `W`.
 
-The six CPU/Docker tracks are baseline, ungated static comparator, three gated multipliers and an extra **UI-only safety ablation** that intentionally disables backend Layer16 to measure whether API behavior can remain pristine. The 100 tasks are distinct from the Session014 suite: 50 unused MBPP+ IDs excluding the 150 previously scored in Sessions013/014, plus 25 new custom React and 25 new custom Express template variants. These custom web tasks are not part of MBPP+.
+The **100 new task prompts** are 50 MBPP+ test-split problems excluding
+all 150 previously consumed MBPP problems from Sessions013/014, plus 25
+new React and 25 new Express task variants from the custom fixture families.
+The web templates are not a public standardized benchmark. Mode selection
+uses lexical prompt triggers exclusively; Python defaults to zero mask.
 
-**Pass@1 and syntax validity are not yet measured.** The absolute 27/50, 7/25 and 1/25 targets came from a different sample; the new, matched baseline is the valid reference for evaluating regressions. The [pending report](experiments/session015_gated_report.json) contains null scores. Measured results will be published only after all tasks execute in restricted Docker and the paired collector confirms exact prompt alignment. The [Session015 GitHub Actions workflow](https://github.com/7clan/ai-wieght-optimiization/actions/workflows/session015-gated-cpu.yml) performs that benchmark.
-<!-- SESSION015-PENDING-END -->
+| Evaluation track | MBPP+ pass@1 (50) | React pass@1 (25) | Express pass@1 (25) | Total pass@1 | Syntax valid | Python exactly baseline? |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| baseline | 28/50 | 1/25 | 0/25 | 29/100 | 65/100 | Yes |
+| ungated | 28/50 | 9/25 | 0/25 | 37/100 | 78/100 | No |
+| gated-0.0 | 28/50 | 1/25 | 0/25 | 29/100 | 65/100 | Yes |
+| gated-0.5 | 28/50 | 3/25 | 0/25 | 31/100 | 67/100 | Yes |
+| gated-1.0 | 28/50 | 2/25 | 0/25 | 30/100 | 70/100 | Yes |
+| gated-ui-only-1.0 | 28/50 | 2/25 | 0/25 | 30/100 | 70/100 | Yes |
+
+The explicit backend gate activates the Session014 Layer16 backend factor;
+the separate `gated-ui-only-1.0` ablation intentionally disables it to
+test whether this prevents the Express regression.
+
+The former absolute targets (27/50 Python, 7/25 React, 1/25 Express)
+refer to a **different** evaluation sample and are not assumed to hold on
+fresh tasks. Strict Python/API preservation requires comparing identical
+prompts and outputs against this session's untouched baseline.
+
+See the [full per-task report](experiments/session015_gated_report.json)
+and [task-level predictions](experiments/session015_gated_predictions.json).
+The original [reversible factors](https://github.com/7clan/ai-wieght-optimiization/blob/exp/12-hybrid-ortho-hooks/experiments/session014_orthogonal_factors.safetensors)
+remain stored on the Session014 branch.
 
 A beginner-friendly experiment for **running, inspecting and directly editing weights in a very small coding AI**. The repository contains the software and examples; it intentionally **does not commit full pretrained model weights**.
 
