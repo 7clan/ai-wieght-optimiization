@@ -1,0 +1,34 @@
+{
+  "branch": "exp/06-attn-steering",
+  "source_commit": "e100c628cd8fcf3c500e5c39070168e213b208aa",
+  "reference_ids": "Original 20 failure-selected HumanEval tasks, indices below 94",
+  "causal_scan_layers": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "editable_attention_layers": [
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "edit_count": 2,
+  "head_mediation_metric": "Patched first-canonical-token logprob; source-AST loop and variable proxies",
+  "rank_per_attention_matrix": 1,
+  "attention_norm_cap": 0.015,
+  "archived_mlp": "Layer8 mlp.down_proj 10% saved factors",
+  "evaluation_tasks": [
+    94,
+    163
+  ],
+  "evaluation_is_independent": false,
+  "no_training": true
+}
