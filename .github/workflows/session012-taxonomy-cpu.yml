@@ -1,0 +1,38 @@
+name: Session 012 archived baseline assertion taxonomy
+
+on:
+  push:
+    branches:
+      - exp/10-extreme-overdrive
+    paths:
+      - .github/workflows/session012-taxonomy-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reference-taxonomy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Ensure model-generated code stays isolated
+        run: |
+          python -m compileall -q tinycoder
+          docker info
+          docker pull python:3.11-alpine
+      - name: Classify original baseline and 10% Layer8 anchor
+        run: |
+          python -m tinycoder.session012_taxonomy
+      - name: Publish verified reference bins
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session012-reference-taxonomy
+          path: outputs/session012_taxonomy/
+          if-no-files-found: error
+          retention-days: 30
