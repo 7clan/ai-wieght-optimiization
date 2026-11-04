@@ -1,39 +1,20 @@
 # TinyCoder Weight Lab
 
-## Session 012 — Qwen2.5-Coder-0.5B extreme overdrive
+## Session 012 — Qwen2.5-Coder-0.5B extreme overdrive (measured)
 
-[`exp/10-extreme-overdrive`](../../tree/exp/10-extreme-overdrive) keeps the
-**exact archived 10% Layer 8 MLP factor** and compares two isolated CPU jobs:
-(A) token-triggered residual hooks on decoder layers 13/15 with
-`alpha = 0.5, 1.0, 1.75, 2.5`; (B) three-matrix rank-64 ridge/SVD surgery,
-alone and fused with the same four dynamic hook settings. The checkpoint is
-always **Qwen/Qwen2.5-Coder-0.5B**. No derivatives, optimizers or training.
+All nine variants ran on four-thread GitHub CPU runners; all generated code was tested inside network-disabled, read-only Docker. HumanEval/94–163 is **reused and exploratory**, not independent.
 
-**Status: pending actual CPU/Docker evaluation.** pass@1, AST validity,
-reference-token perplexity and conservative assertion taxonomy will be
-populated from hosted execution. No improvement is claimed in advance.
-HumanEval/94–163 was used in earlier sessions: these 70 tasks are an
-**exploratory reused comparison**, not a fresh holdout.
-
-| 70-task HumanEval measure | Archived baseline | Layer 8 + hooks | Layer 8 + rank64 | Layer 8 + rank64 + hooks |
+| Model intervention | Execution pass@1 | AST-valid syntax | Reference token PPL | Token entropy (nats) |
 | --- | ---: | ---: | ---: | ---: |
-| Execution pass@1 | 2/70 | Pending | Pending | Pending |
-| Python AST syntax valid | 7/70 | Pending | Pending | Pending |
-| Reference-token perplexity (comparable probe) | Pending | Pending | Pending | Pending |
-| Assertion taxonomy | Pending | Pending | Pending | Pending |
+| Untouched 0.5B | 2/70 (2.9%) | 7/70 (10.0%) | 1.815 | 0.853 |
+| Archived Layer8 10% | 3/70 (4.3%) | 18/70 (25.7%) | 1.812 | 0.861 |
+| Hook sweep best α=0.5 | 3/70 (4.3%) | 19/70 (27.1%) | 1.815 | 0.863 |
+| Three-matrix rank64 | 2/70 (2.9%) | 39/70 (55.7%) | 2.058 | 0.986 |
+| Rank64 + hooks best α=0.5 | 1/70 (1.4%) | 38/70 (54.3%) | 2.064 | 0.989 |
 
-**Rank restriction:** 50 single-position source pairs span rank at most 50.
-To test actual rank 64 we capture **two positions for each of the same 50
-pre-94 source pairs** (100 paired activation columns) and verify that the
-resulting spectrum supports at least 64 directions. These teacher-position
-targets and the normalized `v_logic` residual offsets are experimental proxies,
-not proven logic circuits. The discrete alpha sweep cannot establish an exact
-continuous or global breakdown point. Generated code is tested only inside
-network-disabled, read-only, unprivileged Docker containers.
+The hook vocabulary is `for`, `while`, `if`, `return`, `def`, `range`; the tested α values are 0.5, 1.0, 1.75, 2.5. **The best listed alpha is a discrete tested setting, not a mathematical optimum.** Rank64 requires two tokens per 50 frozen source pairs (100 columns), not impossible rank64 from only 50 last-token vectors. All directions are teacher-activation proxies, not established logic circuits.
 
-Workflow: [Session 012 extreme CPU](.github/workflows/session012-extreme-cpu.yml).
-Final report after execution: `experiments/session012_extreme_report.json`.
-
+Measured error-taxonomy shifts, per-task predictions, observed trigger counts, and reversible factors: [`session012_extreme_report.json`](experiments/session012_extreme_report.json), [`session012_extreme_predictions.json`](experiments/session012_extreme_predictions.json), `experiments/session012_extreme_factors.safetensors`.
 
 A beginner-friendly experiment for **running, inspecting and directly editing weights in a very small coding AI**. The repository contains the software and examples; it intentionally **does not commit full pretrained model weights**.
 
