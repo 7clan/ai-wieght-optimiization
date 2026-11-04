@@ -1,0 +1,84 @@
+name: Recover norm stress and collect four branch experiments
+
+on:
+  push:
+    paths:
+      - .github/workflows/recover-norm-experiment.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  norm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/03-norm-break
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU dependencies and sandbox
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          docker info
+          docker pull python:3.11-alpine
+      - name: Validate isolated branch and regenerate all three complete stress evaluations
+        run: |
+          python -c "from pathlib import Path; from tinycoder.branch_experiments import validate_branch_config; validate_branch_config(Path('experiments/branch_spec.json'), 'norm_break')"
+          python -m tinycoder.branch_experiments --variant norm_break --branch-config experiments/branch_spec.json --output-dir outputs/03-norm-break --batch-size 4 --workers 4 --max-new-tokens 160
+      - name: Save valid reversible stress factors, reports, and per-task predictions
+        uses: actions/upload-artifact@v4
+        with:
+          name: branch-03-norm-break-results
+          path: outputs/03-norm-break/
+          if-no-files-found: error
+          retention-days: 14
+
+  collect:
+    needs: norm
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download previously verified independent branches 01, 02, 04
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 41758030374
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: branch-0[124]-*-results
+          merge-multiple: false
+          path: branch_artifacts
+      - name: Download fresh complete branch 03 from this recovery run
+        uses: actions/download-artifact@v4
+        with:
+          name: branch-03-norm-break-results
+          path: branch_artifacts/branch-03-norm-break-results
+      - name: Require measured 50-task scores for all four variants
+        run: |
+          python -m tinycoder.collect_experiments --artifacts branch_artifacts --experiments experiments --readme README.md
+      - name: Commit reports, reversible factors, and six-row comparison
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/high_risk_comparison.json experiments/exp0*_report.json experiments/exp0*_predictions.json
+          git add -f experiments/exp0*_factors.safetensors
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish four-branch 50-task weight-edit comparison and exact factors'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
