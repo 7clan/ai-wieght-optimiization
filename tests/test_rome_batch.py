@@ -60,14 +60,20 @@ class BatchSelectionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             file = Path(d) / "README.md"
             file.write_text("head\n" + RESULTS_START + "\nPending\n" + RESULTS_END + "\ntail\n")
-            report = {"status": "completed", "hardware": {"gpu_name": "Synthetic GPU"},
+            report = {"status": "completed", "hardware": {"processor": "Synthetic CPU", "device": "cpu"},
                       "independent_holdout_50": {"before_passes": 3, "after_passes": 5,
                                                   "percentage_point_delta": 4.0,
+                                                  "pass_at_1_before": 0.06, "pass_at_1_after": 0.1,
+                                                  "passed_ids_before": ["HumanEval/44"],
+                                                  "passed_ids_after": ["HumanEval/44", "HumanEval/49"],
+                                                  "failed_ids_before": ["HumanEval/45"],
+                                                  "failed_ids_after": [],
                                                   "newly_passed_ids": ["HumanEval/49"], "regressed_ids": []}}
             update_readme(file, report)
             result = file.read_text()
             self.assertIn("3/50 → 5/50", result)
-            self.assertIn("Synthetic GPU", result)
+            self.assertIn("Synthetic CPU", result)
+            self.assertIn("Failed IDs before", result)
             self.assertTrue(result.startswith("head\n"))
             self.assertTrue(result.endswith("tail\n"))
 
@@ -101,14 +107,16 @@ class BatchTensorTests(unittest.TestCase):
         self.assertLessEqual(float(torch.linalg.vector_norm(delta) / torch.linalg.vector_norm(weight)), 0.015 + 1e-6)
         self.assertLess(report["target_distance_after"], report["target_distance_before"])
 
-    def test_requires_cuda_without_silent_cpu_fallback(self):
+    def test_explicit_cpu_fallback_and_unavailable_cuda_rejection(self):
         import torch
         from unittest.mock import patch
-        from tinycoder.rome_batch import run
+        from tinycoder.rome_batch import resolve_device
 
         with patch.object(torch.cuda, "is_available", return_value=False):
-            with self.assertRaisesRegex(RuntimeError, "CUDA GPU required"):
-                run(object())
+            self.assertEqual(resolve_device(torch, "cpu").type, "cpu")
+            self.assertEqual(resolve_device(torch, "auto").type, "cpu")
+            with self.assertRaisesRegex(RuntimeError, "CUDA explicitly requested"):
+                resolve_device(torch, "cuda")
 
 
 if __name__ == "__main__":

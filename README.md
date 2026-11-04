@@ -54,27 +54,27 @@ Results are saved to `outputs/rome20/` locally or as the `humaneval-rome20-resul
 
 The repaired edit-set task was `HumanEval/7`. The holdout gained passes on `HumanEval/29` and `HumanEval/43`, with **no formerly passing holdout task regressing**. On the holdout, eight generated answers changed and twelve remained identical. These are verified one-generation-per-task execution results, **not proof of general coding-skill improvement**: a 20-task holdout has high statistical uncertainty, and the gain needs replication on a broader, untouched benchmark. Neither the selected 20 failures nor the 20 holdout tasks should be reused to choose future edits.
 
-### Session 006: CUDA two-layer batch-edit experiment
+### Session 006: CPU two-layer batch-edit experiment
 
-`python -m tinycoder.rome_batch` is a **GPU-required** follow-up. It loads the original `Qwen/Qwen2.5-Coder-0.5B` base weights, reuses the 20 previously verified failure/reference pairs, and patches all 24 layer outputs to trace how strongly they affect the first reference token. It reports the causal ranks of candidate layers **8 and 12** before applying a sequential, **multi-key** ridge-regularized closed-form update to each layer's `mlp.down_proj`.
+`python -m tinycoder.rome_batch --device cpu --threads 4` is a **CPU-approved** follow-up. It loads the original `Qwen/Qwen2.5-Coder-0.5B` base weights, reuses the 20 previously verified failure/reference pairs, and patches all 24 layer outputs to trace how strongly they affect the first reference token. It reports the causal ranks of candidate layers **8 and 12** before applying a sequential, **multi-key** ridge-regularized closed-form update to each layer's `mlp.down_proj`.
 
-The two low-rank factor pairs are exported to `experiments/rome_batch_factors.safetensors` with a maximum **1.5% per-layer Frobenius norm change** and checked for finite values. No gradients, backpropagation, optimizer steps, or adapter training are used. Key-value capture and generation run on CUDA. Execution tests run in up to four parallel, restricted Docker containers, using **50 fresh HumanEval tasks `HumanEval/44`–`HumanEval/93`** never used in the earlier 20-failure experiment or its 20-task holdout. Evaluation uses deterministic greedy generation (one output per task), checks the original HumanEval assertions, and logs passed/failed IDs before and after.
+The two low-rank factor pairs are exported to `experiments/rome_batch_factors.safetensors` with a maximum **1.5% per-layer Frobenius norm change** and checked for finite values. No gradients, backpropagation, optimizer steps, or adapter training are used. Key-value capture and batched generation run on the selected device (CPU in the free hosted workflow; CUDA remains optional). Execution tests run in up to four parallel, restricted Docker containers, using **50 fresh HumanEval tasks `HumanEval/44`–`HumanEval/93`** never used in the earlier 20-failure experiment or its 20-task holdout. Evaluation uses deterministic greedy generation (one output per task), checks the original HumanEval assertions, and logs passed/failed IDs before and after.
 
 The method uses a batch Woodbury projection, with the requested two target layers and residual splitting. This is **MEMIT-inspired**; it does *not* reproduce the original MEMIT's optimized target representations or demonstrate general capability transfer. Read the [MEMIT paper](https://openreview.net/forum?id=MkbcAHIYgyS) for the underlying editing research.
 
-**GPU run status:** Not executed yet. The current standard GitHub Actions runner has **no CUDA GPU**, and this workflow intentionally refuses silent CPU fallback. The [manual GPU workflow](.github/workflows/rome-batch-gpu.yml) targets an explicitly configured `self-hosted, linux, x64, cuda` runner. A separate [CPU-only unit-test workflow](.github/workflows/rome-batch-checks.yml) checks the algebra and isolation boundaries without generating any claimed GPU results. Do not configure a paid hosted GPU machine without reviewing its billing.
+**CPU run:** The [standard `ubuntu-latest` workflow](.github/workflows/rome-batch-cpu.yml) installs CPU-only PyTorch, sets `torch.set_num_threads(4)`, runs the full batch experiment and automatically commits verified results and factor tensors if the job succeeds. The earlier [manual GPU workflow](.github/workflows/rome-batch-gpu.yml) remains available for an explicitly configured CUDA runner. The [unit-test workflow](.github/workflows/rome-batch-checks.yml) checks algebra independently. No paid GPU is required for the CPU route.
 
 <!-- ROME-BATCH-RESULTS-START -->
-**Pending genuine CUDA execution.** Before/after pass@1 is unknown. The actual GPU run will replace this section and write [`experiments/rome_batch_report.json`](experiments/rome_batch_report.json), the factor file, and full per-task predictions.
+**Pending CPU execution.** Before/after pass@1 is unknown until the hosted batch job completes. The workflow will replace this section and write [`experiments/rome_batch_report.json`](experiments/rome_batch_report.json), factor tensors, and full per-task predictions.
 <!-- ROME-BATCH-RESULTS-END -->
 
-On a GPU-equipped host with Docker and the appropriate CUDA-enabled PyTorch installed:
+On a CPU host with 4 available cores, Docker and CPU PyTorch installed:
 
 ```powershell
-python -m tinycoder.rome_batch --holdout-start 44 --holdout-count 50 --max-relative-change 0.015 --batch-size 4 --workers 4
+python -m tinycoder.rome_batch --device cpu --threads 4 --holdout-start 44 --holdout-count 50 --max-relative-change 0.015 --batch-size 4 --workers 4
 ```
 
-This process edits only the in-memory model, not the downloaded base checkpoint. The factor file permits later reconstruction or reversal of both low-rank updates. **The GPU run is not started until a suitable runner is available.**
+This process edits only the in-memory model, not the downloaded base checkpoint. The factor file permits later reconstruction or reversal of both low-rank updates. **The CPU fallback is explicitly authorized for this session; its numeric results must still be measured.**
 
 **Safety:** Do not run generated code outside a sandbox. `tinycoder/sandbox_eval.py` refuses execution when Docker is unavailable. The Docker container has no network, uses an unprivileged user, read-only filesystem, dropped capabilities and strict resource limits. No sandbox is a guarantee against all attacks.
 
@@ -195,7 +195,7 @@ The statistics show layer names, tensor shapes, means, standard deviations, and 
 | 003 | 4 prompts | Direct output-row edit (+5 logit) | Rank and AST checks | `def` rank 6→1; 2 answers changed; AST stayed 2/4 |
 | 004 | 4 prompts | Internal layer 12 `mlp.down_proj` rank-one update (0.2% cap) | Activation distance + AST checks | Distance 3.1938→2.9704; no answers changed; AST stayed 2/4 |
 | 005 | 20 selected HumanEval failures + 20 untouched holdouts | Causal-scan-selected layer 8 `mlp.down_proj` rank-one update (1% cap) | Restricted Docker execution, greedy pass@1 | Selected 0/20→1/20; holdout 3/20→5/20; preliminary +10 pp holdout |
-| 006 (pending) | Same 20 failure/reference pairs; independent HumanEval/44–93 holdout | CUDA causal scan + layers 8/12 multi-key ridge updates (1.5% cap per layer) | 50 Docker-executed tasks, greedy pass@1 | No measured score yet; awaiting CUDA runner |
+| 006 (pending) | Same 20 failure/reference pairs; independent HumanEval/44–93 holdout | CPU causal scan + layers 8/12 multi-key ridge updates (1.5% cap per layer) | 50 Docker-executed tasks, greedy pass@1 | CPU run queued; measured result pending |
 
 ### Historical first experiment in GitHub Actions
 

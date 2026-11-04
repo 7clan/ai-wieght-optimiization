@@ -1,15 +1,15 @@
 {
-  "status": "awaiting_cuda_runner",
+  "status": "pending_cpu_run",
   "base_model": "Qwen/Qwen2.5-Coder-0.5B",
   "reference_failure_set": "experiments/2026-11-04-rome20/progress.json",
   "target_layers": [8, 12],
   "matrix": "mlp.down_proj",
   "method": "MEMIT-style multi-key direct Woodbury ridge update; no optimizer or backpropagation",
   "maximum_relative_frobenius_change_per_layer": 0.015,
-  "hardware_required": "CUDA GPU plus Docker",
+  "hardware_required": "standard ubuntu-latest CPU runner, four PyTorch threads, Docker",
   "fresh_humaneval_holdout": "HumanEval/44 through HumanEval/93 inclusive, 50 tasks",
   "independent_holdout_50": null,
   "factors_path_after_run": "experiments/rome_batch_factors.safetensors",
   "predictions_path_after_run": "experiments/rome_batch_predictions.json",
-  "note": "No GPU execution or pass@1 measurement has occurred. Do not treat this as an experiment result."
+  "note": "CPU fallback explicitly approved. No full execution or pass@1 measurement has occurred yet. Do not treat this as an experiment result."
 }

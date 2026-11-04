@@ -37,7 +37,7 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: CUDA causal scan, two capped multi-key updates, and 50-task execution suite
         run: |
-          python -m tinycoder.rome_batch --holdout-start 44 --holdout-count 50 --max-relative-change 0.015 --batch-size 4 --workers 4 --output-dir experiments
+          python -m tinycoder.rome_batch --device cuda --holdout-start 44 --holdout-count 50 --max-relative-change 0.015 --batch-size 4 --workers 4 --output-dir experiments
       - name: Preserve factor tensors, full report, and per-task predictions
         if: always()
         uses: actions/upload-artifact@v4

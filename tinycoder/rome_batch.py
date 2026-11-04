@@ -1,4 +1,4 @@
-"""GPU-only, gradient-free two-layer batch editing experiment.
+"""Gradient-free two-layer batch editing on CUDA or explicitly selected CPU.
 
 This is a MEMIT-*style* multi-key ridge update, not the full MEMIT algorithm.
 Neither a reference solution's last-token MLP activation nor a causal
@@ -11,7 +11,6 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import os
 import platform
 import statistics
 from concurrent.futures import ThreadPoolExecutor
@@ -48,8 +47,8 @@ def select_disjoint_tasks(problems, prior_progress: dict, *, start: int, count: 
     return [by_id[task_id] for task_id in failure_ids], holdout
 
 
-def capture_cuda_activations(model, tokenizer, text: str):
-    """Keep 24 down_proj keys and outputs resident on CUDA, in float32."""
+def capture_activations(model, tokenizer, text: str, device):
+    """Keep 24 down_proj keys and outputs resident on the chosen device, float32."""
     import torch
 
     observed = {}
@@ -63,7 +62,7 @@ def capture_cuda_activations(model, tokenizer, text: str):
 
         handles.append(block.mlp.down_proj.register_forward_hook(record))
     try:
-        input_ids = text_tensor(tokenizer, text, torch.device("cuda"))
+        input_ids = text_tensor(tokenizer, text, device)
         with torch.inference_mode():
             logits = model(input_ids=input_ids, attention_mask=torch.ones_like(input_ids)).logits[0, -1]
         logits = logits.detach().float().clone()
@@ -71,9 +70,10 @@ def capture_cuda_activations(model, tokenizer, text: str):
         for handle in handles:
             handle.remove()
     if len(observed) != len(model.model.layers):
-        raise RuntimeError("CUDA capture failed to visit every MLP down projection")
-    if not all(entry["key"].is_cuda and entry["value"].is_cuda for entry in observed.values()):
-        raise RuntimeError("Activation extraction unexpectedly moved data off CUDA")
+        raise RuntimeError("Capture failed to visit every MLP down projection")
+    if not all(entry["key"].device == device and entry["value"].device == device
+                   for entry in observed.values()):
+        raise RuntimeError("Activation extraction unexpectedly changed devices")
     return observed, logits
 
 
@@ -176,8 +176,8 @@ def apply_batch_factors(model, layer: int, left, right, max_relative_change: flo
     return relative
 
 
-def gpu_generate_batches(model, tokenizer, problems, *, batch_size: int, max_new_tokens: int):
-    """Left-padded greedy GPU decoding, preserving the supplied problem order."""
+def generate_batches(model, tokenizer, problems, *, device, batch_size: int, max_new_tokens: int):
+    """Left-padded greedy decoding on the chosen device, preserving task order."""
     import torch
 
     tokenizer.padding_side = "left"
@@ -187,7 +187,7 @@ def gpu_generate_batches(model, tokenizer, problems, *, batch_size: int, max_new
     for start in range(0, len(problems), batch_size):
         part = problems[start:start + batch_size]
         encoded = tokenizer([p["prompt"] for p in part], return_tensors="pt", padding=True,
-                            add_special_tokens=False).to("cuda")
+                            add_special_tokens=False).to(device)
         with torch.inference_mode():
             generated = model.generate(
                 **encoded, do_sample=False, max_new_tokens=max_new_tokens,
@@ -195,7 +195,7 @@ def gpu_generate_batches(model, tokenizer, problems, *, batch_size: int, max_new
             )
         prefix_length = encoded["input_ids"].shape[1]
         answers.extend(tokenizer.batch_decode(generated[:, prefix_length:], skip_special_tokens=True))
-        print(f"  GPU generation {min(start + batch_size, len(problems))}/{len(problems)}", flush=True)
+        print(f"  {device.type.upper()} generation {min(start + batch_size, len(problems))}/{len(problems)}", flush=True)
     return answers
 
 
@@ -250,15 +250,30 @@ def update_readme(readme: Path, report: dict):
     if body.count(RESULTS_START) != 1 or body.count(RESULTS_END) != 1:
         raise RuntimeError("README is missing its unique batch-results markers")
     score = report["independent_holdout_50"]
+    def ids(entries):
+        return ", ".join(entries) if entries else "None"
+
     new_section = (
         f"{RESULTS_START}\n"
-        f"**GPU batch experiment:** {report['status']} on {report['hardware']['gpu_name']}. "
+        f"**Batch experiment:** {report['status']} on {report['hardware']['processor']} "
+        f"({report['hardware']['device']}). "
         f"A direct two-layer (8, 12) MEMIT-style update, at most 1.5% of the "
         f"original Frobenius norm per layer, changed independent HumanEval "
         f"pass@1 **{score['before_passes']}/50 → {score['after_passes']}/50** "
         f"(**{score['percentage_point_delta']:+.1f} percentage points**). "
-        f"New passes: {score['newly_passed_ids']}; regressions: {score['regressed_ids']}. "
-        f"See [`experiments/rome_batch_report.json`](experiments/rome_batch_report.json) "
+        f"New passes: {ids(score['newly_passed_ids'])}; "
+        f"regressions: {ids(score['regressed_ids'])}.\n\n"
+        f"| Independent 50-task HumanEval holdout | Baseline | After two-layer edit |\n"
+        f"| --- | ---: | ---: |\n"
+        f"| Passing tasks | {score['before_passes']}/50 | {score['after_passes']}/50 |\n"
+        f"| Failing tasks | {50-score['before_passes']}/50 | {50-score['after_passes']}/50 |\n"
+        f"| pass@1 | {100*score['pass_at_1_before']:.1f}% | {100*score['pass_at_1_after']:.1f}% |\n\n"
+        f"**Passed IDs before:** {ids(score['passed_ids_before'])}.\n\n"
+        f"**Passed IDs after:** {ids(score['passed_ids_after'])}.\n\n"
+        f"**Failed IDs before:** {ids(score['failed_ids_before'])}.\n\n"
+        f"**Failed IDs after:** {ids(score['failed_ids_after'])}.\n\n"
+        f"See [`experiments/rome_batch_report.json`](experiments/rome_batch_report.json), "
+        f"[`experiments/rome_batch_predictions.json`](experiments/rome_batch_predictions.json), "
         f"and [`experiments/rome_batch_factors.safetensors`](experiments/rome_batch_factors.safetensors). "
         f"This limited holdout alone does not prove general improvement.\n"
         f"{RESULTS_END}"
@@ -266,6 +281,16 @@ def update_readme(readme: Path, report: dict):
     first = body.index(RESULTS_START)
     last = body.index(RESULTS_END) + len(RESULTS_END)
     readme.write_text(body[:first] + new_section + body[last:], encoding="utf-8")
+
+
+def resolve_device(torch, requested: str):
+    if requested == "cuda" and not torch.cuda.is_available():
+        raise RuntimeError("CUDA explicitly requested, but no GPU is available")
+    if requested == "auto":
+        requested = "cuda" if torch.cuda.is_available() else "cpu"
+    if requested not in ("cpu", "cuda"):
+        raise ValueError("Unsupported device")
+    return torch.device("cuda:0" if requested == "cuda" else "cpu")
 
 
 def run(args):
@@ -276,12 +301,12 @@ def run(args):
     from .sandbox_eval import require_sandbox
     from .weight_space import matrix_statistics
 
-    if not torch.cuda.is_available():
-        raise RuntimeError("CUDA GPU required for this protocol; refusing silent CPU fallback")
+    device = resolve_device(torch, args.device)
     require_sandbox()
     torch.manual_seed(0)
-    torch.backends.cuda.matmul.allow_tf32 = True  # Fast-mode GPU algebra; logged below.
-    device = torch.device("cuda:0")
+    torch.set_num_threads(args.threads)
+    if device.type == "cuda":
+        torch.backends.cuda.matmul.allow_tf32 = True
     destination = Path(args.output_dir)
     factor_path = destination / "rome_batch_factors.safetensors"
     report_path = destination / "rome_batch_report.json"
@@ -292,32 +317,33 @@ def run(args):
     problems = fetch_problems()
     failures, holdout = select_disjoint_tasks(problems, prior, start=args.holdout_start,
                                               count=args.holdout_count)
-    print(f"Loading base {BASE_MODEL} directly onto CUDA (no training)", flush=True)
+    print(f"Loading base {BASE_MODEL} onto {device}, {torch.get_num_threads()} PyTorch threads (no training)", flush=True)
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL)
     model = AutoModelForCausalLM.from_pretrained(BASE_MODEL, torch_dtype=torch.float32).eval().to(device)
-    print(f"GPU: {torch.cuda.get_device_name(0)}", flush=True)
+    processor = torch.cuda.get_device_name(0) if device.type == "cuda" else f"CPU / {torch.get_num_threads()} PyTorch threads"
+    print(f"Processor: {processor}", flush=True)
 
     print("Greedy baseline for 50 previously untouched HumanEval tasks...", flush=True)
-    baseline = gpu_generate_batches(model, tokenizer, holdout,
-                                     batch_size=args.batch_size, max_new_tokens=args.max_new_tokens)
+    baseline = generate_batches(model, tokenizer, holdout, device=device,
+                                batch_size=args.batch_size, max_new_tokens=args.max_new_tokens)
     baseline_tests = parallel_execution(holdout, baseline, workers=args.workers, timeout=args.exec_timeout)
     save_json(destination / "rome_batch_progress.json", {
         "phase": "baseline_complete", "baseline_passes": sum(r["passed"] for r in baseline_tests),
         "holdout_ids": [p["task_id"] for p in holdout],
     })
 
-    print("CUDA key/value capture from original failing prompts and canonical solutions...", flush=True)
+    print(f"{device.type.upper()} key/value capture from original failing prompts and canonical solutions...", flush=True)
     pairs = []
     for index, problem in enumerate(failures, 1):
-        fail, logits = capture_cuda_activations(model, tokenizer, problem["prompt"])
-        success, _ = capture_cuda_activations(model, tokenizer, problem["prompt"] + problem["canonical_solution"])
+        fail, logits = capture_activations(model, tokenizer, problem["prompt"], device)
+        success, _ = capture_activations(model, tokenizer, problem["prompt"] + problem["canonical_solution"], device)
         reference_token = tokenizer(problem["canonical_solution"], add_special_tokens=False)["input_ids"][0]
         base_logprob = float(torch.log_softmax(logits, dim=-1)[reference_token].item())
         pairs.append({"problem": problem, "failure": fail, "successful": success,
                       "reference_token": reference_token, "base_logprob": base_logprob})
-        print(f"  CUDA extraction {index}/{len(failures)}", flush=True)
+        print(f"  activation extraction {index}/{len(failures)}", flush=True)
 
-    print("CUDA causal tracing: patching each MLP projection in all 24 layers...", flush=True)
+    print(f"{device.type.upper()} causal tracing: patching each MLP projection in all 24 layers...", flush=True)
     causal_scores = []
     for layer in range(len(model.model.layers)):
         changes = [patched_first_token_logprob(model, tokenizer, item["problem"]["prompt"], layer,
@@ -336,7 +362,7 @@ def run(args):
         targets = torch.stack([p["successful"][layer]["value"] for p in pairs], dim=1)
         # Account for propagation of the earlier layer edit in the later key distribution.
         if layer_index:
-            fresh = [capture_cuda_activations(model, tokenizer, p["problem"]["prompt"])[0][layer]["key"]
+            fresh = [capture_activations(model, tokenizer, p["problem"]["prompt"], device)[0][layer]["key"]
                      for p in pairs]
             keys = torch.stack(fresh, dim=1)
         before = matrix_statistics(module.weight)
@@ -354,17 +380,18 @@ def run(args):
     save_file(factors, str(factor_path))
 
     print("Post-edit generation and parallel sandbox execution on independent 50...", flush=True)
-    changed = gpu_generate_batches(model, tokenizer, holdout,
-                                    batch_size=args.batch_size, max_new_tokens=args.max_new_tokens)
+    changed = generate_batches(model, tokenizer, holdout, device=device,
+                               batch_size=args.batch_size, max_new_tokens=args.max_new_tokens)
     changed_tests = parallel_execution(holdout, changed, workers=args.workers, timeout=args.exec_timeout)
     records = evaluate_records(holdout, baseline, changed, baseline_tests, changed_tests)
     summary = pass_at_one_summary(records)
     report = {
         "status": "completed", "completed_utc": datetime.now(timezone.utc).isoformat(),
         "base_model": BASE_MODEL, "source": DATA_URL,
-        "hardware": {"device": "cuda:0", "gpu_name": torch.cuda.get_device_name(0),
+        "hardware": {"device": str(device), "processor": processor,
                      "cuda_version": torch.version.cuda, "torch_version": torch.__version__,
-                     "python": platform.python_version(), "tf32_allowed": True},
+                     "python": platform.python_version(), "tf32_allowed": device.type == "cuda",
+                     "pytorch_threads": torch.get_num_threads()},
         "failure_ids": [p["task_id"] for p in failures],
         "independent_holdout_ids": [p["task_id"] for p in holdout],
         "causal_scores_all_24_layers": causal_scores,
@@ -373,7 +400,7 @@ def run(args):
         "target_layers": list(TARGET_LAYERS), "matrix": "mlp.down_proj",
         "max_relative_change": args.max_relative_change,
         "edits": edits, "independent_holdout_50": summary,
-        "execution": {"generation": "greedy left-padded CUDA batches", "max_new_tokens": args.max_new_tokens,
+        "execution": {"generation": f"greedy left-padded {device.type.upper()} batches", "max_new_tokens": args.max_new_tokens,
                       "batch_size": args.batch_size, "docker_parallel_workers": args.workers,
                       "sandbox": "no network, read-only filesystem, unprivileged, limited CPU/memory"},
         "methodology": "MEMIT-style multi-key Woodbury ridge updates with sequential residual splitting, "
@@ -390,7 +417,7 @@ def run(args):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="CUDA-only, closed-form multi-layer MEMIT-style batch experiment")
+    parser = argparse.ArgumentParser(description="Closed-form multi-layer MEMIT-style batch experiment (CPU or CUDA)")
     parser.add_argument("--source-progress", default=DEFAULT_FAILURE_SET)
     parser.add_argument("--holdout-start", type=int, default=44)
     parser.add_argument("--holdout-count", type=int, default=50)
@@ -401,10 +428,12 @@ def main():
     parser.add_argument("--max-relative-change", type=float, default=0.015)
     parser.add_argument("--output-dir", default="experiments")
     parser.add_argument("--readme", default="README.md")
+    parser.add_argument("--device", choices=("cpu", "cuda", "auto"), default="cpu")
+    parser.add_argument("--threads", type=int, default=4)
     args = parser.parse_args()
     if not (1 <= args.batch_size <= 16 and 1 <= args.workers <= 8 and 32 <= args.max_new_tokens <= 512):
         parser.error("batch-size/workers/max-new-tokens out of accepted range")
-    if not (1 <= args.exec_timeout <= 30 and 0 < args.max_relative_change <= 0.015):
+    if not (1 <= args.exec_timeout <= 30 and 0 < args.max_relative_change <= 0.015 and 1 <= args.threads <= 16):
         parser.error("Execution timeout must be 1..30 and maximum weight change <= 1.5%")
     run(args)
 
