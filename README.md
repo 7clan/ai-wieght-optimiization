@@ -49,7 +49,14 @@ See `edits/direct-001/edit.json` for the exact targeted token, weight-delta size
 
 You can run the same direct-edit demonstration in GitHub-hosted compute using **Actions → Direct weight edits - no training**. Previous runs preserve their own artifacts. A push changing that workflow file starts a new experiment; future runs can also be started manually.
 
-**Measured Session 002 trial:** The first hosted direct edit raised token `def`'s next-token logit from 14.921803 to 16.921801 without changing any of the four generated responses. The workflow now tests a stronger but bounded +5 logit intervention, reports token rank, and saves `direct-002-results`. This can change the model's opening token, but does not establish better general coding ability.
+**Measured direct-edit trials:**
+
+| Trial | Edit | Target-token rank | Generated answers changed | AST static checks |
+| --- | --- | --- | --- | --- |
+| [Direct 001](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41742984583) | +2 next-token logit | Still below top | 0/4 | 2/4 before → 2/4 after |
+| [Direct 002](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41743605402) | +5 next-token logit | 6th → 1st (`def`) | 2/4 | 2/4 before → 2/4 after |
+
+In Direct 002, `max_of_three` began with `def` instead of an introductory sentence; this better matches the "only code" instruction for that prompt. Another prompt (`gcd`) changed too, but its output contained stray Markdown, showing why stronger edits need regression checks. **These are format and next-token effects; neither trial proves improved coding correctness or general intelligence.** Download the artifact ZIP from the linked workflow page to inspect the exact saved delta and per-prompt outputs.
 
 For more sophisticated targeted weight edits, read the original research on [ROME](https://papers.nips.cc/paper_files/paper/2022/hash/6f1d43d5a82a37e89b0665b33bf3a182-Abstract-Conference.html) and [MEMIT](https://openreview.net/forum?id=MkbcAHIYgyS). Those methods primarily edit *specific factual associations*, not broad coding competence.
 
@@ -107,7 +114,9 @@ The statistics show layer names, tensor shapes, means, standard deviations, and 
 | Session | Dataset | Intervention | Evaluation | Result |
 | --- | --- | --- | --- | --- |
 | 000 | 12 toy examples / 4 held-out prompts | Baseline only | AST checks + manual review | **Not yet run** |
-| 001 | Same toy training examples | LoRA r=8 on attention q/v projections | Re-run held-out tests | **Not yet run** |
+| 001 | Same toy training examples | LoRA r=8 on attention q/v projections (archived) | Held-out static checks | Workflow succeeded; not part of current editing method |
+| 002 | 4 prompts | Direct output-row edit (+2 logit) | Rank and AST checks | Changed weight, no answers changed |
+| 003 | 4 prompts | Direct output-row edit (+5 logit) | Rank and AST checks | `def` rank 6→1; 2 answers changed; AST stayed 2/4 |
 
 ### Historical first experiment in GitHub Actions
 
