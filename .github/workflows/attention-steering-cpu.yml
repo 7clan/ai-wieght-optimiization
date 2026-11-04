@@ -1,0 +1,133 @@
+name: Session 009 attention causal tracing and logic-aligned rank-one steering
+
+on:
+  push:
+    paths:
+      - .github/workflows/attention-steering-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HF_HUB_DISABLE_TELEMETRY: '1'
+  TOKENIZERS_PARALLELISM: 'false'
+  OMP_NUM_THREADS: '4'
+  MKL_NUM_THREADS: '4'
+  SOURCE_COMMIT: e100c628cd8fcf3c500e5c39070168e213b208aa
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run real PyTorch intervention and no-leakage tests
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          python -m compileall -q tinycoder tests
+          python -m unittest discover -s tests -v
+
+  trace-heads:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/06-attn-steering
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify branch isolation and exact archived 10% MLP factor
+        run: |
+          python -c "import json; from pathlib import Path; s=json.loads(Path('experiments/attn_branch_spec.json').read_text()); assert s['branch']=='exp/06-attn-steering' and s['source_commit']=='e100c628cd8fcf3c500e5c39070168e213b208aa'"
+          file=experiments/exp03_norm_break_factors.safetensors
+          test "$(git hash-object "$file")" = "$(git rev-parse "${SOURCE_COMMIT}:${file}")"
+      - name: Install CPU inference dependencies and restricted Docker sandbox
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          docker info
+          docker pull python:3.11-alpine
+      - name: Causally patch attention 10-18, choose two 12-16 heads, freeze edits
+        run: |
+          python -m tinycoder.attention_steering --mode trace --output-dir outputs/attention-trace
+      - name: Archive complete causal traces and reversible rank-one factors
+        uses: actions/upload-artifact@v4
+        with:
+          name: attention-trace-frozen
+          path: outputs/attention-trace/
+          if-no-files-found: error
+          retention-days: 21
+
+  evaluate-70:
+    needs: trace-heads
+    runs-on: ubuntu-latest
+    timeout-minutes: 140
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/06-attn-steering
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch immutable traced weights before evaluating already-used 70 tasks
+        uses: actions/download-artifact@v4
+        with:
+          name: attention-trace-frozen
+          path: frozen_trace
+      - name: Install CPU inference dependencies and restricted execution sandbox
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          docker info
+          docker pull python:3.11-alpine
+      - name: Reapply frozen direct edits and execute 70 HumanEval assertions
+        run: |
+          python -m tinycoder.attention_steering --mode evaluate --output-dir outputs/attn-evaluation --batch-size 4 --workers 4 --max-new-tokens 160
+      - name: Archive exact passed/failed IDs and generated completions
+        uses: actions/upload-artifact@v4
+        with:
+          name: attention-execution-70
+          path: outputs/attn-evaluation/
+          if-no-files-found: error
+          retention-days: 21
+
+  publish:
+    needs: evaluate-70
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: attention-trace-frozen
+          path: incoming_trace
+      - uses: actions/download-artifact@v4
+        with:
+          name: attention-execution-70
+          path: incoming_steering
+      - name: Verify trace and execution chronology; publish only real measured scores
+        run: |
+          python -m tinycoder.collect_attention --root .
+      - name: Commit independent branch report, task-level predictions and reversible factors
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/attn_steering_trace.json experiments/attn_steering_report.json experiments/attn_steering_predictions.json experiments/attn_steering_comparison.json
+          git add -f experiments/attn_steering_factors.safetensors
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish measured Session 009 attention mediation and 70-task execution comparison'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
