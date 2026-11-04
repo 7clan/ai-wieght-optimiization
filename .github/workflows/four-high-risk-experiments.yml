@@ -1,0 +1,122 @@
+name: Four parallel isolated weight-edit experiments
+
+# Launch once on addition; four matrix jobs start concurrently after algebra
+# validation.  The branches remain separate and are never merged into main.
+on:
+  push:
+    paths:
+      - .github/workflows/four-high-risk-experiments.yml
+  workflow_dispatch:
+
+concurrency:
+  group: four-high-risk-experiments
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU torch for real covariance and SVD unit tests
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+      - name: Validate all algebra, holdout isolation, and report aggregation
+        run: |
+          python -m compileall -q tinycoder tests
+          python -m unittest discover -s tests -v
+
+  experiment:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - id: 01-transplant
+            variant: transplant
+            branch: exp/01-transplant
+          - id: 02-svd-zeroing
+            variant: svd_zeroing
+            branch: exp/02-svd-zeroing
+          - id: 03-norm-break
+            variant: norm_break
+            branch: exp/03-norm-break
+          - id: 04-memit-single-layer
+            variant: memit_single
+            branch: exp/04-memit-single-layer
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU dependencies and execution sandbox
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          docker info
+          docker pull python:3.11-alpine
+      - name: Verify job operates on precisely its isolated Git branch
+        env:
+          EXPECTED_VARIANT: ${{ matrix.variant }}
+        run: |
+          python -c "import os; from pathlib import Path; from tinycoder.branch_experiments import validate_branch_config; validate_branch_config(Path('experiments/branch_spec.json'), os.environ['EXPECTED_VARIANT'])"
+      - name: Apply direct changes, execute fresh 50-task holdout, save factors
+        run: |
+          python -m tinycoder.branch_experiments --variant "${{ matrix.variant }}" --branch-config experiments/branch_spec.json --output-dir "outputs/${{ matrix.id }}" --batch-size 4 --workers 4 --max-new-tokens 160
+      - name: Preserve individual measured report, predictions, and factors
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: branch-${{ matrix.id }}-results
+          path: outputs/${{ matrix.id }}/
+          if-no-files-found: warn
+          retention-days: 14
+
+  collect:
+    needs: experiment
+    if: ${{ needs.experiment.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download all four immutable artifacts without executing generated code
+        uses: actions/download-artifact@v4
+        with:
+          pattern: branch-*-results
+          merge-multiple: false
+          path: branch_artifacts
+      - name: Validate scores and publish six comparison rows
+        run: |
+          python -m tinycoder.collect_experiments --artifacts branch_artifacts --experiments experiments --readme README.md
+      - name: Commit individual reports, exact factors, and README matrix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/high_risk_comparison.json experiments/exp0*_report.json experiments/exp0*_predictions.json
+          git add -f experiments/exp0*_factors.safetensors
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record four parallel 50-task direct-weight experiment comparisons'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
