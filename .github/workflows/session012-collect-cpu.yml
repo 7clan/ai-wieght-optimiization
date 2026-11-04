@@ -1,0 +1,49 @@
+name: Session 012 consolidate verified CPU artifacts
+
+on:
+  push:
+    branches:
+      - exp/10-extreme-overdrive
+    paths:
+      - .github/workflows/session012-collect-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  consolidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve both completed model jobs and reference taxonomy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download 41838772999 --repo 7clan/ai-wieght-optimiization --name session012-extreme-hooks --dir outputs/session012_hooks
+          gh run download 41838772999 --repo 7clan/ai-wieght-optimiization --name session012-extreme-surgery --dir outputs/session012_surgery
+          gh run download 41839646146 --repo 7clan/ai-wieght-optimiization --name session012-reference-taxonomy --dir outputs/session012_reference
+      - name: Verify nine variants, publish full report and README matrix
+        run: |
+          python -m tinycoder.collect_session012 --hooks-dir outputs/session012_hooks --surgery-dir outputs/session012_surgery --reference-taxonomy outputs/session012_reference/session012_reference_taxonomy.json --output-dir experiments --readme README.md
+          python -m json.tool experiments/session012_extreme_report.json
+      - name: Upload verified consolidated outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: session012-consolidated-verified
+          path: |
+            experiments/session012_extreme_report.json
+            experiments/session012_extreme_predictions.json
+            experiments/session012_extreme_factors.safetensors
+            README.md
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit only verified Session 012 reports on experiment branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session012_extreme_report.json experiments/session012_extreme_predictions.json experiments/session012_extreme_factors.safetensors
+          git commit -m 'Publish validated Session012 nine-variant CPU benchmark and factors'
+          git push origin HEAD:exp/10-extreme-overdrive
