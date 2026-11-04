@@ -46,6 +46,11 @@ def apply_reversible(module, left, right, *, expected_change: float, tolerance=0
     import torch
 
     original = module.weight.detach().clone()
+    # Accept archived rank-one vector pairs as well as rank-two MEMIT factors.
+    if left.ndim == 1 and right.ndim == 1:
+        left, right = left[:, None], right[None, :]
+    elif left.ndim != 2 or right.ndim != 2:
+        raise ValueError("Expected paired rank-one vectors or rank-two factors")
     delta = left @ right
     if delta.shape != original.shape or not torch.isfinite(delta).all():
         raise ValueError("Factor product does not match the selected matrix")
