@@ -26,6 +26,34 @@ class ProtocolTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             s.select_sources(source, archive, progress)
 
+    def test_70_task_anchor_archive_consistent(self):
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parents[1]
+        rows = s.archived_anchor(root / "experiments/exp03_norm_break_predictions.json",
+                                 root / "experiments/final_holdout_validation_predictions.json")
+        self.assertEqual(len(rows), 70)
+        self.assertEqual(sum(row["after_passed"] for row in rows), 3)
+        self.assertEqual([row["task_id"] for row in rows if row["after_passed"]],
+                         ["HumanEval/116", "HumanEval/121", "HumanEval/122"])
+
+    def test_collector_requires_taxonomy_score_accounting(self):
+        from tinycoder.collect_session012 import make_row
+
+        record = {"status": "completed", "execution": {
+                    "after_passes": 2, "pass_at_1_after": 2 / 70,
+                    "passed_ids_after": ["HumanEval/94", "HumanEval/95"],
+                    "failed_ids_after": ["HumanEval/96"], "changed_completions": 1,
+                    "syntax_after": {"valid": 3}, "syntax_validity_after": 3 / 70},
+                  "diagnostics": {"status": "finite", "token_perplexity": 1.5,
+                                   "token_entropy_nats": .5},
+                  "taxonomy": {"n_syntax_valid_failed": 1,
+                               "bins": {"unclassified": {"count": 1}}}}
+        self.assertEqual(make_row("test", record)["syntax_valid_assertion_failures"], 1)
+        record["taxonomy"]["n_syntax_valid_failed"] = 2
+        with self.assertRaises(ValueError):
+            make_row("test", record)
+
 
 try:
     import torch

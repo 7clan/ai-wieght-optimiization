@@ -9,6 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import subprocess
 
 from .rome20 import save_json
 from .session012 import ALPHAS, COUNT, OPERATORS, START, archived_anchor
@@ -55,6 +56,12 @@ def load_result(directory, track):
 
 
 def combine(hooks_dir, surgery_dir, reference_taxonomy, output_dir, readme):
+    expected_source_blob = "7f872cd46918457c27d98f63230f1c9f47adb4c7"
+    actual_source_blob = subprocess.run(
+        ["git", "hash-object", "experiments/exp03_norm_break_factors.safetensors"],
+        check=True, capture_output=True, text=True).stdout.strip()
+    if actual_source_blob != expected_source_blob:
+        raise ValueError("Local factor blob differs from verified e100c62 source")
     hooks, hooks_predictions, _ = load_result(hooks_dir, "hooks")
     surgery, surgery_predictions, surgery_path = load_result(surgery_dir, "surgery")
     for attribute in ("base_model", "dataset", "source_failure_ids", "source_archive_sha256", "benchmark_ids"):
@@ -116,6 +123,7 @@ def combine(hooks_dir, surgery_dir, reference_taxonomy, output_dir, readme):
                     "combined": "anchor + three rank64 matrices + same dynamic hooks"},
         "benchmark_ids": hooks["benchmark_ids"], "reused_benchmark_not_independent": True,
         "source_failure_ids": hooks["source_failure_ids"],
+        "anchor_github_blob_sha_verified_against_e100c62": actual_source_blob,
         "operator_vocabulary": list(OPERATORS), "alpha_sweep": list(ALPHAS),
         "comparison": compared,
         "all_variants": rows,

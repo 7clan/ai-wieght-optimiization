@@ -1,0 +1,28 @@
+{
+  "status": "running",
+  "session": "012",
+  "branch": "exp/10-extreme-overdrive",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "checkpoint_size_unchanged": true,
+  "device": "cpu",
+  "benchmark_ids": "HumanEval/94..HumanEval/163",
+  "benchmark_status": "reused exploratory benchmark; not independent",
+  "archived_baseline": {
+    "pass_count": 2,
+    "syntax_valid_count": 7,
+    "n": 70
+  },
+  "archived_10pct_layer8_anchor": {
+    "pass_count": 3,
+    "syntax_valid_count": 18,
+    "n": 70,
+    "factor_git_blob_sha": "7f872cd46918457c27d98f63230f1c9f47adb4c7"
+  },
+  "tracks": {
+    "hooks_only": {"status": "running", "alphas": [0.5, 1.0, 1.75, 2.5], "results": null},
+    "rank64_static_and_fusion": {"status": "running", "alphas": [0.5, 1.0, 1.75, 2.5], "results": null}
+  },
+  "github_actions_run": "https://github.com/7clan/ai-wieght-optimiization/actions/runs/41838772999",
+  "reference_taxonomy_run": "https://github.com/7clan/ai-wieght-optimiization/actions/runs/41839646146",
+  "warning": "Pending scores are null until complete CPU model generation and Docker assertion replay. A 50-pair source requires two positions per pair to support rank64; this is an unaligned activation proxy."
+}
