@@ -6,6 +6,11 @@ on:
       - exp/12-hybrid-ortho-hooks
     paths:
       - .github/workflows/session014-hybrid-cpu.yml
+      - tinycoder/session014*.py
+      - tinycoder/session014_web_worker.js
+      - tinycoder/collect_session014.py
+      - docker/session014-*.Dockerfile
+      - data/session014_excluded_mbpp_ids.json
   workflow_dispatch:
 
 permissions:
@@ -132,6 +137,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add README.md experiments/session014_hybrid_report.json experiments/session014_hybrid_predictions.json experiments/session014_orthogonal_factors.safetensors
+          git add README.md experiments/session014_hybrid_report.json experiments/session014_hybrid_predictions.json
+          git add -f experiments/session014_orthogonal_factors.safetensors
           git commit -m 'Publish measured Session014 orthogonal subspace and runtime hook comparison'
           git push origin HEAD:exp/12-hybrid-ortho-hooks
