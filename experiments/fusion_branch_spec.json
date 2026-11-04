@@ -1,0 +1,18 @@
+{
+  "branch": "exp/05-svd-norm-fusion",
+  "source_commit": "b48673a26e7ef6a6220aca331dfc8c0024944aa8",
+  "holdout_validation": [
+    144,
+    163
+  ],
+  "hybrid_evaluation": [
+    94,
+    163
+  ],
+  "editable_matrices": [
+    "model.layers.8.self_attn.o_proj",
+    "model.layers.8.mlp.down_proj"
+  ],
+  "method": "archived rank-two o_proj SVD erasure + archived 10% Layer 8 MLP Woodbury multi-key edit",
+  "no_training": true
+}
