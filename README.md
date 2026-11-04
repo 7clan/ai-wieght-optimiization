@@ -249,5 +249,20 @@ Four independent branches use the same pristine 50-task HumanEval comparison set
 - [`exp/04-memit-single-layer`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/04-memit-single-layer): layer 8-only regularized multi-key edit, max 1.5% norm edit.
 
 <!-- HIGH-RISK-EXPERIMENTS-START -->
-**Results pending.** The four CPU jobs have not yet produced measured pass@1 numbers. Each must finish successfully before the comparison table is published.
+### Session 007: four independent high-risk CPU branches
+
+Every branch used the untouched **HumanEval/94–143** comparison set (50 tasks) and the original base Qwen2.5-Coder-0.5B checkpoint. The same holdout is now **used for model comparison**; future choices need a different final validation set.
+
+| Isolated branch and method | Baseline pass@1 | Edited pass@1 | Change | New passes | Regressions |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| [`01-transplant`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/01-transplant) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
+| [`02-svd-zeroing`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/02-svd-zeroing) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
+| [`03-norm-break`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/03-norm-break) (3%) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
+| [`03-norm-break`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/03-norm-break) (5%) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
+| [`03-norm-break`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/03-norm-break) (10%) | 2/50 (4%) | 3/50 (6%) | **+2.0 pp** | 1 | 0 |
+| [`04-memit-single-layer`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/04-memit-single-layer) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
+
+Each branch's exact passed/failed task IDs, activation measurements, tensor changes, and predictions are archived in `experiments/exp0*_report.json`, `experiments/exp0*_predictions.json`, and reversible `experiments/exp0*_factors.safetensors`.
+
+**Caution:** SVD projection gaps are only *associated* with syntax-invalid examples. Cross-layer transplantation is not established as a way to transfer skills. The 3%, 5%, and 10% stress trials can locate only the first *tested* failure threshold, not an exact continuous breakdown point. Results do not prove general coding improvements.
 <!-- HIGH-RISK-EXPERIMENTS-END -->
