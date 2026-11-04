@@ -1,0 +1,57 @@
+name: Session 012 Qwen0.5B extreme overdrive CPU
+
+on:
+  push:
+    branches:
+      - exp/10-extreme-overdrive
+    paths:
+      - .github/workflows/session012-extreme-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HF_HUB_DISABLE_TELEMETRY: '1'
+  TOKENIZERS_PARALLELISM: 'false'
+  OMP_NUM_THREADS: '4'
+  MKL_NUM_THREADS: '4'
+
+jobs:
+  overdrive:
+    name: ${{ matrix.track }} / Qwen2.5-Coder-0.5B
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        track: [hooks, surgery]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax preflight
+        run: |
+          python -m compileall -q tinycoder tests
+          python -m unittest discover -s tests -v
+      - name: Install CPU PyTorch and compatible requirements
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          python -m unittest discover -s tests -v
+      - name: Verify mandatory Docker sandbox
+        run: |
+          docker info
+          docker pull python:3.11-alpine
+      - name: Measure actual hook and/or rank64 variants
+        run: |
+          python -m tinycoder.session012 --track "${{ matrix.track }}" --output-dir "outputs/session012_${{ matrix.track }}" --batch-size 4 --workers 4
+      - name: Preserve metrics, predictions and reversible factors
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session012-extreme-${{ matrix.track }}
+          path: outputs/session012_${{ matrix.track }}/
+          if-no-files-found: warn
+          retention-days: 30

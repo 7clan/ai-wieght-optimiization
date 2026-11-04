@@ -1,5 +1,40 @@
 # TinyCoder Weight Lab
 
+## Session 012 — Qwen2.5-Coder-0.5B extreme overdrive
+
+[`exp/10-extreme-overdrive`](../../tree/exp/10-extreme-overdrive) keeps the
+**exact archived 10% Layer 8 MLP factor** and compares two isolated CPU jobs:
+(A) token-triggered residual hooks on decoder layers 13/15 with
+`alpha = 0.5, 1.0, 1.75, 2.5`; (B) three-matrix rank-64 ridge/SVD surgery,
+alone and fused with the same four dynamic hook settings. The checkpoint is
+always **Qwen/Qwen2.5-Coder-0.5B**. No derivatives, optimizers or training.
+
+**Status: pending actual CPU/Docker evaluation.** pass@1, AST validity,
+reference-token perplexity and conservative assertion taxonomy will be
+populated from hosted execution. No improvement is claimed in advance.
+HumanEval/94–163 was used in earlier sessions: these 70 tasks are an
+**exploratory reused comparison**, not a fresh holdout.
+
+| 70-task HumanEval measure | Archived baseline | Layer 8 + hooks | Layer 8 + rank64 | Layer 8 + rank64 + hooks |
+| --- | ---: | ---: | ---: | ---: |
+| Execution pass@1 | 2/70 | Pending | Pending | Pending |
+| Python AST syntax valid | 7/70 | Pending | Pending | Pending |
+| Reference-token perplexity (comparable probe) | Pending | Pending | Pending | Pending |
+| Assertion taxonomy | Pending | Pending | Pending | Pending |
+
+**Rank restriction:** 50 single-position source pairs span rank at most 50.
+To test actual rank 64 we capture **two positions for each of the same 50
+pre-94 source pairs** (100 paired activation columns) and verify that the
+resulting spectrum supports at least 64 directions. These teacher-position
+targets and the normalized `v_logic` residual offsets are experimental proxies,
+not proven logic circuits. The discrete alpha sweep cannot establish an exact
+continuous or global breakdown point. Generated code is tested only inside
+network-disabled, read-only, unprivileged Docker containers.
+
+Workflow: [Session 012 extreme CPU](.github/workflows/session012-extreme-cpu.yml).
+Final report after execution: `experiments/session012_extreme_report.json`.
+
+
 A beginner-friendly experiment for **running, inspecting and directly editing weights in a very small coding AI**. The repository contains the software and examples; it intentionally **does not commit full pretrained model weights**.
 
 **Current direction (Session 002 onward): DIRECT WEIGHT EDITING, with no training.** The earlier LoRA session is preserved as historical research, not our active approach. Directly editing tensor values is real and reversible, but it is not a shortcut to the general intelligence of a larger model.
