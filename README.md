@@ -24,6 +24,8 @@ Null-space input dampening is also available with `--method nullspace`, using `�
 
 See [AGENTS.md](AGENTS.md) for the full inspect → derive → apply → verify protocol. The `.github/workflows/internal-weight-session.yml` workflow runs the initial internal-matrix experiment in GitHub Actions and saves a downloadable `internal-001-results` artifact. The method is a **simplified algebraic demonstration inspired by ROME/MEMIT, not their complete algorithms**.
 
+**First internal-matrix result:** [GitHub Actions run](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41744954761) succeeded. A rank-one edit to layer 12's `mlp.down_proj` was bounded to **0.2% of the original matrix Frobenius norm**, and all matrix values remained finite. The targeted last-token output moved closer to the selected reference activation (Euclidean distance **3.1938 → 2.9704**, about 7% smaller). However, **all four generated answers remained identical**, and the simple static checks stayed **2/4 before and after**. This is a successful numerical intervention, **not an accuracy improvement**. Download `internal-001-results` from that run for the exact factor tensors and responses.
+
 ## Which AI are we starting with?
 
 | Model | Size | Purpose |
@@ -137,6 +139,7 @@ The statistics show layer names, tensor shapes, means, standard deviations, and 
 | 001 | Same toy training examples | LoRA r=8 on attention q/v projections (archived) | Held-out static checks | Workflow succeeded; not part of current editing method |
 | 002 | 4 prompts | Direct output-row edit (+2 logit) | Rank and AST checks | Changed weight, no answers changed |
 | 003 | 4 prompts | Direct output-row edit (+5 logit) | Rank and AST checks | `def` rank 6→1; 2 answers changed; AST stayed 2/4 |
+| 004 | 4 prompts | Internal layer 12 `mlp.down_proj` rank-one update (0.2% cap) | Activation distance + AST checks | Distance 3.1938→2.9704; no answers changed; AST stayed 2/4 |
 
 ### Historical first experiment in GitHub Actions
 
