@@ -30,6 +30,16 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Batch updates use a Woodbury-based regularized covariance inverse, sequential residual splitting, and directly applied low-rank factors. Cap the **observed**, not merely proposed, Frobenius delta on each `mlp.down_proj` to **<= 1.5%**; save `experiments/rome_batch_factors.safetensors` and a JSON report.
 - Only after the actual CPU run completes should the pending README results area be replaced with measured pass@1 and passed/failed IDs. A pending report must have null scores, never speculative improvement claims.
 
+## Session 007: four explicitly authorized high-risk branches
+
+- Maintain four separate `exp/` branches (`01-transplant`, `02-svd-zeroing`, `03-norm-break`, `04-memit-single-layer`) from a shared base. Run exactly four independent, parallel CPU jobs; never merge experiments into `main` automatically.
+- Reuse only the 20 previously verified *failure/reference* pairs for deriving edits. Reserve fresh **HumanEval/94–143** (50 tasks) for identical before/after execution scoring across branches. Previous evaluations consumed all IDs through 93. Reserve 144–163 for later, independent confirmation; do not train/retarget on the 94–143 comparative holdout.
+- `01`: copy reference MLP values from layer 18 onto layer 8 keys; only layer 8 `mlp.down_proj` may change and its observed norm delta must remain <= 1.5%. Treat cross-layer values as unvalidated proxies.
+- `02`: use full singular-value decomposition on layer 8 `self_attn.o_proj` and `mlp.down_proj`. Select exactly two directions among the top singular spectrum using activation separation on *syntax-invalid* prior completions versus canonical reference continuations. This is **correlational association**, not evidence of causal syntax circuits. Save subtraction factors.
+- `03`: the user expressly approved stress edits of **3%, 5%, 10%** of layer 8 `mlp.down_proj` Frobenius norm, exceeding the prior 1.5% limit **only in this isolated, in-memory branch**. Each level must restart from the same original weights, save reversible factors, and report execution/syntax breakdown. Three tests cannot establish an exact continuous breakdown threshold.
+- `04`: use a multi-key Woodbury covariance inverse with a direct batch update only on layer 8 `mlp.down_proj` (<= 1.5%). Never edit layer 12.
+- All experiments run Docker-isolated HumanEval assertions and save task-level before/after outcomes. The collector compares their reports only after every branch actually completes; no fabricated metrics or silent unsandboxed evaluation.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
