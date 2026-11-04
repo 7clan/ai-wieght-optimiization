@@ -101,6 +101,30 @@ def is_blank_entry_implementation(problem: dict, completion: str) -> bool:
     return not statements or all(isinstance(n, ast.Pass) for n in statements)
 
 
+def failed_assertion_has_edge_input(assertion: str) -> bool:
+    """Only inspect arguments to candidate(), never its expected result."""
+    if not assertion:
+        return False
+    try:
+        tree = ast.parse(assertion)
+    except SyntaxError:
+        return False
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                and node.func.id == "candidate"):
+            continue
+        for arg in node.args:
+            if isinstance(arg, ast.List) and not arg.elts:
+                return True
+            if isinstance(arg, ast.Constant) and arg.value in ("", None):
+                return True
+            if (isinstance(arg, ast.UnaryOp) and isinstance(arg.op, ast.USub)
+                    and isinstance(arg.operand, ast.Constant)
+                    and isinstance(arg.operand.value, (int, float))):
+                return True
+    return False
+
+
 def classify_failure(problem: dict, completion: str, execution: dict) -> dict:
     """Assign at most one of four requested evidence-based bins or unclassified."""
     exc = execution["exception_type"]
@@ -109,7 +133,7 @@ def classify_failure(problem: dict, completion: str, execution: dict) -> dict:
         chosen, reason = BINS[0], "Observed IndexError in restricted execution"
     elif is_blank_entry_implementation(problem, completion):
         chosen, reason = BINS[1], "Entry point has no value-producing implementation (implicit None)"
-    elif re.search(r"\(\s*(?:\[\s*\]|-\d+|None|['\"]['\"])", assertion):
+    elif failed_assertion_has_edge_input(assertion):
         chosen, reason = BINS[2], "First failed assertion explicitly exercises an empty/negative/None input"
     elif (execution["outcome"] == "timeout" or
           (completion.count("def " + problem["entry_point"] + "(") >= 1 and
