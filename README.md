@@ -1,5 +1,28 @@
 # TinyCoder Weight Lab
 
+## Session 013 — independent MBPP/MBPP+ generalization (measured)
+
+Exactly 100 fixed MBPP test-split problems, selected before generation, were
+scored once per model with **Qwen2.5-Coder-0.5B**. The edited model changes
+only Layer8 `mlp.down_proj` by the exact archived 10% factor from `e100c62`.
+The MBPP base and EvalPlus expanded suites reuse the same **100 prompts**;
+they must **not** be counted as 200 independent problems. All generated code
+ran only inside CPU-only, read-only, unprivileged, network-disabled Docker.
+
+| Measure | Untouched baseline | 10% Layer8 anchor | Difference |
+| --- | ---: | ---: | ---: |
+| MBPP base pass@1 | 52/100 (52%) | 50/100 (50%) | -2 pp |
+| MBPP+ strict pass@1 | 45/100 (45%) | 44/100 (44%) | -1 pp |
+| Syntax validity | 92/100 (92%) | 89/100 (89%) | -3 pp |
+
+The frozen task IDs, passed/failed lists, per-task predictions, failure
+taxonomy changes, and reproducibility hashes are in
+[`session013_generalization_report.json`](experiments/session013_generalization_report.json)
+and [`session013_generalization_predictions.json`](experiments/session013_generalization_predictions.json).
+This is independent of the **prior experiment task set**, not a guarantee
+of non-exposure during the model's original pretraining. The 100-task
+comparison remains statistically uncertain.
+
 A beginner-friendly experiment for **running, inspecting and directly editing weights in a very small coding AI**. The repository contains the software and examples; it intentionally **does not commit full pretrained model weights**.
 
 **Current direction (Session 002 onward): DIRECT WEIGHT EDITING, with no training.** The earlier LoRA session is preserved as historical research, not our active approach. Directly editing tensor values is real and reversible, but it is not a shortcut to the general intelligence of a larger model.
