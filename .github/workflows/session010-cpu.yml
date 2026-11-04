@@ -1,0 +1,94 @@
+name: Session 010 Docker error taxonomy and three-layer rank-eight surgery
+
+on:
+  push:
+    branches:
+      - exp/07-highrank-logic-boost
+    paths:
+      - .github/workflows/session010-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HF_HUB_DISABLE_TELEMETRY: '1'
+  TOKENIZERS_PARALLELISM: 'false'
+  OMP_NUM_THREADS: '4'
+  MKL_NUM_THREADS: '4'
+  ARCHIVED_SESSION009: c9ba781883efb2d0a7c0e4d2e0f4cf0b6a5310c7
+
+jobs:
+  diagnose:
+    name: Diagnose all 16 syntax-valid Session009 failures
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/07-highrank-logic-boost
+      - uses: actions/checkout@v4
+        with:
+          ref: c9ba781883efb2d0a7c0e4d2e0f4cf0b6a5310c7
+          path: prior
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check fixed archive and cold-start Docker diagnostics
+        run: |
+          python -m compileall -q tinycoder tests
+          python -m unittest discover -s tests -v
+          docker info
+          docker pull python:3.11-alpine
+          python -m tinycoder.session010 --mode taxonomy --output-dir outputs/taxonomy --workers 4
+      - name: Archive observed failure tracebacks and conservative taxonomy
+        uses: actions/upload-artifact@v4
+        with:
+          name: session010-frozen-taxonomy
+          path: outputs/taxonomy/
+          if-no-files-found: error
+          retention-days: 21
+
+  highrank:
+    name: Frozen rank-eight factors and 70-task CPU execution
+    needs: diagnose
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/07-highrank-logic-boost
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: c9ba781883efb2d0a7c0e4d2e0f4cf0b6a5310c7
+          path: prior
+      - uses: actions/download-artifact@v4
+        with:
+          name: session010-frozen-taxonomy
+          path: frozen_taxonomy
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact Layer8 source factor and measured diagnostic taxonomy
+        run: |
+          file=experiments/exp03_norm_break_factors.safetensors
+          test "$(git hash-object "$file")" = "$(git rev-parse e100c628cd8fcf3c500e5c39070168e213b208aa:${file})"
+          python -c "import json; d=json.load(open('frozen_taxonomy/assertion_failure_taxonomy.json')); assert d['syntax_valid_count']==19 and d['failed_syntax_valid_count']==16 and d['syntax_valid_passed_count']==3"
+      - name: Install four-thread CPU PyTorch and run rank-eight matrix tests
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          python -m unittest discover -s tests -v
+          docker info
+          docker pull python:3.11-alpine
+      - name: Derive exact 8-rank SVD factors and execute 70 official assertions
+        run: |
+          python -m tinycoder.session010 --mode surgery --output-dir outputs/highrank --batch-size 4 --workers 4
+      - name: Archive full task-level reports, taxonomy shift and reversible factors
+        uses: actions/upload-artifact@v4
+        with:
+          name: session010-highrank-70
+          path: outputs/highrank/
+          if-no-files-found: error
+          retention-days: 21
