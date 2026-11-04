@@ -19,8 +19,13 @@ env:
 
 jobs:
   stress:
+    name: Independent ${{ matrix.level }}% four-layer CPU stress
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        level: [15, 30, 50]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,14 +46,14 @@ jobs:
         run: |
           docker info
           docker pull python:3.11-alpine
-      - name: Derive four-layer closed-form factors and test all three norm levels
+      - name: Derive four-layer closed-form factors and test this norm level
         run: |
-          python -m tinycoder.session011 --track stress --output-dir outputs/session011_stress --batch-size 4 --workers 4
+          python -m tinycoder.session011 --track stress --stress-level ${{ matrix.level }} --output-dir outputs/session011_stress_${{ matrix.level }} --batch-size 4 --workers 4
       - name: Upload task-level predictions, diagnostics and reversible tensors
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: session011-unbounded-stress
-          path: outputs/session011_stress/
+          name: session011-stress-${{ matrix.level }}
+          path: outputs/session011_stress_${{ matrix.level }}/
           if-no-files-found: warn
           retention-days: 30

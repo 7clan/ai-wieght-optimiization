@@ -278,7 +278,8 @@ def run(args):
     base_diagnostic = probe(model, tokenizer, prompt_probes, perplexity_probes)
     if base_diagnostic["status"] != "finite":
         raise RuntimeError("Baseline probe logits not finite")
-    levels = STRESS_LEVELS if args.track == "stress" else (None,)
+    levels = ((args.stress_level / 100,) if args.track == "stress" and args.stress_level
+              else STRESS_LEVELS if args.track == "stress" else (None,))
     variants, predictions = {}, {}
     for level in levels:
         variant = f"{level:.0%}" if level is not None else "rank32"
@@ -295,8 +296,10 @@ def run(args):
                 else:
                     scale = 1.0
                 key = f"{variant}.{label}"
-                factors[f"{key}.left"] = left.cpu().contiguous()
-                factors[f"{key}.right"] = right.cpu().contiguous()
+                # safetensors disallows memory-aliased tensors under different
+                # keys: each stored factor must own its backing storage.
+                factors[f"{key}.left"] = left.cpu().contiguous().clone()
+                factors[f"{key}.right"] = right.cpu().contiguous().clone()
                 module = target_linear(model, layer, matrix)
                 before, observed, finite = apply_factors(module, left, right)
                 originals[(layer, matrix)] = before
@@ -339,12 +342,17 @@ def run(args):
             }
             save_json(out / "progress.json", {"track": args.track,
                       "completed_variants": list(variants), "source_count": SOURCE_COUNT})
+            save_json(out / "unbounded_predictions.json", {
+                "task_ids": [x["task_id"] for x in holdout], "variants": predictions})
+            save_json(out / "checkpoint_metrics.json", {
+                "track": args.track, "completed_variants": variants,
+                "source_failure_ids": [x["task_id"] for x in source]})
         finally:
             restore(model, originals)
 
     factor_name = ("unbounded_surgery_factors.safetensors" if args.track == "stress"
                    else "rank32_surgery_factors.safetensors")
-    save_file(factors, str(out / factor_name))
+    save_file({key: value.clone() for key, value in factors.items()}, str(out / factor_name))
     save_json(out / "unbounded_predictions.json", {"task_ids": [x["task_id"] for x in holdout],
                                                  "variants": predictions})
     from .branch_experiments import syntax_counts
@@ -390,9 +398,13 @@ def main():
     parser.add_argument("--baseline-final", default="experiments/final_holdout_validation_predictions.json")
     parser.add_argument("--batch-size", type=int, default=4)
     parser.add_argument("--workers", type=int, default=4)
+    parser.add_argument("--stress-level", type=int, choices=(15, 30, 50),
+                        help="Isolate one stress level on a separate CPU runner")
     args = parser.parse_args()
     if not (1 <= args.batch_size <= 8 and 1 <= args.workers <= 8):
         parser.error("batch size and sandbox workers must be 1..8")
+    if args.stress_level and args.track != "stress":
+        parser.error("--stress-level only applies to the stress track")
     from .sandbox_eval import require_sandbox
     require_sandbox()
     run(args)
