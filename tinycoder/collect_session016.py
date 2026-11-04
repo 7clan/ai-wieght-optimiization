@@ -86,8 +86,9 @@ def collect(root:Path,out:Path,readme:Path):
 Same **Qwen2.5-Coder-0.5B base**, no trained/editable parameters. The
 Session015 untouched 100-task greedy control is reused exactly, saving compute
 and preserving the same test inputs. The searched variants begin with greedy
-plus one sampled solution, run original MBPP public assertions or independently
-derived web smoke tests, then optionally sample additional solutions
+and generate one sampled solution ONLY if public checks fail. They use original
+MBPP public assertions or independently derived web smoke tests, then
+optionally sample additional solutions
 (`search4`) and attempt one error-conditioned repair. Extra sampling stops
 after public validation succeeds. Final MBPP+ expanded tests are never used
 for candidate selection.

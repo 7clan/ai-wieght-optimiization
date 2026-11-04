@@ -269,14 +269,22 @@ def run(args):
     if sum(p.numel() for p in model.parameters())!=MODEL_PARAMETER_COUNT:
         raise RuntimeError("Model parameter scale changed")
     generated_tokens=0
-    # One new independent sample for every task, preserving the original
-    # greedy output as candidate zero.
-    for group in _groups(tasks):
+    # Preserve the original greedy candidate when it ALREADY passes public
+    # checks. Generating anything else there would waste tokens and risk
+    # replacing a working implementation.
+    initial_unresolved=[
+        t for t in tasks
+        if not best(candidates[t["task_id"]])["public_result"]["passed"]]
+    initial_unresolved_ids={t["task_id"] for t in initial_unresolved}
+    for baseline_group in _groups(tasks):
+        group=[t for t in baseline_group if t["task_id"] in initial_unresolved_ids]
+        if not group:
+            continue
         generated,tokens=sample(model,tokenizer,group,seed=20261116)
         generated_tokens+=tokens
         save_json(out/f"sample1-{group[0]['task_id'].split('/')[0]}.json",generated)
         _evaluate_new([group],generated,public,candidates,"sample-1")
-    print("Stage 1: two candidates per task scored on public checks",flush=True)
+    print(f"Stage 1: sampled only {len(initial_unresolved)} initially unsolved tasks",flush=True)
 
     # Adaptive budget: expand to four only when BOTH initial candidates fail.
     if args.track=="search4":
@@ -329,11 +337,14 @@ def run(args):
         "model":MODEL_ID,"parameter_count":MODEL_PARAMETER_COUNT,"training_steps":0,
         "baseline_source":"Session015 stored untouched greedy predictions; no new baseline inference",
         "manifest":manifest,"generation":{"temperature":0.7,"max_new_tokens":160,
-            "initial_candidates_per_task":2,"max_candidates_before_repair":
+            "initial_candidate_budget":2,"greedy_early_stop":True,
+            "max_candidates_before_repair":
             (4 if args.track=="search4" else 2),"max_repair_rounds":1,
             "generated_output_tokens":generated_tokens,
             "wall_seconds":round(time.monotonic()-started,2)},
-        "selection":{"public_passes":public_passes,"winning_source_counts":dict(counts),
+        "selection":{"public_passes":public_passes,
+                     "initial_tasks_needing_extra_sampling":len(initial_unresolved),
+                     "winning_source_counts":dict(counts),
                      "public_python_source":"Original MBPP test_list only",
                      "public_web_source":"Spec-derived smoke cases; some constant/boolean cases necessarily overlap official custom fixture checks",
                      "plus_test_leakage":False},

@@ -10,7 +10,8 @@ original 0.5B **base** checkpoint without gradients, weight edits or scaling.
 The untouched greedy baseline predictions are reused from Session015 to avoid
 extra CPU inference. Evaluation code remains in restricted Docker.
 
-The `search2` track samples one additional candidate per task, and
+The `search2` track samples one additional candidate only for tasks whose
+greedy completion fails public checks, and
 `search4` adaptively explores up to two more candidates only after
 failed public checks. Both attempt at most one repair on remaining failures.
 Only original MBPP public test_list and task-spec-derived custom web smoke
