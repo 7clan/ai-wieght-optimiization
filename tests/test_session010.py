@@ -38,6 +38,12 @@ class TaxonomyTests(unittest.TestCase):
         outcome = {"outcome": "failed", "exception_type": "AssertionError", "failing_assertion": "assert f(10) == 2"}
         self.assertIsNone(classify_failure(task, "    return x * 2", outcome)["category"])
 
+    def test_expected_none_does_not_masquerade_as_edge_input(self):
+        task = {"prompt": "def f(x):\n", "entry_point": "f"}
+        outcome = {"outcome": "failed", "exception_type": "AssertionError",
+                   "failing_assertion": "assert candidate([2, 4, 1, 3]) == (None, 1)"}
+        self.assertIsNone(classify_failure(task, "    return (1, 3)", outcome)["category"])
+
     def test_ast_risk_categories_are_explicit_proxies(self):
         task = {"prompt": "def f(xs):\n", "canonical_solution":
                 "    return [x for x in xs if x > 0]\n"}
