@@ -1,0 +1,80 @@
+name: GPU multi-layer HumanEval batch edit
+
+# This workflow cannot run on a standard GitHub-hosted Ubuntu runner.
+# Supply a CUDA-capable self-hosted runner labelled "cuda" first; no paid
+# hosted GPU is provisioned or billed by this workflow.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: rome-batch-gpu
+  cancel-in-progress: false
+
+jobs:
+  gpu-experiment:
+    runs-on: [self-hosted, linux, x64, cuda]
+    timeout-minutes: 120
+    permissions:
+      contents: read
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify configured CUDA hardware and isolated execution
+        run: |
+          nvidia-smi
+          docker info
+          docker pull python:3.11-alpine
+      - name: Install model tooling using runner's existing CUDA PyTorch
+        run: |
+          python -m pip install -r requirements.txt
+          python -c "import torch; assert torch.cuda.is_available(), 'CUDA unavailable'; print(torch.cuda.get_device_name(0))"
+      - name: Run algebra and isolation unit tests
+        run: python -m unittest discover -s tests -v
+      - name: CUDA causal scan, two capped multi-key updates, and 50-task execution suite
+        run: |
+          python -m tinycoder.rome_batch --holdout-start 44 --holdout-count 50 --max-relative-change 0.015 --batch-size 4 --workers 4 --output-dir experiments
+      - name: Preserve factor tensors, full report, and per-task predictions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: humaneval-cuda-batch-results
+          path: |
+            experiments/rome_batch_report.json
+            experiments/rome_batch_factors.safetensors
+            experiments/rome_batch_predictions.json
+            experiments/rome_batch_progress.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  persist-results:
+    needs: gpu-experiment
+    if: ${{ needs.gpu-experiment.result == 'success' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: humaneval-cuda-batch-results
+          path: experiments
+      - name: Write only the verified batch-results section in README
+        run: |
+          python -c "import json; from pathlib import Path; from tinycoder.rome_batch import update_readme; report = json.loads(Path('experiments/rome_batch_report.json').read_text()); assert report['status'] == 'completed'; update_readme(Path('README.md'), report)"
+      - name: Save measured report, predictions, and factors on the active branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/rome_batch_report.json experiments/rome_batch_factors.safetensors experiments/rome_batch_predictions.json experiments/rome_batch_progress.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record verified CUDA batch-edit experiment results'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

@@ -22,6 +22,14 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Report **two** scores: the selected 20 baseline failures (biased by selection), and a completely separate 20-task holdout for meaningful pass@1 comparisons.
 - Model-generated Python is executed only in short-lived, network-disabled, read-only, unprivileged Docker containers with resource limits. Never silently remove the sandbox.
 
+## CUDA batch-edit follow-up
+
+- `tinycoder/rome_batch.py` is **CUDA-only**, requires Docker, and is intentionally dispatched only on a `self-hosted, linux, x64, cuda` runner. Do not silently run the GPU-required protocol on CPU or allocate a paid GPU runner without approval.
+- The two candidate layers are 8 and 12, but all 24 MLP layers are causally scanned first. Report each candidate's actual score and rank even if the evidence is negative.
+- Use the same 20 verified failure/reference pairs as the previous experiment and keep HumanEval tasks 44 through 93 untouched until the **50-task independent holdout evaluation**. Do not reuse either evaluation set to pick later edits.
+- Batch updates use a Woodbury-based regularized covariance inverse, sequential residual splitting, and directly applied low-rank factors. Cap the **observed**, not merely proposed, Frobenius delta on each `mlp.down_proj` to **<= 1.5%**; save `experiments/rome_batch_factors.safetensors` and a JSON report.
+- Only after the actual GPU run completes should the pending README results area be replaced with measured pass@1 and passed/failed IDs. A pending report must have null scores, never speculative improvement claims.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
