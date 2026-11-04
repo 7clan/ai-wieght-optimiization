@@ -1,0 +1,26 @@
+{
+  "status": "pending",
+  "session": "014",
+  "branch": "exp/12-hybrid-ortho-hooks",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "dataset": "50 fresh MBPP+ task IDs plus 25 custom React and 25 custom Express tasks",
+  "benchmark_provenance": "MBPP+ is the official EvalPlus suite; the web suite is custom authored",
+  "source_trajectories": 50,
+  "training_steps": 0,
+  "required_tracks": [
+    "baseline",
+    "static",
+    "dynamic-0.25",
+    "dynamic-0.75",
+    "dynamic-1.25",
+    "hybrid-0.25",
+    "hybrid-0.75",
+    "hybrid-1.25"
+  ],
+  "execution_pass_at_1": null,
+  "syntax_validity": null,
+  "orthogonal_subspace_diagnostics": null,
+  "failure_taxonomy_shifts": null,
+  "measured_results_expected_from": ".github/workflows/session014-hybrid-cpu.yml",
+  "note": "This placeholder contains NO evaluation claims; publishing requires all eight actual CPU/Docker result artifacts and a validated collector."
+}

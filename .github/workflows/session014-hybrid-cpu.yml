@@ -1,0 +1,137 @@
+name: Session 014 Qwen0.5B orthogonal-rank32 and dynamic-hooks CPU suite
+
+on:
+  push:
+    branches:
+      - exp/12-hybrid-ortho-hooks
+    paths:
+      - .github/workflows/session014-hybrid-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  prepare:
+    name: Freeze 100 tasks, verify 100 clean references, derive factor subspaces
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      TOKENIZERS_PARALLELISM: "false"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install CPU-only model dependencies and exact EvalPlus checker
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.3,<3"
+          python -m pip install -r requirements.txt "evalplus==0.3.1"
+      - name: Run frozen-fixture and sandbox contract tests
+        run: python -m unittest discover -s tests -p 'test_session014.py' -v
+      - name: Build actual React/Express execution sandbox
+        run: docker build -f docker/session014-web.Dockerfile -t tinycoder-session014-web:1 .
+      - name: Verify Docker daemon and prepare clean activation factor artifacts
+        run: |
+          python -c 'from tinycoder.sandbox_eval import require_sandbox; require_sandbox()'
+          python -m tinycoder.session014 --phase prepare --output-dir outputs/session014-prepared
+      - name: Export original manifest, rank32 factor tensors and orthogonality diagnostics
+        uses: actions/upload-artifact@v4
+        with:
+          name: session014-prepared
+          path: outputs/session014-prepared/
+          if-no-files-found: error
+          retention-days: 30
+
+  benchmark:
+    name: "Qwen0.5B | ${{ matrix.track }} | 50 MBPP+ + 50 Web"
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        track: [baseline, static, dynamic-0.25, dynamic-0.75, dynamic-1.25, hybrid-0.25, hybrid-0.75, hybrid-1.25]
+    env:
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      TOKENIZERS_PARALLELISM: "false"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install exact CPU and benchmark dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.3,<3"
+          python -m pip install -r requirements.txt "evalplus==0.3.1"
+      - uses: actions/download-artifact@v4
+        with:
+          name: session014-prepared
+          path: outputs/session014-prepared
+      - name: Build both isolated CPU execution sandboxes
+        run: |
+          docker build -f docker/session014-mbpp.Dockerfile -t tinycoder-session014-mbpp:0.3.1 .
+          docker build -f docker/session014-web.Dockerfile -t tinycoder-session014-web:1 .
+      - name: Generate one greedy completion per task and evaluate in parallel Docker
+        run: |
+          python -m tinycoder.session014 --phase benchmark --track "${{ matrix.track }}" --prepared-dir outputs/session014-prepared --output-dir "outputs/session014-${{ matrix.track }}" --max-new-tokens 160 --batch-size 4 --workers 2
+      - name: Export exact predictions and measured task-level outcomes
+        uses: actions/upload-artifact@v4
+        with:
+          name: session014-track-${{ matrix.track }}
+          path: outputs/session014-${{ matrix.track }}/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    name: Validate all eight tracks and commit authentic comparative metrics
+    needs: benchmark
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: session014-prepared
+          path: outputs/session014-prepared
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: session014-track-*
+          path: outputs/session014-tracks
+          merge-multiple: false
+      - name: Reject missing tracks and reconstruct pass/failure outcomes
+        run: |
+          python -m tinycoder.collect_session014 --tracks-dir outputs/session014-tracks --prepared-dir outputs/session014-prepared --experiments-dir experiments --readme README.md
+          python -m json.tool experiments/session014_hybrid_report.json > /dev/null
+          cp outputs/session014-prepared/factors.safetensors experiments/session014_orthogonal_factors.safetensors
+          sha256sum experiments/session014_orthogonal_factors.safetensors
+      - name: Retain verified report and reversible factors as a downloadable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: session014-verified-comparison
+          path: |
+            experiments/session014_hybrid_report.json
+            experiments/session014_hybrid_predictions.json
+            experiments/session014_orthogonal_factors.safetensors
+            README.md
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit only measurements from completed evaluation
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session014_hybrid_report.json experiments/session014_hybrid_predictions.json experiments/session014_orthogonal_factors.safetensors
+          git commit -m 'Publish measured Session014 orthogonal subspace and runtime hook comparison'
+          git push origin HEAD:exp/12-hybrid-ortho-hooks

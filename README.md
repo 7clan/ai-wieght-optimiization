@@ -1,5 +1,15 @@
 # TinyCoder Weight Lab
 
+<!-- SESSION014-PENDING-START -->
+### Session 014 — orthogonal UI/backend subspace and dynamic-hook suite (in progress)
+
+The [`exp/12-hybrid-ortho-hooks`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/12-hybrid-ortho-hooks) branch contains a reproducible experiment restricted to base **Qwen2.5-Coder-0.5B** (24 layers, hidden size 896). Its rank32/orthogonal subspace factors target Layers8/16 `mlp.down_proj`; attention `o_proj` forward hooks at Layers12/18 fire during incremental decoding when the latest token matches a control-flow keyword. Eight tracks compare an untouched model, static-only, dynamic-only (α=0.25/0.75/1.25), and static+dynamic hybrid for each α.
+
+The 100-example evaluation comprises **50 MBPP+ prompts** (excluding the 100 consumed by Session013) and **50 separately authored web scaffolding tasks** (25 React, 25 Express). The JS tasks are not standardized MBPP+. The 50 reference trajectories used for factor derivation are separate and are Docker-checked before deriving factors. All generated code is evaluated exclusively in restricted Docker.
+
+The [Session014 Actions workflow](https://github.com/7clan/ai-wieght-optimiization/actions/workflows/session014-hybrid-cpu.yml) runs the CPU evaluation; **pass@1, syntax rates, and failure taxonomy are pending**, not measured locally. The [pending structured report](experiments/session014_hybrid_report.json) contains null scores and is replaced only after all eight evaluation tracks pass verification. Neither orthogonality nor activation alignment alone establishes improved code correctness.
+<!-- SESSION014-PENDING-END -->
+
 A beginner-friendly experiment for **running, inspecting and directly editing weights in a very small coding AI**. The repository contains the software and examples; it intentionally **does not commit full pretrained model weights**.
 
 **Current direction (Session 002 onward): DIRECT WEIGHT EDITING, with no training.** The earlier LoRA session is preserved as historical research, not our active approach. Directly editing tensor values is real and reversible, but it is not a shortcut to the general intelligence of a larger model.

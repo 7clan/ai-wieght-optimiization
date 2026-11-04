@@ -57,6 +57,16 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Combine the resulting two attention factors with **exactly the archived 10% layer 8 `mlp.down_proj` factors** from commit `e100c62`; verify the original factor Git blob against that commit. Keep the base checkpoint unchanged.
 - Run the already-consumed HumanEval/94–163 70-task suite in isolated Docker containers; report pass@1 and separately `ast.parse` validity. **Never call this an independent generalization test.** Save per-task predictions and reversible factors.
 
+## Session 014: orthogonal UI/backend subspaces and generation-time attention hooks
+
+- Work only on `exp/12-hybrid-ortho-hooks`, created from `main`; no model-size changes, training, gradient accumulation, or untrusted code execution on the host.
+- Freeze 50 fresh MBPP+ tasks disjoint from the 100 Session013 task IDs, plus 25 authored React and 25 authored Express scaffolding tasks. The web tasks are **not part of MBPP+** and use independent JavaScript/HTTP oracles.
+- Obtain 50 separate and Docker-verified reference trajectories (25 per mode) before any factor derivation. Use two final token slots per trajectory to form each mode's activation-difference matrix.
+- Use hidden size **896** and **24 layers**, verified from actual checkpoint configuration; compute rank32 subspaces and project backend directions off the UI directions using two-pass Gram-Schmidt and QR. Verify maximum cross-basis dot product <1e-5 for each target module.
+- Limit *observed* static Frobenius changes to **1.5% per** Layer8/Layer16 `mlp.down_proj`, save only low-rank factor pairs, and keep frozen checkpoint immutable. This conservative bound is a new Session014 protocol choice, not a user-requested strength.
+- At generation time only, conditionally add mode-specific vectors to **Layers12 and18 attention `o_proj` outputs**, explicitly not to entire residual states. Sweep 0.25/0.75/1.25 with the static/hybrid variants and ensure no prefill modification.
+- Evaluate all eight tracks on identical task IDs with deterministic greedy decoding. Docker must remain network-disabled, read-only, unprivileged and resource-capped. A score is not publishable without real task-level results from each track. Failure bins are heuristic diagnoses, not confirmed mechanistic causes.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
