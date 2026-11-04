@@ -57,6 +57,30 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Combine the resulting two attention factors with **exactly the archived 10% layer 8 `mlp.down_proj` factors** from commit `e100c62`; verify the original factor Git blob against that commit. Keep the base checkpoint unchanged.
 - Run the already-consumed HumanEval/94–163 70-task suite in isolated Docker containers; report pass@1 and separately `ast.parse` validity. **Never call this an independent generalization test.** Save per-task predictions and reversible factors.
 
+## Session 013: independent MBPP+ generalization, no new edits
+
+- Work only on `exp/11-mbpp-generalization` branched from `main`.
+  Use strictly the base `Qwen/Qwen2.5-Coder-0.5B` checkpoint (24 blocks),
+  no Instruct variant, size substitution, training, optimizer, gradients, or
+  fresh factor derivation. The edited track must load the exact Git blob
+  `7f872cd46918457c27d98f63230f1c9f47adb4c7` archived at `e100c62`,
+  edit only Layer8 `mlp.down_proj`, and observe a 10% relative Frobenius delta.
+- Freeze 100 MBPP test-split IDs deterministically **before** generation;
+  select from the EvalPlus MBPP+ version `v0.2.0` set. Run the original MBPP
+  base cases and the expanded MBPP+ cases on the same 100 tasks. These are
+  two *test suites*, not 200 independent prompts. Reject normalized prompt
+  collisions with all 164 HumanEval prompts. Previous task non-exposure does
+  not establish absence from Qwen's original pretraining corpus.
+- Run one greedy sample per task under exactly the same settings for
+  baseline and edited tracks. Execute every model-produced solution and
+  every diagnostic **only in restricted Docker** with EvalPlus's official
+  `check_correctness` semantics. Never fall back to unsandboxed evaluation.
+- Validate that both complete outputs contain exactly the same 100 task IDs,
+  matching dataset hash and prompt hashes, equal model parameter counts, and
+  identical generation settings. Publish measured MBPP base/MBPP+ pass@1,
+  `ast.parse` syntax rates, paired gains/regressions, conservative error bins
+  and predictions only after both CPU jobs finish. Pending values remain null.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.

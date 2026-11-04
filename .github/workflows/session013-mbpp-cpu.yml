@@ -1,0 +1,97 @@
+name: Session 013 independent MBPP+ generalization on CPU
+
+on:
+  push:
+    branches:
+      - exp/11-mbpp-generalization
+    paths:
+      - .github/workflows/session013-mbpp-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  benchmark:
+    name: Qwen0.5B MBPP+ ${{ matrix.track }}
+    strategy:
+      fail-fast: false
+      matrix:
+        track: [baseline, anchor]
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      TOKENIZERS_PARALLELISM: "false"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install CPU-only PyTorch and frozen EvalPlus evaluator
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.3,<3"
+          python -m pip install -r requirements.txt "evalplus==0.3.1"
+      - name: Verify selection, factor provenance, collector and sandbox contracts
+        run: |
+          python -m unittest discover -s tests -p 'test_session013.py' -v
+          test "$(git hash-object experiments/exp03_norm_break_factors.safetensors)" = 7f872cd46918457c27d98f63230f1c9f47adb4c7
+      - name: Build self-contained EvalPlus Docker evaluator
+        run: docker build -f docker/session013-evalplus.Dockerfile -t tinycoder-session013-evalplus:0.3.1 .
+      - name: Verify Docker sandbox availability
+        run: python -c 'from tinycoder.sandbox_eval import require_sandbox; require_sandbox()'
+      - name: Generate and evaluate frozen 100-problem MBPP+ subset
+        run: |
+          python -m tinycoder.session013 --track "${{ matrix.track }}" --output-dir "outputs/session013-${{ matrix.track }}" --max-new-tokens 160 --batch-size 4 --workers 2
+      - name: Upload measured track, including exact task IDs and predictions
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session013-${{ matrix.track }}
+          path: outputs/session013-${{ matrix.track }}/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    name: Verify and commit paired MBPP/MBPP+ evidence
+    needs: benchmark
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: session013-baseline
+          path: outputs/session013-baseline
+      - uses: actions/download-artifact@v4
+        with:
+          name: session013-anchor
+          path: outputs/session013-anchor
+      - name: Reconstruct and verify all 100 paired task results
+        run: |
+          python -m tinycoder.collect_session013 --baseline-dir outputs/session013-baseline --anchor-dir outputs/session013-anchor --output-dir experiments --readme README.md
+          python -m json.tool experiments/session013_generalization_report.json > /dev/null
+      - name: Preserve complete paired benchmark artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: session013-verified-comparison
+          path: |
+            experiments/session013_generalization_report.json
+            experiments/session013_generalization_predictions.json
+            README.md
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit only actual measured report and documentation
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session013_generalization_report.json experiments/session013_generalization_predictions.json
+          git commit -m 'Publish verified Session013 paired 100-task MBPP+ generalization metrics'
+          git push origin HEAD:exp/11-mbpp-generalization

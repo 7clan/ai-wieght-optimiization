@@ -1,0 +1,11 @@
+{
+  "status": "pending",
+  "session": "013",
+  "branch": "exp/11-mbpp-generalization",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_scale_unchanged": true,
+  "planned_evaluation": "100 frozen MBPP test-split tasks, MBPP base and MBPP+ expanded assertions, two parallel Docker-isolated CPU tracks",
+  "execution_pass_at_1": null,
+  "syntax_validity": null,
+  "notes": "Scores remain unset until both model tracks finish; published results are verified by the collector."
+}
