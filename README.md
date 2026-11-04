@@ -320,3 +320,27 @@ The new results will be exploratory and scored only in isolated Docker container
 <!-- ATTENTION-STEERING-START -->
 *Session 009 causal head tracing and execution evaluation pending; no scores claimed yet.*
 <!-- ATTENTION-STEERING-END -->
+
+## Session 010: restricted execution-error taxonomy and rank-eight attention surgery
+
+The original **19** AST-valid Session009 completions contain **3 passing** and **16 failing** solutions. The 16 failed completions were re-executed in restricted Docker with bounded traceback capture. These four labels are conservative heuristics; unmatched algorithmic errors remain unclassified.
+
+| Failure taxonomy (previous Session009 AST-valid failures) | Count | Task IDs |
+| --- | ---: | --- |
+| off by one index boundary | 0 | — |
+| wrong output type | 3 | HumanEval/96, HumanEval/129, HumanEval/132 |
+| missing edge case | 0 | — |
+| truncation or context | 1 | HumanEval/155 |
+| **Unclassified semantic / other** | **12** | HumanEval/98, HumanEval/99, HumanEval/104, HumanEval/113, HumanEval/120, HumanEval/125, HumanEval/136, HumanEval/137, HumanEval/145, HumanEval/149, HumanEval/161, HumanEval/162 |
+
+Layer 12, 13 and 15 `self_attn.o_proj` each received a capped **rank-eight** direct SVD-truncated ridge edit (≤1.5% Frobenius), plus the unmodified archived **10% Layer8 MLP** edit. No gradients or optimizer steps were used. Directions were weighted using source-AST boundary and return-type **proxies**, not proven causal off-by-one/type circuits.
+
+| Model | Execution pass@1 | Syntax-valid completions |
+| --- | ---: | ---: |
+| Original baseline | 2/70 (2.86%) | 7/70 |
+| Session009 attention hybrid | 3/70 (4.29%) | 19/70 |
+| **Session010 rank-eight hybrid** | **2/70 (2.86%)** | **20/70** |
+
+A syntactically valid completion can still fail the official assertions. **All 70 tasks were already used in earlier experiments**, so this is not an independent holdout. Timeout is not proof of context-window expiry.
+
+Artifacts: [`assertion_failure_taxonomy.json`](experiments/assertion_failure_taxonomy.json), [`highrank_logic_report.json`](experiments/highrank_logic_report.json), [`highrank_logic_predictions.json`](experiments/highrank_logic_predictions.json), [`highrank_taxonomy_shift.json`](experiments/highrank_taxonomy_shift.json), [`highrank_factor_report.json`](experiments/highrank_factor_report.json), and [reversible factors](experiments/highrank_logic_factors.safetensors).

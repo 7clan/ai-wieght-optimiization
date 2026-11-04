@@ -1,0 +1,226 @@
+{
+  "status": "frozen",
+  "source_commit": "e100c628cd8fcf3c500e5c39070168e213b208aa",
+  "source_reference_ids": [
+    "HumanEval/0",
+    "HumanEval/1",
+    "HumanEval/2",
+    "HumanEval/4",
+    "HumanEval/5",
+    "HumanEval/6",
+    "HumanEval/7",
+    "HumanEval/8",
+    "HumanEval/10",
+    "HumanEval/11",
+    "HumanEval/13",
+    "HumanEval/14",
+    "HumanEval/15",
+    "HumanEval/16",
+    "HumanEval/17",
+    "HumanEval/18",
+    "HumanEval/19",
+    "HumanEval/20",
+    "HumanEval/21",
+    "HumanEval/23"
+  ],
+  "source_proxy_definitions": {
+    "boundary_proxy": "Source AST has a subscript, loop, or comparison",
+    "return_type_proxy": "Source AST returns collections or multiple expression forms"
+  },
+  "layers": [
+    12,
+    13,
+    15
+  ],
+  "factor_metadata": {
+    "12": {
+      "inspection": {
+        "shape": [
+          896,
+          896
+        ],
+        "finite": true,
+        "frob_norm": 15.639005661010742,
+        "mean": -2.224375566584058e-05,
+        "std": 0.017453880980610847,
+        "sampled_top_singular_values": [
+          0.651951,
+          0.56921,
+          0.549541
+        ],
+        "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+      },
+      "rank": 8,
+      "method": "weighted multi-key ridge solution, rank-8 thin-QR SVD projection",
+      "ridge": 0.012209948730468751,
+      "uncapped_relative_norm": 0.12224734574556351,
+      "cap_scale": 0.1227020505722871,
+      "expected_relative_norm": 0.01499996893107891,
+      "singular_values_top8": [
+        0.9841688275337219,
+        0.7197386622428894,
+        0.6805269718170166,
+        0.6449158787727356,
+        0.5876266956329346,
+        0.5791536569595337,
+        0.5545209646224976,
+        0.5489230751991272
+      ],
+      "source_proxy_counts": {
+        "boundary_proxy": 16,
+        "return_type_proxy": 8
+      },
+      "source_weights": [
+        2.0,
+        2.0,
+        1.0,
+        2.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        3.0,
+        2.0,
+        2.0,
+        2.0,
+        3.0,
+        1.0
+      ],
+      "observed_relative_norm": 0.014999969862401485
+    },
+    "13": {
+      "inspection": {
+        "shape": [
+          896,
+          896
+        ],
+        "finite": true,
+        "frob_norm": 14.96536922454834,
+        "mean": 1.0506952321520657e-06,
+        "std": 0.016702087596058846,
+        "sampled_top_singular_values": [
+          0.367635,
+          0.351118,
+          0.339077
+        ],
+        "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+      },
+      "rank": 8,
+      "method": "weighted multi-key ridge solution, rank-8 thin-QR SVD projection",
+      "ridge": 0.005484589385986329,
+      "uncapped_relative_norm": 0.14601056277751923,
+      "cap_scale": 0.10273229357286952,
+      "expected_relative_norm": 0.014999983832240105,
+      "singular_values_top8": [
+        1.0252392292022705,
+        0.9358177185058594,
+        0.8606638312339783,
+        0.7493998408317566,
+        0.6904622316360474,
+        0.6431077718734741,
+        0.5898317098617554,
+        0.554530680179596
+      ],
+      "source_proxy_counts": {
+        "boundary_proxy": 16,
+        "return_type_proxy": 8
+      },
+      "source_weights": [
+        2.0,
+        2.0,
+        1.0,
+        2.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        3.0,
+        2.0,
+        2.0,
+        2.0,
+        3.0,
+        1.0
+      ],
+      "observed_relative_norm": 0.014999981969594955
+    },
+    "15": {
+      "inspection": {
+        "shape": [
+          896,
+          896
+        ],
+        "finite": true,
+        "frob_norm": 15.663304328918457,
+        "mean": 6.370498340402264e-06,
+        "std": 0.017481032758951187,
+        "sampled_top_singular_values": [
+          0.719268,
+          0.582365,
+          0.465383
+        ],
+        "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+      },
+      "rank": 8,
+      "method": "weighted multi-key ridge solution, rank-8 thin-QR SVD projection",
+      "ridge": 0.012713487243652344,
+      "uncapped_relative_norm": 0.2263871431350708,
+      "cap_scale": 0.06625817964870229,
+      "expected_relative_norm": 0.014999981969594955,
+      "singular_values_top8": [
+        2.4939892292022705,
+        1.3437514305114746,
+        1.1483891010284424,
+        0.9487936496734619,
+        0.8435840606689453,
+        0.7856840491294861,
+        0.7519338130950928,
+        0.6598467826843262
+      ],
+      "source_proxy_counts": {
+        "boundary_proxy": 16,
+        "return_type_proxy": 8
+      },
+      "source_weights": [
+        2.0,
+        2.0,
+        1.0,
+        2.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        3.0,
+        2.0,
+        2.0,
+        1.0,
+        1.0,
+        3.0,
+        2.0,
+        2.0,
+        2.0,
+        3.0,
+        1.0
+      ],
+      "observed_relative_norm": 0.014999981969594955
+    }
+  },
+  "archived_mlp_relative_norm": 0.10000181198120117,
+  "archived_mlp_sha256": "f7d2f84aee50624f990355c801821f4d2b42b63b173d698fc38faabc468222dc",
+  "rank_per_matrix": 8,
+  "cap_per_attention_matrix": 0.015,
+  "no_backprop": true,
+  "limitations": "Source-AST risk labels are proxies, not measured off-by-one or type-mismatch causal directions"
+}
