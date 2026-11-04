@@ -1,0 +1,414 @@
+{
+  "status": "traced_and_frozen",
+  "session": "009",
+  "source_commit": "e100c628cd8fcf3c500e5c39070168e213b208aa",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "dataset": "https://raw.githubusercontent.com/openai/human-eval/b9453e8f1865df0a0057a1383767caa400acfbcf/data/HumanEval.jsonl.gz",
+  "reference_task_ids": [
+    "HumanEval/0",
+    "HumanEval/1",
+    "HumanEval/2",
+    "HumanEval/4",
+    "HumanEval/5",
+    "HumanEval/6",
+    "HumanEval/7",
+    "HumanEval/8",
+    "HumanEval/10",
+    "HumanEval/11",
+    "HumanEval/13",
+    "HumanEval/14",
+    "HumanEval/15",
+    "HumanEval/16",
+    "HumanEval/17",
+    "HumanEval/18",
+    "HumanEval/19",
+    "HumanEval/20",
+    "HumanEval/21",
+    "HumanEval/23"
+  ],
+  "proxy_definitions": {
+    "loop_state": "Reference function contains a for/while loop",
+    "variable_tracking": "Reference function reassigns a name or uses augmented assignment"
+  },
+  "proxy_counts": {
+    "loop_state": 10,
+    "variable_tracking": 6
+  },
+  "proxy_task_ids": {
+    "loop_state": [
+      "HumanEval/0",
+      "HumanEval/1",
+      "HumanEval/5",
+      "HumanEval/6",
+      "HumanEval/8",
+      "HumanEval/10",
+      "HumanEval/13",
+      "HumanEval/14",
+      "HumanEval/18",
+      "HumanEval/20"
+    ],
+    "variable_tracking": [
+      "HumanEval/1",
+      "HumanEval/6",
+      "HumanEval/8",
+      "HumanEval/10",
+      "HumanEval/18",
+      "HumanEval/20"
+    ]
+  },
+  "causal_metric": "Change in log p(first canonical completion token) when patching last-token o_proj output or one input-head block",
+  "attention_scan": [
+    {
+      "layer": 10,
+      "mean_delta_logprob": 0.001203404855914414,
+      "loop_state_mean_delta": 0.00045506374444812534,
+      "variable_tracking_mean_delta": 2.1548553680380184e-05,
+      "logic_balance_score": 0.00023830614906425275,
+      "positive_cases": 17,
+      "cases": 20
+    },
+    {
+      "layer": 11,
+      "mean_delta_logprob": -0.0004472695523872972,
+      "loop_state_mean_delta": -0.00042517506517469883,
+      "variable_tracking_mean_delta": -0.0006740596145391464,
+      "logic_balance_score": -0.0005496173398569226,
+      "positive_cases": 5,
+      "cases": 20
+    },
+    {
+      "layer": 12,
+      "mean_delta_logprob": -0.0042207242455333475,
+      "loop_state_mean_delta": -0.0067935245344415305,
+      "variable_tracking_mean_delta": 0.00013790128286927938,
+      "logic_balance_score": -0.0033278116257861256,
+      "positive_cases": 8,
+      "cases": 20
+    },
+    {
+      "layer": 13,
+      "mean_delta_logprob": 4.732166416943073e-06,
+      "loop_state_mean_delta": 0.00017166361212730407,
+      "variable_tracking_mean_delta": 0.00017703293512264887,
+      "logic_balance_score": 0.00017434827362497647,
+      "positive_cases": 11,
+      "cases": 20
+    },
+    {
+      "layer": 14,
+      "mean_delta_logprob": 0.00043569861445575954,
+      "loop_state_mean_delta": -0.00027853799983859064,
+      "variable_tracking_mean_delta": -0.0008055163392176231,
+      "logic_balance_score": -0.0005420271695281069,
+      "positive_cases": 11,
+      "cases": 20
+    },
+    {
+      "layer": 15,
+      "mean_delta_logprob": 0.0008488610736094415,
+      "loop_state_mean_delta": 0.0010192274581640958,
+      "variable_tracking_mean_delta": 0.0009449947780619065,
+      "logic_balance_score": 0.000982111118113001,
+      "positive_cases": 17,
+      "cases": 20
+    },
+    {
+      "layer": 16,
+      "mean_delta_logprob": -0.0059971682960167525,
+      "loop_state_mean_delta": -0.006912386184558273,
+      "variable_tracking_mean_delta": -0.004858322984849413,
+      "logic_balance_score": -0.005885354584703843,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 17,
+      "mean_delta_logprob": 0.0015252992860041558,
+      "loop_state_mean_delta": 0.0018990721786394716,
+      "variable_tracking_mean_delta": 0.0017605649773031473,
+      "logic_balance_score": 0.0018298185779713095,
+      "positive_cases": 19,
+      "cases": 20
+    },
+    {
+      "layer": 18,
+      "mean_delta_logprob": -0.0006774731562472879,
+      "loop_state_mean_delta": -0.0004202401963993907,
+      "variable_tracking_mean_delta": -0.00032815372105687857,
+      "logic_balance_score": -0.0003741969587281346,
+      "positive_cases": 6,
+      "cases": 20
+    }
+  ],
+  "selected_layers": [
+    15,
+    13
+  ],
+  "head_dim": 64,
+  "head_count": 14,
+  "head_mediation": {
+    "15": [
+      {
+        "head": 0,
+        "all_mean_delta_logprob": -0.00010258727706968784,
+        "loop_state_mean_delta": -9.524817578494549e-05,
+        "variable_tracking_mean_delta": -1.34296715259552e-06
+      },
+      {
+        "head": 1,
+        "all_mean_delta_logprob": 0.0006650213501416147,
+        "loop_state_mean_delta": 0.0006627246271818876,
+        "variable_tracking_mean_delta": 0.0006617025937885046
+      },
+      {
+        "head": 2,
+        "all_mean_delta_logprob": 0.0003587255137972534,
+        "loop_state_mean_delta": 0.0003053006483241916,
+        "variable_tracking_mean_delta": -5.899113602936268e-06
+      },
+      {
+        "head": 3,
+        "all_mean_delta_logprob": -0.0007870308822020888,
+        "loop_state_mean_delta": -0.0007835243828594685,
+        "variable_tracking_mean_delta": -0.0006551518260190884
+      },
+      {
+        "head": 4,
+        "all_mean_delta_logprob": 1.9706878811120986e-05,
+        "loop_state_mean_delta": -7.231542840600014e-05,
+        "variable_tracking_mean_delta": -8.295546285808086e-05
+      },
+      {
+        "head": 5,
+        "all_mean_delta_logprob": 0.00013849346432834864,
+        "loop_state_mean_delta": 0.00011097560636699199,
+        "variable_tracking_mean_delta": 6.528493637839954e-05
+      },
+      {
+        "head": 6,
+        "all_mean_delta_logprob": -3.993306308984757e-05,
+        "loop_state_mean_delta": -4.415814764797687e-05,
+        "variable_tracking_mean_delta": -5.884763474265734e-05
+      },
+      {
+        "head": 7,
+        "all_mean_delta_logprob": 0.00016445931978523732,
+        "loop_state_mean_delta": 0.00012916275300085546,
+        "variable_tracking_mean_delta": 6.705336272716522e-05
+      },
+      {
+        "head": 8,
+        "all_mean_delta_logprob": 0.0002419251948595047,
+        "loop_state_mean_delta": 0.00018222318030893802,
+        "variable_tracking_mean_delta": 0.00017649393218259016
+      },
+      {
+        "head": 9,
+        "all_mean_delta_logprob": -6.180943455547094e-05,
+        "loop_state_mean_delta": -6.0167070478200914e-05,
+        "variable_tracking_mean_delta": -4.944934820135434e-06
+      },
+      {
+        "head": 10,
+        "all_mean_delta_logprob": -3.470799420028925e-05,
+        "loop_state_mean_delta": -6.451690569519997e-05,
+        "variable_tracking_mean_delta": -8.311922041078408e-05
+      },
+      {
+        "head": 11,
+        "all_mean_delta_logprob": 0.0001539644901640713,
+        "loop_state_mean_delta": 0.0001259667333215475,
+        "variable_tracking_mean_delta": 0.00022149225696921349
+      },
+      {
+        "head": 12,
+        "all_mean_delta_logprob": 0.0003146982635371387,
+        "loop_state_mean_delta": 0.0003727938514202833,
+        "variable_tracking_mean_delta": 0.0003688111125181119
+      },
+      {
+        "head": 13,
+        "all_mean_delta_logprob": 5.999826826155186e-05,
+        "loop_state_mean_delta": 0.00016104378737509252,
+        "variable_tracking_mean_delta": 0.00020951048160592714
+      }
+    ],
+    "13": [
+      {
+        "head": 0,
+        "all_mean_delta_logprob": -2.7344538830220698e-05,
+        "loop_state_mean_delta": -7.25229736417532e-05,
+        "variable_tracking_mean_delta": -4.942559947570165e-05
+      },
+      {
+        "head": 1,
+        "all_mean_delta_logprob": 3.072267863899469e-05,
+        "loop_state_mean_delta": 2.7288356795907022e-05,
+        "variable_tracking_mean_delta": 2.767580250898997e-05
+      },
+      {
+        "head": 2,
+        "all_mean_delta_logprob": 1.4719786122441292e-05,
+        "loop_state_mean_delta": 1.1443346738815308e-05,
+        "variable_tracking_mean_delta": 7.990747690200806e-06
+      },
+      {
+        "head": 3,
+        "all_mean_delta_logprob": -2.9751262627542018e-05,
+        "loop_state_mean_delta": 0.0001130678690969944,
+        "variable_tracking_mean_delta": -0.00013198098167777061
+      },
+      {
+        "head": 4,
+        "all_mean_delta_logprob": 9.455005638301373e-05,
+        "loop_state_mean_delta": 5.667703226208687e-05,
+        "variable_tracking_mean_delta": 0.00017567723989486694
+      },
+      {
+        "head": 5,
+        "all_mean_delta_logprob": 0.00015762492548674346,
+        "loop_state_mean_delta": 9.93396621197462e-05,
+        "variable_tracking_mean_delta": 0.0001213241678973039
+      },
+      {
+        "head": 6,
+        "all_mean_delta_logprob": 1.9765924662351607e-06,
+        "loop_state_mean_delta": 4.245261661708355e-05,
+        "variable_tracking_mean_delta": 2.366366485754649e-05
+      },
+      {
+        "head": 7,
+        "all_mean_delta_logprob": 4.156067734584212e-05,
+        "loop_state_mean_delta": 3.978516906499863e-05,
+        "variable_tracking_mean_delta": 3.0358244354526203e-05
+      },
+      {
+        "head": 8,
+        "all_mean_delta_logprob": -5.643644835799933e-05,
+        "loop_state_mean_delta": -3.5501644015312193e-05,
+        "variable_tracking_mean_delta": -2.8412013004223507e-05
+      },
+      {
+        "head": 9,
+        "all_mean_delta_logprob": -0.00028213390614837406,
+        "loop_state_mean_delta": -0.0002763486932963133,
+        "variable_tracking_mean_delta": -0.00016719258079926172
+      },
+      {
+        "head": 10,
+        "all_mean_delta_logprob": -4.185392754152417e-05,
+        "loop_state_mean_delta": -3.516925498843193e-05,
+        "variable_tracking_mean_delta": 3.622604223589102e-05
+      },
+      {
+        "head": 11,
+        "all_mean_delta_logprob": 0.0001376800355501473,
+        "loop_state_mean_delta": 0.00012754308991134167,
+        "variable_tracking_mean_delta": 0.00018382173342009386
+      },
+      {
+        "head": 12,
+        "all_mean_delta_logprob": -0.0001397622749209404,
+        "loop_state_mean_delta": -6.927479989826679e-05,
+        "variable_tracking_mean_delta": -8.732957455019157e-05
+      },
+      {
+        "head": 13,
+        "all_mean_delta_logprob": 9.519871091470122e-05,
+        "loop_state_mean_delta": 0.00015007192268967628,
+        "variable_tracking_mean_delta": 0.00011150337134798367
+      }
+    ]
+  },
+  "selected_head_edits": [
+    {
+      "layer": 15,
+      "head": 1,
+      "category": "loop_state",
+      "head_delta_logprob": 0.0006627246271818876,
+      "edit": {
+        "selected_head": 1,
+        "head_input_columns": [
+          64,
+          127
+        ],
+        "method": "ROME-style Woodbury centroid edit restricted to one output-projection head slice",
+        "ridge": 0.0019581356166476415,
+        "rank": 1,
+        "samples": 20,
+        "target_contribution_distance_before": 1.428748369216919,
+        "target_contribution_distance_after": 0.9185965061187744,
+        "proposed_frobenius_delta": 0.6580076813697815,
+        "cap_scale": 0.3570620398301124,
+        "expected_relative_frobenius_change": 0.014999998733401299,
+        "warning": "The teacher-forced last-token head state is a proxy for logic, not a proven semantic circuit",
+        "observed_relative_frobenius_change": 0.014999997802078724,
+        "matrix_inspection_before": {
+          "shape": [
+            896,
+            896
+          ],
+          "finite": true,
+          "frob_norm": 15.663304328918457,
+          "mean": 6.370498340402264e-06,
+          "std": 0.017481032758951187,
+          "sampled_top_singular_values": [
+            0.719268,
+            0.582365,
+            0.465383
+          ],
+          "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+        }
+      }
+    },
+    {
+      "layer": 13,
+      "head": 11,
+      "category": "variable_tracking",
+      "head_delta_logprob": 0.00018382173342009386,
+      "edit": {
+        "selected_head": 11,
+        "head_input_columns": [
+          704,
+          767
+        ],
+        "method": "ROME-style Woodbury centroid edit restricted to one output-projection head slice",
+        "ridge": 0.00012795278390722147,
+        "rank": 1,
+        "samples": 20,
+        "target_contribution_distance_before": 0.6754621267318726,
+        "target_contribution_distance_after": 0.5218234062194824,
+        "proposed_frobenius_delta": 0.9869128465652466,
+        "cap_scale": 0.22745730704538386,
+        "expected_relative_frobenius_change": 0.015000002458691597,
+        "warning": "The teacher-forced last-token head state is a proxy for logic, not a proven semantic circuit",
+        "observed_relative_frobenius_change": 0.014999988488852978,
+        "matrix_inspection_before": {
+          "shape": [
+            896,
+            896
+          ],
+          "finite": true,
+          "frob_norm": 14.96536922454834,
+          "mean": 1.0506952321520657e-06,
+          "std": 0.016702087596058846,
+          "sampled_top_singular_values": [
+            0.367635,
+            0.351118,
+            0.339077
+          ],
+          "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+        }
+      }
+    }
+  ],
+  "attention_norm_cap": 0.015,
+  "archived_layer8_mlp_relative_norm": 0.10000181198120117,
+  "archived_mlp_sha256": "f7d2f84aee50624f990355c801821f4d2b42b63b173d698fc38faabc468222dc",
+  "hardware": {
+    "cpu_threads": 4,
+    "python": "3.11.17"
+  },
+  "no_training": true,
+  "limitations": "Head/logic associations use rough source AST categories and teacher-forced terminal activations; positive log-probability mediation does not prove correct variable/loop reasoning"
+}
