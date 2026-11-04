@@ -1,0 +1,67 @@
+name: Session014 publish already validated experiment artifacts
+
+on:
+  push:
+    branches:
+      - exp/12-hybrid-ortho-hooks
+    paths:
+      - .github/workflows/session014-publish-recovery.yml
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish_verified:
+    name: Publish immutable Session014 results from validated Actions run 41912404382
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Download collector-verified artifacts from completed run
+        uses: actions/download-artifact@v4
+        with:
+          name: session014-verified-comparison
+          run-id: 41912404382
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: outputs/session014-recovered
+      - name: Verify report, source identity and factor SHA256 before installing
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root = Path('outputs/session014-recovered')
+          report = json.loads((root/'experiments/session014_hybrid_report.json').read_text())
+          factors = root/'experiments/session014_orthogonal_factors.safetensors'
+          if report['status'] != 'completed' or report['session'] != '014':
+              raise ValueError('Unverified report status')
+          if set(report['tracks']) != {
+              'baseline','static','dynamic-0.25','dynamic-0.75','dynamic-1.25',
+              'hybrid-0.25','hybrid-0.75','hybrid-1.25'
+          }:
+              raise ValueError('Missing benchmark tracks')
+          if report['model'] != 'Qwen/Qwen2.5-Coder-0.5B':
+              raise ValueError('Changed model identity')
+          if hashlib.sha256(factors.read_bytes()).hexdigest() != report['factor_sha256']:
+              raise ValueError('Reversible factor checksum mismatch')
+          if '<!-- SESSION014-PENDING-START -->' in (root/'README.md').read_text():
+              raise ValueError('README remains pending')
+          print('Verified all eight track summaries, model identity and factor checksum')
+          PY
+      - name: Install only collector-verified artifacts
+        run: |
+          cp outputs/session014-recovered/README.md README.md
+          cp outputs/session014-recovered/experiments/session014_hybrid_report.json experiments/session014_hybrid_report.json
+          cp outputs/session014-recovered/experiments/session014_hybrid_predictions.json experiments/session014_hybrid_predictions.json
+          cp outputs/session014-recovered/experiments/session014_orthogonal_factors.safetensors experiments/session014_orthogonal_factors.safetensors
+      - name: Commit measured report, predictions and explicitly allowlisted factor archive
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session014_hybrid_report.json experiments/session014_hybrid_predictions.json
+          git add -f experiments/session014_orthogonal_factors.safetensors
+          git commit -m 'Publish collector-verified Session014 100-task eight-track metrics and factors'
+          git push origin HEAD:exp/12-hybrid-ortho-hooks
