@@ -45,6 +45,15 @@ python -m tinycoder.rome20 --edit-count 20 --holdout-count 20 --max-new-tokens 1
 
 Results are saved to `outputs/rome20/` locally or as the `humaneval-rome20-results` Actions artifact. The output includes `progress.json`, `rome_factors.safetensors`, `rome20_report.json` and per-task `predictions.json`. The selected-failure set has pass@1=0 by construction, so **the independent holdout delta is the primary generalization signal**. This is **ROME-style** closed-form editing, not a reproduction of original ROME's optimized target-value computation, and a positive result would require replication on multiple unseen seeds and tasks.
 
+**Measured 20-failure ROME-style run — November 4, 2026:** [GitHub Actions run #1](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41746688416) completed successfully on the base `Qwen/Qwen2.5-Coder-0.5B` model. The best patching layer was **8 of 24** (mean first-reference-token log-probability gain **+0.00341** across 20 patches). One rank-one update was applied to layer 8's `mlp.down_proj` with a **1% relative Frobenius-norm cap**. The centroid activation target distance decreased from **5.3785 to 3.2088**. The precise factors are retained alongside the full report and per-task predictions in [`experiments/2026-11-04-rome20/`](experiments/2026-11-04-rome20/).
+
+| Execution-tested set | Before pass@1 | After pass@1 | Delta |
+| --- | ---: | ---: | ---: |
+| 20 deliberately selected failures | 0/20 (0%) | 1/20 (5%) | **+5 percentage points** |
+| 20 subsequent, independent holdout tasks | 3/20 (15%) | 5/20 (25%) | **+10 percentage points** |
+
+The repaired edit-set task was `HumanEval/7`. The holdout gained passes on `HumanEval/29` and `HumanEval/43`, with **no formerly passing holdout task regressing**. On the holdout, eight generated answers changed and twelve remained identical. These are verified one-generation-per-task execution results, **not proof of general coding-skill improvement**: a 20-task holdout has high statistical uncertainty, and the gain needs replication on a broader, untouched benchmark. Neither the selected 20 failures nor the 20 holdout tasks should be reused to choose future edits.
+
 **Safety:** Do not run generated code outside a sandbox. `tinycoder/sandbox_eval.py` refuses execution when Docker is unavailable. The Docker container has no network, uses an unprivileged user, read-only filesystem, dropped capabilities and strict resource limits. No sandbox is a guarantee against all attacks.
 
 **First internal-matrix result:** [GitHub Actions run](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41744954761) succeeded. A rank-one edit to layer 12's `mlp.down_proj` was bounded to **0.2% of the original matrix Frobenius norm**, and all matrix values remained finite. The targeted last-token output moved closer to the selected reference activation (Euclidean distance **3.1938 → 2.9704**, about 7% smaller). However, **all four generated answers remained identical**, and the simple static checks stayed **2/4 before and after**. This is a successful numerical intervention, **not an accuracy improvement**. Download `internal-001-results` from that run for the exact factor tensors and responses.
@@ -163,6 +172,7 @@ The statistics show layer names, tensor shapes, means, standard deviations, and 
 | 002 | 4 prompts | Direct output-row edit (+2 logit) | Rank and AST checks | Changed weight, no answers changed |
 | 003 | 4 prompts | Direct output-row edit (+5 logit) | Rank and AST checks | `def` rank 6→1; 2 answers changed; AST stayed 2/4 |
 | 004 | 4 prompts | Internal layer 12 `mlp.down_proj` rank-one update (0.2% cap) | Activation distance + AST checks | Distance 3.1938→2.9704; no answers changed; AST stayed 2/4 |
+| 005 | 20 selected HumanEval failures + 20 untouched holdouts | Causal-scan-selected layer 8 `mlp.down_proj` rank-one update (1% cap) | Restricted Docker execution, greedy pass@1 | Selected 0/20→1/20; holdout 3/20→5/20; preliminary +10 pp holdout |
 
 ### Historical first experiment in GitHub Actions
 
@@ -183,7 +193,7 @@ The `.github/workflows/model-session.yml` workflow records the earlier LoRA expe
 ## Limitations and research hygiene
 
 - Tiny models may generate wrong or insecure code. Always review their output.
-- This lab does not run generated programs. AST validity **is not correctness**.
+- The earlier `eval` command checks AST structure only; the newer HumanEval experiment **does execute generated code, exclusively in a restricted Docker sandbox**. AST validity alone **is not correctness**; a sandbox is not a perfect security boundary.
 - Keep evaluation examples separate from training. Build a much larger, independent benchmark before drawing conclusions.
 - Running inference is feasible on modest PCs, especially via quantization; local fine-tuning may need a GPU/cloud environment.
 - Do not commit `.env`, model weights, private data, or large checkpoints.

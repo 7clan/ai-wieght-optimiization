@@ -1,0 +1,293 @@
+{
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "source": "https://raw.githubusercontent.com/openai/human-eval/b9453e8f1865df0a0057a1383767caa400acfbcf/data/HumanEval.jsonl.gz",
+  "max_new_tokens": 160,
+  "selected_failing_ids": [
+    "HumanEval/0",
+    "HumanEval/1",
+    "HumanEval/2",
+    "HumanEval/4",
+    "HumanEval/5",
+    "HumanEval/6",
+    "HumanEval/7",
+    "HumanEval/8",
+    "HumanEval/10",
+    "HumanEval/11",
+    "HumanEval/13",
+    "HumanEval/14",
+    "HumanEval/15",
+    "HumanEval/16",
+    "HumanEval/17",
+    "HumanEval/18",
+    "HumanEval/19",
+    "HumanEval/20",
+    "HumanEval/21",
+    "HumanEval/23"
+  ],
+  "holdout_ids": [
+    "HumanEval/24",
+    "HumanEval/25",
+    "HumanEval/26",
+    "HumanEval/27",
+    "HumanEval/28",
+    "HumanEval/29",
+    "HumanEval/30",
+    "HumanEval/31",
+    "HumanEval/32",
+    "HumanEval/33",
+    "HumanEval/34",
+    "HumanEval/35",
+    "HumanEval/36",
+    "HumanEval/37",
+    "HumanEval/38",
+    "HumanEval/39",
+    "HumanEval/40",
+    "HumanEval/41",
+    "HumanEval/42",
+    "HumanEval/43"
+  ],
+  "candidate_scanned": 44,
+  "candidate_passed": 7,
+  "holdout_before_passes": 3,
+  "selected_layer": 8,
+  "causal_scores": [
+    {
+      "layer": 0,
+      "mean_logprob_delta": -0.021247360191773625,
+      "median_logprob_delta": -0.019872279139235616,
+      "positive_cases": 4,
+      "cases": 20
+    },
+    {
+      "layer": 1,
+      "mean_logprob_delta": -0.014171617431566119,
+      "median_logprob_delta": -0.013550011441111565,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 2,
+      "mean_logprob_delta": -0.0013667458901181818,
+      "median_logprob_delta": -0.0010375289712101221,
+      "positive_cases": 7,
+      "cases": 20
+    },
+    {
+      "layer": 3,
+      "mean_logprob_delta": -0.0027358052786439655,
+      "median_logprob_delta": -0.001401983667165041,
+      "positive_cases": 3,
+      "cases": 20
+    },
+    {
+      "layer": 4,
+      "mean_logprob_delta": -0.0024566449457779525,
+      "median_logprob_delta": -0.0018054884858429432,
+      "positive_cases": 4,
+      "cases": 20
+    },
+    {
+      "layer": 5,
+      "mean_logprob_delta": -0.024563859775662424,
+      "median_logprob_delta": -0.020956742577254772,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 6,
+      "mean_logprob_delta": -0.013917139824479818,
+      "median_logprob_delta": -0.010767240542918444,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 7,
+      "mean_logprob_delta": -0.017574732191860676,
+      "median_logprob_delta": -0.009852500632405281,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 8,
+      "mean_logprob_delta": 0.0034138069080654533,
+      "median_logprob_delta": 0.0033136424608528614,
+      "positive_cases": 20,
+      "cases": 20
+    },
+    {
+      "layer": 9,
+      "mean_logprob_delta": -0.002930801815818995,
+      "median_logprob_delta": -0.0021083669271320105,
+      "positive_cases": 4,
+      "cases": 20
+    },
+    {
+      "layer": 10,
+      "mean_logprob_delta": -0.005301967076957226,
+      "median_logprob_delta": -0.0032087727449834347,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 11,
+      "mean_logprob_delta": -0.00023258232977241278,
+      "median_logprob_delta": 0.000535561004653573,
+      "positive_cases": 13,
+      "cases": 20
+    },
+    {
+      "layer": 12,
+      "mean_logprob_delta": -0.016085744299925864,
+      "median_logprob_delta": -0.01305247819982469,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 13,
+      "mean_logprob_delta": -0.02092987596988678,
+      "median_logprob_delta": -0.015626744832843542,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 14,
+      "mean_logprob_delta": -0.04086270993575454,
+      "median_logprob_delta": -0.012954344972968102,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 15,
+      "mean_logprob_delta": -0.02966280374675989,
+      "median_logprob_delta": -0.021137582836672664,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 16,
+      "mean_logprob_delta": -0.10285782557912171,
+      "median_logprob_delta": -0.05062347650527954,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 17,
+      "mean_logprob_delta": -0.005018735333578661,
+      "median_logprob_delta": 0.00012677360791713,
+      "positive_cases": 10,
+      "cases": 20
+    },
+    {
+      "layer": 18,
+      "mean_logprob_delta": -0.0022212182288058103,
+      "median_logprob_delta": -0.0005981437861919403,
+      "positive_cases": 8,
+      "cases": 20
+    },
+    {
+      "layer": 19,
+      "mean_logprob_delta": -0.013431646535173059,
+      "median_logprob_delta": -0.00737228780053556,
+      "positive_cases": 1,
+      "cases": 20
+    },
+    {
+      "layer": 20,
+      "mean_logprob_delta": -0.05325588951818645,
+      "median_logprob_delta": -0.020181778352707624,
+      "positive_cases": 1,
+      "cases": 20
+    },
+    {
+      "layer": 21,
+      "mean_logprob_delta": -0.00017405357211828232,
+      "median_logprob_delta": -0.0003021741285920143,
+      "positive_cases": 8,
+      "cases": 20
+    },
+    {
+      "layer": 22,
+      "mean_logprob_delta": 0.00012079325970262289,
+      "median_logprob_delta": 0.00040481332689523697,
+      "positive_cases": 11,
+      "cases": 20
+    },
+    {
+      "layer": 23,
+      "mean_logprob_delta": 0.001956546609289944,
+      "median_logprob_delta": 0.0026147947064600885,
+      "positive_cases": 17,
+      "cases": 20
+    }
+  ],
+  "edit": {
+    "layer": 8,
+    "matrix": "mlp.down_proj",
+    "before": {
+      "shape": [
+        896,
+        4864
+      ],
+      "finite": true,
+      "frob_norm": 37.84131622314453,
+      "mean": 2.18997547563049e-06,
+      "std": 0.018126800656318665,
+      "sampled_top_singular_values": [
+        0.457006,
+        0.41984,
+        0.41144
+      ],
+      "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+    },
+    "after": {
+      "shape": [
+        896,
+        4864
+      ],
+      "finite": true,
+      "frob_norm": 37.83607864379883,
+      "mean": 2.075357997455285e-06,
+      "std": 0.01812640391290188,
+      "sampled_top_singular_values": [
+        0.456402,
+        0.419757,
+        0.412052
+      ],
+      "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+    },
+    "covariance": "ridge-plus-empirical-full-rank20 via Woodbury",
+    "ridge": 0.00015959364793643769,
+    "centroid_distance_before": 5.378499984741211,
+    "centroid_distance_after": 3.208780288696289,
+    "proposed_delta_norm": 0.9380452632904053,
+    "cap_scale": 0.4034060796854044,
+    "actual_relative_delta_norm": 0.010000001795637727,
+    "warning": "A single rank-one update targets the centroid, not 20 exact associations"
+  },
+  "failure_conditioned_edit_set": {
+    "n": 20,
+    "before_passed": 0,
+    "after_passed": 1,
+    "pass_at_1_before": 0.0,
+    "pass_at_1_after": 0.05,
+    "pass_at_1_delta": 0.05,
+    "percentage_point_delta": 5.0
+  },
+  "independent_holdout_20": {
+    "n": 20,
+    "before_passed": 3,
+    "after_passed": 5,
+    "pass_at_1_before": 0.15,
+    "pass_at_1_after": 0.25,
+    "pass_at_1_delta": 0.1,
+    "percentage_point_delta": 10.0
+  },
+  "methodology": {
+    "k": "last-token input to each MLP down_proj, not the raw residual stream",
+    "y": "last-token MLP output from a teacher-forced, sandbox-verified canonical solution",
+    "causal_layer": "max mean log-probability increase for first canonical token under output activation patching",
+    "rome_projection": "one rank-one update on mean of 20 key/value pairs, using Woodbury ridge covariance inverse",
+    "caution": "Not full ROME; same 20 edit cases inform layer selection and edit. Holdout never informs selection.",
+    "execution": "Docker restricted container, no host execution or network; one greedy generation per task"
+  }
+}
