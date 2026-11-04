@@ -1,0 +1,13 @@
+{
+  "holdout_start": 94,
+  "holdout_count": 50,
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "test_set_usage": "cross-branch comparison only; no tuning against these results",
+  "branch": "exp/04-memit-single-layer",
+  "variant": "memit_single",
+  "target_layer": 8,
+  "matrices": [
+    "mlp.down_proj"
+  ],
+  "max_relative_delta": 0.015
+}
