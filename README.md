@@ -1,14 +1,40 @@
 # TinyCoder Weight Lab
 
-<!-- SESSION014-PENDING-START -->
-### Session 014 — orthogonal UI/backend subspace and dynamic-hook suite (in progress)
+## Session 014 — orthogonal subspaces plus dynamic activation hooks (measured)
 
-The [`exp/12-hybrid-ortho-hooks`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/12-hybrid-ortho-hooks) branch contains a reproducible experiment restricted to base **Qwen2.5-Coder-0.5B** (24 layers, hidden size 896). Its rank32/orthogonal subspace factors target Layers8/16 `mlp.down_proj`; attention `o_proj` forward hooks at Layers12/18 fire during incremental decoding when the latest token matches a control-flow keyword. Eight tracks compare an untouched model, static-only, dynamic-only (α=0.25/0.75/1.25), and static+dynamic hybrid for each α.
+Qwen2.5-Coder **0.5B base** was run with no gradient training or architecture changes.
+Fifty independently selected MBPP+ prompts (excluding Session013's 100 tasks)
+and fifty *custom-authored* React/Express scaffolding tasks were evaluated.
+React and Express tasks have their own Docker validation—not Python `ast.parse`.
+All 50 editing references passed their Docker tests before any factors were
+derived; no test prompt was included in the activation derivation set.
 
-The 100-example evaluation comprises **50 MBPP+ prompts** (excluding the 100 consumed by Session013) and **50 separately authored web scaffolding tasks** (25 React, 25 Express). The JS tasks are not standardized MBPP+. The 50 reference trajectories used for factor derivation are separate and are Docker-checked before deriving factors. All generated code is evaluated exclusively in restricted Docker.
+UI and backend activation matrices were SVD-decomposed and Gram-Schmidt/QR
+orthogonalized, then turned into bounded rank32 changes at Layers 8 and 16.
+The runtime tracks applied mode-targeted attention-`o_proj` forward hooks at
+Layers 12 and 18 only when an incrementally generated token matched a
+control-flow keyword. The hook changes attention output, not whole residual.
 
-The [Session014 Actions workflow](https://github.com/7clan/ai-wieght-optimiization/actions/workflows/session014-hybrid-cpu.yml) runs the CPU evaluation; **pass@1, syntax rates, and failure taxonomy are pending**, not measured locally. The [pending structured report](experiments/session014_hybrid_report.json) contains null scores and is replaced only after all eight evaluation tracks pass verification. Neither orthogonality nor activation alignment alone establishes improved code correctness.
-<!-- SESSION014-PENDING-END -->
+| Track | MBPP+ pass@1 (50) | React pass@1 (25) | Express pass@1 (25) | Combined pass@1 | Syntax valid | Δ vs baseline |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| baseline | 27/50 (54%) | 2/25 (8%) | 1/25 (4%) | 30/100 | 73/100 | +0 pp |
+| static | 26/50 (52%) | 7/25 (28%) | 0/25 (0%) | 33/100 | 73/100 | +3 pp |
+| dynamic-0.25 | 26/50 (52%) | 2/25 (8%) | 1/25 (4%) | 29/100 | 73/100 | -1 pp |
+| dynamic-0.75 | 26/50 (52%) | 2/25 (8%) | 1/25 (4%) | 29/100 | 73/100 | -1 pp |
+| dynamic-1.25 | 26/50 (52%) | 2/25 (8%) | 1/25 (4%) | 29/100 | 73/100 | -1 pp |
+| hybrid-0.25 | 26/50 (52%) | 7/25 (28%) | 0/25 (0%) | 33/100 | 73/100 | +3 pp |
+| hybrid-0.75 | 26/50 (52%) | 7/25 (28%) | 0/25 (0%) | 33/100 | 73/100 | +3 pp |
+| hybrid-1.25 | 26/50 (52%) | 7/25 (28%) | 0/25 (0%) | 33/100 | 75/100 | +3 pp |
+
+The combined total weights 50 Python tasks and 50 custom JavaScript tasks
+equally; it is descriptive and **not** a standardized benchmark score.
+Exact task-level predictions, failure taxonomy shifts, per-layer cross-subspace
+cosines, observed norm changes, hook trigger counts and factor hashes are in
+[`session014_hybrid_report.json`](experiments/session014_hybrid_report.json),
+[`session014_hybrid_predictions.json`](experiments/session014_hybrid_predictions.json)
+and reversible [`session014_orthogonal_factors.safetensors`](experiments/session014_orthogonal_factors.safetensors).
+Reference-vector independence is numerical, not a guarantee that model behaviors
+are causally disentangled. Reproducing gains requires genuinely external tests.
 
 A beginner-friendly experiment for **running, inspecting and directly editing weights in a very small coding AI**. The repository contains the software and examples; it intentionally **does not commit full pretrained model weights**.
 

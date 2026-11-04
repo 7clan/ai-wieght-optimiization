@@ -1,26 +1,1795 @@
 {
-  "status": "pending",
+  "status": "completed",
   "session": "014",
   "branch": "exp/12-hybrid-ortho-hooks",
   "model": "Qwen/Qwen2.5-Coder-0.5B",
-  "dataset": "50 fresh MBPP+ task IDs plus 25 custom React and 25 custom Express tasks",
-  "benchmark_provenance": "MBPP+ is the official EvalPlus suite; the web suite is custom authored",
-  "source_trajectories": 50,
+  "parameter_count": 494032768,
+  "parameter_scale_unchanged": true,
   "training_steps": 0,
-  "required_tracks": [
-    "baseline",
-    "static",
-    "dynamic-0.25",
-    "dynamic-0.75",
-    "dynamic-1.25",
-    "hybrid-0.25",
-    "hybrid-0.75",
-    "hybrid-1.25"
+  "dataset_manifest": {
+    "model": "Qwen/Qwen2.5-Coder-0.5B",
+    "mbpp_plus_count": 50,
+    "web_authored_count": 50,
+    "total": 100,
+    "mbpp_plus_dataset_md5": "ee43ecabebf20deef4bb776a405ac5b1",
+    "evalplus_version": "0.3.1",
+    "selection_seed": "session014-mbppplus-disjoint-v1",
+    "excluded_session013_task_ids_sha256": "acd07a7d1fe2e656a428076a2de4dc69ca9d1ce8f0e152dff95e4047ccb71bc9",
+    "mbpp_task_ids": [
+      "Mbpp/20",
+      "Mbpp/108",
+      "Mbpp/293",
+      "Mbpp/448",
+      "Mbpp/262",
+      "Mbpp/93",
+      "Mbpp/17",
+      "Mbpp/282",
+      "Mbpp/82",
+      "Mbpp/171",
+      "Mbpp/424",
+      "Mbpp/103",
+      "Mbpp/421",
+      "Mbpp/270",
+      "Mbpp/120",
+      "Mbpp/250",
+      "Mbpp/95",
+      "Mbpp/230",
+      "Mbpp/127",
+      "Mbpp/61",
+      "Mbpp/12",
+      "Mbpp/256",
+      "Mbpp/77",
+      "Mbpp/439",
+      "Mbpp/145",
+      "Mbpp/84",
+      "Mbpp/478",
+      "Mbpp/242",
+      "Mbpp/287",
+      "Mbpp/252",
+      "Mbpp/227",
+      "Mbpp/279",
+      "Mbpp/474",
+      "Mbpp/232",
+      "Mbpp/274",
+      "Mbpp/71",
+      "Mbpp/296",
+      "Mbpp/255",
+      "Mbpp/398",
+      "Mbpp/140",
+      "Mbpp/427",
+      "Mbpp/276",
+      "Mbpp/102",
+      "Mbpp/390",
+      "Mbpp/88",
+      "Mbpp/259",
+      "Mbpp/479",
+      "Mbpp/72",
+      "Mbpp/62",
+      "Mbpp/162"
+    ],
+    "web_task_ids": [
+      "WebUI/00",
+      "WebUI/01",
+      "WebUI/02",
+      "WebUI/03",
+      "WebUI/04",
+      "WebUI/05",
+      "WebUI/06",
+      "WebUI/07",
+      "WebUI/08",
+      "WebUI/09",
+      "WebUI/10",
+      "WebUI/11",
+      "WebUI/12",
+      "WebUI/13",
+      "WebUI/14",
+      "WebUI/15",
+      "WebUI/16",
+      "WebUI/17",
+      "WebUI/18",
+      "WebUI/19",
+      "WebUI/20",
+      "WebUI/21",
+      "WebUI/22",
+      "WebUI/23",
+      "WebUI/24",
+      "WebAPI/00",
+      "WebAPI/01",
+      "WebAPI/02",
+      "WebAPI/03",
+      "WebAPI/04",
+      "WebAPI/05",
+      "WebAPI/06",
+      "WebAPI/07",
+      "WebAPI/08",
+      "WebAPI/09",
+      "WebAPI/10",
+      "WebAPI/11",
+      "WebAPI/12",
+      "WebAPI/13",
+      "WebAPI/14",
+      "WebAPI/15",
+      "WebAPI/16",
+      "WebAPI/17",
+      "WebAPI/18",
+      "WebAPI/19",
+      "WebAPI/20",
+      "WebAPI/21",
+      "WebAPI/22",
+      "WebAPI/23",
+      "WebAPI/24"
+    ],
+    "source_task_ids": [
+      "SourceUI/00",
+      "SourceAPI/00",
+      "SourceUI/01",
+      "SourceAPI/01",
+      "SourceUI/02",
+      "SourceAPI/02",
+      "SourceUI/03",
+      "SourceAPI/03",
+      "SourceUI/04",
+      "SourceAPI/04",
+      "SourceUI/05",
+      "SourceAPI/05",
+      "SourceUI/06",
+      "SourceAPI/06",
+      "SourceUI/07",
+      "SourceAPI/07",
+      "SourceUI/08",
+      "SourceAPI/08",
+      "SourceUI/09",
+      "SourceAPI/09",
+      "SourceUI/10",
+      "SourceAPI/10",
+      "SourceUI/11",
+      "SourceAPI/11",
+      "SourceUI/12",
+      "SourceAPI/12",
+      "SourceUI/13",
+      "SourceAPI/13",
+      "SourceUI/14",
+      "SourceAPI/14",
+      "SourceUI/15",
+      "SourceAPI/15",
+      "SourceUI/16",
+      "SourceAPI/16",
+      "SourceUI/17",
+      "SourceAPI/17",
+      "SourceUI/18",
+      "SourceAPI/18",
+      "SourceUI/19",
+      "SourceAPI/19",
+      "SourceUI/20",
+      "SourceAPI/20",
+      "SourceUI/21",
+      "SourceAPI/21",
+      "SourceUI/22",
+      "SourceAPI/22",
+      "SourceUI/23",
+      "SourceAPI/23",
+      "SourceUI/24",
+      "SourceAPI/24"
+    ],
+    "web_fixture_sha256": "f66fe49399b9b64238387914ed202140e718fa35fbf52bb6cec14b547b0f917b",
+    "source_fixture_sha256": "2eb5d52e4b2e00d289e9c6409c103ac8e039e96a753c8d17c199ec1816b548db",
+    "mbpp_prompt_sha256": {
+      "Mbpp/20": "f8b73702a74ced3465c6ad7d58ae51a2f5042b0e7d990b8aa4ac6107609afd80",
+      "Mbpp/108": "2ac552e7e39218987c44bd534c615f6ac2f4cfd4e9b80f70bd45db150b4d4b73",
+      "Mbpp/293": "be50d426d0412ba68f417c61e876b0aa5462a7a44708f14940d3aa4ce310f8de",
+      "Mbpp/448": "d9edc301795af87de60a16f06cf4c91eddb07e8a6599bd89fba3b8b7b160ea1b",
+      "Mbpp/262": "d9da47029840b12ab87e338bfabff4010c41ba846f4f4967c020d57ca7efbe19",
+      "Mbpp/93": "fab42af1bc0ac8c70a183186c7163f6be821eba28ca251764c24322343c70629",
+      "Mbpp/17": "07826a89ffc8ee30c621d90d36cf524e85ada2bcbada2602909c70af450d9aac",
+      "Mbpp/282": "b703cdf18017511d4ceb18502d1217845d1a4e1934b9b5be736fe9312b94a78f",
+      "Mbpp/82": "07e737173867d795b074912ee83db34d557734fcd694245ed0456c3afd9ab288",
+      "Mbpp/171": "068b32bb27d9c9d214aa4627aaaa56312ec757b2b814e4e5b906a2490259c71d",
+      "Mbpp/424": "2b059a1761e978c9de80ed18b6265f1398fd90daa49e04dba9b9e0e1dbdcc4f5",
+      "Mbpp/103": "638b87643e69fe30b83a3dffa1062e57189b5621e60bd563be38109e28497d50",
+      "Mbpp/421": "a74f365a04fb935d91dbe68b58ab2d1ec8ceaaf5df8ff7422918f899db01a756",
+      "Mbpp/270": "390023dcac6dbbfbb9b3f5e819db3dec405111afb2645577a930da37b0556c90",
+      "Mbpp/120": "d7ebf56522148312a87d9e696fd7f6edc5d4d9a6d117d93c1db483c1ba8b8637",
+      "Mbpp/250": "04551b7843982343e1c03c46299e4cbd29568228b604b6511f0ac88e35f610c3",
+      "Mbpp/95": "e702ea22bfccd5d6a3c5f01e455456770a259ea026e84042c1635c2c32b0f537",
+      "Mbpp/230": "531cced726ffa118b7de845745b8e9e90ead2e4a637c79d699b756d09710fc28",
+      "Mbpp/127": "ac1e4fd9640e1bf3db482d38f60791053e473b08c88c23d971e50c5ed48a8c52",
+      "Mbpp/61": "8def5a6c3ad944e175fdfb3d5d56573b6f20d322f5c0d9144578b0f84a97736b",
+      "Mbpp/12": "0b911f36d7fb9d91570e2d8d66a622b803d9a75d2f70cdae9a5ba76f56605864",
+      "Mbpp/256": "477bee3e320519d6ec82051f7af927aeb6e2c3a3801652b0de0686658586a8e2",
+      "Mbpp/77": "e1f8653f7ce0fffcd308c8937f86469190a9abe5cb11b4769de19542ba060a22",
+      "Mbpp/439": "dbc5b4f5ebd9e90a0f64255f8e0b1330df30b5f0e5fee484a41ac14433476e1b",
+      "Mbpp/145": "4b5125315d3fb032894f0da260679e86578f9e9e3facc9d1bde98f858312f6b8",
+      "Mbpp/84": "21cacb58f14a21e0b46d16db644ea0417d4576352faaa4bd514abe4268b00f26",
+      "Mbpp/478": "54674af10d0860959d4586cceadb17142603ed384c3b102bb27c4a8221a1dfc0",
+      "Mbpp/242": "accda8e776696b3a57be9010cf761e6ffdf26b0df64f15e2fcc5538308466bd5",
+      "Mbpp/287": "a5b70cfdaf6b7550531b2331c1933bf2d92775e97dc54b8ac80c9431ff88ae8b",
+      "Mbpp/252": "566a8cfc45a63273c46283f47dff5bfba3feef1e7f6ffaff59458aae85db7e15",
+      "Mbpp/227": "70fc85a4cf792aab36a844227a9e0708379e99c43b62e45fa494fa372c54ccba",
+      "Mbpp/279": "574f80994d371d1747d7b69e1e6a87564933d617bd1e6649ff02b44f50a68ba2",
+      "Mbpp/474": "e9531df47ab1609f4970ab63a7d3586171ea5387a6c787d62913d55707138cf6",
+      "Mbpp/232": "fc974439e5f1a0081997267a0a8d7d680af4d16da99345d268dada5a2f6a9962",
+      "Mbpp/274": "8fa19b374d160b676e4674e6c21cd655442e9045af4542de610dc82d52117852",
+      "Mbpp/71": "8e6b70c03a745e74b9f6842c335066fd2edb8dedca614bcd3aa168b0cd14a0e4",
+      "Mbpp/296": "c88712eb0751261385eeae06abd111b941de6c143f5fd2c6aebfbdbf44c59ba2",
+      "Mbpp/255": "30252bccc82a1ca4a3694b78897dd7d3969b55488c4825b9e00a3acfcd15c49a",
+      "Mbpp/398": "28b34a32c8bcff9d3de632cf87ecbee306f21d19ad96f62898f77a93738125d4",
+      "Mbpp/140": "fb83956a761f661505cc78bf5e4247364623fb48b3c4bd596520a397dc7bada4",
+      "Mbpp/427": "5b6ce2bf3e4b9f113ff537673cedfba5a92d58d71d1bf3213bdb95b8ffc0b259",
+      "Mbpp/276": "49450f27a6cda5c765be202a9a0986a6de85c50fa0f53b138831dc0780594031",
+      "Mbpp/102": "9d4679cd2abbdaf0d90dc5bbe662824dab595dc59478c3ebe9c275fcb70ec8b5",
+      "Mbpp/390": "9bb49c348f09079a69c30746e31f655907f3a2e36142bd3f80df2f55390a9802",
+      "Mbpp/88": "60fd7486e583454f35d71147fc100d5c1eda39d161e9251af6567f68341c89e5",
+      "Mbpp/259": "00605f9eedcd72edbde33f5487fddcd935294688fae8bea23ed86d2a6603f706",
+      "Mbpp/479": "ced96f6fd9cdbb1c3e115c0dccd2579cf39db4a10b6950aa2167abf98b3f7248",
+      "Mbpp/72": "126192b19271139ccd7e114688f8bb4bf5315c848485fbf01d5313876cbbd409",
+      "Mbpp/62": "80121d44b0abad1293d0bfaeac8d86194c0c70355c5540c6a988e7b72eeef915",
+      "Mbpp/162": "b60fe66ed95982104eefd94531b3dbc57e05318a9cf20caf1931466bba93dbe5"
+    },
+    "nonexposure_in_pretraining_proven": false,
+    "web_dataset_provenance": "Custom, template-generated test tasks; not an external standardized benchmark",
+    "manifest_sha256": "6335e7ac6c2baf2555318f9f1f37d48c281c860710f5f830cd713ed847554718"
+  },
+  "source_trajectory_count": 50,
+  "source_reference_docker_validated": true,
+  "factor_sha256": "1ad99ce6ebe432f637a42caaca2286bfbb032acaa0a3ff220f5dec163bfe7c8b",
+  "factor_artifact": "experiments/session014_orthogonal_factors.safetensors",
+  "orthogonal_subspace_diagnostics": {
+    "layer8.static_edit": {
+      "rank": 32,
+      "relative_frobenius": 0.01498496068347239,
+      "cap": 0.015,
+      "ridge": 5.58646435546875,
+      "proposed_relative_frobenius": 0.029525860157094738,
+      "difference_norm": 40.229469299316406
+    },
+    "layer8.subspace": {
+      "max_abs_cross_cosine": 7.636845111846924e-08,
+      "ui_basis_rank": 32,
+      "backend_basis_rank": 32,
+      "unit_normalized": true
+    },
+    "layer16.static_edit": {
+      "rank": 32,
+      "relative_frobenius": 0.014984719094210024,
+      "cap": 0.015,
+      "ridge": 38.11223437500001,
+      "proposed_relative_frobenius": 0.015571839587118297,
+      "difference_norm": 104.19361877441406
+    },
+    "layer16.subspace": {
+      "max_abs_cross_cosine": 7.35744833946228e-08,
+      "ui_basis_rank": 32,
+      "backend_basis_rank": 32,
+      "unit_normalized": true
+    },
+    "layer12.subspace": {
+      "max_abs_cross_cosine": 6.705522537231445e-08,
+      "ui_basis_rank": 32,
+      "backend_basis_rank": 32,
+      "unit_normalized": true
+    },
+    "layer18.subspace": {
+      "max_abs_cross_cosine": 7.171183824539185e-08,
+      "ui_basis_rank": 32,
+      "backend_basis_rank": 32,
+      "unit_normalized": true
+    }
+  },
+  "steering": "Mode-gated output steering at self_attn.o_proj layers 12,18 on cached single-token decoding only",
+  "edit": "Rank<=32 ridge/SVD factors at Layer8 down_proj (UI), Layer16 down_proj (backend), capped at 1.5% per observed matrix",
+  "runtime_alphas": [
+    0.25,
+    0.75,
+    1.25
   ],
-  "execution_pass_at_1": null,
-  "syntax_validity": null,
-  "orthogonal_subspace_diagnostics": null,
-  "failure_taxonomy_shifts": null,
-  "measured_results_expected_from": ".github/workflows/session014-hybrid-cpu.yml",
-  "note": "This placeholder contains NO evaluation claims; publishing requires all eight actual CPU/Docker result artifacts and a validated collector."
+  "tracks": {
+    "baseline": {
+      "overall": {
+        "count": 100,
+        "execution_passes": 30,
+        "execution_pass_at_1": 0.3,
+        "syntax_valid": 73,
+        "syntax_validity": 0.73,
+        "failure_bins": {
+          "assertion_error": 35,
+          "passed": 30,
+          "unclassified_logic_gap": 3,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 27,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/479",
+          "Mbpp/62",
+          "WebUI/02",
+          "WebUI/04",
+          "WebAPI/04"
+        ]
+      },
+      "mbpp_plus": {
+        "count": 50,
+        "execution_passes": 27,
+        "execution_pass_at_1": 0.54,
+        "syntax_valid": 49,
+        "syntax_validity": 0.98,
+        "failure_bins": {
+          "assertion_error": 14,
+          "passed": 27,
+          "unclassified_logic_gap": 3,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 1,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/479",
+          "Mbpp/62"
+        ]
+      },
+      "ui_react": {
+        "count": 25,
+        "execution_passes": 2,
+        "execution_pass_at_1": 0.08,
+        "syntax_valid": 11,
+        "syntax_validity": 0.44,
+        "failure_bins": {
+          "syntax_invalid": 14,
+          "passed": 2,
+          "assertion_error": 9
+        },
+        "passed_ids": [
+          "WebUI/02",
+          "WebUI/04"
+        ]
+      },
+      "backend_express": {
+        "count": 25,
+        "execution_passes": 1,
+        "execution_pass_at_1": 0.04,
+        "syntax_valid": 13,
+        "syntax_validity": 0.52,
+        "failure_bins": {
+          "syntax_invalid": 12,
+          "passed": 1,
+          "assertion_error": 12
+        },
+        "passed_ids": [
+          "WebAPI/04"
+        ]
+      },
+      "custom_web": {
+        "count": 50,
+        "execution_passes": 3,
+        "execution_pass_at_1": 0.06,
+        "syntax_valid": 24,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 26,
+          "passed": 3,
+          "assertion_error": 21
+        },
+        "passed_ids": [
+          "WebUI/02",
+          "WebUI/04",
+          "WebAPI/04"
+        ]
+      },
+      "alpha": null,
+      "trigger_counts": {},
+      "static_relative_norms": {},
+      "newly_passed_ids": [],
+      "regressed_ids": [],
+      "pass_at_1_delta_pp": 0,
+      "failure_taxonomy_shift": {
+        "assertion_error": {
+          "baseline": 35,
+          "track": 35
+        },
+        "boundary_edge_case": {
+          "baseline": 3,
+          "track": 3
+        },
+        "passed": {
+          "baseline": 30,
+          "track": 30
+        },
+        "syntax_invalid": {
+          "baseline": 27,
+          "track": 27
+        },
+        "unclassified_logic_gap": {
+          "baseline": 3,
+          "track": 3
+        },
+        "unhandled_exception": {
+          "baseline": 2,
+          "track": 2
+        }
+      }
+    },
+    "static": {
+      "overall": {
+        "count": 100,
+        "execution_passes": 33,
+        "execution_pass_at_1": 0.33,
+        "syntax_valid": 73,
+        "syntax_validity": 0.73,
+        "failure_bins": {
+          "assertion_error": 31,
+          "passed": 33,
+          "unclassified_logic_gap": 4,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 27,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62",
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "mbpp_plus": {
+        "count": 50,
+        "execution_passes": 26,
+        "execution_pass_at_1": 0.52,
+        "syntax_valid": 49,
+        "syntax_validity": 0.98,
+        "failure_bins": {
+          "assertion_error": 14,
+          "passed": 26,
+          "unclassified_logic_gap": 4,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 1,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62"
+        ]
+      },
+      "ui_react": {
+        "count": 25,
+        "execution_passes": 7,
+        "execution_pass_at_1": 0.28,
+        "syntax_valid": 12,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 13,
+          "passed": 7,
+          "assertion_error": 5
+        },
+        "passed_ids": [
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "backend_express": {
+        "count": 25,
+        "execution_passes": 0,
+        "execution_pass_at_1": 0.0,
+        "syntax_valid": 12,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 13,
+          "assertion_error": 12
+        },
+        "passed_ids": []
+      },
+      "custom_web": {
+        "count": 50,
+        "execution_passes": 7,
+        "execution_pass_at_1": 0.14,
+        "syntax_valid": 24,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 26,
+          "passed": 7,
+          "assertion_error": 17
+        },
+        "passed_ids": [
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "alpha": null,
+      "trigger_counts": {},
+      "static_relative_norms": {
+        "layer8": 0.01498496068347239,
+        "layer16": 0.014984719094210024
+      },
+      "newly_passed_ids": [
+        "WebUI/01",
+        "WebUI/05",
+        "WebUI/06",
+        "WebUI/07",
+        "WebUI/09"
+      ],
+      "regressed_ids": [
+        "Mbpp/479",
+        "WebAPI/04"
+      ],
+      "pass_at_1_delta_pp": 3,
+      "failure_taxonomy_shift": {
+        "assertion_error": {
+          "baseline": 35,
+          "track": 31
+        },
+        "boundary_edge_case": {
+          "baseline": 3,
+          "track": 3
+        },
+        "passed": {
+          "baseline": 30,
+          "track": 33
+        },
+        "syntax_invalid": {
+          "baseline": 27,
+          "track": 27
+        },
+        "unclassified_logic_gap": {
+          "baseline": 3,
+          "track": 4
+        },
+        "unhandled_exception": {
+          "baseline": 2,
+          "track": 2
+        }
+      }
+    },
+    "dynamic-0.25": {
+      "overall": {
+        "count": 100,
+        "execution_passes": 29,
+        "execution_pass_at_1": 0.29,
+        "syntax_valid": 73,
+        "syntax_validity": 0.73,
+        "failure_bins": {
+          "assertion_error": 36,
+          "passed": 29,
+          "unclassified_logic_gap": 3,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 27,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62",
+          "WebUI/02",
+          "WebUI/04",
+          "WebAPI/04"
+        ]
+      },
+      "mbpp_plus": {
+        "count": 50,
+        "execution_passes": 26,
+        "execution_pass_at_1": 0.52,
+        "syntax_valid": 49,
+        "syntax_validity": 0.98,
+        "failure_bins": {
+          "assertion_error": 15,
+          "passed": 26,
+          "unclassified_logic_gap": 3,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 1,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62"
+        ]
+      },
+      "ui_react": {
+        "count": 25,
+        "execution_passes": 2,
+        "execution_pass_at_1": 0.08,
+        "syntax_valid": 11,
+        "syntax_validity": 0.44,
+        "failure_bins": {
+          "syntax_invalid": 14,
+          "passed": 2,
+          "assertion_error": 9
+        },
+        "passed_ids": [
+          "WebUI/02",
+          "WebUI/04"
+        ]
+      },
+      "backend_express": {
+        "count": 25,
+        "execution_passes": 1,
+        "execution_pass_at_1": 0.04,
+        "syntax_valid": 13,
+        "syntax_validity": 0.52,
+        "failure_bins": {
+          "syntax_invalid": 12,
+          "passed": 1,
+          "assertion_error": 12
+        },
+        "passed_ids": [
+          "WebAPI/04"
+        ]
+      },
+      "custom_web": {
+        "count": 50,
+        "execution_passes": 3,
+        "execution_pass_at_1": 0.06,
+        "syntax_valid": 24,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 26,
+          "passed": 3,
+          "assertion_error": 21
+        },
+        "passed_ids": [
+          "WebUI/02",
+          "WebUI/04",
+          "WebAPI/04"
+        ]
+      },
+      "alpha": 0.25,
+      "trigger_counts": {
+        "def": 57,
+        "if": 42,
+        "return": 191,
+        "for": 34,
+        "while": 1
+      },
+      "static_relative_norms": {},
+      "newly_passed_ids": [],
+      "regressed_ids": [
+        "Mbpp/479"
+      ],
+      "pass_at_1_delta_pp": -1,
+      "failure_taxonomy_shift": {
+        "assertion_error": {
+          "baseline": 35,
+          "track": 36
+        },
+        "boundary_edge_case": {
+          "baseline": 3,
+          "track": 3
+        },
+        "passed": {
+          "baseline": 30,
+          "track": 29
+        },
+        "syntax_invalid": {
+          "baseline": 27,
+          "track": 27
+        },
+        "unclassified_logic_gap": {
+          "baseline": 3,
+          "track": 3
+        },
+        "unhandled_exception": {
+          "baseline": 2,
+          "track": 2
+        }
+      }
+    },
+    "dynamic-0.75": {
+      "overall": {
+        "count": 100,
+        "execution_passes": 29,
+        "execution_pass_at_1": 0.29,
+        "syntax_valid": 73,
+        "syntax_validity": 0.73,
+        "failure_bins": {
+          "assertion_error": 36,
+          "passed": 29,
+          "unclassified_logic_gap": 3,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 27,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62",
+          "WebUI/02",
+          "WebUI/04",
+          "WebAPI/04"
+        ]
+      },
+      "mbpp_plus": {
+        "count": 50,
+        "execution_passes": 26,
+        "execution_pass_at_1": 0.52,
+        "syntax_valid": 49,
+        "syntax_validity": 0.98,
+        "failure_bins": {
+          "assertion_error": 15,
+          "passed": 26,
+          "unclassified_logic_gap": 3,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 1,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62"
+        ]
+      },
+      "ui_react": {
+        "count": 25,
+        "execution_passes": 2,
+        "execution_pass_at_1": 0.08,
+        "syntax_valid": 11,
+        "syntax_validity": 0.44,
+        "failure_bins": {
+          "syntax_invalid": 14,
+          "passed": 2,
+          "assertion_error": 9
+        },
+        "passed_ids": [
+          "WebUI/02",
+          "WebUI/04"
+        ]
+      },
+      "backend_express": {
+        "count": 25,
+        "execution_passes": 1,
+        "execution_pass_at_1": 0.04,
+        "syntax_valid": 13,
+        "syntax_validity": 0.52,
+        "failure_bins": {
+          "syntax_invalid": 12,
+          "passed": 1,
+          "assertion_error": 12
+        },
+        "passed_ids": [
+          "WebAPI/04"
+        ]
+      },
+      "custom_web": {
+        "count": 50,
+        "execution_passes": 3,
+        "execution_pass_at_1": 0.06,
+        "syntax_valid": 24,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 26,
+          "passed": 3,
+          "assertion_error": 21
+        },
+        "passed_ids": [
+          "WebUI/02",
+          "WebUI/04",
+          "WebAPI/04"
+        ]
+      },
+      "alpha": 0.75,
+      "trigger_counts": {
+        "def": 56,
+        "if": 42,
+        "return": 190,
+        "for": 34,
+        "while": 1
+      },
+      "static_relative_norms": {},
+      "newly_passed_ids": [],
+      "regressed_ids": [
+        "Mbpp/479"
+      ],
+      "pass_at_1_delta_pp": -1,
+      "failure_taxonomy_shift": {
+        "assertion_error": {
+          "baseline": 35,
+          "track": 36
+        },
+        "boundary_edge_case": {
+          "baseline": 3,
+          "track": 3
+        },
+        "passed": {
+          "baseline": 30,
+          "track": 29
+        },
+        "syntax_invalid": {
+          "baseline": 27,
+          "track": 27
+        },
+        "unclassified_logic_gap": {
+          "baseline": 3,
+          "track": 3
+        },
+        "unhandled_exception": {
+          "baseline": 2,
+          "track": 2
+        }
+      }
+    },
+    "dynamic-1.25": {
+      "overall": {
+        "count": 100,
+        "execution_passes": 29,
+        "execution_pass_at_1": 0.29,
+        "syntax_valid": 73,
+        "syntax_validity": 0.73,
+        "failure_bins": {
+          "assertion_error": 36,
+          "passed": 29,
+          "unclassified_logic_gap": 3,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 27,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62",
+          "WebUI/02",
+          "WebUI/04",
+          "WebAPI/04"
+        ]
+      },
+      "mbpp_plus": {
+        "count": 50,
+        "execution_passes": 26,
+        "execution_pass_at_1": 0.52,
+        "syntax_valid": 49,
+        "syntax_validity": 0.98,
+        "failure_bins": {
+          "assertion_error": 15,
+          "passed": 26,
+          "unclassified_logic_gap": 3,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 1,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62"
+        ]
+      },
+      "ui_react": {
+        "count": 25,
+        "execution_passes": 2,
+        "execution_pass_at_1": 0.08,
+        "syntax_valid": 11,
+        "syntax_validity": 0.44,
+        "failure_bins": {
+          "syntax_invalid": 14,
+          "passed": 2,
+          "assertion_error": 9
+        },
+        "passed_ids": [
+          "WebUI/02",
+          "WebUI/04"
+        ]
+      },
+      "backend_express": {
+        "count": 25,
+        "execution_passes": 1,
+        "execution_pass_at_1": 0.04,
+        "syntax_valid": 13,
+        "syntax_validity": 0.52,
+        "failure_bins": {
+          "syntax_invalid": 12,
+          "passed": 1,
+          "assertion_error": 12
+        },
+        "passed_ids": [
+          "WebAPI/04"
+        ]
+      },
+      "custom_web": {
+        "count": 50,
+        "execution_passes": 3,
+        "execution_pass_at_1": 0.06,
+        "syntax_valid": 24,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 26,
+          "passed": 3,
+          "assertion_error": 21
+        },
+        "passed_ids": [
+          "WebUI/02",
+          "WebUI/04",
+          "WebAPI/04"
+        ]
+      },
+      "alpha": 1.25,
+      "trigger_counts": {
+        "def": 55,
+        "if": 42,
+        "return": 190,
+        "for": 34,
+        "while": 1
+      },
+      "static_relative_norms": {},
+      "newly_passed_ids": [],
+      "regressed_ids": [
+        "Mbpp/479"
+      ],
+      "pass_at_1_delta_pp": -1,
+      "failure_taxonomy_shift": {
+        "assertion_error": {
+          "baseline": 35,
+          "track": 36
+        },
+        "boundary_edge_case": {
+          "baseline": 3,
+          "track": 3
+        },
+        "passed": {
+          "baseline": 30,
+          "track": 29
+        },
+        "syntax_invalid": {
+          "baseline": 27,
+          "track": 27
+        },
+        "unclassified_logic_gap": {
+          "baseline": 3,
+          "track": 3
+        },
+        "unhandled_exception": {
+          "baseline": 2,
+          "track": 2
+        }
+      }
+    },
+    "hybrid-0.25": {
+      "overall": {
+        "count": 100,
+        "execution_passes": 33,
+        "execution_pass_at_1": 0.33,
+        "syntax_valid": 73,
+        "syntax_validity": 0.73,
+        "failure_bins": {
+          "assertion_error": 31,
+          "passed": 33,
+          "unclassified_logic_gap": 4,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 27,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62",
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "mbpp_plus": {
+        "count": 50,
+        "execution_passes": 26,
+        "execution_pass_at_1": 0.52,
+        "syntax_valid": 49,
+        "syntax_validity": 0.98,
+        "failure_bins": {
+          "assertion_error": 14,
+          "passed": 26,
+          "unclassified_logic_gap": 4,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 1,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62"
+        ]
+      },
+      "ui_react": {
+        "count": 25,
+        "execution_passes": 7,
+        "execution_pass_at_1": 0.28,
+        "syntax_valid": 12,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 13,
+          "passed": 7,
+          "assertion_error": 5
+        },
+        "passed_ids": [
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "backend_express": {
+        "count": 25,
+        "execution_passes": 0,
+        "execution_pass_at_1": 0.0,
+        "syntax_valid": 12,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 13,
+          "assertion_error": 12
+        },
+        "passed_ids": []
+      },
+      "custom_web": {
+        "count": 50,
+        "execution_passes": 7,
+        "execution_pass_at_1": 0.14,
+        "syntax_valid": 24,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 26,
+          "passed": 7,
+          "assertion_error": 17
+        },
+        "passed_ids": [
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "alpha": 0.25,
+      "trigger_counts": {
+        "def": 57,
+        "if": 39,
+        "return": 188,
+        "for": 34,
+        "while": 1
+      },
+      "static_relative_norms": {
+        "layer8": 0.01498496068347239,
+        "layer16": 0.014984719094210024
+      },
+      "newly_passed_ids": [
+        "WebUI/01",
+        "WebUI/05",
+        "WebUI/06",
+        "WebUI/07",
+        "WebUI/09"
+      ],
+      "regressed_ids": [
+        "Mbpp/479",
+        "WebAPI/04"
+      ],
+      "pass_at_1_delta_pp": 3,
+      "failure_taxonomy_shift": {
+        "assertion_error": {
+          "baseline": 35,
+          "track": 31
+        },
+        "boundary_edge_case": {
+          "baseline": 3,
+          "track": 3
+        },
+        "passed": {
+          "baseline": 30,
+          "track": 33
+        },
+        "syntax_invalid": {
+          "baseline": 27,
+          "track": 27
+        },
+        "unclassified_logic_gap": {
+          "baseline": 3,
+          "track": 4
+        },
+        "unhandled_exception": {
+          "baseline": 2,
+          "track": 2
+        }
+      }
+    },
+    "hybrid-0.75": {
+      "overall": {
+        "count": 100,
+        "execution_passes": 33,
+        "execution_pass_at_1": 0.33,
+        "syntax_valid": 73,
+        "syntax_validity": 0.73,
+        "failure_bins": {
+          "assertion_error": 31,
+          "passed": 33,
+          "unclassified_logic_gap": 4,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 27,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62",
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "mbpp_plus": {
+        "count": 50,
+        "execution_passes": 26,
+        "execution_pass_at_1": 0.52,
+        "syntax_valid": 49,
+        "syntax_validity": 0.98,
+        "failure_bins": {
+          "assertion_error": 14,
+          "passed": 26,
+          "unclassified_logic_gap": 4,
+          "boundary_edge_case": 3,
+          "syntax_invalid": 1,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62"
+        ]
+      },
+      "ui_react": {
+        "count": 25,
+        "execution_passes": 7,
+        "execution_pass_at_1": 0.28,
+        "syntax_valid": 12,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 13,
+          "passed": 7,
+          "assertion_error": 5
+        },
+        "passed_ids": [
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "backend_express": {
+        "count": 25,
+        "execution_passes": 0,
+        "execution_pass_at_1": 0.0,
+        "syntax_valid": 12,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 13,
+          "assertion_error": 12
+        },
+        "passed_ids": []
+      },
+      "custom_web": {
+        "count": 50,
+        "execution_passes": 7,
+        "execution_pass_at_1": 0.14,
+        "syntax_valid": 24,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 26,
+          "passed": 7,
+          "assertion_error": 17
+        },
+        "passed_ids": [
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "alpha": 0.75,
+      "trigger_counts": {
+        "def": 55,
+        "if": 37,
+        "return": 184,
+        "for": 32,
+        "while": 1
+      },
+      "static_relative_norms": {
+        "layer8": 0.01498496068347239,
+        "layer16": 0.014984719094210024
+      },
+      "newly_passed_ids": [
+        "WebUI/01",
+        "WebUI/05",
+        "WebUI/06",
+        "WebUI/07",
+        "WebUI/09"
+      ],
+      "regressed_ids": [
+        "Mbpp/479",
+        "WebAPI/04"
+      ],
+      "pass_at_1_delta_pp": 3,
+      "failure_taxonomy_shift": {
+        "assertion_error": {
+          "baseline": 35,
+          "track": 31
+        },
+        "boundary_edge_case": {
+          "baseline": 3,
+          "track": 3
+        },
+        "passed": {
+          "baseline": 30,
+          "track": 33
+        },
+        "syntax_invalid": {
+          "baseline": 27,
+          "track": 27
+        },
+        "unclassified_logic_gap": {
+          "baseline": 3,
+          "track": 4
+        },
+        "unhandled_exception": {
+          "baseline": 2,
+          "track": 2
+        }
+      }
+    },
+    "hybrid-1.25": {
+      "overall": {
+        "count": 100,
+        "execution_passes": 33,
+        "execution_pass_at_1": 0.33,
+        "syntax_valid": 75,
+        "syntax_validity": 0.75,
+        "failure_bins": {
+          "assertion_error": 32,
+          "passed": 33,
+          "unclassified_logic_gap": 5,
+          "boundary_edge_case": 3,
+          "unhandled_exception": 2,
+          "syntax_invalid": 25
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62",
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "mbpp_plus": {
+        "count": 50,
+        "execution_passes": 26,
+        "execution_pass_at_1": 0.52,
+        "syntax_valid": 50,
+        "syntax_validity": 1.0,
+        "failure_bins": {
+          "assertion_error": 14,
+          "passed": 26,
+          "unclassified_logic_gap": 5,
+          "boundary_edge_case": 3,
+          "unhandled_exception": 2
+        },
+        "passed_ids": [
+          "Mbpp/108",
+          "Mbpp/293",
+          "Mbpp/262",
+          "Mbpp/93",
+          "Mbpp/17",
+          "Mbpp/282",
+          "Mbpp/82",
+          "Mbpp/171",
+          "Mbpp/270",
+          "Mbpp/250",
+          "Mbpp/230",
+          "Mbpp/127",
+          "Mbpp/61",
+          "Mbpp/256",
+          "Mbpp/77",
+          "Mbpp/439",
+          "Mbpp/145",
+          "Mbpp/242",
+          "Mbpp/474",
+          "Mbpp/71",
+          "Mbpp/296",
+          "Mbpp/140",
+          "Mbpp/276",
+          "Mbpp/390",
+          "Mbpp/88",
+          "Mbpp/62"
+        ]
+      },
+      "ui_react": {
+        "count": 25,
+        "execution_passes": 7,
+        "execution_pass_at_1": 0.28,
+        "syntax_valid": 12,
+        "syntax_validity": 0.48,
+        "failure_bins": {
+          "syntax_invalid": 13,
+          "passed": 7,
+          "assertion_error": 5
+        },
+        "passed_ids": [
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "backend_express": {
+        "count": 25,
+        "execution_passes": 0,
+        "execution_pass_at_1": 0.0,
+        "syntax_valid": 13,
+        "syntax_validity": 0.52,
+        "failure_bins": {
+          "syntax_invalid": 12,
+          "assertion_error": 13
+        },
+        "passed_ids": []
+      },
+      "custom_web": {
+        "count": 50,
+        "execution_passes": 7,
+        "execution_pass_at_1": 0.14,
+        "syntax_valid": 25,
+        "syntax_validity": 0.5,
+        "failure_bins": {
+          "syntax_invalid": 25,
+          "passed": 7,
+          "assertion_error": 18
+        },
+        "passed_ids": [
+          "WebUI/01",
+          "WebUI/02",
+          "WebUI/04",
+          "WebUI/05",
+          "WebUI/06",
+          "WebUI/07",
+          "WebUI/09"
+        ]
+      },
+      "alpha": 1.25,
+      "trigger_counts": {
+        "def": 55,
+        "if": 36,
+        "return": 184,
+        "for": 32,
+        "while": 1
+      },
+      "static_relative_norms": {
+        "layer8": 0.01498496068347239,
+        "layer16": 0.014984719094210024
+      },
+      "newly_passed_ids": [
+        "WebUI/01",
+        "WebUI/05",
+        "WebUI/06",
+        "WebUI/07",
+        "WebUI/09"
+      ],
+      "regressed_ids": [
+        "Mbpp/479",
+        "WebAPI/04"
+      ],
+      "pass_at_1_delta_pp": 3,
+      "failure_taxonomy_shift": {
+        "assertion_error": {
+          "baseline": 35,
+          "track": 32
+        },
+        "boundary_edge_case": {
+          "baseline": 3,
+          "track": 3
+        },
+        "passed": {
+          "baseline": 30,
+          "track": 33
+        },
+        "syntax_invalid": {
+          "baseline": 27,
+          "track": 25
+        },
+        "unclassified_logic_gap": {
+          "baseline": 3,
+          "track": 5
+        },
+        "unhandled_exception": {
+          "baseline": 2,
+          "track": 2
+        }
+      }
+    }
+  },
+  "execution": "MBPP+ official EvalPlus expanded tests and 50 custom React/Express assertions inside network-disabled, unprivileged, resource-limited Docker",
+  "limitations": [
+    "Not 100 fresh MBPP+ tasks: 50 previously unused MBPP+ problems and 50 custom authored web scaffolding tasks.",
+    "Custom React/Express tasks are derived from five template families each; generalization to independent real-world projects is not established.",
+    "The frozen source references and benchmark tasks do not share exact prompts; unseen pretraining data cannot be verified.",
+    "SVD/Gram-Schmidt orthogonality in hidden space does not prove mechanistic independence or zero interference.",
+    "Hook offsets modify attention o_proj output, not the entire residual stream; triggers depend on single-token decoded keyword matches.",
+    "One deterministic completion per task (empirical pass@1); small 50-task per-domain samples have high uncertainty."
+  ]
 }
