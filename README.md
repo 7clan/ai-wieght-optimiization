@@ -266,3 +266,18 @@ Each branch's exact passed/failed task IDs, activation measurements, tensor chan
 
 **Caution:** SVD projection gaps are only *associated* with syntax-invalid examples. Cross-layer transplantation is not established as a way to transfer skills. The 3%, 5%, and 10% stress trials can locate only the first *tested* failure threshold, not an exact continuous breakdown point. Results do not prove general coding improvements.
 <!-- HIGH-RISK-EXPERIMENTS-END -->
+
+## Session 008 — Out-of-sample confirmation and SVD/MEMIT fusion
+
+The original 10% Layer 8 `mlp.down_proj` factors are pinned to commit
+[`b48673a`](https://github.com/7clan/ai-wieght-optimiization/commit/b48673a26e7ef6a6220aca331dfc8c0024944aa8).
+The new workflow first evaluates the preselected candidate on the never-used
+HumanEval/144–163 block, then combines the original syntax-associated layer 8
+`self_attn.o_proj` SVD subtraction factors with the archived 10% MLP edit on
+[`exp/05-svd-norm-fusion`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/05-svd-norm-fusion).
+No training is performed. Results are populated only by a completed sandboxed
+GitHub Actions run; the fusion comparison is not another independent holdout.
+
+<!-- FUSION-VALIDATION-START -->
+*Session 008 validation and fusion evaluations are pending; no scores are claimed.*
+<!-- FUSION-VALIDATION-END -->
