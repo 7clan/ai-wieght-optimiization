@@ -238,3 +238,16 @@ The `.github/workflows/model-session.yml` workflow records the earlier LoRA expe
 - Do not commit `.env`, model weights, private data, or large checkpoints.
 - See the upstream model cards for license terms; the StarCoder license differs from Qwen's.
 
+
+## Session 007 — Four parallel, isolated direct-weight experiments
+
+Four independent branches use the same pristine 50-task HumanEval comparison set (`HumanEval/94` through `HumanEval/143`). All generated code is execution-tested only in restricted Docker containers. The base model remains unmodified on disk.
+
+- [`exp/01-transplant`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/01-transplant): Layer 18 reference outputs projected into layer 8, max 1.5% norm edit.
+- [`exp/02-svd-zeroing`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/02-svd-zeroing): remove two syntax-associated SVD components each from layer 8 `self_attn.o_proj` and `mlp.down_proj`.
+- [`exp/03-norm-break`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/03-norm-break): layer 8 stress trials at 3%, 5%, and 10%, restarted from base weights each time.
+- [`exp/04-memit-single-layer`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/04-memit-single-layer): layer 8-only regularized multi-key edit, max 1.5% norm edit.
+
+<!-- HIGH-RISK-EXPERIMENTS-START -->
+**Results pending.** The four CPU jobs have not yet produced measured pass@1 numbers. Each must finish successfully before the comparison table is published.
+<!-- HIGH-RISK-EXPERIMENTS-END -->
