@@ -57,6 +57,15 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Combine the resulting two attention factors with **exactly the archived 10% layer 8 `mlp.down_proj` factors** from commit `e100c62`; verify the original factor Git blob against that commit. Keep the base checkpoint unchanged.
 - Run the already-consumed HumanEval/94–163 70-task suite in isolated Docker containers; report pass@1 and separately `ast.parse` validity. **Never call this an independent generalization test.** Save per-task predictions and reversible factors.
 
+## Session 010: execution failure taxonomy and rank-eight SVD experiment
+
+- Session009 produced 19 AST-valid completions, **of which three passed and sixteen failed**. Only those sixteen belong to the error diagnostic. Never state that all nineteen failed.
+- Re-execute generated code only in the pre-existing restricted Docker harness. Preserve the first assertion traceback as evidence. Use the requested four error categories only when evidence supports one; count unclassified logic errors rather than fabricating an off-by-one/type diagnosis.
+- Use the exact original twenty pre-94 failure/reference pairs to calculate tensor surgery factors. Source-AST boundary and return-type labels are **proxies**, not verified causal error directions. Do not use 94–163 reference solutions to derive the new edit.
+- Fix attention targets to layers 12, 13 and 15 `self_attn.o_proj`, and use rank-eight SVD-truncated closed-form ridge factors. Cap each observed attention matrix change to at most **1.5% Frobenius**. Preserve the original archived 10% Layer8 MLP factor from `e100c62` byte-for-byte.
+- HumanEval/94–163 have already been used in several prior experiments. Session010 is exploratory and **not** an independent holdout. Compare both the original model baseline and the Session009 hybrid, including execution pass@1, syntax validity, and conservative taxonomy shifts.
+- Store task-level predictions, the diagnostic source records, the exact factors, and the report. A successful CI artifact is not itself proof of a GitHub commit; verify branch content after publication.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
