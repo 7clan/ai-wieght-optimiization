@@ -1,0 +1,91 @@
+name: Session 016 adaptive 0.5B execution-guided CPU search
+
+on:
+  push:
+    branches:
+      - exp/14-execution-guided-search
+    paths:
+      - .github/workflows/session016-search-cpu.yml
+      - tinycoder/session016.py
+      - tinycoder/session016_public_mbpp_worker.py
+      - tinycoder/collect_session016.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  benchmark:
+    name: "Qwen0.5B adaptive search: ${{ matrix.track }}"
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        track: [search2, search4]
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      TOKENIZERS_PARALLELISM: "false"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install exact CPU evaluation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.3,<3"
+          python -m pip install -r requirements.txt "evalplus==0.3.1"
+      - name: Check Python syntax and controlled public tests
+        run: |
+          python -m compileall -q tinycoder/session016.py tinycoder/session016_public_mbpp_worker.py tinycoder/collect_session016.py
+          python -m unittest discover -s tests -p 'test_session016.py' -v
+      - name: Build network-disabled evaluator Docker images
+        run: |
+          docker build -f docker/session014-mbpp.Dockerfile -t tinycoder-session014-mbpp:0.3.1 .
+          docker build -f docker/session014-web.Dockerfile -t tinycoder-session014-web:1 .
+      - name: Execute adaptive public-check search and held-out final evaluation
+        run: |
+          python -m tinycoder.session016 --track "${{ matrix.track }}" --output-dir "outputs/session016-${{ matrix.track }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: session016-track-${{ matrix.track }}
+          path: outputs/session016-${{ matrix.track }}/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    name: Verify task identity and publish accuracy/compute comparison
+    needs: benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: session016-track-*
+          path: outputs/session016-tracks
+      - name: Aggregate exact outcomes; never invent pass counts
+        run: |
+          python -m tinycoder.collect_session016 --root outputs/session016-tracks
+          python -m json.tool experiments/session016_search_report.json > /dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: session016-verified
+          path: |
+            experiments/session016_search_report.json
+            experiments/session016_search_predictions.json
+            README.md
+          if-no-files-found: error
+      - name: Commit actual benchmark results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session016_search_report.json experiments/session016_search_predictions.json
+          git commit -m 'Publish Session016 adaptive execution-guided CPU comparison'
+          git push origin HEAD:exp/14-execution-guided-search

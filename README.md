@@ -1,5 +1,27 @@
 # TinyCoder Weight Lab
 
+<!-- SESSION016-PENDING-START -->
+## Session 016 — adaptive execution-guided search (pending)
+
+Branch `exp/14-execution-guided-search` evaluates candidate generation,
+public-test filtering, early stopping and one feedback-conditioned repair
+round on the **same frozen 100 tasks** as Session015. All generation uses the
+original 0.5B **base** checkpoint without gradients, weight edits or scaling.
+The untouched greedy baseline predictions are reused from Session015 to avoid
+extra CPU inference. Evaluation code remains in restricted Docker.
+
+The `search2` track samples one additional candidate per task, and
+`search4` adaptively explores up to two more candidates only after
+failed public checks. Both attempt at most one repair on remaining failures.
+Only original MBPP public test_list and task-spec-derived custom web smoke
+tests guide selection; EvalPlus expanded tests run at final scoring only.
+
+**No scores have yet been measured.** The [pending report](experiments/session016_search_report.json)
+contains null values and will be replaced only when both full Docker tracks
+complete and a collector verifies the 100 exact task IDs, actual assertions,
+and generated token budgets.
+<!-- SESSION016-PENDING-END -->
+
 ## Session 015 — context-gated orthogonal subspaces (measured)
 
 This experiment uses only the original Qwen2.5-Coder-0.5B base checkpoint

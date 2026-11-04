@@ -1,0 +1,14 @@
+{
+  "status": "pending",
+  "session": "016",
+  "branch": "exp/14-execution-guided-search",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "tracks": ["baseline-session015-reused", "search2", "search4"],
+  "task_count": 100,
+  "execution_pass_at_1": null,
+  "syntax_validity": null,
+  "compute_budget": null,
+  "comment": "Pending real CPU generation and isolated Docker final assertions."
+}

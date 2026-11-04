@@ -67,6 +67,29 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Select 50 MBPP+ test-split IDs disjoint from all 150 scored in Sessions013/014 and 50 newly numbered custom web template variants. Use identical prompts and scoring settings across all tracks. The old numerical 27/7/1 thresholds are exploratory success targets on a different task sample, not prior scores on these prompts.
 - Require Docker for all model-generated Python/JS execution. The collector must prove exact prediction equality on Python for every gated variant, and exact API equality for the UI-only variant. Never publish fabricated counts or partial scores as completed measurements.
 
+## Session 016 — adaptive runtime execution guidance
+
+- Work exclusively on `exp/14-execution-guided-search`, retaining original
+  Qwen2.5-Coder-0.5B base parameters. No gradients, optimizers, training,
+  weight edits, LoRA, or model-size changes.
+- Reuse the exact Session015 baseline `experiments/session015_gated_predictions.json`
+  as candidate zero on the same 100 task prompts. Do not waste CPU
+  regenerating the baseline or interpret earlier pass counts on other tasks.
+- Public candidate tests may come only from original MBPP `test_list` or
+  custom web smoke inputs derived from task specifications. The collector's
+  private EvalPlus `plus_input` must not enter any generation, selection,
+  candidate ranking, or feedback prompts. The original MBPP `test_list`
+  is public; overlap with EvalPlus base tests must be disclosed.
+- Generate up to two or four candidates adaptively, and only one
+  feedback-conditioned repair for unresolved tasks. Record all candidate
+  public feedback and exactly how much inference and time each track uses.
+- Execute *all* model-generated Python/JavaScript solely inside isolated
+  CPU Docker images with network disabled, read-only root and resource
+  restrictions. Keep final expanded tests separate from public checks.
+- Publish metrics only after measured full-run artifacts pass exact
+  manifest and metric reproduction tests. The reported final selected
+  solve@1 uses extra compute and is NOT a single-sample model pass@1.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
