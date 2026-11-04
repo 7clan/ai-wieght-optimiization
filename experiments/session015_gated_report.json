@@ -1,0 +1,16 @@
+{
+  "status": "pending",
+  "session": "015",
+  "branch": "exp/13-context-gated-subspaces",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "factor_source_session": "014",
+  "factor_sha256": "1ad99ce6ebe432f637a42caaca2286bfbb032acaa0a3ff220f5dec163bfe7c8b",
+  "benchmark": "50 fresh MBPP+ prompts plus 25 new custom React and 25 new custom Express prompts",
+  "previous_mbpp_task_ids_excluded": 150,
+  "tracks": ["baseline", "ungated", "gated-0.0", "gated-0.5", "gated-1.0", "gated-ui-only-1.0"],
+  "pass_at_1": null,
+  "syntax_validity": null,
+  "assertion_failure_taxonomy": null,
+  "note": "No performance measurements until all six CPU/Docker tracks have completed and the paired collector has verified actual task outcomes."
+}

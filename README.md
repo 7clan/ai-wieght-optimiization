@@ -1,5 +1,15 @@
 # TinyCoder Weight Lab
 
+<!-- SESSION015-PENDING-START -->
+### Session 015 — context-gated subspace masks (evaluation pending)
+
+The experimental branch [`exp/13-context-gated-subspaces`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/13-context-gated-subspaces) introduces inference-time, gradient-free conditional masks for exactly the archived Session014 Layer8/Layer16 rank32 factor pairs on the unchanged **Qwen2.5-Coder-0.5B base** model. Each `mlp.down_proj` receives a PyTorch forward pre-hook and paired output hook: `W_base@X + M(context)*(Left@Right)@X`, without ever changing the pretrained matrix. UI keywords route to Layer8; Express keywords route to Layer16; Python defaults to zero. The gate is swept at 0.0, 0.5 and 1.0.
+
+The six CPU/Docker tracks are baseline, ungated static comparator, three gated multipliers and an extra **UI-only safety ablation** that intentionally disables backend Layer16 to measure whether API behavior can remain pristine. The 100 tasks are distinct from the Session014 suite: 50 unused MBPP+ IDs excluding the 150 previously scored in Sessions013/014, plus 25 new custom React and 25 new custom Express template variants. These custom web tasks are not part of MBPP+.
+
+**Pass@1 and syntax validity are not yet measured.** The absolute 27/50, 7/25 and 1/25 targets came from a different sample; the new, matched baseline is the valid reference for evaluating regressions. The [pending report](experiments/session015_gated_report.json) contains null scores. Measured results will be published only after all tasks execute in restricted Docker and the paired collector confirms exact prompt alignment. The [Session015 GitHub Actions workflow](https://github.com/7clan/ai-wieght-optimiization/actions/workflows/session015-gated-cpu.yml) performs that benchmark.
+<!-- SESSION015-PENDING-END -->
+
 A beginner-friendly experiment for **running, inspecting and directly editing weights in a very small coding AI**. The repository contains the software and examples; it intentionally **does not commit full pretrained model weights**.
 
 **Current direction (Session 002 onward): DIRECT WEIGHT EDITING, with no training.** The earlier LoRA session is preserved as historical research, not our active approach. Directly editing tensor values is real and reversible, but it is not a shortcut to the general intelligence of a larger model.

@@ -1,0 +1,106 @@
+name: Session 015 context-gated rank32 Qwen0.5B 100-task CPU suite
+
+on:
+  push:
+    branches:
+      - exp/13-context-gated-subspaces
+    paths:
+      - .github/workflows/session015-gated-cpu.yml
+      - tinycoder/session015.py
+      - tinycoder/collect_session015.py
+      - tinycoder/session014_fixtures.py
+      - tinycoder/session014_web_worker.js
+      - data/session015_excluded_mbpp_ids.json
+      - docker/session014-*.Dockerfile
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  benchmark:
+    name: "Qwen0.5B ${{ matrix.track }} | 50 MBPP+ / 25 React / 25 Express"
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        track: [baseline, ungated, gated-0.0, gated-0.5, gated-1.0, gated-ui-only-1.0]
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      TOKENIZERS_PARALLELISM: "false"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install CPU-only PyTorch and pinned MBPP+ evaluator
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.3,<3"
+          python -m pip install -r requirements.txt "evalplus==0.3.1"
+      - uses: actions/download-artifact@v4
+        with:
+          name: session014-prepared
+          run-id: 41912404382
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: outputs/session014-prepared
+      - name: Test factor source and context mask implementation before generation
+        run: |
+          python -m unittest discover -s tests -p 'test_session015.py' -v
+          python -c 'from tinycoder.session015 import archived_factors;from pathlib import Path; archived_factors(Path("outputs/session014-prepared/factors.safetensors"))'
+      - name: Build both isolated code evaluation images
+        run: |
+          docker build -f docker/session014-mbpp.Dockerfile -t tinycoder-session014-mbpp:0.3.1 .
+          docker build -f docker/session014-web.Dockerfile -t tinycoder-session014-web:1 .
+      - name: Generate and execute exact 100-task comparison under CPU-only Docker
+        run: |
+          python -m tinycoder.session015 --track "${{ matrix.track }}" --output-dir "outputs/session015-${{ matrix.track }}" --factor-path outputs/session014-prepared/factors.safetensors --max-new-tokens 160 --batch-size 4 --workers 2
+      - name: Export track report and complete predictions
+        uses: actions/upload-artifact@v4
+        with:
+          name: session015-track-${{ matrix.track }}
+          path: outputs/session015-${{ matrix.track }}/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    name: Compare and commit all six verified, exact-task outcomes
+    needs: benchmark
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: session015-track-*
+          path: outputs/session015-tracks
+          merge-multiple: false
+      - name: Verify task manifests, predictions, norm isolation, success criteria
+        run: |
+          python -m tinycoder.collect_session015 --tracks-root outputs/session015-tracks --output-dir experiments --readme README.md
+          python -m json.tool experiments/session015_gated_report.json > /dev/null
+      - name: Archive paired measurements and per-task predictions
+        uses: actions/upload-artifact@v4
+        with:
+          name: session015-verified-comparison
+          path: |
+            experiments/session015_gated_report.json
+            experiments/session015_gated_predictions.json
+            README.md
+          if-no-files-found: error
+          retention-days: 30
+      - name: Commit only actual measured results, no model checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session015_gated_report.json experiments/session015_gated_predictions.json
+          git commit -m 'Publish Session015 gated rank32 100-task execution evidence'
+          git push origin HEAD:exp/13-context-gated-subspaces

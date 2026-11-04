@@ -57,6 +57,16 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Combine the resulting two attention factors with **exactly the archived 10% layer 8 `mlp.down_proj` factors** from commit `e100c62`; verify the original factor Git blob against that commit. Keep the base checkpoint unchanged.
 - Run the already-consumed HumanEval/94–163 70-task suite in isolated Docker containers; report pass@1 and separately `ast.parse` validity. **Never call this an independent generalization test.** Save per-task predictions and reversible factors.
 
+## Session 015 — gated 0.5B low-rank subspaces
+
+- All new work takes place on `exp/13-context-gated-subspaces`, created from `main`. The original base model remains 24 layers with exactly 494,032,768 parameters. No gradients, training, LoRA adapters or increased model capacity.
+- Read the exact Session014 rank32 factor file using a SHA-256 verification before running any track. Use only Layer8 UI and Layer16 backend factors, no new learned target vectors.
+- In the gated tracks, pair `register_forward_pre_hook` with an output hook on the selected `mlp.down_proj`. Compute `(Left @ Right) @ X` with two sequential low-rank matmuls and add it to `W_base @ X`; never mutate the stored weight or hidden model state outside these modules.
+- Classify context strictly from original prompt lexical cues; default to baseline for ordinary Python/math. Ambiguous cues are baseline. A verified task manifest must contain 50 baseline-mode Python, 25 UI, and 25 backend tasks.
+- Evaluate six tracks: untouched baseline, ungated static Layer8+16 edits, gated 0.0/0.5/1.0, and a labeled UI-only ablation at 1.0. The explicit backend gate still activates Layer16 in the standard gated tracks; **do not assume this preserves API correctness**.
+- Select 50 MBPP+ test-split IDs disjoint from all 150 scored in Sessions013/014 and 50 newly numbered custom web template variants. Use identical prompts and scoring settings across all tracks. The old numerical 27/7/1 thresholds are exploratory success targets on a different task sample, not prior scores on these prompts.
+- Require Docker for all model-generated Python/JS execution. The collector must prove exact prediction equality on Python for every gated variant, and exact API equality for the UI-only variant. Never publish fabricated counts or partial scores as completed measurements.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
