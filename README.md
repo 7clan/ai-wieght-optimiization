@@ -302,3 +302,21 @@ The hybrid removes the two previously identified singular components from layer 
 
 Evidence: [`final_holdout_validation.json`](experiments/final_holdout_validation.json), [`hybrid_fusion_report.json`](experiments/hybrid_fusion_report.json), [`hybrid_fusion_comparison.json`](experiments/hybrid_fusion_comparison.json), [`hybrid_fusion_predictions.json`](experiments/hybrid_fusion_predictions.json), and [reversible `hybrid_fusion_factors.safetensors`](experiments/hybrid_fusion_factors.safetensors).
 <!-- FUSION-VALIDATION-END -->
+
+## Session 009 — Attention causal tracing and logic-alignment
+
+The new experiment will causally patch `self_attn.o_proj` outputs in layers 10–18
+on the original 20 failure/reference examples, then identify two target heads
+within layers 12–16 from loop-state and variable-reassignment code proxies.
+It will apply capped rank-one `o_proj` updates alongside the **unchanged
+archived 10% Layer 8 MLP** factors from
+[commit `e100c62`](https://github.com/7clan/ai-wieght-optimiization/commit/e100c628cd8fcf3c500e5c39070168e213b208aa).
+The separate branch is
+[`exp/06-attn-steering`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/06-attn-steering).
+
+All 70 HumanEval/94–163 tasks have already been used in previous comparisons.
+The new results will be exploratory and scored only in isolated Docker containers.
+
+<!-- ATTENTION-STEERING-START -->
+*Session 009 causal head tracing and execution evaluation pending; no scores claimed yet.*
+<!-- ATTENTION-STEERING-END -->
