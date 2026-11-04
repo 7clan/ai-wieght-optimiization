@@ -1,0 +1,510 @@
+{
+  "task_ids": [
+    "HumanEval/144",
+    "HumanEval/145",
+    "HumanEval/146",
+    "HumanEval/147",
+    "HumanEval/148",
+    "HumanEval/149",
+    "HumanEval/150",
+    "HumanEval/151",
+    "HumanEval/152",
+    "HumanEval/153",
+    "HumanEval/154",
+    "HumanEval/155",
+    "HumanEval/156",
+    "HumanEval/157",
+    "HumanEval/158",
+    "HumanEval/159",
+    "HumanEval/160",
+    "HumanEval/161",
+    "HumanEval/162",
+    "HumanEval/163"
+  ],
+  "baseline_cases": [
+    {
+      "task_id": "HumanEval/144",
+      "completion": "    numerator, denominator = map(int, x.split(\"/\"))\n    numerator, denominator = numerator * n, denominator * n\n    return numerator % denominator == 0\n\n# Example usage\nprint(simplify(\"1/5\", \"5/1\"))  # True\nprint(simplify(\"1/6\", \"2/1\"))  # False\nprint(simplify(\"7/10\", \"10/2\"))  # False\n```",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/145",
+      "completion": "    return sorted(nums, key=lambda x: sum(int(digit) for digit in str(x)))\n\n\ndef order_by_sum_of_digits(nums):\n    \"\"\"\n    Write a function which sorts the given list of integers\n    in ascending order according to the sum of their digits.\n    Note: if there are several items with similar sum of their digits,\n    order them based on their index in original list.\n\n    For example:\n    >>> order_by_sum_of_digits([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n    >>> order_by_sum_of_digits([]) == []\n    \"\"\"\n    return sorted(nums, key=lambda x: sum(int(digit) for digit in str(x",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/146",
+      "completion": "    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of numbers as input and returns \n    the number of elements in the array that are greater than 10 and both \n    first and last digits of a number are odd (1, 3, 5, 7, 9).\n    For example:\n    specialFilter([15, -73, 14, -15]) => 1 \n    specialFilter([33, -2, -3, 45, 21, 109]) => 2\n    \"\"\"\n    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/147",
+      "completion": "    # Write your code here\n    return 0\n\ndef get_max_triples(n):\n    \"\"\"\n    You are given a positive integer n. You have to create an integer array a of length n.\n        For each i (1 ≤ i ≤ n), the value of a[i] = i * i - i + 1.\n        Return the number of triples (a[i], a[j], a[k]) of a where i < j < k, \n    and a[i] + a[j] + a[k] is a multiple of 3.\n\n    Example :\n        Input: n = 5\n        Output: 1\n        Explanation: \n        a = [1, 3, 7, 13, 21]\n        The only valid",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/148",
+      "completion": "    # Write your code here\n    pass\n\ndef bf2(planet1, planet2):\n    '''\n    There are eight planets in our solar system: the closerst to the Sun \n    is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, \n    Uranus, Neptune.\n    Write a function that takes two planet names as strings planet1 and planet2. \n    The function should return a tuple containing all planets whose orbits are \n    located between the orbit of planet1 and the orbit of planet2, sorted by \n    the proximity to the sun. \n    The function should return an empty tuple if planet1 or planet2\n    are not correct planet names. \n    Examples\n    bf(\"Jupiter\", \"Neptune\") ==>",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/149",
+      "completion": "    return sorted([x for x in lst if len(x) % 2 == 0], key=len) + sorted([x for x in lst if len(x) % 2 != 0], key=len, reverse=True)\n\n\ndef list_sort(lst):\n    \"\"\"Write a function that accepts a list of strings as a parameter,\n    deletes the strings that have odd lengths from it,\n    and returns the resulted list with a sorted order,\n    The list is always a list of strings and never an array of numbers,\n    and it may contain duplicates.\n    The order of the list should be ascending by length of each word, and you\n    should return the list sorted by that rule.\n    If two words have the same length, sort the list alphabetically.\n   ",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/150",
+      "completion": "    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n    for x_or_y(7, 34, 12) == 34\n    for x_or_y(15, 8, 5) == 5\n    \n    \"\"\"\n    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/151",
+      "completion": "    # Your code here\n    if len(lst) == 0:\n        return 0\n    else:\n        sum = 0\n        for i in lst:\n            if i % 2 != 0:\n                sum += i**2\n        return sum\n\ndef double_the_difference(lst):\n    '''\n    Given a list of numbers, return the sum of squares of the numbers\n    in the list that are odd. Ignore numbers that are negative or not integers.\n    \n    double_the_difference([1, 3, 2, 0]) == 1 + 9 + 0 + 0 = 10\n    double_the_difference([-1, -2, 0]) == 0\n    double_the_difference([9, -2]) == ",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/152",
+      "completion": "    # Your code here\n    return [abs(guess - score) for score, guess in zip(game,guesses)]\n\n\ndef compare2(game,guess):\n    \"\"\"I think we all remember that feeling when the result of some long-awaited\n    event is finally known. The feelings and thoughts you have at that moment are\n    definitely worth noting down and comparing.\n    Your task is to determine if a person correctly guessed the results of a number of matches.\n    You are given two arrays of scores and guesses of equal length, where each index shows a match. \n    Return an array of the same length denoting how far off each guess was. If they have guessed correctly,\n    the value is 0, and if not, the value is the absolute difference between the",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/153",
+      "completion": "    # TODO: Implement this function\n    pass\n\ndef Strongest_Extension(class_name, extensions):\n    \"\"\"You will be given the name of a class (a string) and a list of extensions.\n    The extensions are to be used to load additional classes to the class. The\n    strength of the extension is as follows: Let CAP be the number of the uppercase\n    letters in the extension's name, and let SM be the number of lowercase letters \n    in the extension's name, the strength is given by the fraction CAP - SM. \n    You should find the strongest extension and return a string in this \n    format: ClassName.StrongestExtensionName.\n    If there are two or more extensions with the same strength, you should\n    choose the one that comes",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/154",
+      "completion": "    if len(a) != len(b):\n        return False\n    if len(a) == 0:\n        return True\n    if len(b) == 0:\n        return True\n    if a == b:\n        return True\n    if a == b[::-1]:\n        return True\n    if a == b[1:] + b[0]:\n        return True\n    if a == b[1:] + b[0:1]:\n        return True\n    if a == b[1:] + b[0:2]:\n        return True\n    if a == b[1:] + b[0:3]:\n        return True\n    if a == b[1:] + b[0:4]:\n        return True\n    if a == b[",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/155",
+      "completion": "    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n        if digit % 2 == 0:\n            even += 1\n        else:\n            odd += 1\n        num //= 10\n    return (even, odd)\n\ndef even_odd_count(num):\n    \"\"\"Given an integer. return a tuple that has the number of even and odd digits respectively.\n\n     Example:\n        even_odd_count(-12) ==> (1, 1)\n        even_odd_count(123) ==> (1, 2)\n    \"\"\"\n    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n        if digit",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/156",
+      "completion": "    if number < 1 or number > 1000:\n        raise ValueError(\"Number must be between 1 and 1000\")\n\n    roman_numerals = {\n        1000: 'm',\n        900: 'cm',\n        500: 'd',\n        400: 'cd',\n        100: 'c',\n        90: 'xc',\n        50: 'l',\n        40: 'xl',\n        10: 'x',\n        9: 'ix',\n        5: 'v',\n        4: 'iv',\n        1: 'i'\n    }\n\n    result = ''\n    for value in sorted(roman_numerals.keys",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/157",
+      "completion": "    # TODO: Write your code here\n    return False\n\ndef is_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a triangle, False otherwise.\n    A triangle is a polygon with three sides.\n    Example:\n    is_triangle(3, 4, 5) == True\n    is_triangle(1, 2, 3) == False\n    '''\n    # TODO: Write your code here\n    return False\n\ndef is_right_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a right-angled triangle, False otherwise.\n    A right-angled triangle is a triangle",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/158",
+      "completion": "    # TODO: Write your code here\n    pass\n\n\ndef find_longest_word(words):\n    \"\"\"Write a function that accepts a list of strings.\n    The list contains different words. Return the longest word in the list.\n    If multiple words have the same length, return the one which comes first\n    in lexicographical order.\n\n    find_longest_word([\"name\", \"of\", \"string\"]) == \"string\"\n    find_longest_word([\"name\", \"enam\", \"game\"]) == \"enam\"\n    find_longest_word([\"aaaaaaa\", \"bb\" ,\"cc\"]) == \"aaaaaaa\"\n    \"\"\"\n    # TODO: Write your code here\n    pass\n\n\ndef find_longest_word(words):\n    \"\"\"Write a function that accepts a list of strings.\n",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/159",
+      "completion": "    if number >= need:\n        return [number + need, remaining - need]\n    else:\n        return [number + need, remaining]\n\n\ndef eat2(number, need, remaining):\n    \"\"\"\n    You're a hungry rabbit, and you already have eaten a certain number of carrots,\n    but now you need to eat more carrots to complete the day's meals.\n    you should return an array of [ total number of eaten carrots after your meals,\n                                    the number of carrots left after your meals ]\n    if there are not enough remaining carrots, you will eat all remaining carrots, but will still be hungry.\n    \n    Example:\n    * eat(5, 6, 10) -> [11, 4]\n    * eat(4, 8,",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/160",
+      "completion": "    # Write your code here\n    return 0\n\n\ndef do_math(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic math operations, and \n    the second list is a list of integers. Use the two given lists to build the math \n    expression and return the evaluation of this expression.\n\n    The basic math operations:\n    Addition ( + ) \n    Subtraction ( - ) \n    Multiplication ( * ) \n    Division ( / ) \n    Exponentiation ( ** ) \n\n    Example:\n    operator['+', '*', '-']\n    array = [2, 3, 4, 5]\n    result = 2 + 3 * 4 - 5\n    => result = 9\n\n    Note:\n",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/161",
+      "completion": "    if not s:\n        return s\n    if s.isalpha():\n        return s.swapcase()\n    return s[::-1]\n\n\ndef solve(s):\n    \"\"\"You are given a string s.\n    if s[i] is a letter, reverse its case from lower to upper or vise versa, \n    otherwise keep it as it is.\n    If the string contains no letters, reverse the string.\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"4321\"\n    solve(\"ab\") = \"AB\"\n    solve(\"#a@C\") = \"#A@c\"\n    \"\"\"\n    if not s:\n        return s\n    if s.isalpha():\n        return s.swapcase()\n    return s[::-",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/162",
+      "completion": "    if not text:\n        return None\n    return hashlib.md5(text.encode('utf-8')).hexdigest()\n\ndef string_to_sha1(text):\n    \"\"\"\n    Given a string 'text', return its sha1 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_sha1('Hello world') == '5e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n    if not text:\n        return None\n    return hashlib.sha1(text.encode('utf-8')).hexdigest()\n\ndef string_to_sha256(text):\n    \"\"\"\n    Given a string 'text', return its sha256 hash equivalent string.\n    If 'text' is",
+      "passed": false,
+      "error": "container exited 1"
+    },
+    {
+      "task_id": "HumanEval/163",
+      "completion": "    return [i for i in range(a, b + 1) if i % 2 == 0]\n\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between a\n    and b, in ascending order.\n\n    For example:\n    generate_integers(2, 8) => [2, 4, 6, 8]\n    generate_integers(8, 2) => [2, 4, 6, 8]\n    generate_integers(10, 14) => []\n    \"\"\"\n    return [i for i in range(a, b + 1) if i % 2 == 0]\n\ndef generate_integers(a, b):\n    \"\"\"\n    Given",
+      "passed": false,
+      "error": "container exited 1"
+    }
+  ],
+  "memit_10": [
+    {
+      "task_id": "HumanEval/144",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    numerator, denominator = map(int, x.split(\"/\"))\n    numerator, denominator = numerator * n, denominator * n\n    return numerator % denominator == 0\n\n# Example usage\nprint(simplify(\"1/5\", \"5/1\"))  # True\nprint(simplify(\"1/6\", \"2/1\"))  # False\nprint(simplify(\"7/10\", \"10/2\"))  # False\n```",
+      "after_completion": "    # Your code here\n    return True\n\ndef test_simplify():\n    assert simplify(\"1/5\", \"5/1\") == True\n    assert simplify(\"1/6\", \"2/1\") == False\n    assert simplify(\"7/10\", \"10/2\") == False\n    assert simplify(\"1/5\", \"5/1\") == True\n    assert simplify(\"1/6\", \"2/1\") == False\n    assert simplify(\"7/10\", \"10/2\") == False\n    assert simplify(\"1/5\", \"5/1\") == True\n    assert simplify(\"1/6\", \"2/1\") == False\n    assert simplify(\"7/10\", \"10/"
+    },
+    {
+      "task_id": "HumanEval/145",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return sorted(nums, key=lambda x: sum(int(digit) for digit in str(x)))\n\n\ndef order_by_sum_of_digits(nums):\n    \"\"\"\n    Write a function which sorts the given list of integers\n    in ascending order according to the sum of their digits.\n    Note: if there are several items with similar sum of their digits,\n    order them based on their index in original list.\n\n    For example:\n    >>> order_by_sum_of_digits([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n    >>> order_by_sum_of_digits([]) == []\n    \"\"\"\n    return sorted(nums, key=lambda x: sum(int(digit) for digit in str(x",
+      "after_completion": "    # Your code here\n    return sorted(nums, key=lambda x: (sum(int(digit) for digit in str(x)), nums.index(x)))"
+    },
+    {
+      "task_id": "HumanEval/146",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of numbers as input and returns \n    the number of elements in the array that are greater than 10 and both \n    first and last digits of a number are odd (1, 3, 5, 7, 9).\n    For example:\n    specialFilter([15, -73, 14, -15]) => 1 \n    specialFilter([33, -2, -3, 45, 21, 109]) => 2\n    \"\"\"\n    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of",
+      "after_completion": "    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of numbers as input and returns \n    the number of elements in the array that are greater than 10 and both \n    first and last digits of a number are odd (1, 3, 5, 7, 9).\n    For example:\n    specialFilter([15, -73, 14, -15]) => 1 \n    specialFilter([33, -2, -3, 45, 21, 109]) => 2\n    \"\"\"\n    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of"
+    },
+    {
+      "task_id": "HumanEval/147",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Write your code here\n    return 0\n\ndef get_max_triples(n):\n    \"\"\"\n    You are given a positive integer n. You have to create an integer array a of length n.\n        For each i (1 ≤ i ≤ n), the value of a[i] = i * i - i + 1.\n        Return the number of triples (a[i], a[j], a[k]) of a where i < j < k, \n    and a[i] + a[j] + a[k] is a multiple of 3.\n\n    Example :\n        Input: n = 5\n        Output: 1\n        Explanation: \n        a = [1, 3, 7, 13, 21]\n        The only valid",
+      "after_completion": "    # Write your code here\n    return 0\n\ndef get_max_triples(n):\n    \"\"\"\n    You are given a positive integer n. You have to create an integer array a of length n.\n        For each i (1 ≤ i ≤ n), the value of a[i] = i * i - i + 1.\n        Return the number of triples (a[i], a[j], a[k]) of a where i < j < k, \n    and a[i] + a[j] + a[k] is a multiple of 3.\n\n    Example :\n        Input: n = 5\n        Output: 1\n        Explanation: \n        a = [1, 3, 7, 13, 21]\n        The only valid"
+    },
+    {
+      "task_id": "HumanEval/148",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Write your code here\n    pass\n\ndef bf2(planet1, planet2):\n    '''\n    There are eight planets in our solar system: the closerst to the Sun \n    is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, \n    Uranus, Neptune.\n    Write a function that takes two planet names as strings planet1 and planet2. \n    The function should return a tuple containing all planets whose orbits are \n    located between the orbit of planet1 and the orbit of planet2, sorted by \n    the proximity to the sun. \n    The function should return an empty tuple if planet1 or planet2\n    are not correct planet names. \n    Examples\n    bf(\"Jupiter\", \"Neptune\") ==>",
+      "after_completion": "    if planet1 not in planets or planet2 not in planets:\n        return ()\n    else:\n        planets = sorted(planets)\n        if planet1 == planets[-1] or planet2 == planets[0]:\n            return ()\n        else:\n            return tuple(sorted(planets[planets.index(planet1)+1:planets.index(planet2)]))\n\n\ndef bf2(planet1, planet2):\n    '''\n    There are eight planets in our solar system: the closerst to the Sun \n    is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, \n    Uranus, Neptune.\n    Write a function that takes two planet names as strings planet1 and planet2. \n    The function should return a tuple containing all planets"
+    },
+    {
+      "task_id": "HumanEval/149",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return sorted([x for x in lst if len(x) % 2 == 0], key=len) + sorted([x for x in lst if len(x) % 2 != 0], key=len, reverse=True)\n\n\ndef list_sort(lst):\n    \"\"\"Write a function that accepts a list of strings as a parameter,\n    deletes the strings that have odd lengths from it,\n    and returns the resulted list with a sorted order,\n    The list is always a list of strings and never an array of numbers,\n    and it may contain duplicates.\n    The order of the list should be ascending by length of each word, and you\n    should return the list sorted by that rule.\n    If two words have the same length, sort the list alphabetically.\n   ",
+      "after_completion": "    return sorted([x for x in lst if len(x) % 2 == 0], key=len) + sorted([x for x in lst if len(x) % 2 != 0], key=len, reverse=True)"
+    },
+    {
+      "task_id": "HumanEval/150",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n    for x_or_y(7, 34, 12) == 34\n    for x_or_y(15, 8, 5) == 5\n    \n    \"\"\"\n    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n",
+      "after_completion": "    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n    for x_or_y(7, 34, 12) == 34\n    for x_or_y(15, 8, 5) == 5\n    \n    \"\"\"\n    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n"
+    },
+    {
+      "task_id": "HumanEval/151",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    if len(lst) == 0:\n        return 0\n    else:\n        sum = 0\n        for i in lst:\n            if i % 2 != 0:\n                sum += i**2\n        return sum\n\ndef double_the_difference(lst):\n    '''\n    Given a list of numbers, return the sum of squares of the numbers\n    in the list that are odd. Ignore numbers that are negative or not integers.\n    \n    double_the_difference([1, 3, 2, 0]) == 1 + 9 + 0 + 0 = 10\n    double_the_difference([-1, -2, 0]) == 0\n    double_the_difference([9, -2]) == ",
+      "after_completion": "    if not lst:\n        return 0\n    result = 0\n    for num in lst:\n        if num % 2 != 0:\n            result += num ** 2\n    return result\n\n# Test the function with the provided examples\nprint(double_the_difference([1, 3, 2, 0]))  # Expected output: 10\nprint(double_the_difference([-1, -2, 0]))  # Expected output: 0\nprint(double_the_difference([9, -2]))      # Expected output: 81\nprint(double_the_difference([0]))          # Expected output: 0\nprint(double_the_difference([]))           # Expected output: 0\nprint(double_the_difference([1, 2, 3,"
+    },
+    {
+      "task_id": "HumanEval/152",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    return [abs(guess - score) for score, guess in zip(game,guesses)]\n\n\ndef compare2(game,guess):\n    \"\"\"I think we all remember that feeling when the result of some long-awaited\n    event is finally known. The feelings and thoughts you have at that moment are\n    definitely worth noting down and comparing.\n    Your task is to determine if a person correctly guessed the results of a number of matches.\n    You are given two arrays of scores and guesses of equal length, where each index shows a match. \n    Return an array of the same length denoting how far off each guess was. If they have guessed correctly,\n    the value is 0, and if not, the value is the absolute difference between the",
+      "after_completion": "    # Your code here\n    return [abs(guess[i]-score[i]) for i in range(len(guess))]\n\ndef compare2(game,guess):\n    \"\"\"I think we all remember that feeling when the result of some long-awaited\n    event is finally known. The feelings and thoughts you have at that moment are\n    definitely worth noting down and comparing.\n    Your task is to determine if a person correctly guessed the results of a number of matches.\n    You are given two arrays of scores and guesses of equal length, where each index shows a match. \n    Return an array of the same length denoting how far off each guess was. If they have guessed correctly,\n    the value is 0, and if not, the value is the absolute difference between the guess and the score"
+    },
+    {
+      "task_id": "HumanEval/153",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # TODO: Implement this function\n    pass\n\ndef Strongest_Extension(class_name, extensions):\n    \"\"\"You will be given the name of a class (a string) and a list of extensions.\n    The extensions are to be used to load additional classes to the class. The\n    strength of the extension is as follows: Let CAP be the number of the uppercase\n    letters in the extension's name, and let SM be the number of lowercase letters \n    in the extension's name, the strength is given by the fraction CAP - SM. \n    You should find the strongest extension and return a string in this \n    format: ClassName.StrongestExtensionName.\n    If there are two or more extensions with the same strength, you should\n    choose the one that comes",
+      "after_completion": "    # TODO: Implement this function\n    pass\n\ndef Strongest_Extension_2(class_name, extensions):\n    \"\"\"You will be given the name of a class (a string) and a list of extensions.\n    The extensions are to be used to load additional classes to the class. The\n    strength of the extension is as follows: Let CAP be the number of the uppercase\n    letters in the extension's name, and let SM be the number of lowercase letters \n    in the extension's name, the strength is given by the fraction CAP - SM. \n    You should find the strongest extension and return a string in this \n    format: ClassName.StrongestExtensionName.\n    If there are two or more extensions with the same strength, you should\n    choose the one"
+    },
+    {
+      "task_id": "HumanEval/154",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if len(a) != len(b):\n        return False\n    if len(a) == 0:\n        return True\n    if len(b) == 0:\n        return True\n    if a == b:\n        return True\n    if a == b[::-1]:\n        return True\n    if a == b[1:] + b[0]:\n        return True\n    if a == b[1:] + b[0:1]:\n        return True\n    if a == b[1:] + b[0:2]:\n        return True\n    if a == b[1:] + b[0:3]:\n        return True\n    if a == b[1:] + b[0:4]:\n        return True\n    if a == b[",
+      "after_completion": "    if len(a) != len(b):\n        return False\n    if len(a) == 0:\n        return True\n    if len(b) == 0:\n        return False\n    if len(a) == 1:\n        return False\n    if len(b) == 1:\n        return False\n    if len(a) == 2:\n        return False\n    if len(b) == 2:\n        return False\n    if len(a) == 3:\n        return False\n    if len(b) == 3:\n        return False\n    if len(a) == 4:\n        return False\n    if len(b) == 4:\n        return False\n    if len(a) == 5:\n        return False\n    if len(b"
+    },
+    {
+      "task_id": "HumanEval/155",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "timeout",
+      "before_completion": "    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n        if digit % 2 == 0:\n            even += 1\n        else:\n            odd += 1\n        num //= 10\n    return (even, odd)\n\ndef even_odd_count(num):\n    \"\"\"Given an integer. return a tuple that has the number of even and odd digits respectively.\n\n     Example:\n        even_odd_count(-12) ==> (1, 1)\n        even_odd_count(123) ==> (1, 2)\n    \"\"\"\n    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n        if digit",
+      "after_completion": "    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n        if digit % 2 == 0:\n            even += 1\n        else:\n            odd += 1\n        num //= 10\n    return (even, odd)\n\n\ndef even_odd_count(num):\n    \"\"\"Given an integer. return a tuple that has the number of even and odd digits respectively.\n\n     Example:\n        even_odd_count(-12) ==> (1, 1)\n        even_odd_count(123) ==> (1, 2)\n    \"\"\"\n    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n"
+    },
+    {
+      "task_id": "HumanEval/156",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if number < 1 or number > 1000:\n        raise ValueError(\"Number must be between 1 and 1000\")\n\n    roman_numerals = {\n        1000: 'm',\n        900: 'cm',\n        500: 'd',\n        400: 'cd',\n        100: 'c',\n        90: 'xc',\n        50: 'l',\n        40: 'xl',\n        10: 'x',\n        9: 'ix',\n        5: 'v',\n        4: 'iv',\n        1: 'i'\n    }\n\n    result = ''\n    for value in sorted(roman_numerals.keys",
+      "after_completion": "    if number < 1 or number > 1000:\n        raise ValueError(\"Number must be between 1 and 1000\")\n\n    roman_numerals = {\n        1000: 'm',\n        900: 'cm',\n        500: 'd',\n        400: 'cd',\n        100: 'c',\n        90: 'xc',\n        50: 'l',\n        40: 'xl',\n        10: 'x',\n        9: 'ix',\n        5: 'v',\n        4: 'iv',\n        1: 'i'\n    }\n\n    result = ''\n    for value in sorted(roman_numerals.keys"
+    },
+    {
+      "task_id": "HumanEval/157",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # TODO: Write your code here\n    return False\n\ndef is_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a triangle, False otherwise.\n    A triangle is a polygon with three sides.\n    Example:\n    is_triangle(3, 4, 5) == True\n    is_triangle(1, 2, 3) == False\n    '''\n    # TODO: Write your code here\n    return False\n\ndef is_right_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a right-angled triangle, False otherwise.\n    A right-angled triangle is a triangle",
+      "after_completion": "    # TODO: Write your code here\n    return False\n\ndef is_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a triangle, False otherwise.\n    A triangle is a polygon with three sides.\n    Example:\n    is_triangle(3, 4, 5) == True\n    is_triangle(1, 2, 3) == False\n    '''\n    # TODO: Write your code here\n    return False\n\ndef is_right_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a right-angled triangle, False otherwise.\n    A right-angled triangle is a triangle"
+    },
+    {
+      "task_id": "HumanEval/158",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # TODO: Write your code here\n    pass\n\n\ndef find_longest_word(words):\n    \"\"\"Write a function that accepts a list of strings.\n    The list contains different words. Return the longest word in the list.\n    If multiple words have the same length, return the one which comes first\n    in lexicographical order.\n\n    find_longest_word([\"name\", \"of\", \"string\"]) == \"string\"\n    find_longest_word([\"name\", \"enam\", \"game\"]) == \"enam\"\n    find_longest_word([\"aaaaaaa\", \"bb\" ,\"cc\"]) == \"aaaaaaa\"\n    \"\"\"\n    # TODO: Write your code here\n    pass\n\n\ndef find_longest_word(words):\n    \"\"\"Write a function that accepts a list of strings.\n",
+      "after_completion": "    # TODO: Write your code here\n    return max(words, key=lambda x: (len(set(x)), x))\n\n\ndef find_longest_word(words):\n    \"\"\"Write a function that accepts a list of strings.\n    The list contains different words. Return the longest word in the list.\n    If multiple strings have the same length, return the one which comes first\n    in lexicographical order.\n\n    find_longest_word([\"name\", \"of\", \"string\"]) == \"string\"\n    find_longest_word([\"name\", \"enam\", \"game\"]) == \"enam\"\n    find_longest_word([\"aaaaaaa\", \"bb\" ,\"cc\"]) == \"aaaaaaa\"\n    \"\"\"\n    # TODO: Write your code here\n    return max(words, key"
+    },
+    {
+      "task_id": "HumanEval/159",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if number >= need:\n        return [number + need, remaining - need]\n    else:\n        return [number + need, remaining]\n\n\ndef eat2(number, need, remaining):\n    \"\"\"\n    You're a hungry rabbit, and you already have eaten a certain number of carrots,\n    but now you need to eat more carrots to complete the day's meals.\n    you should return an array of [ total number of eaten carrots after your meals,\n                                    the number of carrots left after your meals ]\n    if there are not enough remaining carrots, you will eat all remaining carrots, but will still be hungry.\n    \n    Example:\n    * eat(5, 6, 10) -> [11, 4]\n    * eat(4, 8,",
+      "after_completion": "    if number >= need:\n        return [number + need, remaining - need]\n    else:\n        return [number + need, remaining]\n\n\ndef eat2(number, need, remaining):\n    \"\"\"\n    You're a hungry rabbit, and you already have eaten a certain number of carrots,\n    but now you need to eat more carrots to complete the day's meals.\n    you should return an array of [ total number of eaten carrots after your meals,\n                                    the number of carrots left after your meals ]\n    if there are not enough remaining carrots, you will eat all remaining carrots, but will still be hungry.\n    \n    Example:\n    * eat(5, 6, 10) -> [11, 4]\n    * eat(4, 8,"
+    },
+    {
+      "task_id": "HumanEval/160",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Write your code here\n    return 0\n\n\ndef do_math(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic math operations, and \n    the second list is a list of integers. Use the two given lists to build the math \n    expression and return the evaluation of this expression.\n\n    The basic math operations:\n    Addition ( + ) \n    Subtraction ( - ) \n    Multiplication ( * ) \n    Division ( / ) \n    Exponentiation ( ** ) \n\n    Example:\n    operator['+', '*', '-']\n    array = [2, 3, 4, 5]\n    result = 2 + 3 * 4 - 5\n    => result = 9\n\n    Note:\n",
+      "after_completion": "    # Write your code here\n    # return 0\n    result = 0\n    for i in range(len(operator)):\n        if operator[i] == '+':\n            result += operand[i]\n        elif operator[i] == '-':\n            result -= operand[i]\n        elif operator[i] == '*':\n            result *= operand[i]\n        elif operator[i] == '//':\n            result //= operand[i]\n        elif operator[i] == '**':\n            result **= operand[i]\n    return result\n\n\ndef do_algebra2(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic algebra operations, and \n    the second list is a list of integers. Use the two given lists to build the algebric \n    expression and return the"
+    },
+    {
+      "task_id": "HumanEval/161",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if not s:\n        return s\n    if s.isalpha():\n        return s.swapcase()\n    return s[::-1]\n\n\ndef solve(s):\n    \"\"\"You are given a string s.\n    if s[i] is a letter, reverse its case from lower to upper or vise versa, \n    otherwise keep it as it is.\n    If the string contains no letters, reverse the string.\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"4321\"\n    solve(\"ab\") = \"AB\"\n    solve(\"#a@C\") = \"#A@c\"\n    \"\"\"\n    if not s:\n        return s\n    if s.isalpha():\n        return s.swapcase()\n    return s[::-",
+      "after_completion": "    if not s:\n        return s\n    if not s.isalpha():\n        return s[::-1]\n    return \"\".join([c.lower() if c.isupper() else c.upper() for c in s])"
+    },
+    {
+      "task_id": "HumanEval/162",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if not text:\n        return None\n    return hashlib.md5(text.encode('utf-8')).hexdigest()\n\ndef string_to_sha1(text):\n    \"\"\"\n    Given a string 'text', return its sha1 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_sha1('Hello world') == '5e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n    if not text:\n        return None\n    return hashlib.sha1(text.encode('utf-8')).hexdigest()\n\ndef string_to_sha256(text):\n    \"\"\"\n    Given a string 'text', return its sha256 hash equivalent string.\n    If 'text' is",
+      "after_completion": "    if not text:\n        return None\n    return hashlib.md5(text.encode('utf-8')).hexdigest()\n\n# Example usage:\nif __name__ == \"__main__\":\n    print(string_to_md5('Hello world'))  # Output: '3e25960a79dbc69b674cd4ec67a72c62'\n    print(string_to_md5(''))  # Output: None\n    print(string_to_md5(None))  # Output: None"
+    },
+    {
+      "task_id": "HumanEval/163",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return [i for i in range(a, b + 1) if i % 2 == 0]\n\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between a\n    and b, in ascending order.\n\n    For example:\n    generate_integers(2, 8) => [2, 4, 6, 8]\n    generate_integers(8, 2) => [2, 4, 6, 8]\n    generate_integers(10, 14) => []\n    \"\"\"\n    return [i for i in range(a, b + 1) if i % 2 == 0]\n\ndef generate_integers(a, b):\n    \"\"\"\n    Given",
+      "after_completion": "    even_digits = []\n    for num in range(a, b + 1):\n        if num % 2 == 0:\n            even_digits.append(num)\n    return even_digits\n\n# Example usage:\nif __name__ == \"__main__\":\n    print(generate_integers(2, 8))  # Output: [2, 4, 6, 8]\n    print(generate_integers(8, 2))  # Output: [2, 4, 6, 8]\n    print(generate_integers(10, 14))  # Output: []\n```"
+    }
+  ],
+  "memit_1p5": [
+    {
+      "task_id": "HumanEval/144",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    numerator, denominator = map(int, x.split(\"/\"))\n    numerator, denominator = numerator * n, denominator * n\n    return numerator % denominator == 0\n\n# Example usage\nprint(simplify(\"1/5\", \"5/1\"))  # True\nprint(simplify(\"1/6\", \"2/1\"))  # False\nprint(simplify(\"7/10\", \"10/2\"))  # False\n```",
+      "after_completion": "    numerator, denominator = map(int, x.split('/'))\n    numerator, denominator = numerator * n, denominator * n\n    return numerator % denominator == 0\n\n# Example usage\nprint(simplify(\"1/5\", \"5/1\"))  # Output: True\nprint(simplify(\"1/6\", \"2/1\"))  # Output: False\nprint(simplify(\"7/10\", \"10/2\"))  # Output: False\n```"
+    },
+    {
+      "task_id": "HumanEval/145",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return sorted(nums, key=lambda x: sum(int(digit) for digit in str(x)))\n\n\ndef order_by_sum_of_digits(nums):\n    \"\"\"\n    Write a function which sorts the given list of integers\n    in ascending order according to the sum of their digits.\n    Note: if there are several items with similar sum of their digits,\n    order them based on their index in original list.\n\n    For example:\n    >>> order_by_sum_of_digits([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n    >>> order_by_sum_of_digits([]) == []\n    \"\"\"\n    return sorted(nums, key=lambda x: sum(int(digit) for digit in str(x",
+      "after_completion": "    return sorted(nums, key=lambda x: sum(int(digit) for digit in str(x)))\n\n\ndef order_by_sum_of_digits(nums):\n    \"\"\"\n    Write a function which sorts the given list of integers\n    in ascending order according to the sum of their digits.\n    Note: if there are several items with similar sum of their digits,\n    order them based on their index in original list.\n\n    For example:\n    >>> order_by_sum_of_digits([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n    >>> order_by_sum_of_digits([]) == []\n    \"\"\"\n    return sorted(nums, key=lambda x: sum(int(digit) for digit in str(x"
+    },
+    {
+      "task_id": "HumanEval/146",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of numbers as input and returns \n    the number of elements in the array that are greater than 10 and both \n    first and last digits of a number are odd (1, 3, 5, 7, 9).\n    For example:\n    specialFilter([15, -73, 14, -15]) => 1 \n    specialFilter([33, -2, -3, 45, 21, 109]) => 2\n    \"\"\"\n    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of",
+      "after_completion": "    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of numbers as input and returns \n    the number of elements in the array that are greater than 10 and both \n    first and last digits of a number are odd (1, 3, 5, 7, 9).\n    For example:\n    specialFilter([15, -73, 14, -15]) => 1 \n    specialFilter([33, -2, -3, 45, 21, 109]) => 2\n    \"\"\"\n    # Your code here\n    return 0\n\ndef specialFilter(nums):\n    \"\"\"Write a function that takes an array of"
+    },
+    {
+      "task_id": "HumanEval/147",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Write your code here\n    return 0\n\ndef get_max_triples(n):\n    \"\"\"\n    You are given a positive integer n. You have to create an integer array a of length n.\n        For each i (1 ≤ i ≤ n), the value of a[i] = i * i - i + 1.\n        Return the number of triples (a[i], a[j], a[k]) of a where i < j < k, \n    and a[i] + a[j] + a[k] is a multiple of 3.\n\n    Example :\n        Input: n = 5\n        Output: 1\n        Explanation: \n        a = [1, 3, 7, 13, 21]\n        The only valid",
+      "after_completion": "    # Write your code here\n    return 0\n\ndef get_max_triples(n):\n    \"\"\"\n    You are given a positive integer n. You have to create an integer array a of length n.\n        For each i (1 ≤ i ≤ n), the value of a[i] = i * i - i + 1.\n        Return the number of triples (a[i], a[j], a[k]) of a where i < j < k, \n    and a[i] + a[j] + a[k] is a multiple of 3.\n\n    Example :\n        Input: n = 5\n        Output: 1\n        Explanation: \n        a = [1, 3, 7, 13, 21]\n        The only valid"
+    },
+    {
+      "task_id": "HumanEval/148",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Write your code here\n    pass\n\ndef bf2(planet1, planet2):\n    '''\n    There are eight planets in our solar system: the closerst to the Sun \n    is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, \n    Uranus, Neptune.\n    Write a function that takes two planet names as strings planet1 and planet2. \n    The function should return a tuple containing all planets whose orbits are \n    located between the orbit of planet1 and the orbit of planet2, sorted by \n    the proximity to the sun. \n    The function should return an empty tuple if planet1 or planet2\n    are not correct planet names. \n    Examples\n    bf(\"Jupiter\", \"Neptune\") ==>",
+      "after_completion": "    # Write your code here\n    if planet1 not in planets or planet2 not in planets:\n        return ()\n    else:\n        planets = sorted(planets)\n        if planet1 == planets[-1] or planet2 == planets[0]:\n            return ()\n        else:\n            return tuple(sorted(planets, key=lambda x: planets.index(x)))\n\n\ndef bf2(planet1, planet2):\n    '''\n    There are eight planets in our solar system: the closerst to the Sun \n    is Mercury, the next one is Venus, then Earth, Mars, Jupiter, Saturn, \n    Uranus, Neptune.\n    Write a function that takes two planet names as strings planet1 and planet2. \n    The function should return a tuple containing all planets whose orbits"
+    },
+    {
+      "task_id": "HumanEval/149",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return sorted([x for x in lst if len(x) % 2 == 0], key=len) + sorted([x for x in lst if len(x) % 2 != 0], key=len, reverse=True)\n\n\ndef list_sort(lst):\n    \"\"\"Write a function that accepts a list of strings as a parameter,\n    deletes the strings that have odd lengths from it,\n    and returns the resulted list with a sorted order,\n    The list is always a list of strings and never an array of numbers,\n    and it may contain duplicates.\n    The order of the list should be ascending by length of each word, and you\n    should return the list sorted by that rule.\n    If two words have the same length, sort the list alphabetically.\n   ",
+      "after_completion": "    return sorted([x for x in lst if len(x) % 2 == 0], key=len) + sorted([x for x in lst if len(x) % 2 != 0], key=len, reverse=True)\n\n\ndef list_sort(lst):\n    \"\"\"Write a function that accepts a list of strings as a parameter,\n    deletes the strings that have odd lengths from it,\n    and returns the resulted list with a sorted order,\n    The list is always a list of strings and never an array of numbers,\n    and it may contain duplicates.\n    The order of the list should be ascending by length of each word, and you\n    should return the list sorted by that rule.\n    If two words have the same length, sort the list alphabetically.\n   "
+    },
+    {
+      "task_id": "HumanEval/150",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n    for x_or_y(7, 34, 12) == 34\n    for x_or_y(15, 8, 5) == 5\n    \n    \"\"\"\n    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n",
+      "after_completion": "    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n    for x_or_y(7, 34, 12) == 34\n    for x_or_y(15, 8, 5) == 5\n    \n    \"\"\"\n    if is_prime(n):\n        return x\n    else:\n        return y\n\ndef x_or_y(n, x, y):\n    \"\"\"A simple program which should return the value of x if n is \n    a prime number and should return the value of y otherwise.\n\n    Examples:\n"
+    },
+    {
+      "task_id": "HumanEval/151",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    if len(lst) == 0:\n        return 0\n    else:\n        sum = 0\n        for i in lst:\n            if i % 2 != 0:\n                sum += i**2\n        return sum\n\ndef double_the_difference(lst):\n    '''\n    Given a list of numbers, return the sum of squares of the numbers\n    in the list that are odd. Ignore numbers that are negative or not integers.\n    \n    double_the_difference([1, 3, 2, 0]) == 1 + 9 + 0 + 0 = 10\n    double_the_difference([-1, -2, 0]) == 0\n    double_the_difference([9, -2]) == ",
+      "after_completion": "    # Your code here\n    if len(lst) == 0:\n        return 0\n    else:\n        sum = 0\n        for i in lst:\n            if i % 2 != 0:\n                sum += i**2\n        return sum\n\ndef double_the_difference(lst):\n    '''\n    Given a list of numbers, return the sum of squares of the numbers\n    in the list that are odd. Ignore numbers that are negative or not integers.\n    \n    double_the_difference([1, 3, 2, 0]) == 1 + 9 + 0 + 0 = 10\n    double_the_difference([-1, -2, 0]) == 0\n    double_the_difference([9, -2]) == "
+    },
+    {
+      "task_id": "HumanEval/152",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    return [abs(guess - score) for score, guess in zip(game,guesses)]\n\n\ndef compare2(game,guess):\n    \"\"\"I think we all remember that feeling when the result of some long-awaited\n    event is finally known. The feelings and thoughts you have at that moment are\n    definitely worth noting down and comparing.\n    Your task is to determine if a person correctly guessed the results of a number of matches.\n    You are given two arrays of scores and guesses of equal length, where each index shows a match. \n    Return an array of the same length denoting how far off each guess was. If they have guessed correctly,\n    the value is 0, and if not, the value is the absolute difference between the",
+      "after_completion": "    # Your code here\n    return [abs(guess - score) for score, guess in zip(game,guesses)]"
+    },
+    {
+      "task_id": "HumanEval/153",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # TODO: Implement this function\n    pass\n\ndef Strongest_Extension(class_name, extensions):\n    \"\"\"You will be given the name of a class (a string) and a list of extensions.\n    The extensions are to be used to load additional classes to the class. The\n    strength of the extension is as follows: Let CAP be the number of the uppercase\n    letters in the extension's name, and let SM be the number of lowercase letters \n    in the extension's name, the strength is given by the fraction CAP - SM. \n    You should find the strongest extension and return a string in this \n    format: ClassName.StrongestExtensionName.\n    If there are two or more extensions with the same strength, you should\n    choose the one that comes",
+      "after_completion": "    # TODO: Implement this function\n    pass\n\ndef Strongest_Extension(class_name, extensions):\n    \"\"\"You will be given the name of a class (a string) and a list of extensions.\n    The extensions are to be used to load additional classes to the class. The\n    strength of the extension is as follows: Let CAP be the number of the uppercase\n    letters in the extension's name, and let SM be the number of lowercase letters \n    in the extension's name, the strength is given by the fraction CAP - SM. \n    You should find the strongest extension and return a string in this \n    format: ClassName.StrongestExtensionName.\n    If there are two or more extensions with the same strength, you should\n    choose the one that comes"
+    },
+    {
+      "task_id": "HumanEval/154",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if len(a) != len(b):\n        return False\n    if len(a) == 0:\n        return True\n    if len(b) == 0:\n        return True\n    if a == b:\n        return True\n    if a == b[::-1]:\n        return True\n    if a == b[1:] + b[0]:\n        return True\n    if a == b[1:] + b[0:1]:\n        return True\n    if a == b[1:] + b[0:2]:\n        return True\n    if a == b[1:] + b[0:3]:\n        return True\n    if a == b[1:] + b[0:4]:\n        return True\n    if a == b[",
+      "after_completion": "    if len(a) != len(b):\n        return False\n    if len(a) == 0:\n        return True\n    if len(b) == 0:\n        return False\n    if len(a) == 1:\n        return False\n    if len(b) == 1:\n        return False\n    if len(a) == 2:\n        return False\n    if len(b) == 2:\n        return False\n    if len(a) == 3:\n        return False\n    if len(b) == 3:\n        return False\n    if len(a) == 4:\n        return False\n    if len(b) == 4:\n        return False\n    if len(a) == 5:\n        return False\n    if len(b"
+    },
+    {
+      "task_id": "HumanEval/155",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n        if digit % 2 == 0:\n            even += 1\n        else:\n            odd += 1\n        num //= 10\n    return (even, odd)\n\ndef even_odd_count(num):\n    \"\"\"Given an integer. return a tuple that has the number of even and odd digits respectively.\n\n     Example:\n        even_odd_count(-12) ==> (1, 1)\n        even_odd_count(123) ==> (1, 2)\n    \"\"\"\n    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n        if digit",
+      "after_completion": "    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n        if digit % 2 == 0:\n            even += 1\n        else:\n            odd += 1\n        num //= 10\n    return (even, odd)\n\ndef even_odd_count(num):\n    \"\"\"Given an integer. return a tuple that has the number of even and odd digits respectively.\n\n     Example:\n        even_odd_count(-12) ==> (1, 1)\n        even_odd_count(123) ==> (1, 2)\n    \"\"\"\n    even = 0\n    odd = 0\n    while num > 0:\n        digit = num % 10\n        if digit"
+    },
+    {
+      "task_id": "HumanEval/156",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if number < 1 or number > 1000:\n        raise ValueError(\"Number must be between 1 and 1000\")\n\n    roman_numerals = {\n        1000: 'm',\n        900: 'cm',\n        500: 'd',\n        400: 'cd',\n        100: 'c',\n        90: 'xc',\n        50: 'l',\n        40: 'xl',\n        10: 'x',\n        9: 'ix',\n        5: 'v',\n        4: 'iv',\n        1: 'i'\n    }\n\n    result = ''\n    for value in sorted(roman_numerals.keys",
+      "after_completion": "    if number < 1 or number > 1000:\n        raise ValueError(\"Number must be between 1 and 1000\")\n\n    roman_numerals = {\n        1000: 'm',\n        900: 'cm',\n        500: 'd',\n        400: 'cd',\n        100: 'c',\n        90: 'xc',\n        50: 'l',\n        40: 'xl',\n        10: 'x',\n        9: 'ix',\n        5: 'v',\n        4: 'iv',\n        1: 'i'\n    }\n\n    result = ''\n    for value in sorted(roman_numerals.keys"
+    },
+    {
+      "task_id": "HumanEval/157",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # TODO: Write your code here\n    return False\n\ndef is_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a triangle, False otherwise.\n    A triangle is a polygon with three sides.\n    Example:\n    is_triangle(3, 4, 5) == True\n    is_triangle(1, 2, 3) == False\n    '''\n    # TODO: Write your code here\n    return False\n\ndef is_right_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a right-angled triangle, False otherwise.\n    A right-angled triangle is a triangle",
+      "after_completion": "    # TODO: Write your code here\n    return False\n\ndef is_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a triangle, False otherwise.\n    A triangle is a polygon with three sides.\n    Example:\n    is_triangle(3, 4, 5) == True\n    is_triangle(1, 2, 3) == False\n    '''\n    # TODO: Write your code here\n    return False\n\ndef is_right_triangle(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return True if the three\n    sides form a right-angled triangle, False otherwise.\n    A right-angled triangle is a triangle"
+    },
+    {
+      "task_id": "HumanEval/158",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # TODO: Write your code here\n    pass\n\n\ndef find_longest_word(words):\n    \"\"\"Write a function that accepts a list of strings.\n    The list contains different words. Return the longest word in the list.\n    If multiple words have the same length, return the one which comes first\n    in lexicographical order.\n\n    find_longest_word([\"name\", \"of\", \"string\"]) == \"string\"\n    find_longest_word([\"name\", \"enam\", \"game\"]) == \"enam\"\n    find_longest_word([\"aaaaaaa\", \"bb\" ,\"cc\"]) == \"aaaaaaa\"\n    \"\"\"\n    # TODO: Write your code here\n    pass\n\n\ndef find_longest_word(words):\n    \"\"\"Write a function that accepts a list of strings.\n",
+      "after_completion": "    # TODO: Write your code here\n    pass\n\n\ndef find_longest_word(words):\n    \"\"\"Write a function that accepts a list of strings.\n    The list contains different words. Return the longest word in the list.\n    If multiple strings have the same length, return the one which comes first\n    in lexicographical order.\n\n    find_longest_word([\"name\", \"of\", \"string\"]) == \"string\"\n    find_longest_word([\"name\", \"enam\", \"game\"]) == \"enam\"\n    find_longest_word([\"aaaaaaa\", \"bb\" ,\"cc\"]) == \"aaaaaaa\"\n    \"\"\"\n    # TODO: Write your code here\n    pass\n\n\ndef find_longest_word(words):\n    \"\"\"Write a function that accepts a list of strings.\n"
+    },
+    {
+      "task_id": "HumanEval/159",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if number >= need:\n        return [number + need, remaining - need]\n    else:\n        return [number + need, remaining]\n\n\ndef eat2(number, need, remaining):\n    \"\"\"\n    You're a hungry rabbit, and you already have eaten a certain number of carrots,\n    but now you need to eat more carrots to complete the day's meals.\n    you should return an array of [ total number of eaten carrots after your meals,\n                                    the number of carrots left after your meals ]\n    if there are not enough remaining carrots, you will eat all remaining carrots, but will still be hungry.\n    \n    Example:\n    * eat(5, 6, 10) -> [11, 4]\n    * eat(4, 8,",
+      "after_completion": "    if number >= need:\n        return [number + need, remaining - need]\n    else:\n        return [number + need, remaining]\n\n\ndef eat2(number, need, remaining):\n    \"\"\"\n    You're a hungry rabbit, and you already have eaten a certain number of carrots,\n    but now you need to eat more carrots to complete the day's meals.\n    you should return an array of [ total number of eaten carrots after your meals,\n                                    the number of carrots left after your meals ]\n    if there are not enough remaining carrots, you will eat all remaining carrots, but will still be hungry.\n    \n    Example:\n    * eat(5, 6, 10) -> [11, 4]\n    * eat(4, 8,"
+    },
+    {
+      "task_id": "HumanEval/160",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Write your code here\n    return 0\n\n\ndef do_math(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic math operations, and \n    the second list is a list of integers. Use the two given lists to build the math \n    expression and return the evaluation of this expression.\n\n    The basic math operations:\n    Addition ( + ) \n    Subtraction ( - ) \n    Multiplication ( * ) \n    Division ( / ) \n    Exponentiation ( ** ) \n\n    Example:\n    operator['+', '*', '-']\n    array = [2, 3, 4, 5]\n    result = 2 + 3 * 4 - 5\n    => result = 9\n\n    Note:\n",
+      "after_completion": "    # Write your code here\n    return 0\n\n\ndef do_math(operator, operand):\n    \"\"\"\n    Given two lists operator, and operand. The first list has basic math operations, and \n    the second list is a list of integers. Use the two given lists to build the math \n    expression and return the evaluation of this expression.\n\n    The basic math operations:\n    Addition ( + ) \n    Subtraction ( - ) \n    Multiplication ( * ) \n    Division ( / ) \n    Exponentiation ( ** ) \n\n    Example:\n    operator['+', '*', '-']\n    array = [2, 3, 4, 5]\n    result = 2 + 3 * 4 - 5\n    => result = 9\n\n    Note:\n"
+    },
+    {
+      "task_id": "HumanEval/161",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if not s:\n        return s\n    if s.isalpha():\n        return s.swapcase()\n    return s[::-1]\n\n\ndef solve(s):\n    \"\"\"You are given a string s.\n    if s[i] is a letter, reverse its case from lower to upper or vise versa, \n    otherwise keep it as it is.\n    If the string contains no letters, reverse the string.\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"4321\"\n    solve(\"ab\") = \"AB\"\n    solve(\"#a@C\") = \"#A@c\"\n    \"\"\"\n    if not s:\n        return s\n    if s.isalpha():\n        return s.swapcase()\n    return s[::-",
+      "after_completion": "    if not s:\n        return s\n    if s.isalpha():\n        return s.swapcase()\n    return s[::-1]\n\n\ndef solve(s):\n    \"\"\"You are given a string s.\n    if s[i] is a letter, reverse its case from lower to upper or vise versa, \n    otherwise keep it as it is.\n    If the string contains no letters, reverse the string.\n    The function should return the resulted string.\n    Examples\n    solve(\"1234\") = \"4321\"\n    solve(\"ab\") = \"AB\"\n    solve(\"#a@C\") = \"#A@c\"\n    \"\"\"\n    if not s:\n        return s\n    if s.isalpha():\n        return s.swapcase()\n    return s[::-"
+    },
+    {
+      "task_id": "HumanEval/162",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if not text:\n        return None\n    return hashlib.md5(text.encode('utf-8')).hexdigest()\n\ndef string_to_sha1(text):\n    \"\"\"\n    Given a string 'text', return its sha1 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_sha1('Hello world') == '5e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n    if not text:\n        return None\n    return hashlib.sha1(text.encode('utf-8')).hexdigest()\n\ndef string_to_sha256(text):\n    \"\"\"\n    Given a string 'text', return its sha256 hash equivalent string.\n    If 'text' is",
+      "after_completion": "    if not text:\n        return None\n    return hashlib.md5(text.encode('utf-8')).hexdigest()\n\ndef string_to_sha1(text):\n    \"\"\"\n    Given a string 'text', return its sha1 hash equivalent string.\n    If 'text' is an empty string, return None.\n\n    >>> string_to_sha1('Hello world') == '5e25960a79dbc69b674cd4ec67a72c62'\n    \"\"\"\n    if not text:\n        return None\n    return hashlib.sha1(text.encode('utf-8')).hexdigest()\n\ndef string_to_sha256(text):\n    \"\"\"\n    Given a string 'text', return its sha256 hash equivalent string.\n    If 'text' is"
+    },
+    {
+      "task_id": "HumanEval/163",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return [i for i in range(a, b + 1) if i % 2 == 0]\n\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between a\n    and b, in ascending order.\n\n    For example:\n    generate_integers(2, 8) => [2, 4, 6, 8]\n    generate_integers(8, 2) => [2, 4, 6, 8]\n    generate_integers(10, 14) => []\n    \"\"\"\n    return [i for i in range(a, b + 1) if i % 2 == 0]\n\ndef generate_integers(a, b):\n    \"\"\"\n    Given",
+      "after_completion": "    return [i for i in range(a, b + 1) if i % 2 == 0]\n\ndef generate_integers(a, b):\n    \"\"\"\n    Given two positive integers a and b, return the even digits between a\n    and b, in ascending order.\n\n    For example:\n    generate_integers(2, 8) => [2, 4, 6, 8]\n    generate_integers(8, 2) => [2, 4, 6, 8]\n    generate_integers(10, 14) => []\n    \"\"\"\n    return [i for i in range(a, b + 1) if i % 2 == 0]\n\ndef generate_integers(a, b):\n    \"\"\"\n    Given"
+    }
+  ]
+}

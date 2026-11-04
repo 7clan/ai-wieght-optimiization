@@ -1,0 +1,203 @@
+{
+  "status": "completed",
+  "track": "final_holdout_validation",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "dataset": "https://raw.githubusercontent.com/openai/human-eval/b9453e8f1865df0a0057a1383767caa400acfbcf/data/HumanEval.jsonl.gz",
+  "source_commit": "b48673a26e7ef6a6220aca331dfc8c0024944aa8",
+  "held_out_until": "Session 008 validation",
+  "task_ids": [
+    "HumanEval/144",
+    "HumanEval/145",
+    "HumanEval/146",
+    "HumanEval/147",
+    "HumanEval/148",
+    "HumanEval/149",
+    "HumanEval/150",
+    "HumanEval/151",
+    "HumanEval/152",
+    "HumanEval/153",
+    "HumanEval/154",
+    "HumanEval/155",
+    "HumanEval/156",
+    "HumanEval/157",
+    "HumanEval/158",
+    "HumanEval/159",
+    "HumanEval/160",
+    "HumanEval/161",
+    "HumanEval/162",
+    "HumanEval/163"
+  ],
+  "hardware": {
+    "device": "cpu",
+    "threads": 4,
+    "python": "3.11.17"
+  },
+  "edits": {
+    "memit_10": {
+      "layer": 8,
+      "matrix": "mlp.down_proj",
+      "observed_relative_delta_norm": 0.10000181198120117,
+      "factor_sha256": "f7d2f84aee50624f990355c801821f4d2b42b63b173d698fc38faabc468222dc"
+    },
+    "memit_1p5": {
+      "layer": 8,
+      "matrix": "mlp.down_proj",
+      "observed_relative_delta_norm": 0.014984937384724617,
+      "factor_sha256": "eb5c36af88921a1186a2322b6f3afeae5baa7c57e0605eba5f21b83a8c67b7d6"
+    }
+  },
+  "scores": {
+    "memit_10": {
+      "n": 20,
+      "before_passes": 0,
+      "after_passes": 0,
+      "pass_at_1_before": 0.0,
+      "pass_at_1_after": 0.0,
+      "percentage_point_delta": 0.0,
+      "passed_ids_before": [],
+      "passed_ids_after": [],
+      "failed_ids_before": [
+        "HumanEval/144",
+        "HumanEval/145",
+        "HumanEval/146",
+        "HumanEval/147",
+        "HumanEval/148",
+        "HumanEval/149",
+        "HumanEval/150",
+        "HumanEval/151",
+        "HumanEval/152",
+        "HumanEval/153",
+        "HumanEval/154",
+        "HumanEval/155",
+        "HumanEval/156",
+        "HumanEval/157",
+        "HumanEval/158",
+        "HumanEval/159",
+        "HumanEval/160",
+        "HumanEval/161",
+        "HumanEval/162",
+        "HumanEval/163"
+      ],
+      "failed_ids_after": [
+        "HumanEval/144",
+        "HumanEval/145",
+        "HumanEval/146",
+        "HumanEval/147",
+        "HumanEval/148",
+        "HumanEval/149",
+        "HumanEval/150",
+        "HumanEval/151",
+        "HumanEval/152",
+        "HumanEval/153",
+        "HumanEval/154",
+        "HumanEval/155",
+        "HumanEval/156",
+        "HumanEval/157",
+        "HumanEval/158",
+        "HumanEval/159",
+        "HumanEval/160",
+        "HumanEval/161",
+        "HumanEval/162",
+        "HumanEval/163"
+      ],
+      "newly_passed_ids": [],
+      "regressed_ids": [],
+      "changed_completions": 14,
+      "syntax_before": {
+        "valid": 0,
+        "invalid": 20,
+        "valid_ids": []
+      },
+      "syntax_after": {
+        "valid": 5,
+        "invalid": 15,
+        "valid_ids": [
+          "HumanEval/145",
+          "HumanEval/149",
+          "HumanEval/155",
+          "HumanEval/161",
+          "HumanEval/162"
+        ]
+      },
+      "syntax_validity_before": 0.0,
+      "syntax_validity_after": 0.25,
+      "execution_measure": "Docker-isolated official HumanEval test assertions; failed cases include runtime/semantic failures",
+      "syntax_measure": "Python ast.parse(prompt + completion); syntax validity does not imply runtime correctness"
+    },
+    "memit_1p5": {
+      "n": 20,
+      "before_passes": 0,
+      "after_passes": 0,
+      "pass_at_1_before": 0.0,
+      "pass_at_1_after": 0.0,
+      "percentage_point_delta": 0.0,
+      "passed_ids_before": [],
+      "passed_ids_after": [],
+      "failed_ids_before": [
+        "HumanEval/144",
+        "HumanEval/145",
+        "HumanEval/146",
+        "HumanEval/147",
+        "HumanEval/148",
+        "HumanEval/149",
+        "HumanEval/150",
+        "HumanEval/151",
+        "HumanEval/152",
+        "HumanEval/153",
+        "HumanEval/154",
+        "HumanEval/155",
+        "HumanEval/156",
+        "HumanEval/157",
+        "HumanEval/158",
+        "HumanEval/159",
+        "HumanEval/160",
+        "HumanEval/161",
+        "HumanEval/162",
+        "HumanEval/163"
+      ],
+      "failed_ids_after": [
+        "HumanEval/144",
+        "HumanEval/145",
+        "HumanEval/146",
+        "HumanEval/147",
+        "HumanEval/148",
+        "HumanEval/149",
+        "HumanEval/150",
+        "HumanEval/151",
+        "HumanEval/152",
+        "HumanEval/153",
+        "HumanEval/154",
+        "HumanEval/155",
+        "HumanEval/156",
+        "HumanEval/157",
+        "HumanEval/158",
+        "HumanEval/159",
+        "HumanEval/160",
+        "HumanEval/161",
+        "HumanEval/162",
+        "HumanEval/163"
+      ],
+      "newly_passed_ids": [],
+      "regressed_ids": [],
+      "changed_completions": 5,
+      "syntax_before": {
+        "valid": 0,
+        "invalid": 20,
+        "valid_ids": []
+      },
+      "syntax_after": {
+        "valid": 1,
+        "invalid": 19,
+        "valid_ids": [
+          "HumanEval/152"
+        ]
+      },
+      "syntax_validity_before": 0.0,
+      "syntax_validity_after": 0.05,
+      "execution_measure": "Docker-isolated official HumanEval test assertions; failed cases include runtime/semantic failures",
+      "syntax_measure": "Python ast.parse(prompt + completion); syntax validity does not imply runtime correctness"
+    }
+  },
+  "no_training": true,
+  "caution": "The 20-task final holdout is consumed by this measurement; neither method was retargeted here"
+}

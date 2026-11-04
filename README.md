@@ -279,5 +279,26 @@ No training is performed. Results are populated only by a completed sandboxed
 GitHub Actions run; the fusion comparison is not another independent holdout.
 
 <!-- FUSION-VALIDATION-START -->
-*Session 008 validation and fusion evaluations are pending; no scores are claimed.*
+### Session 008: out-of-sample confirmation and Layer 8 hybrid fusion
+
+**Final unused holdout:** the preselected 10% Layer 8 edit was evaluated first on HumanEval/144–163 (20 tasks), before constructing or scoring the hybrid.
+
+| Fresh 20-task validation | Baseline pass@1 | Edited pass@1 | Change | AST valid before | AST valid after | New passes | Regressions |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| Preselected 10% Layer 8 MEMIT | 0/20 (0.0%) | 0/20 (0.0%) | **+0.00 pp** | 0/20 | 5/20 | None | None |
+| Archived 1.5% Layer 8 MEMIT comparator | 0/20 (0.0%) | 0/20 (0.0%) | **+0.00 pp** | 0/20 | 1/20 | None | None |
+
+**70-task comparison (HumanEval/94–163):** previously recorded results on 94–143 were combined with the 20-task validation results for each MEMIT candidate. The new SVD-hybrid was executed on all 70 tasks. All rows use identical task IDs.
+
+| Intervention | Baseline pass@1 | Edited pass@1 | Change | AST valid before | AST valid after | New passes | Regressions |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| 1.5% Layer 8 MEMIT | 2/70 (2.9%) | 2/70 (2.9%) | **+0.00 pp** | 7/70 | 9/70 | None | None |
+| 10% Layer 8 MEMIT | 2/70 (2.9%) | 3/70 (4.3%) | **+1.43 pp** | 7/70 | 18/70 | HumanEval/122 | None |
+| [SVD + 10% hybrid](https://github.com/7clan/ai-wieght-optimiization/tree/exp/05-svd-norm-fusion) | 2/70 (2.9%) | 3/70 (4.3%) | **+1.43 pp** | 7/70 | 22/70 | HumanEval/122 | None |
+
+The hybrid removes the two previously identified singular components from layer 8 `self_attn.o_proj`, then applies the archived 10% multi-key Layer 8 `mlp.down_proj` edit. No layer 12 change, gradients, optimizer steps, or training.
+
+**Interpretation:** AST syntax validity only means `ast.parse(prompt + completion)` succeeded; it is not execution correctness. pass@1 means all official HumanEval assertions passed inside restricted Docker containers. The 70-task hybrid comparison is **not** an independent validation of the hybrid because these tasks have already been used for prior comparisons.
+
+Evidence: [`final_holdout_validation.json`](experiments/final_holdout_validation.json), [`hybrid_fusion_report.json`](experiments/hybrid_fusion_report.json), [`hybrid_fusion_comparison.json`](experiments/hybrid_fusion_comparison.json), [`hybrid_fusion_predictions.json`](experiments/hybrid_fusion_predictions.json), and [reversible `hybrid_fusion_factors.safetensors`](experiments/hybrid_fusion_factors.safetensors).
 <!-- FUSION-VALIDATION-END -->
