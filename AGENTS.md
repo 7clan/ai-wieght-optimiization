@@ -57,6 +57,30 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Combine the resulting two attention factors with **exactly the archived 10% layer 8 `mlp.down_proj` factors** from commit `e100c62`; verify the original factor Git blob against that commit. Keep the base checkpoint unchanged.
 - Run the already-consumed HumanEval/94–163 70-task suite in isolated Docker containers; report pass@1 and separately `ast.parse` validity. **Never call this an independent generalization test.** Save per-task predictions and reversible factors.
 
+## Session 012: extreme overdrive, exact 0.5B model
+
+- Work exclusively on `exp/10-extreme-overdrive`, created from `main`. Keep
+  `Qwen/Qwen2.5-Coder-0.5B` as the only checkpoint; do not substitute the
+  1.5B or Instruct variants. Apply exactly the archived 10% Layer8 MLP delta.
+- With `register_forward_hook`, condition residual offsets at layers13 and15
+  on standalone generated operator tokens (`for`, `while`, `if`, `return`,
+  `def`, `range`), excluding the initial prompt prefill. Test fixed alpha values
+  0.5, 1.0, 1.75, 2.5. Teacher-minus-failure residual directions are heuristic
+  reference proxies, not proven causal reasoning circuitry.
+- 50 single final-token source vectors cannot mathematically yield a genuine
+  rank64 factor. Use two captured token positions per each of exactly the
+  same 50 archived pre-94 source pairs, verify a 100-column spectrum with
+  at least 64 non-negligible singular modes, then apply thin-QR/SVD rank64
+  updates to layer8 `mlp.down_proj`, layer13 and layer15 `self_attn.o_proj`.
+- Evaluate all 70 HumanEval/94..163 tasks in unprivileged, read-only,
+  network-disabled Docker, and replay any assertion diagnostics there too.
+  The benchmark has been consumed many times; never call it independent.
+- Record actual pass@1, `ast.parse` validity, consistent fixed-source token
+  perplexity/entropy, task-level predictions, coarse taxonomy with an explicit
+  `unclassified` bin, observed hook counts and reversible safetensors factors.
+  A four-level sweep cannot establish an exact continuous optimum or
+  breakdown boundary. Never publish missing scores as observed improvements.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
