@@ -6,6 +6,11 @@ on:
       - exp/12-hybrid-ortho-hooks
     paths:
       - .github/workflows/session014-hybrid-cpu.yml
+      - tinycoder/session014*.py
+      - tinycoder/session014_web_worker.js
+      - tinycoder/collect_session014.py
+      - docker/session014-*.Dockerfile
+      - data/session014_excluded_mbpp_ids.json
   workflow_dispatch:
 
 permissions:
