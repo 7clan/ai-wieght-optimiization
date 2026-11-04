@@ -51,10 +51,11 @@ jobs:
         run: |
           python -m tinycoder.session016 --track "${{ matrix.track }}" --output-dir "outputs/session016-${{ matrix.track }}"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: session016-track-${{ matrix.track }}
           path: outputs/session016-${{ matrix.track }}/
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 30
 
   publish:

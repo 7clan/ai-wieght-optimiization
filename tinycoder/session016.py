@@ -23,7 +23,7 @@ import time
 import uuid
 
 from .session014 import (_torch_model, docker_command, docker_evaluate, measure,
-                        DOCKER_MBPP, MODEL_ID)
+                        DOCKER_MBPP, DOCKER_WEB, MODEL_ID)
 from .session015 import MODEL_PARAMETER_COUNT, task_fixtures
 from .rome20 import save_json
 from .sandbox_eval import require_sandbox
@@ -107,6 +107,56 @@ def _public_python_chunk(items,index):
         return result
 
 
+def _isolated_web_one(task, completion, *, timeout=18):
+    """Each generated JS program gets its OWN bounded Docker lifetime.
+
+    React server rendering and synchronous Express handlers can hang the
+    Node event loop; framework request timeouts cannot interrupt a CPU loop.
+    Never allow one bad candidate to terminate the whole benchmark chunk.
+    """
+    with tempfile.TemporaryDirectory(prefix="session016_web_") as directory:
+        root=Path(directory)
+        inp,out=root/"in",root/"out"
+        inp.mkdir(mode=0o755)
+        out.mkdir(mode=0o777)
+        os.chmod(root,0o755)
+        os.chmod(out,0o777)
+        data=inp/"input.json"
+        data.write_text(json.dumps([{"task_id":task["task_id"],"task":task,
+                                     "solution":task["prompt"]+completion}]),encoding="utf-8")
+        os.chmod(data,0o644)
+        name="tinycoder-s016-web-"+uuid.uuid4().hex[:12]
+        cmd=docker_command(DOCKER_WEB,inp,out,name,True)
+        try:
+            proc=subprocess.run(cmd,capture_output=True,text=True,timeout=timeout)
+        except subprocess.TimeoutExpired:
+            subprocess.run(["docker","rm","-f",name],capture_output=True,
+                           text=True,timeout=10,check=False)
+            return {"task_id":task["task_id"],"syntax_valid":False,"passed":False,
+                    "failure_bin":"unclassified_logic_gap",
+                    "error":f"timeout after {timeout}s (syntax unknown)"}
+        if proc.returncode or not (out/"result.json").exists():
+            return {"task_id":task["task_id"],"syntax_valid":False,"passed":False,
+                    "failure_bin":"unclassified_logic_gap",
+                    "error":f"isolated Docker error: {proc.stderr[-240:]}"}
+        result=json.loads((out/"result.json").read_text(encoding="utf-8"))
+        if len(result)!=1 or result[0]["task_id"]!=task["task_id"]:
+            raise RuntimeError("Isolated JS evaluator changed task identity")
+        return result[0]
+
+
+def safe_web_evaluate(tasks,completions,*,workers=4):
+    """Score potentially nonterminating JS without access to the host runtime."""
+    require_sandbox()
+    if len(tasks)!=len(completions):
+        raise ValueError("Mismatched custom web evaluation")
+    if not tasks:
+        return []
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        return list(pool.map(lambda x:_isolated_web_one(x[0],x[1]),
+                             zip(tasks,completions,strict=True)))
+
+
 def check_public(tasks,completions,public_tests,*,workers=2):
     """No EvalPlus private oracle, canonical solution, or plus-input is loaded."""
     require_sandbox()
@@ -123,7 +173,7 @@ def check_public(tasks,completions,public_tests,*,workers=2):
             parts=list(pool.map(lambda x:_public_python_chunk(x[1],x[0]),enumerate(chunks)))
         return [x for batch in parts for x in batch]
     smoke=[{**task,"tests":alternate_web_tests(task)} for task in tasks]
-    return docker_evaluate(smoke,completions,web=True,workers=workers)
+    return safe_web_evaluate(smoke,completions,workers=4)
 
 
 def sample(model,tokenizer,tasks,*,seed,prompts=None,batch_size=4):
@@ -224,6 +274,7 @@ def run(args):
     for group in _groups(tasks):
         generated,tokens=sample(model,tokenizer,group,seed=20261116)
         generated_tokens+=tokens
+        save_json(out/f"sample1-{group[0]['task_id'].split('/')[0]}.json",generated)
         _evaluate_new([group],generated,public,candidates,"sample-1")
     print("Stage 1: two candidates per task scored on public checks",flush=True)
 
@@ -236,6 +287,7 @@ def run(args):
                 group=[t for t in unresolved if t["task_id"].startswith(mode)]
                 generated,tokens=sample(model,tokenizer,group,seed=20261116+draw)
                 generated_tokens+=tokens
+                save_json(out/f"sample{draw}-{mode.rstrip('/')}.json",generated)
                 _evaluate_new([group],generated,public,candidates,f"sample-{draw}")
             unresolved=[t for t in unresolved
                         if not best(candidates[t["task_id"]])["public_result"]["passed"]]
@@ -252,6 +304,7 @@ def run(args):
                 task,chosen["completion"],chosen["public_result"])
         generated,tokens=sample(model,tokenizer,group,seed=20261119,prompts=prompts)
         generated_tokens+=tokens
+        save_json(out/f"repair-{mode.rstrip('/')}.json",generated)
         _evaluate_new([group],generated,public,candidates,"feedback-repair")
     print(f"Stage 3: attempted feedback repair for {len(unresolved)} tasks",flush=True)
     del model
@@ -266,7 +319,7 @@ def run(args):
         for t in tasks])
     # This is the FIRST point at which expanded/private EvalPlus tests run.
     python=docker_evaluate(mbpp,outputs[:50],web=False,workers=args.workers)
-    js=docker_evaluate(web,outputs[50:],web=True,workers=args.workers)
+    js=safe_web_evaluate(web,outputs[50:],workers=4)
     full=[{**r,"mode":"python"} for r in python]+[
         {**r,"mode":web[i]["mode"]} for i,r in enumerate(js)]
     counts=Counter(winners[t["task_id"]]["source"] for t in tasks)

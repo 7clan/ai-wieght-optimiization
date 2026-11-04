@@ -1,7 +1,9 @@
 """Contract checks without executing generated programs outside Docker."""
 import unittest
+from unittest.mock import patch
+import subprocess
 from tinycoder.session016 import (alternate_web_tests, best, candidate_priority,
-                                  make_repair_prompt, TRACKS)
+                                  make_repair_prompt, _isolated_web_one, TRACKS)
 from tinycoder.session014_fixtures import make_web_tasks
 
 
@@ -31,6 +33,16 @@ class SearchContracts(unittest.TestCase):
 
     def test_fixed_tracks(self):
         self.assertEqual(TRACKS,("search2","search4"))
+
+    def test_nonterminating_js_is_classified_without_aborting(self):
+        task=make_web_tasks(offset=25)[0]
+        with patch("tinycoder.session016.subprocess.run",
+                   side_effect=[subprocess.TimeoutExpired(cmd=["docker"],timeout=18),
+                                subprocess.CompletedProcess(args=["docker"],returncode=0)]):
+            outcome=_isolated_web_one(task,"while(true){}")
+        self.assertFalse(outcome["passed"])
+        self.assertEqual(outcome["failure_bin"],"unclassified_logic_gap")
+        self.assertIn("timeout",outcome["error"])
 
 
 if __name__=="__main__":
