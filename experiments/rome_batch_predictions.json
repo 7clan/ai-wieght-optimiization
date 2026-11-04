@@ -1,0 +1,454 @@
+{
+  "holdout_records": [
+    {
+      "task_id": "HumanEval/44",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if base < 2 or base > 10:\n        raise ValueError(\"base must be between 2 and 10\")\n    if x < 0:\n        return \"-\" + change_base(-x, base)\n    if x == 0:\n        return \"0\"\n    digits = \"0123456789\"\n    result = \"\"\n    while x > 0:\n        result = digits[x % base] + result\n        x //= base\n    return result\n\n\ndef is_palindrome(x: int):\n    \"\"\"Return True if x is a palindrome, False otherwise.\n    >>> is_palindrome(121)\n    True\n    >>> is_palindrome(123)\n    False\n    \"\"\"\n    if x < 0:\n",
+      "after_completion": "    if base < 2 or base > 10:\n        raise ValueError(\"base must be between 2 and 10\")\n    if x < 0:\n        return \"-\" + change_base(-x, base)\n    if x == 0:\n        return \"0\"\n    digits = \"0123456789\"\n    result = \"\"\n    while x > 0:\n        result = digits[x % base] + result\n        x //= base\n    return result\n\n\ndef is_palindrome(x: int):\n    \"\"\"Return True if x is a palindrome, False otherwise.\n    >>> is_palindrome(121)\n    True\n    >>> is_palindrome(123)\n    False\n    \"\"\"\n    if x < 0:\n"
+    },
+    {
+      "task_id": "HumanEval/45",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return 0.5 * a * h\n\ndef rectangle_area(l, w):\n    \"\"\"Given length and width return area for a rectangle.\n    >>> rectangle_area(5, 3)\n    15\n    \"\"\"\n    return l * w\n\ndef circle_area(r):\n    \"\"\"Given radius return area for a circle.\n    >>> circle_area(5)\n    78.53981633974483\n    \"\"\"\n    return 3.14 * r * r\n\ndef main():\n    \"\"\"Main function to run the program.\"\"\"\n    print(\"Area of a triangle with sides 5 and 3 is\", triangle_area(5, 3))\n    print(\"Area of a rectangle with sides 5 and 3 is",
+      "after_completion": "    return 0.5 * a * h\n\ndef rectangle_area(l, w):\n    \"\"\"Given length and width return area for a rectangle.\n    >>> rectangle_area(5, 3)\n    15\n    \"\"\"\n    return l * w\n\ndef circle_area(r):\n    \"\"\"Given radius return area for a circle.\n    >>> circle_area(5)\n    78.53981633974483\n    \"\"\"\n    return 3.14 * r * r\n\ndef main():\n    \"\"\"Main function to run the program.\"\"\"\n    print(\"Area of a triangle with sides 5 and 3 is\", triangle_area(5, 3))\n    print(\"Area of a rectangle with sides 5 and 3 is"
+    },
+    {
+      "task_id": "HumanEval/46",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if n == 0:\n        return 0\n    elif n == 1:\n        return 0\n    elif n == 2:\n        return 2\n    elif n == 3:\n        return 0\n    else:\n        return fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4)\n\ndef fib5(n: int):\n    \"\"\"The Fib5 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib5(0) -> 0\n    fib5(1) -> 0\n    fib5(2) -> 2\n    fib5(n) -> fib5(n-1) + fib5(n-2",
+      "after_completion": "    if n == 0:\n        return 0\n    elif n == 1:\n        return 0\n    elif n == 2:\n        return 2\n    elif n == 3:\n        return 0\n    else:\n        return fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4)\n\ndef fib5(n: int):\n    \"\"\"The Fib5 number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fib5(0) -> 0\n    fib5(1) -> 0\n    fib5(2) -> 2\n    fib5(n) -> fib5(n-1) + fib5(n-2"
+    },
+    {
+      "task_id": "HumanEval/47",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    l.sort()\n    if len(l) % 2 == 0:\n        return (l[len(l) // 2] + l[len(l) // 2 - 1]) / 2\n    else:\n        return l[len(l) // 2]\n\ndef median2(l: list):\n    \"\"\"Return median of elements in the list l.\n    >>> median2([3, 1, 2, 4, 5])\n    3\n    >>> median2([-10, 4, 6, 1000, 10, 20])\n    15.0\n    \"\"\"\n    l.sort()\n    if len(l) % 2 == 0:\n        return (l[len(l) // 2",
+      "after_completion": "    l.sort()\n    if len(l) % 2 == 0:\n        return (l[len(l) // 2] + l[len(l) // 2 - 1]) / 2\n    else:\n        return l[len(l) // 2]\n\ndef median2(l: list):\n    \"\"\"Return median of elements in the list l.\n    >>> median2([3, 1, 2, 4, 5])\n    3\n    >>> median2([-10, 4, 6, 1000, 10, 20])\n    15.0\n    \"\"\"\n    l.sort()\n    if len(l) % 2 == 0:\n        return (l[len(l) // 2"
+    },
+    {
+      "task_id": "HumanEval/48",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return text == text[::-1]\n\n\ndef is_anagram(text1: str, text2: str):\n    \"\"\"\n    Checks if given strings are anagrams\n    >>> is_anagram('aba', 'baa')\n    True\n    >>> is_anagram('aba', 'bba')\n    False\n    >>> is_anagram('aba', 'ab')\n    False\n    >>> is_anagram('aba', 'abab')\n    False\n    \"\"\"\n    return sorted(text1) == sorted(text2)\n\n\ndef is_pangram(text: str):\n    \"\"\"\n    Checks if given string is a pangram\n    >>> is_pangram('The quick brown fox jumps over the lazy dog')\n    True\n    >>> is_pangram('The quick brown fox jumps over the",
+      "after_completion": "    return text == text[::-1]\n\n\ndef is_anagram(text1: str, text2: str):\n    \"\"\"\n    Checks if given strings are anagrams\n    >>> is_anagram('aba', 'baa')\n    True\n    >>> is_anagram('aba', 'bba')\n    False\n    >>> is_anagram('aba', 'ab')\n    False\n    >>> is_anagram('aba', 'abab')\n    False\n    \"\"\"\n    return sorted(text1) == sorted(text2)\n\n\ndef is_pangram(text: str):\n    \"\"\"\n    Checks if given string is a pangram\n    >>> is_pangram('The quick brown fox jumps over the lazy dog')\n    True\n    >>> is_pangram('The quick brown fox jumps over the"
+    },
+    {
+      "task_id": "HumanEval/49",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if n == 0:\n        return 1\n    elif n < 0:\n        return modp(-n, p)\n    elif n % 2 == 0:\n        return modp(n // 2, p)\n    else:\n        return (p - 1) % n + 1\n\n\ndef divmod(n: int, p: int):\n    \"\"\"Return the quotient and remainder of n / p (be aware of numerics).\n    >>> divmod(6, 3)\n    (2, 0)\n    >>> divmod(7, 4)\n    (1, 3)\n    >>> divmod(8, 7)\n    (1, 1)\n    >>> divmod(2, 3)\n    (0,",
+      "after_completion": "    if n == 0:\n        return 1\n    elif n < 0:\n        return modp(-n, p)\n    elif n % 2 == 0:\n        return modp(n // 2, p)\n    else:\n        return (modp(n - 1, p) * 2) % p\n\ndef divmod(n: int, p: int):\n    \"\"\"Return the quotient and remainder of n / p (be aware of numerics).\n    >>> divmod(6, 3)\n    (2, 0)\n    >>> divmod(7, 4)\n    (1, 3)\n    >>> divmod(8, 3)\n    (2, 2)\n    >>> divmod(7, 2"
+    },
+    {
+      "task_id": "HumanEval/50",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef main():\n    \"\"\"\n    main function to test encode and decode functions.\n    \"\"\"\n    s = input(\"Enter a string: \")\n    print(\"Encoded string: \", encode_shift(s))\n    print(\"Decoded string: \", decode_shift(encode_shift(s)))\n\n\nif __name__ == \"__main__\":\n    main()",
+      "after_completion": "    return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n\n\ndef main():\n    \"\"\"\n    main function to test encode_shift and decode_shift functions.\n    \"\"\"\n    s = input(\"Enter a string: \")\n    print(\"Encoded string:\", encode_shift(s))\n    print(\"Decoded string:\", decode_shift(encode_shift(s)))\n\n\nif __name__ == \"__main__\":\n    main()"
+    },
+    {
+      "task_id": "HumanEval/51",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    vowels = 'aeiou'\n    return ''.join([char for char in text if char not in vowels])",
+      "after_completion": "    vowels = 'aeiou'\n    return ''.join([char for char in text if char not in vowels])\n\ndef remove_vowels(text):\n    \"\"\"\n    remove_vowels is a function that takes string and returns string without vowels.\n    >>> remove_vowels('')\n    ''\n    >>> remove_vowels(\"abcdef\\nghijklm\")\n    'bcdf\\nghjklm'\n    >>> remove_vowels('abcdef')\n    'bcdf'\n    >>> remove_vowels('aaaaa')\n    ''\n    >>> remove_vowels('aaBAA')\n    'B'\n    >>> remove_vowels('zbcd')\n    'zbcd'\n    \"\"\"\n    vowels = 'aeiou'\n    return ''.join([char for char in text if char not in"
+    },
+    {
+      "task_id": "HumanEval/52",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    \"*** YOUR CODE HERE ***\"\n    return all(x < t for x in l)\n\ndef divisors(n: int) -> list:\n    \"\"\"Return the list of integers each of which divides n without remainder.\n    >>> divisors(28)\n    [1, 2, 4, 7, 14]\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n    return [x for x in range(1, n + 1) if n % x == 0]\n\ndef square_digits(n: int) -> int:\n    \"\"\"Return the square of each digit of n.\n    >>> square_digits(9119)\n    811181\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n    return int(''.join(str(int(x)",
+      "after_completion": "    \"*** YOUR CODE HERE ***\"\n    return all(x < t for x in l)\n\ndef divisors(n):\n    \"\"\"Return the list of the integers that divide n.\n    >>> divisors(28)\n    [1, 2, 4, 7, 14]\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n    return [x for x in range(1, n + 1) if n % x == 0]\n\ndef divisors_2(n):\n    \"\"\"Return the list of the integers that divide n.\n    >>> divisors_2(28)\n    [1, 2, 4, 7, 14]\n    \"\"\"\n    \"*** YOUR CODE HERE ***\"\n    return [x for x in range(1, n"
+    },
+    {
+      "task_id": "HumanEval/53",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return x + y\n\ndef subtract(x: int, y: int):\n    \"\"\"Subtract y from x\n    >>> subtract(2, 3)\n    -1\n    >>> subtract(5, 7)\n    -2\n    \"\"\"\n    return x - y\n\ndef multiply(x: int, y: int):\n    \"\"\"Multiply x by y\n    >>> multiply(2, 3)\n    6\n    >>> multiply(5, 7)\n    35\n    \"\"\"\n    return x * y\n\ndef divide(x: int, y: int):\n    \"\"\"Divide x by y\n    >>> divide(2, 3)\n    0.6666666666666666\n    >>>",
+      "after_completion": "    return x + y\n\ndef subtract(x: int, y: int):\n    \"\"\"Subtract y from x\n    >>> subtract(2, 3)\n    -1\n    >>> subtract(5, 7)\n    -2\n    \"\"\"\n    return x - y\n\ndef multiply(x: int, y: int):\n    \"\"\"Multiply x by y\n    >>> multiply(2, 3)\n    6\n    >>> multiply(5, 7)\n    35\n    \"\"\"\n    return x * y\n\ndef divide(x: int, y: int):\n    \"\"\"Divide x by y\n    >>> divide(2, 3)\n    0.6666666666666666\n    >>>"
+    },
+    {
+      "task_id": "HumanEval/54",
+      "before_passed": true,
+      "after_passed": true,
+      "before_error": null,
+      "after_error": null,
+      "before_completion": "    return set(s0) == set(s1)\n\n\ndef same_chars_2(s0: str, s1: str):\n    \"\"\"\n    Check if two words have the same characters.\n    >>> same_chars_2('eabcdzzzz', 'dddzzzzzzzddeddabc')\n    True\n    >>> same_chars_2('abcd', 'dddddddabc')\n    True\n    >>> same_chars_2('dddddddabc', 'abcd')\n    True\n    >>> same_chars_2('eabcd', 'dddddddabc')\n    False\n    >>> same_chars_2('abcd', 'dddddddabce')\n    False\n    >>> same_chars_2('eabcdzzzz', 'dddzzzzzzzddddabc')\n    False\n    \"\"\"\n   ",
+      "after_completion": "    return set(s0) == set(s1)\n\n\ndef same_chars_2(s0: str, s1: str):\n    \"\"\"\n    Check if two words have the same characters.\n    >>> same_chars_2('eabcdzzzz', 'dddzzzzzzzddeddabc')\n    True\n    >>> same_chars_2('abcd', 'dddddddabc')\n    True\n    >>> same_chars_2('dddddddabc', 'abcd')\n    True\n    >>> same_chars_2('eabcd', 'dddddddabc')\n    False\n    >>> same_chars_2('abcd', 'dddddddabce')\n    False\n    >>> same_chars_2('eabcdzzzz', 'dddzzzzzzzddddabc')\n    False\n    \"\"\"\n   "
+    },
+    {
+      "task_id": "HumanEval/55",
+      "before_passed": true,
+      "after_passed": false,
+      "before_error": null,
+      "after_error": "container exited 1",
+      "before_completion": "    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n - 1) + fib(n - 2)\n\ndef hailstone(n: int):\n    \"\"\"Print out the hailstone sequence starting at n, and return the\n    number of elements in the sequence.\n    >>> a = hailstone(10)\n    10\n    5\n    16\n    8\n    4\n    2\n    1\n    >>> a\n    7\n    >>> b = hailstone(1)\n    1\n    >>> b\n    1\n    \"\"\"\n    print(n)\n    if n == 1:\n        return 1\n",
+      "after_completion": "    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n - 1) + fib(n - 2)\n\ndef hailstone(n: int):\n    \"\"\"Print out the hailstone sequence starting at n, and return the\n    number of elements in the sequence.\n    >>> a = hailstone(10)\n    10\n    5\n    16\n    8\n    4\n    2\n    1\n    >>> a\n    7\n    \"\"\"\n    print(n)\n    if n == 1:\n        return 1\n    elif n % 2 == 0:\n        return 1 + hailstone(n // 2"
+    },
+    {
+      "task_id": "HumanEval/56",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # TODO: Implement this function\n    # Hint: use a stack\n    stack = []\n    for bracket in brackets:\n        if bracket == \"<\":\n            stack.append(bracket)\n        elif bracket == \">\":\n            if len(stack) == 0:\n                return False\n            stack.pop()\n    return len(stack) == 0\n\n\ndef is_balanced_brackets(brackets: str):\n    \"\"\" brackets is a string of \"<\" and \">\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> is_balanced_brackets(\"<\")\n    False\n    >>> is_balanced_brackets(\"<>\")\n    True\n    >>> is_balanced_brackets(\"<<><>>\")\n    True\n    >>> is_balanced_brackets(\"><<>\")\n    False\n   ",
+      "after_completion": "    # TODO: implement this function\n    # return True if every opening bracket has a corresponding closing bracket\n    # return False if not\n    # return True if every opening bracket has a corresponding closing bracket\n    # return False if not\n    # return True if every opening bracket has a corresponding closing bracket\n    # return False if not\n    # return True if every opening bracket has a corresponding closing bracket\n    # return False if not\n    # return True if every opening bracket has a corresponding closing bracket\n    # return False if not\n    # return True if every opening bracket has a corresponding closing bracket\n    # return False if not\n    # return True if every opening bracket has a corresponding closing bracket\n    # return False if not\n    # return True if"
+    },
+    {
+      "task_id": "HumanEval/57",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if len(l) == 0:\n        return True\n    if len(l) == 1:\n        return True\n    if l[0] > l[1]:\n        return False\n    if l[0] < l[1]:\n        return True\n    if l[0] == l[1]:\n        return monotonic(l[2:])\n    return False\n\ndef is_sorted(l: list):\n    \"\"\"Return True if list elements are in sorted order.\n    >>> is_sorted([1, 2, 2])\n    True\n    >>> is_sorted([1, 2, 1])\n    False\n    >>> is_sorted([1, 2, 1, 3])\n    False\n    >>> is_sorted([])\n    True\n    \"\"\"\n   ",
+      "after_completion": "    if len(l) == 0:\n        return True\n    if len(l) == 1:\n        return True\n    if l[0] > l[1]:\n        return False\n    if l[0] < l[1]:\n        return True\n    if l[0] == l[1]:\n        return monotonic(l[2:])\n    return False\n\ndef is_sorted(l: list):\n    \"\"\"Return True if list elements are in sorted order.\n    >>> is_sorted([1, 2, 2])\n    True\n    >>> is_sorted([1, 2, 1])\n    False\n    >>> is_sorted([1, 2, 1, 3])\n    False\n    >>> is_sorted([])\n    True\n    \"\"\"\n   "
+    },
+    {
+      "task_id": "HumanEval/58",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return sorted(set(l1).intersection(set(l2)))\n\n\ndef intersection(l1: list, l2: list):\n    \"\"\"Return sorted unique elements that are common to both lists.\n    >>> intersection([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [5, 1, 653]\n    >>> intersection([5, 3, 2, 8], [3, 2])\n    [3, 2]\n\n    \"\"\"\n    return sorted(set(l1).intersection(set(l2)))\n\n\ndef union(l1: list, l2: list):\n    \"\"\"",
+      "after_completion": "    return sorted(set(l1).intersection(set(l2)))\n\n\ndef intersection(l1: list, l2: list):\n    \"\"\"Return sorted unique elements that are common to both lists.\n    >>> intersection([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    [5, 1, 653]\n    >>> intersection([5, 3, 2, 8], [3, 2])\n    [3, 2]\n\n    \"\"\"\n    return sorted(set(l1).intersection(set(l2)))\n\n\ndef union(l1: list, l2: list):\n    \"\"\""
+    },
+    {
+      "task_id": "HumanEval/59",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if n <= 1:\n        raise ValueError(\"n must be greater than 1\")\n    if n == 2:\n        return 2\n    if n % 2 == 0:\n        return 2\n    for i in range(3, int(n**0.5) + 1, 2):\n        if n % i == 0:\n            return i\n    return n\n\ndef is_prime(n: int):\n    \"\"\"Return True if n is a prime number, False otherwise.\n    >>> is_prime(2)\n    True\n    >>> is_prime(16)\n    False\n    >>> is_prime(521)\n    True\n    \"\"\"\n    if n <= 1:\n        return False\n    if n == 2:\n       ",
+      "after_completion": "    if n <= 1:\n        raise ValueError(\"n must be greater than 1\")\n    if n == 2:\n        return 2\n    if n % 2 == 0:\n        return 2\n    for i in range(3, int(n**0.5) + 1, 2):\n        if n % i == 0:\n            return i\n    return n\n\ndef is_prime(n: int):\n    \"\"\"Return True if n is a prime number, False otherwise.\n    >>> is_prime(2)\n    True\n    >>> is_prime(16)\n    False\n    >>> is_prime(521)\n    True\n    \"\"\"\n    if n <= 1:\n        return False\n    if n == 2:\n       "
+    },
+    {
+      "task_id": "HumanEval/60",
+      "before_passed": true,
+      "after_passed": true,
+      "before_error": null,
+      "after_error": null,
+      "before_completion": "    if n == 1:\n        return 1\n    else:\n        return n + sum_to_n(n-1)\n\ndef sum_to_n_2(n: int):\n    \"\"\"sum_to_n_2 is a function that sums numbers from 1 to n.\n    >>> sum_to_n_2(30)\n    465\n    >>> sum_to_n_2(100)\n    5050\n    >>> sum_to_n_2(5)\n    15\n    >>> sum_to_n_2(10)\n    55\n    >>> sum_to_n_2(1)\n    1\n    \"\"\"\n    if n == 1:\n        return 1\n    else:\n        return n + sum_to_n",
+      "after_completion": "    if n == 1:\n        return 1\n    else:\n        return n + sum_to_n(n-1)\n\ndef sum_to_n_2(n: int):\n    \"\"\"sum_to_n_2 is a function that sums numbers from 1 to n.\n    >>> sum_to_n_2(30)\n    465\n    >>> sum_to_n_2(100)\n    5050\n    >>> sum_to_n_2(5)\n    15\n    >>> sum_to_n_2(10)\n    55\n    >>> sum_to_n_2(1)\n    1\n    \"\"\"\n    if n == 1:\n        return 1\n    else:\n        return n + sum_to_n"
+    },
+    {
+      "task_id": "HumanEval/61",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # TODO: Implement this function\n    # Hint: use a stack\n    stack = []\n    for bracket in brackets:\n        if bracket == \"(\":\n            stack.append(bracket)\n        elif bracket == \")\":\n            if len(stack) == 0:\n                return False\n            stack.pop()\n    return len(stack) == 0\n\n\ndef is_balanced_brackets(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> is_balanced_brackets(\"()\")\n    True\n    >>> is_balanced_brackets(\"(()())\")\n    True\n    >>> is_balanced_brackets(\"())\")\n    False\n    >>> is_balanced_brackets(\"(()\")\n    False\n    >>> is",
+      "after_completion": "    # TODO: Implement this function\n    # Hint: use a stack\n    stack = []\n    for bracket in brackets:\n        if bracket == \"(\":\n            stack.append(bracket)\n        elif bracket == \")\":\n            if len(stack) == 0:\n                return False\n            stack.pop()\n    return len(stack) == 0\n\n\ndef is_balanced_brackets(brackets: str):\n    \"\"\" brackets is a string of \"(\" and \")\".\n    return True if every opening bracket has a corresponding closing bracket.\n\n    >>> is_balanced_brackets(\"()\")\n    True\n    >>> is_balanced_brackets(\"(()())\")\n    True\n    >>> is_balanced_brackets(\"())\")\n    False\n    >>> is_balanced_brackets(\"(()\")\n    False\n    >>> is"
+    },
+    {
+      "task_id": "HumanEval/62",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return [i * x for i, x in enumerate(xs[:-1])]\n\n\ndef integrate(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return integral of this polynomial in the same form.\n    >>> integrate([3, 1, 2, 4, 5])\n    [3, 0.5, 1, 1.5, 2]\n    >>> integrate([1, 2, 3])\n    [1, 1.5, 1.875]\n    \"\"\"\n    return [i / (i + 1) for i in xs]\n\n\ndef polynomial(x: float, xs: list",
+      "after_completion": "    return [i * x for i, x in enumerate(xs[:-1])]\n\n\ndef integrate(xs: list):\n    \"\"\" xs represent coefficients of a polynomial.\n    xs[0] + xs[1] * x + xs[2] * x^2 + ....\n     Return integral of this polynomial in the same form.\n    >>> integrate([3, 1, 2, 4, 5])\n    [3, 0.5, 1, 1.5, 2]\n    >>> integrate([1, 2, 3])\n    [1, 1.5, 1.875]\n    \"\"\"\n    return [i / (i + 1) for i in xs]\n\n\ndef polynomial(x: float, xs: list"
+    },
+    {
+      "task_id": "HumanEval/63",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if n == 0:\n        return 0\n    elif n == 1:\n        return 0\n    elif n == 2:\n        return 1\n    else:\n        return fibfib(n-1) + fibfib(n-2) + fibfib(n-3)\n\ndef fibfib2(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    fibfib(2) == 1\n    fibfib(n) == fibfib(n-1) + fibfib(n-2) + fibfib(n-3).\n    Please write a function to efficiently compute the",
+      "after_completion": "    if n == 0:\n        return 0\n    elif n == 1:\n        return 0\n    elif n == 2:\n        return 1\n    else:\n        return fibfib(n-1) + fibfib(n-2) + fibfib(n-3)\n\ndef fibfib2(n: int):\n    \"\"\"The FibFib number sequence is a sequence similar to the Fibbonacci sequnece that's defined as follows:\n    fibfib(0) == 0\n    fibfib(1) == 0\n    fibfib(2) == 1\n    fibfib(n) == fibfib(n-1) + fibfib(n-2) + fibfib(n-3).\n    Please write a function to efficiently compute the"
+    },
+    {
+      "task_id": "HumanEval/64",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    vowels = 'aeiou'\n    count = 0\n    for char in s:\n        if char in vowels:\n            count += 1\n    return count\n\ndef test_vowels_count():\n    assert vowels_count(\"abcde\") == 2\n    assert vowels_count(\"ACEDY\") == 3\n    assert vowels_count(\"ABCDE\") == 3\n    assert vowels_count(\"a\") == 1\n    assert vowels_count(\"y\") == 1\n    assert vowels_count(\"\") == 0\n    assert vowels_count(\" \") == 0\n    assert vowels_count(\"aA\") == 2\n    assert vowels_count(\"aeiou\") == 5\n    assert vowels_count(\"aeiouAEIOU\") == 5\n   ",
+      "after_completion": "    vowels = 'aeiou'\n    count = 0\n    for char in s:\n        if char in vowels:\n            count += 1\n    return count\n\ndef test_vowels_count():\n    assert vowels_count(\"abcde\") == 2\n    assert vowels_count(\"ACEDY\") == 3\n    assert vowels_count(\"ABCDE\") == 3\n    assert vowels_count(\"a\") == 1\n    assert vowels_count(\"y\") == 1\n    assert vowels_count(\"\") == 0\n    assert vowels_count(\" \") == 0\n    assert vowels_count(\"aA\") == 2\n    assert vowels_count(\"aeiou\") == 5\n    assert vowels_count(\"aeiouAEIOU\") == 5\n   "
+    },
+    {
+      "task_id": "HumanEval/65",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if shift > len(str(x)):\n        return str(x)[::-1]\n    else:\n        return str(x)[shift:] + str(x)[:shift]\n\n\ndef is_palindrome(x):\n    \"\"\"Return True if x is a palindrome.\n    A palindrome is a number that reads the same backward as forward.\n    >>> is_palindrome(121)\n    True\n    >>> is_palindrome(123)\n    False\n    >>> is_palindrome(112211)\n    True\n    >>> is_palindrome(88888888)\n    True\n    \"\"\"\n    return str(x) == str(x)[::-1]\n\n\ndef is_prime(x):\n    \"\"\"Return True if x is a prime number.\n    >>> is_prime(",
+      "after_completion": "    if shift > len(str(x)):\n        return str(x)[::-1]\n    else:\n        return str(x)[shift:] + str(x)[:shift]\n\n\ndef is_palindrome(x):\n    \"\"\"Return True if x is a palindrome.\n    A palindrome is a number that reads the same backward as forward.\n    >>> is_palindrome(121)\n    True\n    >>> is_palindrome(123)\n    False\n    >>> is_palindrome(112211)\n    True\n    >>> is_palindrome(88888888)\n    True\n    \"\"\"\n    return str(x) == str(x)[::-1]\n\n\ndef is_prime(x):\n    \"\"\"Return True if x is a prime number.\n    >>> is_prime("
+    },
+    {
+      "task_id": "HumanEval/66",
+      "before_passed": true,
+      "after_passed": true,
+      "before_error": null,
+      "after_error": null,
+      "before_completion": "    return sum(ord(c) for c in s if c.isupper())",
+      "after_completion": "    return sum(ord(c) for c in s if c.isupper())"
+    },
+    {
+      "task_id": "HumanEval/67",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # your code here\n    return s.replace(\"apples\",\"\").replace(\"oranges\",\"\").replace(\"mangoes\",\"\").replace(\"apples and \",\"\").replace(\"oranges and \",\"\").replace(\"mangoes and \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\"",
+      "after_completion": "    # your code here\n    return s.replace(\"apples\",\"\").replace(\"oranges\",\"\").replace(\"mangoes\",\"\").replace(\"apples and \",\"\").replace(\"oranges and \",\"\").replace(\"mangoes and \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\" \",\"\").replace(\""
+    },
+    {
+      "task_id": "HumanEval/68",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if not arr:\n        return []\n    return [min(arr), arr.index(min(arr))]\n\n\ndef pluck2(arr):\n    \"\"\"\n    \"Given an array representing a branch of a tree that has non-negative integer nodes\n    your task is to pluck one of the nodes and return it.\n    The plucked node should be the node with the smallest even value.\n    If multiple nodes with the same smallest even value are found return the node that has smallest index.\n\n    The plucked node should be returned in a list, [ smalest_value, its index ],\n    If there are no even values or the given array is empty, return [].\n\n    Example 1:\n        Input: [4,2,3]\n        Output: [2, 1]\n        Explanation",
+      "after_completion": "    if not arr:\n        return []\n    return [min(arr), arr.index(min(arr))]\n\n\ndef pluck2(arr):\n    \"\"\"\n    \"Given an array representing a branch of a tree that has non-negative integer nodes\n    your task is to pluck one of the nodes and return it.\n    The plucked node should be the node with the smallest even value.\n    If multiple nodes with the same smallest even value are found return the node that has smallest index.\n\n    The plucked node should be returned in a list, [ smalest_value, its index ],\n    If there are no even values or the given array is empty, return [].\n\n    Example 1:\n        Input: [4,2,3]\n        Output: [2, 1]\n        Explanation"
+    },
+    {
+      "task_id": "HumanEval/69",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Write your code here\n    if len(lst) == 0:\n        return -1\n    else:\n        max = 0\n        for i in lst:\n            if i > 0:\n                if lst.count(i) >= i:\n                    if i > max:\n                        max = i\n        return max\n\n\ndef search(lst):\n    '''\n    You are given a non-empty list of positive integers. Return the greatest integer that is greater than \n    zero, and has a frequency greater than or equal to the value of the integer itself. \n    The frequency of an integer is the number of times it appears in the list.\n    If no such a value exist, return -1.\n    Examples:\n        search([4, 1, 2, ",
+      "after_completion": "    # Write your code here\n    if len(lst) == 0:\n        return -1\n    else:\n        max = 0\n        for i in lst:\n            if i > 0:\n                if lst.count(i) >= i:\n                    if i > max:\n                        max = i\n        return max\n\n\ndef search(lst):\n    '''\n    You are given a non-empty list of positive integers. Return the greatest integer that is greater than \n    zero, and has a frequency greater than or equal to the value of the integer itself. \n    The frequency of an integer is the number of times it appears in the list.\n    If no such a value exist, return -1.\n    Examples:\n        search([4, 1, 2, "
+    },
+    {
+      "task_id": "HumanEval/70",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if not lst:\n        return []\n    min_val = min(lst)\n    max_val = max(lst)\n    lst.remove(min_val)\n    lst.remove(max_val)\n    lst.append(min_val)\n    lst.append(max_val)\n    return lst\n\ndef strange_sort_list(lst):\n    '''\n    Given list of integers, return list in strange order.\n    Strange sorting, is when you start with the minimum value,\n    then maximum of the remaining integers, then minimum and so on.\n\n    Examples:\n    strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]\n    strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]\n    strange",
+      "after_completion": "    if not lst:\n        return []\n    min_val = min(lst)\n    max_val = max(lst)\n    lst.remove(min_val)\n    lst.remove(max_val)\n    lst.append(min_val)\n    lst.append(max_val)\n    return lst\n\ndef strange_sort_list(lst):\n    '''\n    Given list of integers, return list in strange order.\n    Strange sorting, is when you start with the minimum value,\n    then maximum of the remaining integers, then minimum and so on.\n\n    Examples:\n    strange_sort_list([1, 2, 3, 4]) == [1, 4, 2, 3]\n    strange_sort_list([5, 5, 5, 5]) == [5, 5, 5, 5]\n    strange"
+    },
+    {
+      "task_id": "HumanEval/71",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if a + b > c and a + c > b and b + c > a:\n        area = (a * b * c) ** 0.5\n        return round(area, 2)\n    else:\n        return -1\n\ndef triangle_perimeter(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return the perimeter of\n    the triangle rounded to 2 decimal points if the three sides form a valid triangle. \n    Otherwise return -1\n    Three sides make a valid triangle when the sum of any two sides is greater \n    than the third side.\n    Example:\n    triangle_perimeter(3, 4, 5) == 12.00\n    triangle_perimeter(1,",
+      "after_completion": "    if a + b > c and a + c > b and b + c > a:\n        area = (a * b * c) ** 0.5\n        return round(area, 2)\n    else:\n        return -1\n\ndef triangle_perimeter(a, b, c):\n    '''\n    Given the lengths of the three sides of a triangle. Return the perimeter of\n    the triangle rounded to 2 decimal points if the three sides form a valid triangle. \n    Otherwise return -1\n    Three sides make a valid triangle when the sum of any two sides is greater \n    than the third side.\n    Example:\n    triangle_perimeter(3, 4, 5) == 12.00\n    triangle_perimeter(1,"
+    },
+    {
+      "task_id": "HumanEval/72",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    return is_balanced(q) and sum(q) <= w\n\ndef is_balanced(q):\n    '''\n    Write a function that returns True if the object q is balanced, and False otherwise.\n    The object q is balanced if it's unbalanced, and the sum of its elements is less than or equal the maximum possible weight w.\n\n    Example:\n    is_balanced([1, 2]) ➞ True\n    # it's unbalanced, but the sum of its elements is less than or equal to the maximum possible weight.\n\n    is_balanced([3, 2, 3]) ➞ False\n    # it's balanced, and the sum of its elements is less than or equal to the maximum possible weight.\n\n    is_balanced",
+      "after_completion": "    # Your code here\n    return is_balanced(q) and sum(q) <= w\n\ndef is_balanced(q):\n    '''\n    Write a function that returns True if the object q is balanced, and False otherwise.\n    The object q is balanced if it's unbalanced, and the sum of its elements is less than or equal the maximum possible weight w.\n\n    Example:\n    is_balanced([1, 2]) ➞ True\n    # it's unbalanced, but the sum of its elements is less than or equal to the maximum possible weight.\n\n    is_balanced([3, 2, 3]) ➞ False\n    # it's balanced, and the sum of its elements is less than or equal to the maximum possible weight.\n\n    is_balanced"
+    },
+    {
+      "task_id": "HumanEval/73",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    # return 0\n    # return 1\n    # return 2\n    # return 3\n    # return 4\n    # return 5\n    # return 6\n    # return 7\n    # return 8\n    # return 9\n    # return 10\n    # return 11\n    # return 12\n    # return 13\n    # return 14\n    # return 15\n    # return 16\n    # return 17\n    # return 18\n    # return 19\n    # return 20\n    # return 21\n    # return 22\n    # return",
+      "after_completion": "    # Initialize the result to the length of the array\n    result = len(arr)\n\n    # Iterate over the array\n    for i in range(len(arr)):\n        # Initialize the left and right indices\n        left = i\n        right = len(arr) - 1 - i\n\n        # Iterate over the array\n        while left < right:\n            # If the elements at the left and right indices are not equal, increment the result\n            if arr[left] != arr[right]:\n                result += 1\n                # If the elements at the left and right indices are equal, move the left index to the right\n                left += 1\n            else:\n                # If the elements at the left and right indices are equal, move the left index to the right\n               "
+    },
+    {
+      "task_id": "HumanEval/74",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    return lst1 if len(lst1) < len(lst2) else lst2\n\ndef total_match(lst1, lst2):\n    '''\n    Write a function that accepts two lists of strings and returns the list that has \n    total number of chars in the all strings of the list less than the other list.\n\n    if the two lists have the same number of chars, return the first list.\n\n    Examples\n    total_match([], []) ➞ []\n    total_match(['hi', 'admin'], ['hI', 'Hi']) ➞ ['hI', 'Hi']\n    total_match(['hi', 'admin'], ['hi', 'hi', 'admin', 'project']) ➞ ['hi', 'admin']\n    total_match(['hi', 'admin",
+      "after_completion": "    # Your code here\n    return lst1 if len(lst1) < len(lst2) else lst2\n\ndef total_match(lst1, lst2):\n    '''\n    Write a function that accepts two lists of strings and returns the list that has \n    total number of chars in the all strings of the list less than the other list.\n\n    if the two lists have the same number of chars, return the first list.\n\n    Examples\n    total_match([], []) ➞ []\n    total_match(['hi', 'admin'], ['hI', 'Hi']) ➞ ['hI', 'Hi']\n    total_match(['hi', 'admin'], ['hi', 'hi', 'admin', 'project']) ➞ ['hi', 'admin']\n    total_match(['hi', 'admin"
+    },
+    {
+      "task_id": "HumanEval/75",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    return False\n\ndef is_prime(a):\n    \"\"\"Write a function that returns true if the given number is prime and false otherwise.\n    Knowing that (a) is greater then 1 and less then 100. \n    Example:\n    is_prime(10) == False\n    10 = 2 * 5\n    \"\"\"\n    # Your code here\n    return False\n\ndef is_prime_or_multiply(a):\n    \"\"\"Write a function that returns true if the given number is prime or the multiplication of 3 prime numbers and false otherwise.\n    Knowing that (a) is greater then 1 and less then 100. \n    Example:\n    is_prime_or_multiply(10) == False\n    1",
+      "after_completion": "    # Your code here\n    return False\n\ndef is_prime(a):\n    \"\"\"Write a function that returns true if the given number is prime and false otherwise.\n    Knowing that (a) is greater then 1 and less then 100. \n    Example:\n    is_prime(10) == False\n    10 = 2 * 5\n    \"\"\"\n    # Your code here\n    return False\n\ndef is_prime_or_multiply(a):\n    \"\"\"Write a function that returns true if the given number is prime or the multiplication of 3 prime numbers and false otherwise.\n    Knowing that (a) is greater then 1 and less then 100. \n    Example:\n    is_prime_or_multiply(10) == False\n    1"
+    },
+    {
+      "task_id": "HumanEval/76",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    if x == 1:\n        return True\n    if n == 1:\n        return False\n    if x % n == 0:\n        return is_simple_power(x / n, n)\n    return False\n\ndef is_simple_power(x, n):\n    \"\"\"Your task is to write a function that returns true if a number x is a simple\n    power of n and false in other cases.\n    x is a simple power of n if n**int=x\n    For example:\n    is_simple_power(1, 4) => true\n    is_simple_power(2, 2) => true\n    is_simple_power(8, 2) => true\n    is_simple_power(3, 2) => false\n",
+      "after_completion": "    # Your code here\n    if x == 1:\n        return True\n    if n == 1:\n        return False\n    if x % n == 0:\n        return is_simple_power(x / n, n)\n    return False\n\ndef is_simple_power(x, n):\n    \"\"\"Your task is to write a function that returns true if a number x is a simple\n    power of n and false in other cases.\n    x is a simple power of n if n**int=x\n    For example:\n    is_simple_power(1, 4) => true\n    is_simple_power(2, 2) => true\n    is_simple_power(8, 2) => true\n    is_simple_power(3, 2) => false\n"
+    },
+    {
+      "task_id": "HumanEval/77",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if a < 0:\n        return False\n    if a == 0:\n        return True\n    if a == 1:\n        return True\n    if a == 2:\n        return True\n    if a == 3:\n        return True\n    if a == 4:\n        return True\n    if a == 5:\n        return True\n    if a == 6:\n        return True\n    if a == 7:\n        return True\n    if a == 8:\n        return True\n    if a == 9:\n        return True\n    if a == 10:\n        return True\n    if a == 11:\n        return True\n    if a == 12:\n        return True\n    if a",
+      "after_completion": "    if a < 0:\n        return False\n    if a == 0:\n        return True\n    if a == 1:\n        return True\n    if a == 2:\n        return True\n    if a == 3:\n        return True\n    if a == 4:\n        return True\n    if a == 5:\n        return True\n    if a == 6:\n        return True\n    if a == 7:\n        return True\n    if a == 8:\n        return True\n    if a == 9:\n        return True\n    if a == 10:\n        return True\n    if a == 11:\n        return True\n    if a == 12:\n        return True\n    if a"
+    },
+    {
+      "task_id": "HumanEval/78",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # your code here\n    return 0\n\n\ndef hex_key(num):\n    \"\"\"You have been tasked to write a function that receives \n    a hexadecimal number as a string and counts the number of hexadecimal \n    digits that are primes (prime number, or a prime, is a natural number \n    greater than 1 that is not a product of two smaller natural numbers).\n    Hexadecimal digits are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F.\n    Prime numbers are 2, 3, 5, 7, 11, 13, 17,...\n    So you have to determine a number",
+      "after_completion": "    # your code here\n    return 0\n\n\ndef hex_key(num):\n    \"\"\"You have been tasked to write a function that receives \n    a hexadecimal number as a string and counts the number of hexadecimal \n    digits that are primes (prime number, or a prime, is a natural number \n    greater than 1 that is not a product of two smaller natural numbers).\n    Hexadecimal digits are 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F.\n    Prime numbers are 2, 3, 5, 7, 11, 13, 17,...\n    So you have to determine a number"
+    },
+    {
+      "task_id": "HumanEval/79",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    binary = ''\n    while decimal > 0:\n        binary = str(decimal % 2) + binary\n        decimal //= 2\n    return 'db' + binary + 'db'\n\ndef decimal_to_binary(decimal):\n    \"\"\"You will be given a number in decimal form and your task is to convert it to\n    binary format. The function should return a string, with each character representing a binary\n    number. Each character in the string will be '0' or '1'.\n\n    There will be an extra couple of characters 'db' at the beginning and at the end of the string.\n    The extra characters are there to help with the format.\n\n    Examples:\n    decimal_to_binary(15)   # returns \"db1111db\"\n    decimal",
+      "after_completion": "    binary = ''\n    while decimal > 0:\n        binary = str(decimal % 2) + binary\n        decimal //= 2\n    return 'db' + binary + 'db'\n\ndef decimal_to_binary(decimal):\n    \"\"\"You will be given a number in decimal form and your task is to convert it to\n    binary format. The function should return a string, with each character representing a binary\n    number. Each character in the string will be '0' or '1'.\n\n    There will be an extra couple of characters 'db' at the beginning and at the end of the string.\n    The extra characters are there to help with the format.\n\n    Examples:\n    decimal_to_binary(15)   # returns \"db1111db\"\n    decimal"
+    },
+    {
+      "task_id": "HumanEval/80",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Write your code here\n    if len(s) < 3:\n        return False\n    for i in range(len(s) - 2):\n        if s[i] == s[i + 1] and s[i + 1] == s[i + 2]:\n            return False\n    return True\n\n\ndef is_happy(s):\n    \"\"\"You are given a string s.\n    Your task is to check if the string is happy or not.\n    A string is happy if its length is at least 3 and every 3 consecutive letters are distinct\n    For example:\n    is_happy(a) => False\n    is_happy(aa) => False\n    is_happy(abcd) => True\n    is_happy(aabb) => False\n   ",
+      "after_completion": "    # Write your code here\n    if len(s) < 3:\n        return False\n    for i in range(len(s) - 2):\n        if s[i] == s[i + 1] and s[i + 1] == s[i + 2]:\n            return False\n    return True\n\n\ndef is_happy(s):\n    \"\"\"You are given a string s.\n    Your task is to check if the string is happy or not.\n    A string is happy if its length is at least 3 and every 3 consecutive letters are distinct\n    For example:\n    is_happy(a) => False\n    is_happy(aa) => False\n    is_happy(abcd) => True\n    is_happy(aabb) => False\n   "
+    },
+    {
+      "task_id": "HumanEval/81",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # TODO: Write your code here\n    pass\n\ndef numerical_letter_grade(grades):\n    \"\"\"It is the last week of the semester and the teacher has to give the grades\n    to students. The teacher has been making her own algorithm for grading.\n    The only problem is, she has lost the code she used for grading.\n    She has given you a list of GPAs for some students and you have to write \n    a function that can output a list of letter grades using the following table:\n             GPA       |    Letter grade\n              4.0                A+\n            > 3.7                A \n            > 3.3                A- \n            > 3.0                B+\n            > 2.7                B \n            > ",
+      "after_completion": "    # TODO: Write your code here\n    pass\n\ndef numerical_letter_grade_with_grades(grades):\n    \"\"\"It is the last week of the semester and the teacher has to give the grades\n    to students. The teacher has been making her own algorithm for grading.\n    The only problem is, she has lost the code she used for grading.\n    She has given you a list of GPAs for some students and you have to write \n    a function that can output a list of letter grades using the following table:\n             GPA       |    Letter grade\n              4.0                A+\n            > 3.7                A \n            > 3.3                A- \n            > 3.0                B+\n            > 2.7                B \n"
+    },
+    {
+      "task_id": "HumanEval/82",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if len(string) == 1:\n        return True\n    elif len(string) == 2:\n        return False\n    elif len(string) == 3:\n        return True\n    elif len(string) == 4:\n        return False\n    elif len(string) == 5:\n        return True\n    elif len(string) == 6:\n        return False\n    elif len(string) == 7:\n        return True\n    elif len(string) == 8:\n        return False\n    elif len(string) == 9:\n        return True\n    elif len(string) == 10:\n        return False\n    elif len(string) == 11:\n        return True\n    elif len(string) == 12:\n        return False\n   ",
+      "after_completion": "    if len(string) == 1:\n        return True\n    elif len(string) == 2:\n        return False\n    elif len(string) == 3:\n        return True\n    elif len(string) == 4:\n        return False\n    elif len(string) == 5:\n        return True\n    elif len(string) == 6:\n        return False\n    elif len(string) == 7:\n        return True\n    elif len(string) == 8:\n        return False\n    elif len(string) == 9:\n        return True\n    elif len(string) == 10:\n        return False\n    elif len(string) == 11:\n        return True\n    elif len(string) == 12:\n        return False\n   "
+    },
+    {
+      "task_id": "HumanEval/83",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if n == 1:\n        return 1\n    elif n == 2:\n        return 2\n    else:\n        return 4 * starts_one_ends(n - 2) + 2 * starts_one_ends(n - 1)\n\ndef starts_two_ends(n):\n    \"\"\"\n    Given a positive integer n, return the count of the numbers of n-digit\n    positive integers that start or end with 1 or 2.\n    \"\"\"\n    if n == 1:\n        return 2\n    elif n == 2:\n        return 4\n    else:\n        return 8 * starts_two_ends(n - 2) + 4 * starts_two_ends(n - 1)\n\ndef starts_three_ends(n):\n    \"\"\"\n    Given a positive integer n,",
+      "after_completion": "    if n == 1:\n        return 1\n    elif n == 2:\n        return 2\n    else:\n        return 4 * starts_one_ends(n - 2) + 2 * starts_one_ends(n - 1)\n\ndef starts_two_ends(n):\n    \"\"\"\n    Given a positive integer n, return the count of the numbers of n-digit\n    positive integers that start or end with 1 or 2.\n    \"\"\"\n    if n == 1:\n        return 2\n    elif n == 2:\n        return 4\n    else:\n        return 8 * starts_two_ends(n - 2) + 4 * starts_two_ends(n - 1)\n\ndef starts_three_ends(n):\n    \"\"\"\n    Given a positive integer n,"
+    },
+    {
+      "task_id": "HumanEval/84",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return bin(N)[2:]\n\n\ndef main():\n    \"\"\"Main function\"\"\"\n    N = int(input())\n    print(solve(N))\n\n\nif __name__ == \"__main__\":\n    main()<|fim_middle|>\n",
+      "after_completion": "    return bin(N)[2:]\n\n\ndef main():\n    \"\"\"Main function\"\"\"\n    N = int(input())\n    print(solve(N))\n\n\nif __name__ == \"__main__\":\n    main()<|fim_middle|>\n"
+    },
+    {
+      "task_id": "HumanEval/85",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return sum(lst[i] for i in range(len(lst)) if i % 2 == 1 and lst[i] % 2 == 0)\n\n\ndef remove(lst):\n    \"\"\"Given a non-empty list of integers lst. remove the even elements that are at even indices.\n\n\n    Examples:\n        remove([4, 2, 6, 7]) ==> 4 \n    \"\"\"\n    return sum(lst[i] for i in range(len(lst)) if i % 2 == 0 and lst[i] % 2 == 0)\n\n\ndef multiply(lst):\n    \"\"\"Given a non-empty list of integers lst. multiply the even elements that are at even indices.\n\n\n    Examples:\n        multiply([4, 2, 6,",
+      "after_completion": "    return sum(lst[i] for i in range(len(lst)) if i % 2 == 1 and lst[i] % 2 == 0)\n\n\ndef remove(lst):\n    \"\"\"Given a non-empty list of integers lst. remove the even elements that are at even indices.\n\n\n    Examples:\n        remove([4, 2, 6, 7]) ==> 4 \n    \"\"\"\n    return sum(lst[i] for i in range(len(lst)) if i % 2 == 0 and lst[i] % 2 == 0)\n\n\ndef multiply(lst):\n    \"\"\"Given a non-empty list of integers lst. multiply the even elements that are at even indices.\n\n\n    Examples:\n        multiply([4, 2, 6,"
+    },
+    {
+      "task_id": "HumanEval/86",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return ' '.join(sorted(s.split()))\n\n\ndef anti_shuffle2(s):\n    \"\"\"\n    Write a function that takes a string and returns an ordered version of it.\n    Ordered version of string, is a string where all words (separated by space)\n    are replaced by a new word where all the characters arranged in\n    ascending order based on ascii value.\n    Note: You should keep the order of words and blank spaces in the sentence.\n\n    For example:\n    anti_shuffle('Hi') returns 'Hi'\n    anti_shuffle('hello') returns 'ehllo'\n    anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor'\n    \"\"\"\n    return ' '.join(sorted(s.split(), key=lambda x: ord(x)))\n\n\ndef anti_shuffle3(s):\n    \"\"\"\n   ",
+      "after_completion": "    # your code here\n    return ' '.join(sorted(s.split()))\n\n\ndef anti_shuffle2(s):\n    \"\"\"\n    Write a function that takes a string and returns an ordered version of it.\n    Ordered version of string, is a string where all words (separated by space)\n    are replaced by a new word where all the characters arranged in\n    ascending order based on ascii value.\n    Note: You should keep the order of words and blank spaces in the sentence.\n\n    For example:\n    anti_shuffle('Hi') returns 'Hi'\n    anti_shuffle('hello') returns 'ehllo'\n    anti_shuffle('Hello World!!!') returns 'Hello !!!Wdlor'\n    \"\"\"\n    # your code here\n    return ' '.join(sorted(s.split(), key=lambda x:"
+    },
+    {
+      "task_id": "HumanEval/87",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    return [(i, j) for i, row in enumerate(lst) for j, col in enumerate(row) if col == x]",
+      "after_completion": "    return [(i, lst[i].index(x)) for i in range(len(lst)) if lst[i][x] != 0]\n\n\ndef get_col(lst, x):\n    \"\"\"\n    You are given a 2 dimensional data, as a nested lists,\n    which is similar to matrix, however, unlike matrices,\n    each column may contain a different number of rows.\n    Given lst, and integer x, find integers x in the list,\n    and return list of tuples, [(rows, x1), (rows, x2) ...] such that\n    each tuple is a coordinate - (columns, row), starting with 0.\n    Sort coordinates initially by columns in ascending order.\n    Also, sort coordinates of the column by rows in descending order.\n    \n    Examples:\n   "
+    },
+    {
+      "task_id": "HumanEval/88",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if len(array) == 0:\n        return []\n    if len(array) == 1:\n        return array\n    if sum(array[0]) % 2 == 0:\n        return sorted(array)\n    else:\n        return sorted(array, reverse=True)\n\n\ndef sort_array_2(array):\n    \"\"\"\n    Given an array of non-negative integers, return a copy of the given array after sorting,\n    you will sort the given array in ascending order if the sum( first index value, last index value) is odd,\n    or sort it in descending order if the sum( first index value, last index value) is even.\n\n    Note:\n    * don't change the given array.\n\n    Examples:\n    * sort_array_2([]) => []\n    * sort_array_",
+      "after_completion": "    if len(array) == 0:\n        return []\n    if len(array) == 1:\n        return array\n    if sum(array[0]) % 2 == 0:\n        return sorted(array)\n    else:\n        return sorted(array, reverse=True)\n\n\ndef sort_array_2(array):\n    \"\"\"\n    Given an array of non-negative integers, return a copy of the given array after sorting,\n    you will sort the given array in ascending order if the sum( first index value, last index value) is odd,\n    or sort it in descending order if the sum( first index value, last index value) is even.\n\n    Note:\n    * don't change the given array.\n\n    Examples:\n    * sort_array_2([]) => []\n    * sort_array_"
+    },
+    {
+      "task_id": "HumanEval/89",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    alphabet = 'abcdefghijklmnopqrstuvwxyz'\n    encrypted = ''\n    for char in s:\n        if char in alphabet:\n            index = alphabet.index(char)\n            new_index = (index + 2) % 26\n            encrypted += alphabet[new_index]\n        else:\n            encrypted += char\n    return encrypted\n\ndef decrypt(s):\n    \"\"\"Create a function decrypt that takes a string as an argument and\n    returns a string decrypted with the alphabet being rotated. \n    The alphabet should be rotated in a manner such that the letters \n    shift up by two multiplied to two places.\n    For example:\n    decrypt('lm') returns 'hi'\n    decrypt('ewhjklnop') returns 'asdfghjkl'\n    decrypt('kj') returns '",
+      "after_completion": "    # Your code here\n    alphabet = 'abcdefghijklmnopqrstuvwxyz'\n    encrypted = ''\n    for char in s:\n        if char in alphabet:\n            index = alphabet.index(char)\n            new_index = (index + 2) % 26\n            encrypted += alphabet[new_index]\n        else:\n            encrypted += char\n    return encrypted\n\ndef decrypt(s):\n    \"\"\"Create a function decrypt that takes a string as an argument and\n    returns a string decrypted with the alphabet being rotated. \n    The alphabet should be rotated in a manner such that the letters \n    shift up by two multiplied to two places.\n    For example:\n    decrypt('lm') returns 'hi'\n    decrypt('ewhjklnop') returns 'asdfghjkl'\n    decrypt('kj') returns '"
+    },
+    {
+      "task_id": "HumanEval/90",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if not lst:\n        return None\n    smallest = lst[0]\n    for i in range(1, len(lst)):\n        if lst[i] < smallest:\n            smallest = lst[i]\n    return smallest\n\n# Test cases\nprint(next_smallest([1, 2, 3, 4, 5]))  # Output: 2\nprint(next_smallest([5, 1, 4, 3, 2]))  # Output: 2\nprint(next_smallest([]))  # Output: None\nprint(next_smallest([1, 1]))  # Output: None\n```\n\nThis function iterates through the list and keeps track of the smallest element it has seen so far. It then returns the smallest element it has seen",
+      "after_completion": "    if not lst:\n        return None\n    smallest = lst[0]\n    for num in lst:\n        if num < smallest:\n            smallest = num\n    if smallest is None:\n        return None\n    return smallest\n\n# Test cases\nprint(next_smallest([1, 2, 3, 4, 5]))  # Output: 2\nprint(next_smallest([5, 1, 4, 3, 2]))  # Output: 2\nprint(next_smallest([]))  # Output: None\nprint(next_smallest([1, 1]))  # Output: None\n```\n\nThis function iterates through the list and keeps track of the smallest element it has seen so far. If it encounters a smaller element,"
+    },
+    {
+      "task_id": "HumanEval/91",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    count = 0\n    for word in S.split():\n        if word.startswith(\"I\"):\n            count += 1\n    return count\n\ndef is_bored(S):\n    \"\"\"\n    You'll be given a string of words, and your task is to count the number\n    of boredoms. A boredom is a sentence that starts with the word \"I\".\n    Sentences are delimited by '.', '?' or '!'.\n   \n    For example:\n    >>> is_bored(\"Hello world\")\n    0\n    >>> is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n    1\n    \"\"\"\n    count = 0\n    for word in S.split():\n        if word.startswith(\"I\"):\n            count += 1\n    return count",
+      "after_completion": "    count = 0\n    for word in S.split():\n        if word.startswith(\"I\"):\n            count += 1\n    return count\n\ndef is_bored(S):\n    \"\"\"\n    You'll be given a string of words, and your task is to count the number\n    of boredoms. A boredom is a sentence that starts with the word \"I\".\n    Sentences are delimited by '.', '?' or '!'.\n   \n    For example:\n    >>> is_bored(\"Hello world\")\n    0\n    >>> is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n    1\n    \"\"\"\n    count = 0\n    for word in S.split():\n        if word.startswith(\"I\"):\n            count += 1\n    return count"
+    },
+    {
+      "task_id": "HumanEval/92",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    if (type(x) == int and type(y) == int and type(z) == int) and (x + y == z or x + z == y or y + z == x):\n        return True\n    else:\n        return False\n\ndef any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) ➞ True\n    \n    any_int(3, 2, 2) ➞ False\n\n    any_int(3, -2, 1) ➞ True\n    \n    any_int",
+      "after_completion": "    if (type(x) == int and type(y) == int and type(z) == int) and (x + y == z or x + z == y or y + z == x):\n        return True\n    else:\n        return False\n\ndef any_int(x, y, z):\n    '''\n    Create a function that takes 3 numbers.\n    Returns true if one of the numbers is equal to the sum of the other two, and all numbers are integers.\n    Returns false in any other cases.\n    \n    Examples\n    any_int(5, 2, 7) ➞ True\n    \n    any_int(3, 2, 2) ➞ False\n\n    any_int(3, -2, 1) ➞ True\n    \n    any_int"
+    },
+    {
+      "task_id": "HumanEval/93",
+      "before_passed": false,
+      "after_passed": false,
+      "before_error": "container exited 1",
+      "after_error": "container exited 1",
+      "before_completion": "    # Your code here\n    pass\n\ndef decode(message):\n    \"\"\"\n    Write a function that takes a message, and decodes in such a \n    way that it swaps case of all letters, replaces all vowels in \n    the message with the letter that appears 2 places ahead of that \n    vowel in the english alphabet. \n    Assume only letters. \n    \n    Examples:\n    >>> decode('TGST')\n    'test'\n    >>> decode('tHKS KS C MGSSCGG')\n    'This is a message'\n    \"\"\"\n    # Your code here\n    pass\n\ndef is_palindrome(message):\n    \"\"\"\n    Write a function that takes a message, and returns True if the \n    message is a palindrome, and False otherwise. \n    Assume only letters.",
+      "after_completion": "    # Your code here\n    pass\n\ndef decode(message):\n    \"\"\"\n    Write a function that takes a message, and decodes in such a \n    way that it swaps case of all letters, replaces all vowels in \n    the message with the letter that appears 2 places ahead of that \n    vowel in the english alphabet. \n    Assume only letters. \n    \n    Examples:\n    >>> decode('TGST')\n    'test'\n    >>> decode('tHKS KS C MGSSCGG')\n    'This is a message'\n    \"\"\"\n    # Your code here\n    pass\n\ndef is_palindrome(message):\n    \"\"\"\n    Write a function that takes a message, and returns True if the \n    message is a palindrome, and False otherwise. \n    Assume only letters."
+    }
+  ]
+}

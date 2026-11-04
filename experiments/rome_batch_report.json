@@ -1,15 +1,465 @@
 {
-  "status": "pending_cpu_run",
+  "status": "completed",
+  "completed_utc": "2026-11-04T01:42:47.075148+00:00",
   "base_model": "Qwen/Qwen2.5-Coder-0.5B",
-  "reference_failure_set": "experiments/2026-11-04-rome20/progress.json",
-  "target_layers": [8, 12],
+  "source": "https://raw.githubusercontent.com/openai/human-eval/b9453e8f1865df0a0057a1383767caa400acfbcf/data/HumanEval.jsonl.gz",
+  "hardware": {
+    "device": "cpu",
+    "processor": "CPU / 4 PyTorch threads",
+    "cuda_version": null,
+    "torch_version": "2.15.0+cpu",
+    "python": "3.11.18",
+    "tf32_allowed": false,
+    "pytorch_threads": 4
+  },
+  "failure_ids": [
+    "HumanEval/0",
+    "HumanEval/1",
+    "HumanEval/2",
+    "HumanEval/4",
+    "HumanEval/5",
+    "HumanEval/6",
+    "HumanEval/7",
+    "HumanEval/8",
+    "HumanEval/10",
+    "HumanEval/11",
+    "HumanEval/13",
+    "HumanEval/14",
+    "HumanEval/15",
+    "HumanEval/16",
+    "HumanEval/17",
+    "HumanEval/18",
+    "HumanEval/19",
+    "HumanEval/20",
+    "HumanEval/21",
+    "HumanEval/23"
+  ],
+  "independent_holdout_ids": [
+    "HumanEval/44",
+    "HumanEval/45",
+    "HumanEval/46",
+    "HumanEval/47",
+    "HumanEval/48",
+    "HumanEval/49",
+    "HumanEval/50",
+    "HumanEval/51",
+    "HumanEval/52",
+    "HumanEval/53",
+    "HumanEval/54",
+    "HumanEval/55",
+    "HumanEval/56",
+    "HumanEval/57",
+    "HumanEval/58",
+    "HumanEval/59",
+    "HumanEval/60",
+    "HumanEval/61",
+    "HumanEval/62",
+    "HumanEval/63",
+    "HumanEval/64",
+    "HumanEval/65",
+    "HumanEval/66",
+    "HumanEval/67",
+    "HumanEval/68",
+    "HumanEval/69",
+    "HumanEval/70",
+    "HumanEval/71",
+    "HumanEval/72",
+    "HumanEval/73",
+    "HumanEval/74",
+    "HumanEval/75",
+    "HumanEval/76",
+    "HumanEval/77",
+    "HumanEval/78",
+    "HumanEval/79",
+    "HumanEval/80",
+    "HumanEval/81",
+    "HumanEval/82",
+    "HumanEval/83",
+    "HumanEval/84",
+    "HumanEval/85",
+    "HumanEval/86",
+    "HumanEval/87",
+    "HumanEval/88",
+    "HumanEval/89",
+    "HumanEval/90",
+    "HumanEval/91",
+    "HumanEval/92",
+    "HumanEval/93"
+  ],
+  "causal_scores_all_24_layers": [
+    {
+      "layer": 0,
+      "mean_logprob_delta": -0.021242501970846206,
+      "positive_cases": 4,
+      "cases": 20
+    },
+    {
+      "layer": 1,
+      "mean_logprob_delta": -0.014168854500167073,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 2,
+      "mean_logprob_delta": -0.0013671360444277524,
+      "positive_cases": 7,
+      "cases": 20
+    },
+    {
+      "layer": 3,
+      "mean_logprob_delta": -0.002735028672032058,
+      "positive_cases": 3,
+      "cases": 20
+    },
+    {
+      "layer": 4,
+      "mean_logprob_delta": -0.0024568510940298437,
+      "positive_cases": 4,
+      "cases": 20
+    },
+    {
+      "layer": 5,
+      "mean_logprob_delta": -0.02456179594155401,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 6,
+      "mean_logprob_delta": -0.013915986777283252,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 7,
+      "mean_logprob_delta": -0.01757199966814369,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 8,
+      "mean_logprob_delta": 0.0034135202469769864,
+      "positive_cases": 20,
+      "cases": 20
+    },
+    {
+      "layer": 9,
+      "mean_logprob_delta": -0.002929819899145514,
+      "positive_cases": 4,
+      "cases": 20
+    },
+    {
+      "layer": 10,
+      "mean_logprob_delta": -0.005301653640344739,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 11,
+      "mean_logprob_delta": -0.00023241365561261774,
+      "positive_cases": 13,
+      "cases": 20
+    },
+    {
+      "layer": 12,
+      "mean_logprob_delta": -0.016082994220778347,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 13,
+      "mean_logprob_delta": -0.02092691387515515,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 14,
+      "mean_logprob_delta": -0.04086048139724881,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 15,
+      "mean_logprob_delta": -0.02965908751357347,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 16,
+      "mean_logprob_delta": -0.10285239412914962,
+      "positive_cases": 0,
+      "cases": 20
+    },
+    {
+      "layer": 17,
+      "mean_logprob_delta": -0.005016033031279221,
+      "positive_cases": 10,
+      "cases": 20
+    },
+    {
+      "layer": 18,
+      "mean_logprob_delta": -0.002218088135123253,
+      "positive_cases": 8,
+      "cases": 20
+    },
+    {
+      "layer": 19,
+      "mean_logprob_delta": -0.013428770145401359,
+      "positive_cases": 1,
+      "cases": 20
+    },
+    {
+      "layer": 20,
+      "mean_logprob_delta": -0.05325456685386598,
+      "positive_cases": 1,
+      "cases": 20
+    },
+    {
+      "layer": 21,
+      "mean_logprob_delta": -0.00017298171296715737,
+      "positive_cases": 8,
+      "cases": 20
+    },
+    {
+      "layer": 22,
+      "mean_logprob_delta": 0.00012085771886631847,
+      "positive_cases": 11,
+      "cases": 20
+    },
+    {
+      "layer": 23,
+      "mean_logprob_delta": 0.001955356600228697,
+      "positive_cases": 17,
+      "cases": 20
+    }
+  ],
+  "causal_target_ranks": {
+    "8": 1,
+    "12": 16
+  },
+  "target_layers": [
+    8,
+    12
+  ],
   "matrix": "mlp.down_proj",
-  "method": "MEMIT-style multi-key direct Woodbury ridge update; no optimizer or backpropagation",
-  "maximum_relative_frobenius_change_per_layer": 0.015,
-  "hardware_required": "standard ubuntu-latest CPU runner, four PyTorch threads, Docker",
-  "fresh_humaneval_holdout": "HumanEval/44 through HumanEval/93 inclusive, 50 tasks",
-  "independent_holdout_50": null,
-  "factors_path_after_run": "experiments/rome_batch_factors.safetensors",
-  "predictions_path_after_run": "experiments/rome_batch_predictions.json",
-  "note": "CPU fallback explicitly approved. No full execution or pass@1 measurement has occurred yet. Do not treat this as an experiment result."
+  "max_relative_change": 0.015,
+  "edits": {
+    "8": {
+      "matrix": "mlp.down_proj",
+      "before": {
+        "shape": [
+          896,
+          4864
+        ],
+        "finite": true,
+        "frob_norm": 37.84131622314453,
+        "mean": 2.18997547563049e-06,
+        "std": 0.018126800656318665,
+        "sampled_top_singular_values": [
+          0.457006,
+          0.41984,
+          0.41144
+        ],
+        "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+      },
+      "after": {
+        "shape": [
+          896,
+          4864
+        ],
+        "finite": true,
+        "frob_norm": 37.823368072509766,
+        "mean": 2.0956881598976906e-06,
+        "std": 0.01812034100294113,
+        "sampled_top_singular_values": [
+          0.456504,
+          0.420086,
+          0.411178
+        ],
+        "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+      },
+      "observed_relative_delta_norm": 0.014984962258593203,
+      "ridge": 0.00015959374606609345,
+      "rank_upper_bound": 20,
+      "proposed_delta_frob_norm": 2.4155540466308594,
+      "factor_scale": 0.23475033580586932,
+      "relative_delta_frob_norm": 0.014984962258593203,
+      "target_distance_before": 26.71487045288086,
+      "target_distance_after": 23.737855911254883,
+      "residual_fraction": 0.5
+    },
+    "12": {
+      "matrix": "mlp.down_proj",
+      "before": {
+        "shape": [
+          896,
+          4864
+        ],
+        "finite": true,
+        "frob_norm": 37.60929489135742,
+        "mean": 3.569996351870941e-06,
+        "std": 0.01801561377942562,
+        "sampled_top_singular_values": [
+          0.436512,
+          0.421311,
+          0.415456
+        ],
+        "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+      },
+      "after": {
+        "shape": [
+          896,
+          4864
+        ],
+        "finite": true,
+        "frob_norm": 37.5910530090332,
+        "mean": 3.660768470581388e-06,
+        "std": 0.01800904981791973,
+        "sampled_top_singular_values": [
+          0.435568,
+          0.421039,
+          0.415286
+        ],
+        "svd_note": "Singular values from top-left 128x128 submatrix, NOT full matrix"
+      },
+      "observed_relative_delta_norm": 0.014984730147962517,
+      "ridge": 0.00019460618495941164,
+      "rank_upper_bound": 20,
+      "proposed_delta_frob_norm": 3.8197152614593506,
+      "factor_scale": 0.1475437945946978,
+      "relative_delta_frob_norm": 0.014984728563124381,
+      "target_distance_before": 28.59124755859375,
+      "target_distance_after": 24.582786560058594,
+      "residual_fraction": 1.0
+    }
+  },
+  "independent_holdout_50": {
+    "n": 50,
+    "before_passes": 4,
+    "after_passes": 3,
+    "pass_at_1_before": 0.08,
+    "pass_at_1_after": 0.06,
+    "percentage_point_delta": -2.0,
+    "passed_ids_before": [
+      "HumanEval/54",
+      "HumanEval/55",
+      "HumanEval/60",
+      "HumanEval/66"
+    ],
+    "passed_ids_after": [
+      "HumanEval/54",
+      "HumanEval/60",
+      "HumanEval/66"
+    ],
+    "failed_ids_before": [
+      "HumanEval/44",
+      "HumanEval/45",
+      "HumanEval/46",
+      "HumanEval/47",
+      "HumanEval/48",
+      "HumanEval/49",
+      "HumanEval/50",
+      "HumanEval/51",
+      "HumanEval/52",
+      "HumanEval/53",
+      "HumanEval/56",
+      "HumanEval/57",
+      "HumanEval/58",
+      "HumanEval/59",
+      "HumanEval/61",
+      "HumanEval/62",
+      "HumanEval/63",
+      "HumanEval/64",
+      "HumanEval/65",
+      "HumanEval/67",
+      "HumanEval/68",
+      "HumanEval/69",
+      "HumanEval/70",
+      "HumanEval/71",
+      "HumanEval/72",
+      "HumanEval/73",
+      "HumanEval/74",
+      "HumanEval/75",
+      "HumanEval/76",
+      "HumanEval/77",
+      "HumanEval/78",
+      "HumanEval/79",
+      "HumanEval/80",
+      "HumanEval/81",
+      "HumanEval/82",
+      "HumanEval/83",
+      "HumanEval/84",
+      "HumanEval/85",
+      "HumanEval/86",
+      "HumanEval/87",
+      "HumanEval/88",
+      "HumanEval/89",
+      "HumanEval/90",
+      "HumanEval/91",
+      "HumanEval/92",
+      "HumanEval/93"
+    ],
+    "failed_ids_after": [
+      "HumanEval/44",
+      "HumanEval/45",
+      "HumanEval/46",
+      "HumanEval/47",
+      "HumanEval/48",
+      "HumanEval/49",
+      "HumanEval/50",
+      "HumanEval/51",
+      "HumanEval/52",
+      "HumanEval/53",
+      "HumanEval/55",
+      "HumanEval/56",
+      "HumanEval/57",
+      "HumanEval/58",
+      "HumanEval/59",
+      "HumanEval/61",
+      "HumanEval/62",
+      "HumanEval/63",
+      "HumanEval/64",
+      "HumanEval/65",
+      "HumanEval/67",
+      "HumanEval/68",
+      "HumanEval/69",
+      "HumanEval/70",
+      "HumanEval/71",
+      "HumanEval/72",
+      "HumanEval/73",
+      "HumanEval/74",
+      "HumanEval/75",
+      "HumanEval/76",
+      "HumanEval/77",
+      "HumanEval/78",
+      "HumanEval/79",
+      "HumanEval/80",
+      "HumanEval/81",
+      "HumanEval/82",
+      "HumanEval/83",
+      "HumanEval/84",
+      "HumanEval/85",
+      "HumanEval/86",
+      "HumanEval/87",
+      "HumanEval/88",
+      "HumanEval/89",
+      "HumanEval/90",
+      "HumanEval/91",
+      "HumanEval/92",
+      "HumanEval/93"
+    ],
+    "newly_passed_ids": [],
+    "regressed_ids": [
+      "HumanEval/55"
+    ],
+    "changed_completions": 11
+  },
+  "execution": {
+    "generation": "greedy left-padded CPU batches",
+    "max_new_tokens": 160,
+    "batch_size": 4,
+    "docker_parallel_workers": 4,
+    "sandbox": "no network, read-only filesystem, unprivileged, limited CPU/memory"
+  },
+  "methodology": "MEMIT-style multi-key Woodbury ridge updates with sequential residual splitting, not exact MEMIT; no gradient/backprop/optimizer. Teacher-forced canonical last-token MLP outputs are unaligned proxies, not learned target representations.",
+  "caution": "50 deterministic tasks provide only a small non-random holdout and do not establish generalization"
 }

@@ -65,7 +65,23 @@ The method uses a batch Woodbury projection, with the requested two target layer
 **CPU run:** The [standard `ubuntu-latest` workflow](.github/workflows/rome-batch-cpu.yml) installs CPU-only PyTorch, sets `torch.set_num_threads(4)`, runs the full batch experiment and automatically commits verified results and factor tensors if the job succeeds. The earlier [manual GPU workflow](.github/workflows/rome-batch-gpu.yml) remains available for an explicitly configured CUDA runner. The [unit-test workflow](.github/workflows/rome-batch-checks.yml) checks algebra independently. No paid GPU is required for the CPU route.
 
 <!-- ROME-BATCH-RESULTS-START -->
-**Pending CPU execution.** Before/after pass@1 is unknown until the hosted batch job completes. The workflow will replace this section and write [`experiments/rome_batch_report.json`](experiments/rome_batch_report.json), factor tensors, and full per-task predictions.
+**Batch experiment:** completed on CPU / 4 PyTorch threads (cpu). A direct two-layer (8, 12) MEMIT-style update, at most 1.5% of the original Frobenius norm per layer, changed independent HumanEval pass@1 **4/50 → 3/50** (**-2.0 percentage points**). New passes: None; regressions: HumanEval/55.
+
+| Independent 50-task HumanEval holdout | Baseline | After two-layer edit |
+| --- | ---: | ---: |
+| Passing tasks | 4/50 | 3/50 |
+| Failing tasks | 46/50 | 47/50 |
+| pass@1 | 8.0% | 6.0% |
+
+**Passed IDs before:** HumanEval/54, HumanEval/55, HumanEval/60, HumanEval/66.
+
+**Passed IDs after:** HumanEval/54, HumanEval/60, HumanEval/66.
+
+**Failed IDs before:** HumanEval/44, HumanEval/45, HumanEval/46, HumanEval/47, HumanEval/48, HumanEval/49, HumanEval/50, HumanEval/51, HumanEval/52, HumanEval/53, HumanEval/56, HumanEval/57, HumanEval/58, HumanEval/59, HumanEval/61, HumanEval/62, HumanEval/63, HumanEval/64, HumanEval/65, HumanEval/67, HumanEval/68, HumanEval/69, HumanEval/70, HumanEval/71, HumanEval/72, HumanEval/73, HumanEval/74, HumanEval/75, HumanEval/76, HumanEval/77, HumanEval/78, HumanEval/79, HumanEval/80, HumanEval/81, HumanEval/82, HumanEval/83, HumanEval/84, HumanEval/85, HumanEval/86, HumanEval/87, HumanEval/88, HumanEval/89, HumanEval/90, HumanEval/91, HumanEval/92, HumanEval/93.
+
+**Failed IDs after:** HumanEval/44, HumanEval/45, HumanEval/46, HumanEval/47, HumanEval/48, HumanEval/49, HumanEval/50, HumanEval/51, HumanEval/52, HumanEval/53, HumanEval/55, HumanEval/56, HumanEval/57, HumanEval/58, HumanEval/59, HumanEval/61, HumanEval/62, HumanEval/63, HumanEval/64, HumanEval/65, HumanEval/67, HumanEval/68, HumanEval/69, HumanEval/70, HumanEval/71, HumanEval/72, HumanEval/73, HumanEval/74, HumanEval/75, HumanEval/76, HumanEval/77, HumanEval/78, HumanEval/79, HumanEval/80, HumanEval/81, HumanEval/82, HumanEval/83, HumanEval/84, HumanEval/85, HumanEval/86, HumanEval/87, HumanEval/88, HumanEval/89, HumanEval/90, HumanEval/91, HumanEval/92, HumanEval/93.
+
+See [`experiments/rome_batch_report.json`](experiments/rome_batch_report.json), [`experiments/rome_batch_predictions.json`](experiments/rome_batch_predictions.json), and [`experiments/rome_batch_factors.safetensors`](experiments/rome_batch_factors.safetensors). This limited holdout alone does not prove general improvement.
 <!-- ROME-BATCH-RESULTS-END -->
 
 On a CPU host with 4 available cores, Docker and CPU PyTorch installed:
