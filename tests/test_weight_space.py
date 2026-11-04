@@ -45,6 +45,20 @@ class WeightSpaceTests(unittest.TestCase):
         self.assertLessEqual(norm.item(), 0.01 * torch.linalg.vector_norm(weight).item() + 1e-6)
         self.assertLess(scale, 1.0)
 
+    def test_woodbury_inverse_agrees_with_dense_solution(self):
+        torch = self.torch
+        from tinycoder.rome20 import ridge_inverse_times_key
+
+        keys = [torch.tensor([1.0, 2.0, 0.0, 1.0]),
+                torch.tensor([0.0, 1.0, 1.0, 2.0]),
+                torch.tensor([1.0, 0.0, 2.0, 0.0])]
+        query = torch.tensor([0.5, 1.5, 0.2, -0.3])
+        inverse_times, ridge = ridge_inverse_times_key(keys, query)
+        k = torch.stack(keys, dim=1).double()
+        covariance = ridge * torch.eye(4, dtype=torch.float64) + k @ k.T / len(keys)
+        direct = torch.linalg.solve(covariance, query.double())
+        self.assertTrue(torch.allclose(inverse_times.double(), direct, rtol=1e-3, atol=1e-4))
+
 
 if __name__ == "__main__":
     unittest.main()

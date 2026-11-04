@@ -24,6 +24,29 @@ Null-space input dampening is also available with `--method nullspace`, using `�
 
 See [AGENTS.md](AGENTS.md) for the full inspect → derive → apply → verify protocol. The `.github/workflows/internal-weight-session.yml` workflow runs the initial internal-matrix experiment in GitHub Actions and saves a downloadable `internal-001-results` artifact. The method is a **simplified algebraic demonstration inspired by ROME/MEMIT, not their complete algorithms**.
 
+### HumanEval 20-failure causal-patching experiment
+
+For a more demanding evaluation, `python -m tinycoder.rome20` runs a **base-model** experiment with [`Qwen/Qwen2.5-Coder-0.5B`](https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B), *not* the Instruct variant. It uses the official, MIT-licensed [OpenAI HumanEval](https://github.com/openai/human-eval) dataset pinned to a specific commit, containing coding prompts, reference solutions and unit tests.
+
+The experiment:
+
+1. Greedily generates code until it has 20 sandbox-verified failures with corresponding passing canonical reference solutions.
+2. Reserves the next 20 HumanEval tasks as an untouched holdout set, regardless of their baseline results.
+3. Captures all 24 `mlp.down_proj` key/value activations on each failing prompt and teacher-forced correct completion.
+4. Patches success-side activations into failure-side forward passes to rank layers by change in first-reference-token log probability.
+5. Computes a single bounded, closed-form rank-one update at the selected layer from the **centroid** of 20 key/value pairs, using a regularized empirical covariance inverse via Woodbury algebra. One rank-one update generally cannot satisfy 20 independent targets.
+6. Runs one generated completion per task through a restricted, network-disabled, read-only **Docker** container with resource and time limits, then reports both failure-conditioned and independent holdout `pass@1` before/after deltas.
+
+Launch from **GitHub Actions → HumanEval 20-failure ROME-style experiment** or run on a machine with Docker, Python, sufficient memory, and internet access:
+
+```powershell
+python -m tinycoder.rome20 --edit-count 20 --holdout-count 20 --max-new-tokens 160
+```
+
+Results are saved to `outputs/rome20/` locally or as the `humaneval-rome20-results` Actions artifact. The output includes `progress.json`, `rome_factors.safetensors`, `rome20_report.json` and per-task `predictions.json`. The selected-failure set has pass@1=0 by construction, so **the independent holdout delta is the primary generalization signal**. This is **ROME-style** closed-form editing, not a reproduction of original ROME's optimized target-value computation, and a positive result would require replication on multiple unseen seeds and tasks.
+
+**Safety:** Do not run generated code outside a sandbox. `tinycoder/sandbox_eval.py` refuses execution when Docker is unavailable. The Docker container has no network, uses an unprivileged user, read-only filesystem, dropped capabilities and strict resource limits. No sandbox is a guarantee against all attacks.
+
 **First internal-matrix result:** [GitHub Actions run](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41744954761) succeeded. A rank-one edit to layer 12's `mlp.down_proj` was bounded to **0.2% of the original matrix Frobenius norm**, and all matrix values remained finite. The targeted last-token output moved closer to the selected reference activation (Euclidean distance **3.1938 → 2.9704**, about 7% smaller). However, **all four generated answers remained identical**, and the simple static checks stayed **2/4 before and after**. This is a successful numerical intervention, **not an accuracy improvement**. Download `internal-001-results` from that run for the exact factor tensors and responses.
 
 ## Which AI are we starting with?
