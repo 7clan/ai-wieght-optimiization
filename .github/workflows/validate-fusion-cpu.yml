@@ -1,0 +1,141 @@
+name: Validate untouched 20 and evaluate SVD + 10 percent hybrid
+
+# Launched only once when this workflow is created. Stage order is intentional:
+# final independent confirmation MUST finish before the 70-task hybrid test.
+on:
+  push:
+    paths:
+      - .github/workflows/validate-fusion-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HF_HUB_DISABLE_TELEMETRY: '1'
+  TOKENIZERS_PARALLELISM: 'false'
+  OMP_NUM_THREADS: '4'
+  MKL_NUM_THREADS: '4'
+  SOURCE_COMMIT: b48673a26e7ef6a6220aca331dfc8c0024944aa8
+
+jobs:
+  algebra-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Real PyTorch and filesystem-backed tests
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          python -m compileall -q tinycoder tests
+          python -m unittest discover -s tests -v
+
+  validate-20:
+    needs: algebra-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact preselected factors from original experiment commit
+        run: |
+          for file in experiments/exp03_norm_break_factors.safetensors experiments/exp04_memit_single_factors.safetensors; do
+            test "$(git hash-object "$file")" = "$(git rev-parse "${SOURCE_COMMIT}:${file}")"
+          done
+      - name: Prepare CPU generation and restricted Docker execution
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          docker info
+          docker pull python:3.11-alpine
+      - name: Independent holdout 144-163 before any hybrid evaluation
+        run: |
+          python -m tinycoder.fusion_validation --mode validate --output-dir outputs/final-validation --batch-size 4 --workers 4 --max-new-tokens 160
+      - name: Archive exact task-level independent results
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-validation-20
+          path: outputs/final-validation/
+          if-no-files-found: error
+          retention-days: 21
+
+  fusion-70:
+    needs: validate-20
+    runs-on: ubuntu-latest
+    timeout-minutes: 125
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/05-svd-norm-fusion
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact branch isolation and all immutable factor sources
+        run: |
+          python -c "import json; from pathlib import Path; c=json.loads(Path('experiments/fusion_branch_spec.json').read_text()); assert c['branch']=='exp/05-svd-norm-fusion' and c['source_commit']=='b48673a26e7ef6a6220aca331dfc8c0024944aa8'"
+          for file in experiments/exp02_svd_zeroing_factors.safetensors experiments/exp03_norm_break_factors.safetensors; do
+            test "$(git hash-object "$file")" = "$(git rev-parse "${SOURCE_COMMIT}:${file}")"
+          done
+      - name: Download completed independent validation, not before
+        uses: actions/download-artifact@v4
+        with:
+          name: final-validation-20
+          path: validation_artifact
+      - name: Prepare CPU generation and restricted Docker execution
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements.txt
+          docker info
+          docker pull python:3.11-alpine
+      - name: Apply two archived matrices only in RAM, execute 70-task hybrid
+        run: |
+          python -m tinycoder.fusion_validation --mode hybrid --output-dir outputs/hybrid-fusion --batch-size 4 --workers 4 --max-new-tokens 160
+      - name: Archive new hybrid factors, reports, and task-level predictions
+        uses: actions/upload-artifact@v4
+        with:
+          name: hybrid-fusion-70
+          path: outputs/hybrid-fusion/
+          if-no-files-found: error
+          retention-days: 21
+
+  publish:
+    needs: fusion-70
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: final-validation-20
+          path: incoming_validation
+      - uses: actions/download-artifact@v4
+        with:
+          name: hybrid-fusion-70
+          path: incoming_fusion
+      - name: Strictly verify identical task IDs and publish measured comparison
+        run: |
+          python -m tinycoder.collect_fusion --root .
+      - name: Commit measured README, reports, and exact reversible hybrid factors
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/final_holdout_validation.json experiments/final_holdout_validation_predictions.json experiments/hybrid_fusion_report.json experiments/hybrid_fusion_predictions.json experiments/hybrid_fusion_comparison.json
+          git add -f experiments/hybrid_fusion_factors.safetensors
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish independent 20-task validation and 70-task SVD/MEMIT hybrid comparison'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
