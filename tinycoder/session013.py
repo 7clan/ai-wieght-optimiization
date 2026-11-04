@@ -187,7 +187,8 @@ def summarize(records: list[dict]) -> dict:
 def run(args) -> None:
     import importlib.metadata
     import torch
-    from evalplus.data import get_mbpp, get_mbpp_plus, get_mbpp_plus_hash
+    from evalplus.data import get_mbpp_plus, get_mbpp_plus_hash
+    from evalplus.data.mbpp import get_mbpp
     from .fusion_validation import (apply_reversible, base_model_and_tokenizer,
                                     tensor_factors)
     from .rome20 import fetch_problems, save_json

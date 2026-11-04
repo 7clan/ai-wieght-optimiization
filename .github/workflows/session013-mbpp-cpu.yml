@@ -39,6 +39,7 @@ jobs:
       - name: Verify selection, factor provenance, collector and sandbox contracts
         run: |
           python -m unittest discover -s tests -p 'test_session013.py' -v
+          python -c 'from evalplus.data.mbpp import get_mbpp; from evalplus.data import get_mbpp_plus'
           test "$(git hash-object experiments/exp03_norm_break_factors.safetensors)" = 7f872cd46918457c27d98f63230f1c9f47adb4c7
       - name: Build self-contained EvalPlus Docker evaluator
         run: docker build -f docker/session013-evalplus.Dockerfile -t tinycoder-session013-evalplus:0.3.1 .
