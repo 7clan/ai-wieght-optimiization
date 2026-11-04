@@ -40,6 +40,15 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - `04`: use a multi-key Woodbury covariance inverse with a direct batch update only on layer 8 `mlp.down_proj` (<= 1.5%). Never edit layer 12.
 - All experiments run Docker-isolated HumanEval assertions and save task-level before/after outcomes. The collector compares their reports only after every branch actually completes; no fabricated metrics or silent unsandboxed evaluation.
 
+## Session 008: final reserved holdout and SVD/MEMIT hybrid
+
+- Independently confirm the preselected **10% layer 8 MLP** candidate on HumanEval/144–163 **before constructing/evaluating** the hybrid. Freeze all editing factors first; never use its 20 results to derive the hybrid edit.
+- Reuse the exact archived factors from commit `b48673a`: the **two** removed singular modes in layer 8 `self_attn.o_proj` (exclude the old SVD `mlp.down_proj` erasure) and the **10%** layer 8 `mlp.down_proj` MEMIT-style batch direction.
+- Keep the new `exp/05-svd-norm-fusion` branch independent and the base checkpoint unmodified. No gradients, optimizers, LoRA, or unsandboxed execution.
+- Benchmark the hybrid on HumanEval/94–163, labeling 94–143 previously compared and 144–163 now consumed by 10% independent confirmation; the hybrid's 70-task score is exploratory, **not** independent generalization evidence.
+- To compare all three interventions fairly, combine previously recorded 50-task measurements for 1.5%/10% with a newly measured 20-task validation for both. Require identical task lists and baseline pass IDs before publishing the 70-task comparison.
+- Report syntax validity (`ast.parse`) separately from sandboxed HumanEval pass@1, and archive raw passed/failed IDs and reversible factors.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
