@@ -44,6 +44,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add README.md experiments/session012_extreme_report.json experiments/session012_extreme_predictions.json experiments/session012_extreme_factors.safetensors
+          git add README.md experiments/session012_extreme_report.json experiments/session012_extreme_predictions.json
+          git add -f experiments/session012_extreme_factors.safetensors
           git commit -m 'Publish validated Session012 nine-variant CPU benchmark and factors'
           git push origin HEAD:exp/10-extreme-overdrive
