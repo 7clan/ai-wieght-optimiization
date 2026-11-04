@@ -6,7 +6,7 @@ from .data import prompt_tokens
 
 
 def load_inference(model_id: str, adapter: str | None = None, device: str = "auto",
-                   edit: str | None = None):
+                   edit: str | None = None, weight_edit: str | None = None):
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -23,6 +23,10 @@ def load_inference(model_id: str, adapter: str | None = None, device: str = "aut
         from .direct_edit import apply_saved_edit
 
         apply_saved_edit(model, model_id, edit)
+    if weight_edit:
+        from .weight_space import apply_saved_weight_edit
+
+        apply_saved_weight_edit(model, model_id, weight_edit)
     return model, tokenizer, device
 
 

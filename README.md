@@ -4,6 +4,26 @@ A beginner-friendly experiment for **running, inspecting and directly editing we
 
 **Current direction (Session 002 onward): DIRECT WEIGHT EDITING, with no training.** The earlier LoRA session is preserved as historical research, not our active approach. Directly editing tensor values is real and reversible, but it is not a shortcut to the general intelligence of a larger model.
 
+### Internal weight-space programming (current research track)
+
+The original `edit` command adjusts one output-token weight row. The new `weight-inspect` and `weight-edit` commands operate on **internal attention or MLP linear matrices** (for example, `model.layers[12].mlp.down_proj`). They use tensor reads and closed-form matrix algebra only:
+
+```powershell
+python -m tinycoder weight-inspect --layer 12 --matrix mlp.down_proj
+python -m tinycoder weight-edit "Write only Python code defining max_of_three(a, b, c), returning the greatest argument." --reference-prompt "Return only the bare Python function definition of max_of_three(a, b, c), with no explanation." --method rank-one --layer 12 --matrix mlp.down_proj --alpha 0.5 --max-relative-change 0.002 --output edits/internal-001
+python -m tinycoder eval --weight-edit edits/internal-001 --report outputs/internal-after.json
+```
+
+The `rank-one` method captures the chosen matrix's last-token input vector `k` for the target prompt and its output `y` for a reference prompt. It calculates:
+
+`ΔW = α (y - Wk) (C^-1 k)^T / (k^T C^-1 k)`
+
+Here `C` is approximated by a regularized diagonal of key squared activations from `data/calibration.jsonl`; no trained covariance model is used. The factors are capped by a maximum relative matrix-norm change (default 0.2%) and saved as `factors.safetensors` and `weight_edit.json`. This **does not guarantee a more accurate answer**: a reference prompt is not a teacher's hidden state, and copying its activation can distort other behavior.
+
+Null-space input dampening is also available with `--method nullspace`, using `ΔW = -α (Wv)v^T` for normalized `v`. It can reduce one internal direction but may erase useful information. Use small bounds and compare multiple outputs.
+
+See [AGENTS.md](AGENTS.md) for the full inspect → derive → apply → verify protocol. The `.github/workflows/internal-weight-session.yml` workflow runs the initial internal-matrix experiment in GitHub Actions and saves a downloadable `internal-001-results` artifact. The method is a **simplified algebraic demonstration inspired by ROME/MEMIT, not their complete algorithms**.
+
 ## Which AI are we starting with?
 
 | Model | Size | Purpose |

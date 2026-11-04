@@ -14,8 +14,8 @@ from .evaluation import static_check
 def chat(args):
     from .model import generate, load_inference
 
-    model, tokenizer, device = load_inference(args.model, args.adapter, args.device, args.edit)
-    print(f"Model: {args.model} | device: {device} | edit: {args.edit or 'none'} | adapter: {args.adapter or 'none'}")
+    model, tokenizer, device = load_inference(args.model, args.adapter, args.device, args.edit, args.weight_edit)
+    print(f"Model: {args.model} | device: {device} | edit: {args.weight_edit or args.edit or 'none'} | adapter: {args.adapter or 'none'}")
     print(generate(model, tokenizer, args.prompt, args.max_new_tokens, args.temperature))
 
 
@@ -26,7 +26,7 @@ def evaluate(args):
     for i, item in enumerate(examples, start=1):
         if not isinstance(item.get("expected_function"), str) or not item["expected_function"]:
             raise ValueError(f"Evaluation row {i} needs 'expected_function'")
-    model, tokenizer, device = load_inference(args.model, args.adapter, args.device, args.edit)
+    model, tokenizer, device = load_inference(args.model, args.adapter, args.device, args.edit, args.weight_edit)
     results = []
     for i, item in enumerate(examples, start=1):
         answer = generate(model, tokenizer, item["prompt"], args.max_new_tokens)
@@ -38,6 +38,7 @@ def evaluate(args):
         "model": args.model,
         "adapter": args.adapter,
         "edit": args.edit,
+        "weight_edit": args.weight_edit,
         "device": device,
         "evaluation_type": "AST syntax plus top-level function name; NOT a functional correctness test",
         "static_pass": count,
@@ -148,7 +149,7 @@ def train(args):
 def inspect(args):
     from .model import load_inference
 
-    model, _, device = load_inference(args.model, args.adapter, args.device, args.edit)
+    model, _, device = load_inference(args.model, args.adapter, args.device, args.edit, args.weight_edit)
     print(f"Model: {args.model} | device: {device}")
     printed = 0
     for name, param in model.named_parameters():
@@ -176,6 +177,35 @@ def direct_edit(args):
     print(json.dumps(report, indent=2))
 
 
+def weight_inspect(args):
+    from .model import load_inference
+    from .weight_space import matrix_statistics, target_linear
+
+    model, _, device = load_inference(args.model, device=args.device)
+    module = target_linear(model, args.layer, args.matrix)
+    report = matrix_statistics(module.weight)
+    print(json.dumps({"model": args.model, "device": device, "layer": args.layer,
+                      "matrix": args.matrix, **report}, indent=2))
+
+
+def weight_edit(args):
+    from .model import load_inference
+    from .weight_space import create_weight_edit
+
+    calibration = read_examples(args.calibration, require_answer=False)
+    model, tokenizer, device = load_inference(args.model, device=args.device)
+    report = create_weight_edit(
+        model, tokenizer, args.model,
+        layer_idx=args.layer, matrix_name=args.matrix, method=args.method,
+        prompt=args.prompt, reference_prompt=args.reference_prompt,
+        calibration_prompts=[x["prompt"] for x in calibration],
+        alpha=args.alpha, max_relative_change=args.max_relative_change,
+        output_directory=args.output,
+    )
+    print(f"Edited actual internal tensor on {device}. No optimizer or training was used.")
+    print(json.dumps(report, indent=2))
+
+
 def main():
     parser = argparse.ArgumentParser(description="TinyCoder: small model, measurable training experiments")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -185,6 +215,7 @@ def main():
                              help=f"Default: {DEFAULT_MODEL}; tiny comparison: {TINY_MODEL}")
         command.add_argument("--adapter", help="Path to a trained LoRA adapter")
         command.add_argument("--edit", help="Path to a saved direct weight edit")
+        command.add_argument("--weight-edit", help="Path to saved internal rank-one/nullspace weight edit")
         command.add_argument("--device", choices=["auto", "cpu", "cuda", "mps"], default="auto")
 
     p = commands.add_parser("chat", help="Generate a coding answer locally")
@@ -230,6 +261,27 @@ def main():
     p.add_argument("--device", choices=["auto", "cpu", "cuda", "mps"], default="auto")
     p.add_argument("--output", default="edits/direct-001")
     p.set_defaults(func=direct_edit)
+
+    p = commands.add_parser("weight-inspect", help="Read stats of a specific internal weight matrix")
+    p.add_argument("--model", default=DEFAULT_MODEL)
+    p.add_argument("--device", choices=["auto", "cpu", "cuda", "mps"], default="auto")
+    p.add_argument("--layer", type=int, default=12)
+    p.add_argument("--matrix", default="mlp.down_proj")
+    p.set_defaults(func=weight_inspect)
+
+    p = commands.add_parser("weight-edit", help="Closed-form update to an internal matrix, no training")
+    p.add_argument("prompt", help="Target prompt to modify internally")
+    p.add_argument("--reference-prompt", help="Prompt whose activation provides the desired value (rank-one)")
+    p.add_argument("--method", choices=["rank-one", "nullspace"], default="rank-one")
+    p.add_argument("--layer", type=int, default=12)
+    p.add_argument("--matrix", default="mlp.down_proj")
+    p.add_argument("--alpha", type=float, default=0.5)
+    p.add_argument("--max-relative-change", type=float, default=0.002)
+    p.add_argument("--calibration", default="data/calibration.jsonl")
+    p.add_argument("--model", default=DEFAULT_MODEL)
+    p.add_argument("--device", choices=["auto", "cpu", "cuda", "mps"], default="auto")
+    p.add_argument("--output", default="edits/internal-001")
+    p.set_defaults(func=weight_edit)
 
     args = parser.parse_args()
     if args.command == "chat" and (args.max_new_tokens <= 0 or args.temperature < 0):
