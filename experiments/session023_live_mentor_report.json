@@ -1,0 +1,112 @@
+{
+  "session": "023",
+  "status": "completed",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "weight_edits": 0,
+  "learning_mode": "teacher-analogy-and-verified-external-memory",
+  "teacher_correction_count": 5,
+  "student_slots": [
+    "api_get",
+    "api_post",
+    "api_patch",
+    "api_delete",
+    "api_summary"
+  ],
+  "slot_success": {
+    "api_get": true,
+    "api_post": true,
+    "api_patch": true,
+    "api_delete": false,
+    "api_summary": true
+  },
+  "generated_candidate_count": 16,
+  "generated_output_tokens": 736,
+  "wall_seconds": 119.6,
+  "integrated_model_assisted_app_pass": false,
+  "selected": {
+    "public": {
+      "phase": "public",
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: DELETE /api/tasks contract"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": false,
+      "checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "ui_markup": "<main class=\"board\"><header><div class=\"brand\">◆ FOCUSBOARD</div><h1>Your tasks, in focus.</h1><p>Plan, prioritize, and finish what matters.</p></header><section class=\"stats\" aria-label=\"Task statistics\"><article><b>0</b><span>Total tasks</span></article><article><b>0</b><span>Completed</span></article><article><b>0</b><span>Remaining</span></article></section><form><input aria-label=\"New task title\" placeholder=\"What needs to be done?\" required=\"\" value=\"\"/><select aria-label=\"Priority\"><option value=\"low\">Low</option><option value=\"medium\" selected=\"\">Medium</option><option value=\"high\">High</option></select><button type=\"submit\">Add task</button></form><h2>Task board</h2><div class=\"empty\">Your next big idea starts here. Add your first task above.</div></main>",
+      "failure_reasons": [
+        "api: Error: DELETE /api/tasks contract"
+      ],
+      "completed_checks": 8
+    },
+    "holdout": {
+      "phase": "holdout",
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: DELETE /api/tasks contract"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": false,
+      "checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "ui_markup": "<main class=\"board\"><header><div class=\"brand\">◆ FOCUSBOARD</div><h1>Your tasks, in focus.</h1><p>Plan, prioritize, and finish what matters.</p></header><section class=\"stats\" aria-label=\"Task statistics\"><article><b>0</b><span>Total tasks</span></article><article><b>0</b><span>Completed</span></article><article><b>0</b><span>Remaining</span></article></section><form><input aria-label=\"New task title\" placeholder=\"What needs to be done?\" required=\"\" value=\"\"/><select aria-label=\"Priority\"><option value=\"low\">Low</option><option value=\"medium\" selected=\"\">Medium</option><option value=\"high\">High</option></select><button type=\"submit\">Add task</button></form><h2>Task board</h2><div class=\"empty\">Your next big idea starts here. Add your first task above.</div></main>",
+      "failure_reasons": [
+        "api: Error: DELETE /api/tasks contract"
+      ],
+      "completed_checks": 8
+    }
+  },
+  "holdout_consulted_during_selection": false,
+  "model_origin": "Qwen wrote only API expression slots, and Session022 model-written Python, JSX and CSS slots were reused exactly.",
+  "trusted_origin": "Teacher changed response envelopes and authored analogous note examples. Express routing, React App shell and Python function template remain trusted scaffolding.",
+  "permanent_weight_learning_proven": false,
+  "out_of_distribution_transfer_proven": false,
+  "source_session022_sha256": "2ae9fb5d89d7635fd6e27b6ac77d62488bf191c20e46f031229c455c245872b7"
+}

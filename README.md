@@ -1,5 +1,33 @@
 # TinyCoder Weight Lab
 
+## Session 023 — teacher–student coding apprenticeship
+
+**Integrated holdout: FAIL.** Starting with the
+Session022 real Qwen errors, a teacher supplied analogies and corrected the
+API response-envelope scaffold. The frozen 0.5B base model then produced its
+own five API data expressions, tested in independent Docker unit contexts.
+The UI, Python and CSS contributions are genuine frozen Session022 model
+outputs. The surrounding functional application is still trusted authored
+scaffolding. There was **zero parameter training**, so this measures only
+in-context transfer and verified external debugging memory.
+
+| Student API slot | Independently verified |
+| --- | --- |
+| api_get | PASS |
+| api_post | PASS |
+| api_patch | PASS |
+| api_delete | FAIL |
+| api_summary | PASS |
+
+[Inspect teacher corrections and each student attempt](docs/previews/session023/mentor.html) ·
+[View the actual Qwen-generated code and safe preview](docs/previews/session023/index.html) ·
+[Read the report](experiments/session023_live_mentor_report.json) ·
+[Read every token completion](experiments/session023_live_mentor_predictions.json).
+
+The HTML previews are not a live deployed Express application and do not
+establish out-of-distribution or permanent weight generalization.
+
+
 ## Session 022 — Qwen0.5B native FIM, real application integration
 
 **End-to-end sandbox contract: FAIL.** Qwen2.5-Coder-0.5B filled eight

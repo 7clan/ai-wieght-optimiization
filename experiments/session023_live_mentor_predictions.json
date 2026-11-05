@@ -1,0 +1,435 @@
+{
+  "slots": {
+    "logic_completed": "sum(1 for task in tasks if task.get('done', False))",
+    "api_get": "store.list()",
+    "api_post": "store.create(req.body)",
+    "api_patch": "store.update(req.params.id,req.body)",
+    "api_delete": "undefined",
+    "api_summary": "store.list()",
+    "ui_card": "{task.title}{' '}\n    <button onClick={()=>onToggle(task.id)}>{task.done?'Un':'Done'}</button>\n    <button onClick={()=>onDelete(task.id)}>Delete</button>",
+    "css_theme": "body{background:#f4f6fc;color:#172341;font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}\nheader{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}\nh1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}\np{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}\n.stats article{background:white;padding:2"
+  },
+  "candidates": [
+    {
+      "slot": "api_get",
+      "attempt": 0,
+      "raw": "store.list()}));\n  app.post('/api/tasks', (req, res) => {\n    const task = req.body;\n    store.add(task);\n    res.json({task});\n  });\n  app.put('/api/tasks/:id', (req, res) => {\n    const task = req.body;\n    store.update(req.params.id, task);\n    res.json({",
+      "normalized": "store.list()",
+      "accepted": true,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "delete": true,
+        "ui_item": true,
+        "integrated_api": true
+      },
+      "api_error": null,
+      "generated_tokens": 74
+    },
+    {
+      "slot": "api_post",
+      "attempt": 0,
+      "raw": "store.create(req.body)}));\n  app.get('/api/tasks', (req, res) => res.status(200).json(store.list()));\n  app.get('/api/tasks/:id', (req, res) => res.status(200).json(store.read(req.params.id)));\n  app.put('/api/tasks/:id', (req, res) =>",
+      "normalized": "store.create(req.body)",
+      "accepted": true,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "delete": true,
+        "ui_item": true,
+        "integrated_api": true
+      },
+      "api_error": null,
+      "generated_tokens": 74
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 0,
+      "raw": "store.update(req.params.id,req.body)}));\n // FocusBoard required operation, use store methods:\n  app.patch('/api/notes/:id', (req, res) => res.json({note:store.update(req.params.id,req.body)}));\n // FocusBoard required operation, use store methods:\n  app.patch('/api/tasks/:id', (req, res",
+      "normalized": "store.update(req.params.id,req.body)",
+      "accepted": true,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "delete": true,
+        "ui_item": true,
+        "integrated_api": true
+      },
+      "api_error": null,
+      "generated_tokens": 74
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 0,
+      "raw": "processor.delete(req.params.id)}));\n  app.get('/api/tasks', (req, res) => res.json({tasks:processor.get()}));\n  app.post('/api/tasks', (req, res) => res.json({created:processor.create(req.body)}));\n  app.put('/api/tasks/:id', (req, res) => res.json({updated:processor",
+      "normalized": "processor.delete(req.params.id)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 74
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 1,
+      "raw": "processor.delete(req.params.id<|endoftext|>",
+      "normalized": "processor.delete(req.params.id",
+      "accepted": false,
+      "public_checks": {
+        "ui_item": true
+      },
+      "api_error": "Error: Transform failed with 1 error:\n<stdin>:12:93: ERROR: Expected \")\" but found \"}\"",
+      "generated_tokens": 6
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 2,
+      "raw": "store.remove(req.params.id)}));\n  app.get('/api/notes/:id',(req,res)=>res.json({notes:store.get(req.params.id)<|endoftext|>",
+      "normalized": "store.remove(req.params.id)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 32
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 3,
+      "raw": "processor.deleteTask(req.params.id)}));\n  app.delete('/api/notes/:id', (req, res) => res.json({deleted:store.remove(req.params.id)}));\n  app.post('/api/notes', (req, res) => res.json({added:store.add(req.body)}));\n  app.put('/api/notes/:id', (req,",
+      "normalized": "processor.deleteTask(req.params.id)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 74
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 4,
+      "raw": "processor.delete(req.params.id)<|endoftext|>",
+      "normalized": "processor.delete(req.params.id)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 7
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 5,
+      "raw": "store.remove(req.params.id)}));\n  app.delete('/api/processed/:id', (req, res) => res.json({processed:processor.handle(req.params.id)}));\n  app.delete('/api/users/:id', (req, res) => res.json({users:store.remove(req.params.id)}));\n  app.post('/api/notes', processor.handle);\n app",
+      "normalized": "store.remove(req.params.id)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 74
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 6,
+      "raw": "processor.delete(req.params.id)}));\n  app.get('/api/notes', (req, res) => res.json({notes:store.all()}));\n  app.post('/api/notes', (req, res) => res.json({note:processor.create(req.body)}));\n  app.put('/api/notes/:id', (req, res) => res.json({",
+      "normalized": "processor.delete(req.params.id)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 74
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 7,
+      "raw": "store.remove(req.params.id<|endoftext|>",
+      "normalized": "store.remove(req.params.id",
+      "accepted": false,
+      "public_checks": {
+        "ui_item": true
+      },
+      "api_error": "Error: Transform failed with 1 error:\n<stdin>:12:89: ERROR: Expected \")\" but found \"}\"",
+      "generated_tokens": 6
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 8,
+      "raw": " store.removeTask(req.params.id)<|endoftext|>",
+      "normalized": "store.removeTask(req.params.id)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 8
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 9,
+      "raw": "processor.delete(req.params.id,store)});\n // The following two functions are the same, however the first one\n // uses the store for the first parameter, the second one uses\n // the store for the second parameter.\n app.get('/api/notes', (req, res) => res.json(store.all()));\n app.get('/api/notes/:id', (req,",
+      "normalized": "processor.delete(req.params.id,store)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 74
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 10,
+      "raw": "processor.delete(req.params.id)}));\n  app.get('/api/notes', (req,res)=>{\n    res.json({notes:store.fetch()})\n  });\n  app.get('/api/tasks', (req,res)=>{\n    res.json({tasks:processor.fetch()})\n  });\n  app.post('/api/tasks', (req,res)=>{\n    res.json({added:processor.add(req.body)",
+      "normalized": "processor.delete(req.params.id)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 74
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 11,
+      "raw": "processor.remove(req.params.id)<|endoftext|>",
+      "normalized": "processor.remove(req.params.id)",
+      "accepted": false,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "ui_item": true
+      },
+      "api_error": "Error: DELETE /api/tasks contract",
+      "generated_tokens": 7
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 0,
+      "raw": "store.list()<|endoftext|>",
+      "normalized": "store.list()",
+      "accepted": true,
+      "public_checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "delete": true,
+        "ui_item": true,
+        "integrated_api": true
+      },
+      "api_error": null,
+      "generated_tokens": 4
+    }
+  ],
+  "events": [
+    {
+      "stage": "teacher-demonstration",
+      "slot": "api_get",
+      "summary": "Teacher explains response-contract mismatch",
+      "before": "res.json(store.list())",
+      "after": "res.json({tasks:store.list()})",
+      "rule": "An API contract can require an object envelope instead of a raw array.",
+      "analogy": "app.get('/api/notes', (req,res)=>res.json({notes:store.list()}));"
+    },
+    {
+      "stage": "teacher-demonstration",
+      "slot": "api_post",
+      "summary": "Teacher explains response-contract mismatch",
+      "before": "res.json(undefined)",
+      "after": "res.status(201).json({task:store.create(req.body)})",
+      "rule": "Create calls the store with the request body, returns the created record and HTTP 201.",
+      "analogy": "app.post('/api/notes', (req,res)=>res.status(201).json({note:store.create(req.body)}));"
+    },
+    {
+      "stage": "teacher-demonstration",
+      "slot": "api_patch",
+      "summary": "Teacher explains response-contract mismatch",
+      "before": "res.json(undefined)",
+      "after": "res.json({task:store.update(req.params.id,req.body)})",
+      "rule": "A PATCH requires both the URL identifier and the JSON update body.",
+      "analogy": "app.patch('/api/notes/:id',(req,res)=>res.json({note:store.update(req.params.id,req.body)}));"
+    },
+    {
+      "stage": "teacher-demonstration",
+      "slot": "api_delete",
+      "summary": "Teacher explains response-contract mismatch",
+      "before": "res.json(undefined)",
+      "after": "res.json({deleted:store.delete(req.params.id)})",
+      "rule": "Delete the identified record and return the store deletion result.",
+      "analogy": "app.delete('/api/notes/:id',(req,res)=>res.json({removed:store.remove(req.params.id)}));"
+    },
+    {
+      "stage": "teacher-demonstration",
+      "slot": "api_summary",
+      "summary": "Teacher explains response-contract mismatch",
+      "before": "res.json(undefined)",
+      "after": "res.json(processor({tasks:store.list()}))",
+      "rule": "The summary processor receives an object containing the current task list.",
+      "analogy": "app.get('/api/notes/count',(req,res)=>res.json(processor({items:store.list()})));"
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_get",
+      "summary": "Qwen independent repair candidate 1",
+      "student": "store.list()",
+      "passed": true
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_post",
+      "summary": "Qwen independent repair candidate 1",
+      "student": "store.create(req.body)",
+      "passed": true
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_patch",
+      "summary": "Qwen independent repair candidate 1",
+      "student": "store.update(req.params.id,req.body)",
+      "passed": true
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 1",
+      "student": "processor.delete(req.params.id)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 2",
+      "student": "processor.delete(req.params.id",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 3",
+      "student": "store.remove(req.params.id)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 4",
+      "student": "processor.deleteTask(req.params.id)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 5",
+      "student": "processor.delete(req.params.id)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 6",
+      "student": "store.remove(req.params.id)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 7",
+      "student": "processor.delete(req.params.id)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 8",
+      "student": "store.remove(req.params.id",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 9",
+      "student": "store.removeTask(req.params.id)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 10",
+      "student": "processor.delete(req.params.id,store)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 11",
+      "student": "processor.delete(req.params.id)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_delete",
+      "summary": "Qwen independent repair candidate 12",
+      "student": "processor.remove(req.params.id)",
+      "passed": false
+    },
+    {
+      "stage": "student-attempt",
+      "slot": "api_summary",
+      "summary": "Qwen independent repair candidate 1",
+      "student": "store.list()",
+      "passed": true
+    }
+  ],
+  "assembled_source": {
+    "logic": "def transform(payload):\n    tasks = payload.get('tasks', [])\n    total = len(tasks)\n    # Count tasks where done is true.\n    completed = sum(1 for task in tasks if task.get('done', False))\n    return {'total': total, 'completed': completed, 'remaining': total - completed}\n",
+    "api": "const express = require('express');\nfunction createApp(store, processor) {\n  const app = express();\n  app.use(express.json());\n  // GET all tasks, response {tasks:[...]}\n  app.get('/api/tasks', (req, res) => res.json({tasks:store.list()}));\n  // POST a new task, response {task:{...}}\n  app.post('/api/tasks', (req, res) => res.status(201).json({task:store.create(req.body)}));\n  // PATCH /api/tasks/:id, response {task:{...}}\n  app.patch('/api/tasks/:id', (req, res) => res.json({task:store.update(req.params.id,req.body)}));\n  // DELETE /api/tasks/:id, response {deleted:boolean}\n  app.delete('/api/tasks/:id', (req, res) => res.json({deleted:undefined}));\n  // GET /api/summary, call processor({tasks:store.list()})\n  app.get('/api/summary', (req, res) => res.json(processor({tasks:store.list()})));\n  return app;\n}\n",
+    "ui": "const React = require('react');\nconst {useEffect, useState} = React;\n// Model-generated TaskItem JSX below. Parent App and its event wiring are trusted.\nfunction TaskItem({task,onToggle,onDelete}) {\n  return (<li className=\"task-row\">{task.title}{' '}\n    <button onClick={()=>onToggle(task.id)}>{task.done?'Un':'Done'}</button>\n    <button onClick={()=>onDelete(task.id)}>Delete</button></li>);\n}\nfunction App() {\n  const [tasks, setTasks] = useState([]);\n  const [title, setTitle] = useState('');\n  const [priority, setPriority] = useState('medium');\n  const [summary, setSummary] = useState({total:0,completed:0,remaining:0});\n  const [error, setError] = useState('');\n  async function refresh() {\n    try {\n      const [items, stats] = await Promise.all([fetch('/api/tasks'),fetch('/api/summary')]);\n      if (!items.ok || !stats.ok) throw Error('Cannot load task data');\n      setTasks((await items.json()).tasks);\n      setSummary(await stats.json());\n      setError('');\n    } catch (e) { setError(String(e.message||e)); }\n  }\n  useEffect(()=>{refresh();},[]);\n  async function mutate(url, method, body) {\n    try {\n      const response=await fetch(url,{method,headers:{'Content-Type':'application/json'},\n        ...(body?{body:JSON.stringify(body)}:{})});\n      if(!response.ok) throw Error('Action failed: '+response.status);\n      await refresh();\n    } catch(e){setError(String(e.message||e));}\n  }\n  async function create(e) {\n    e.preventDefault();\n    if(!title.trim())return;\n    await mutate('/api/tasks','POST',{title:title.trim(),priority});\n    setTitle('');\n  }\n  return <main className=\"board\"><header><div className=\"brand\">◆ FOCUSBOARD</div>\n    <h1>Your tasks, in focus.</h1><p>Plan, prioritize, and finish what matters.</p></header>\n    <section className=\"stats\" aria-label=\"Task statistics\">\n      <article><b>{summary.total}</b><span>Total tasks</span></article>\n      <article><b>{summary.completed}</b><span>Completed</span></article>\n      <article><b>{summary.remaining}</b><span>Remaining</span></article>\n    </section>\n    <form onSubmit={create}><input aria-label=\"New task title\" value={title}\n      onChange={e=>setTitle(e.target.value)} placeholder=\"What needs to be done?\" required />\n      <select aria-label=\"Priority\" value={priority} onChange={e=>setPriority(e.target.value)}>\n        <option value=\"low\">Low</option><option value=\"medium\">Medium</option>\n        <option value=\"high\">High</option></select><button type=\"submit\">Add task</button></form>\n    {error?<p role=\"alert\">{error}</p>:null}\n    <h2>Task board</h2>\n    {tasks.length?<ul className=\"tasks\">{tasks.map(t=><TaskItem key={t.id} task={t}\n      onToggle={()=>mutate('/api/tasks/'+t.id,'PATCH',{done:!t.done})}\n      onDelete={()=>mutate('/api/tasks/'+t.id,'DELETE')} />)}</ul>:\n      <div className=\"empty\">Your next big idea starts here. Add your first task above.</div>}\n    </main>;\n}\nmodule.exports = App;\n",
+    "css": "/* FocusBoard: trusted layout defaults plus Qwen generated theme rules. */\n*{box-sizing:border-box}body{margin:0;background:#f4f6fc;color:#172341;\nfont-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}\nheader{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}\nh1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}\np{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}\n.stats article{background:white;padding:25px;border:1px solid #e0e6f1;border-radius:18px;display:grid}\n.stats b{font-size:36px}.stats span{color:#7a89a7;font-size:13px}\nform{display:flex;gap:12px;margin-top:30px}input,select,button{padding:14px;border:1px solid #d4ddef;border-radius:11px}\ninput{flex:1;min-width:0}button{background:#6076e9;color:white;cursor:pointer;font-weight:700}\n.tasks{list-style:none;padding:0}.task-row{margin:10px 0;background:white;border:1px solid #e0e6f1;\npadding:18px;border-radius:12px;display:flex;align-items:center;gap:12px}\n.task-row button{padding:8px 12px}.empty{background:white;padding:60px;text-align:center;border-radius:15px;color:#7f8ba6}\n@media(max-width:650px){.stats{grid-template-columns:1fr}form{flex-wrap:wrap}input{flex-basis:100%}}\n/* Begin model-generated CSS theme. */\nbody{background:#f4f6fc;color:#172341;font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}\nheader{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}\nh1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}\np{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}\n.stats article{background:white;padding:2\n"
+  }
+}
