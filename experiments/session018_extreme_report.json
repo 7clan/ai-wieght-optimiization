@@ -1,0 +1,1142 @@
+{
+  "status": "completed",
+  "session": "018",
+  "branch": "exp/16-extreme-python-search",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "source": "Frozen Session017b guided_scaffold source, exact full-app holdout control reproduced",
+  "manifest_sha256": "514fd8d12582368136ca0364e8ede68d9eb1defd602ef7549e29a5835eec77f2",
+  "task_ids": [
+    "Fullstack/00",
+    "Fullstack/01",
+    "Fullstack/02",
+    "Fullstack/03",
+    "Fullstack/04",
+    "Fullstack/05",
+    "Fullstack/06",
+    "Fullstack/07",
+    "Fullstack/08",
+    "Fullstack/09"
+  ],
+  "tracks": {
+    "control": {
+      "holdout": {
+        "tasks": 10,
+        "full_app_passes": 5,
+        "full_app_execution_rate": 0.5,
+        "all_three_syntax_valid": 9,
+        "module_passes": {
+          "logic": 5,
+          "api": 9,
+          "ui": 10
+        },
+        "failure_bins": {
+          "unhandled_exception": 1,
+          "assertion_error": 3,
+          "passed": 5,
+          "syntax_invalid": 1
+        },
+        "passed_ids": [
+          "Fullstack/02",
+          "Fullstack/03",
+          "Fullstack/04",
+          "Fullstack/05",
+          "Fullstack/06"
+        ]
+      },
+      "task_results": [
+        {
+          "task_id": "Fullstack/00",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "TypeError: 'builtin_function_or_method' object is not iterable"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "unhandled_exception"
+        },
+        {
+          "task_id": "Fullstack/01",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Python expected {\"value\":\"multiple-spaces\"} but got {\"text\":\"Multiple\\tSpaces\",\"value\":\"multiple\\tspaces\"}"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        },
+        {
+          "task_id": "Fullstack/02",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/03",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/04",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/05",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/06",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/07",
+          "syntax_valid": false,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": false,
+              "passed": false,
+              "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "syntax_invalid"
+        },
+        {
+          "task_id": "Fullstack/08",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Python expected {\"value\":-2} but got {\"value\":[-7,-2,-10]}"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        },
+        {
+          "task_id": "Fullstack/09",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "AttributeError: 'dict' object has no attribute 'text'"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Error: API expected {\"data\":{\"value\":2}}; got HTTP 200 {\"data\":{\"text\":\" two\\n\\t words \"}}"
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        }
+      ]
+    },
+    "typed_ast": {
+      "holdout": {
+        "tasks": 10,
+        "full_app_passes": 6,
+        "full_app_execution_rate": 0.6,
+        "all_three_syntax_valid": 9,
+        "module_passes": {
+          "logic": 7,
+          "api": 9,
+          "ui": 10
+        },
+        "failure_bins": {
+          "passed": 6,
+          "assertion_error": 3,
+          "syntax_invalid": 1
+        },
+        "passed_ids": [
+          "Fullstack/00",
+          "Fullstack/02",
+          "Fullstack/03",
+          "Fullstack/04",
+          "Fullstack/05",
+          "Fullstack/06"
+        ]
+      },
+      "task_results": [
+        {
+          "task_id": "Fullstack/00",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/01",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Python expected {\"value\":\"multiple-spaces\"} but got {\"text\":\"Multiple\\tSpaces\",\"value\":\"multiple\\tspaces\"}"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        },
+        {
+          "task_id": "Fullstack/02",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/03",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/04",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/05",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/06",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/07",
+          "syntax_valid": false,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": false,
+              "passed": false,
+              "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "syntax_invalid"
+        },
+        {
+          "task_id": "Fullstack/08",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Python expected {\"value\":-2} but got {\"value\":[-7,-2,-10]}"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        },
+        {
+          "task_id": "Fullstack/09",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Error: API expected {\"data\":{\"value\":2}}; got HTTP 200 {\"data\":{\"text\":\" two\\n\\t words \"}}"
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        }
+      ]
+    },
+    "search4": {
+      "holdout": {
+        "tasks": 10,
+        "full_app_passes": 6,
+        "full_app_execution_rate": 0.6,
+        "all_three_syntax_valid": 10,
+        "module_passes": {
+          "logic": 7,
+          "api": 9,
+          "ui": 10
+        },
+        "failure_bins": {
+          "passed": 6,
+          "assertion_error": 4
+        },
+        "passed_ids": [
+          "Fullstack/00",
+          "Fullstack/02",
+          "Fullstack/03",
+          "Fullstack/04",
+          "Fullstack/05",
+          "Fullstack/08"
+        ]
+      },
+      "task_results": [
+        {
+          "task_id": "Fullstack/00",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/01",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Python expected {\"value\":\"multiple-spaces\"} but got {\"value\":\"multiple\\tspaces\"}"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        },
+        {
+          "task_id": "Fullstack/02",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/03",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/04",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/05",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/06",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "KeyError: 'temperature'"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        },
+        {
+          "task_id": "Fullstack/07",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Python expected {\"value\":[\"x\",\"y\",\"z\"]} but got {\"value\":[{\"tag\":\"x\"},{\"tag\":\"x\"},{\"tag\":\"y\"},{\"tag\":\"z\"},{\"tag\":\"y\"}]}"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        },
+        {
+          "task_id": "Fullstack/08",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/09",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Error: API expected {\"data\":{\"value\":2}}; got HTTP 200 {\"data\":{\"text\":\" two\\n\\t words \"}}"
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        }
+      ]
+    },
+    "search8_repair2": {
+      "holdout": {
+        "tasks": 10,
+        "full_app_passes": 7,
+        "full_app_execution_rate": 0.7,
+        "all_three_syntax_valid": 10,
+        "module_passes": {
+          "logic": 8,
+          "api": 9,
+          "ui": 10
+        },
+        "failure_bins": {
+          "passed": 7,
+          "assertion_error": 3
+        },
+        "passed_ids": [
+          "Fullstack/00",
+          "Fullstack/02",
+          "Fullstack/03",
+          "Fullstack/04",
+          "Fullstack/05",
+          "Fullstack/06",
+          "Fullstack/08"
+        ]
+      },
+      "task_results": [
+        {
+          "task_id": "Fullstack/00",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/01",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Python expected {\"value\":\"multiple-spaces\"} but got {\"value\":\"multiple\\tspaces\"}"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        },
+        {
+          "task_id": "Fullstack/02",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/03",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/04",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/05",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/06",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/07",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Python expected {\"value\":[\"x\",\"y\",\"z\"]} but got {\"value\":[{\"tag\":\"x\"},{\"tag\":\"x\"},{\"tag\":\"y\"},{\"tag\":\"z\"},{\"tag\":\"y\"}]}"
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        },
+        {
+          "task_id": "Fullstack/08",
+          "syntax_valid": true,
+          "passed": true,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": true,
+            "error": null
+          },
+          "failure_bin": "passed"
+        },
+        {
+          "task_id": "Fullstack/09",
+          "syntax_valid": true,
+          "passed": false,
+          "modules": {
+            "logic": {
+              "syntax_valid": true,
+              "passed": true
+            },
+            "api": {
+              "syntax_valid": true,
+              "passed": false,
+              "error": "Error: API expected {\"data\":{\"value\":2}}; got HTTP 200 {\"data\":{\"text\":\" two\\n\\t words \"}}"
+            },
+            "ui": {
+              "syntax_valid": true,
+              "passed": true
+            }
+          },
+          "integration": {
+            "passed": false,
+            "error": "Module checks incomplete"
+          },
+          "failure_bin": "assertion_error"
+        }
+      ]
+    }
+  },
+  "selection": {
+    "public_original_cases_per_app": 2,
+    "extra_public_distinguishing_probes_per_app": 2,
+    "holdout_cases_per_app": 2,
+    "public_passes_after_search": 8,
+    "holdout_used_during_selection": false,
+    "react_express_source_unchanged": true,
+    "sampled_task_count_by_draw": {
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 4,
+      "5": 4,
+      "6": 4,
+      "7": 4,
+      "8": 4
+    },
+    "typed_repairs_from_known_dictionary_fields": true
+  },
+  "compute": {
+    "sample_draws_max": 8,
+    "repair_rounds_max": 2,
+    "new_output_tokens": 4203,
+    "sample_output_tokens": 3580,
+    "repair_output_tokens": 623,
+    "wall_seconds": 400.13
+  },
+  "candidate_archive": "experiments/session018_extreme_public_candidates.json",
+  "predictions": "experiments/session018_extreme_predictions.json",
+  "caveats": "These are ten custom authored vertical slices with explicit schemas, not real production projects. Selection uses original public examples AND two additional authored public contract probes; hidden values are withheld until final execution scoring. Extra inference and typed AST compiler repairs are system capabilities, NOT an improvement to the 0.5B model's intrinsic weights or single-sample pass@1. No JS/React or Express modifications are included in this track."
+}

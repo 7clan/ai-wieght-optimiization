@@ -1,9 +1,38 @@
 # TinyCoder Weight Lab
 
-<!-- SESSION018-PENDING-START -->
-*Session018 8-sample/2-repair Python-only comparison pending actual verified CPU run; no metrics claimed.*
-<!-- SESSION018-PENDING-END -->
+## Session 018 — extreme, bounded Python search (measured)
 
+The **unchanged Qwen2.5-Coder-0.5B** base model and frozen Session017b
+scaffold were re-used. This ablation tests whether repairing Python dictionary
+access and increasing *test-time* sampling/feedback improves complete mini-app
+execution. React and Express source bytes are identical in all four tracks.
+No model parameters were edited or trained.
+
+| Track | Integrated holdout | Python | Express | React | Valid three-module syntax |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Session017b frozen control | 5/10 | 5/10 | 9/10 | 10/10 | 9/10 |
+| Public-schema AST repair | 6/10 | 7/10 | 9/10 | 10/10 | 9/10 |
+| AST + up to 4 extra samples | 6/10 | 7/10 | 9/10 | 10/10 | 10/10 |
+| AST + up to 8 samples + 2 repairs | 7/10 | 8/10 | 9/10 | 10/10 | 10/10 |
+
+Additional inference: **4203 generated
+output tokens** (3580 samples,
+623 repairs),
+**400.13 seconds** total wall time.
+Candidate selection saw two original public examples and two additional
+PUBLIC edge-case probes per app; **two distinct holdout inputs** were evaluated
+only after code selection was frozen.
+
+**Interpretation:** These are ten custom, small, authored vertical slices, not
+production-ready applications, independently sourced benchmarks, or proof of
+parity with a larger coding model. The best-of-search result uses more compute
+and trusted compiler/scaffold assistance; it is a *system-level selected@1*,
+NOT the underlying model's single-sample pass@1. Generated code was evaluated
+only inside Docker with network and privilege restrictions.
+
+[Verified report](experiments/session018_extreme_report.json) ·
+[Exact source per ablation](experiments/session018_extreme_predictions.json) ·
+[Public search failures and selections](experiments/session018_extreme_public_candidates.json).
 
 ## Session 017b — contract-derived React scaffold (measured)
 

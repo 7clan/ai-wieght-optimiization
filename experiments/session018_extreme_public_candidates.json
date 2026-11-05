@@ -1,0 +1,1456 @@
+{
+  "Fullstack/00": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "TypeError: 'builtin_function_or_method' object is not iterable"
+          },
+          {
+            "index": 1,
+            "error": "TypeError: 'builtin_function_or_method' object is not iterable"
+          },
+          {
+            "index": 2,
+            "error": "TypeError: 'builtin_function_or_method' object is not iterable"
+          },
+          {
+            "index": 3,
+            "error": "TypeError: 'builtin_function_or_method' object is not iterable"
+          }
+        ],
+        "task_id": "Fullstack/00"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: sum item.price * item.qty for each item in payload.items; empty items means zero.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {\n        'value': sum(item.price * item.qty for item in payload.items if item.qty > 0)\n    }"
+    },
+    {
+      "source": "typed-ast",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 4,
+        "cases_total": 4,
+        "passed_all": true,
+        "failures": [],
+        "task_id": "Fullstack/00"
+      },
+      "typed_rewrites": 4,
+      "code": "def transform(payload):\n    return {'value': sum((item['price'] * item['qty'] for item in payload['items'] if item['qty'] > 0))}\n"
+    }
+  ],
+  "Fullstack/01": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": \"hello-world\"}, got {\"text\": \"  Hello   World \", \"value\": \"hello---world\"}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": \"api-server\"}, got {\"text\": \"API Server\", \"value\": \"api-server\"}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": \"tiny-app\"}, got {\"text\": \"  Tiny   App  \", \"value\": \"tiny---app\"}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": \"line-break\"}, got {\"text\": \"line\\nbreak\", \"value\": \"line\\nbreak\"}"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    payload['value'] = payload['text'].lower().strip().replace(' ', '-')\n\n    return payload"
+    },
+    {
+      "source": "draw-1",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 1,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": \"hello-world\"}, got {\"value\": \"--hello---world-\"}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": \"tiny-app\"}, got {\"value\": \"--tiny---app--\"}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": \"line-break\"}, got {\"value\": \"line\\nbreak\"}"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    return {'value': payload['text'].lower().replace(' ', '-')}\n\n\n# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    return {'value': payload['text'].lower().replace(' ', '-')}\n\n\n# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    return {'value': payload['text'].lower().replace(' ', '-')}\n\n\n# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string"
+    },
+    {
+      "source": "draw-2",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": \"hello-world\"}, got {\"value\": \"--Hello---World-\"}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": \"api-server\"}, got {\"value\": \"API-Server\"}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": \"tiny-app\"}, got {\"value\": \"--Tiny---App--\"}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": \"line-break\"}, got {\"value\": \"line\\nbreak\"}"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    value = payload.get('text', '').replace(' ', '-')\n    return {'value': value}"
+    },
+    {
+      "source": "draw-3",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          {
+            "index": 1,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          {
+            "index": 2,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          {
+            "index": 3,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    # Lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n    payload.value = payload.text.lower().strip().replace(' ', '-')\n\n    # Return transformed dict.\n    return payload"
+    },
+    {
+      "source": "draw-3-typed",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "AttributeError: 'dict' object has no attribute 'value'"
+          },
+          {
+            "index": 1,
+            "error": "AttributeError: 'dict' object has no attribute 'value'"
+          },
+          {
+            "index": 2,
+            "error": "AttributeError: 'dict' object has no attribute 'value'"
+          },
+          {
+            "index": 3,
+            "error": "AttributeError: 'dict' object has no attribute 'value'"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 1,
+      "code": "def transform(payload):\n    payload.value = payload['text'].lower().strip().replace(' ', '-')\n    return payload\n"
+    },
+    {
+      "source": "draw-4",
+      "public_result": {
+        "syntax_valid": false,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "SyntaxError: '{' was never closed (<unknown>, line 26)"
+          },
+          {
+            "index": 1,
+            "error": "SyntaxError: '{' was never closed (<unknown>, line 26)"
+          },
+          {
+            "index": 2,
+            "error": "SyntaxError: '{' was never closed (<unknown>, line 26)"
+          },
+          {
+            "index": 3,
+            "error": "SyntaxError: '{' was never closed (<unknown>, line 26)"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    return {\n        \"value\": payload[\"text\"].lower().strip().replace(\"\\n\", \"-\").replace(\"\\r\", \"-\")\n    }\n\n# backend/logic.py - Python 3.11\n# Compute: convert key/value to lowercase in payload, append an \"is_\".\n# Input payload is a Python dict; return exactly a dict with key 'value', 'is_' and 'stringified'.\n# value type: string.\ndef transform(payload):\n    return {\n        \"value\": payload[\"key\"].lower(),\n        \"is_\": payload[\"key\"].lower(),\n        \"stringified\": payload[\"value\"].lower().strip()\n    }\n\n# backend/logic.py - Python 3.11\n# Compute: create a boolean to identify the item's category and return exactly a dict with key 'value', 'is_', 'category'.\n# Input payload is a Python dict; return exactly a dict with key 'value', 'is_', 'category' and 'stringified'.\n# value type: string.\ndef transform(payload):\n    return {\n       "
+    },
+    {
+      "source": "draw-5",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": \"hello-world\"}, got {\"text\": \"  Hello   World \", \"value\": \"hello---world\"}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": \"api-server\"}, got {\"text\": \"API Server\", \"value\": \"api-server\"}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": \"tiny-app\"}, got {\"text\": \"  Tiny   App  \", \"value\": \"tiny---app\"}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": \"line-break\"}, got {\"text\": \"line\\nbreak\", \"value\": \"line\\nbreak\"}"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    payload['value'] = payload['text'].lower().strip().replace(' ', '-')\n    return payload\n\n# backend/extractor.py - Python 3.11\n# Extract the payload.value string from the payload.\n# Input payload is a dict; return exactly a dict with key 'value'.\n# value type: string.\ndef extract(payload):\n    return payload['value']"
+    },
+    {
+      "source": "draw-6",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "AttributeError: 'dict' object has no attribute 'value'"
+          },
+          {
+            "index": 1,
+            "error": "AttributeError: 'dict' object has no attribute 'value'"
+          },
+          {
+            "index": 2,
+            "error": "AttributeError: 'dict' object has no attribute 'value'"
+          },
+          {
+            "index": 3,
+            "error": "AttributeError: 'dict' object has no attribute 'value'"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    # If payload.value is not a string, return as is.\n    if isinstance(payload.value, str):\n        return payload.value\n\n    # Otherwise, process it as a nested dictionary.\n    return {\n        'value': [\n            # Trim the space on each side of the whitespace runs.\n            payload.value.replace(' ','-'),\n            # Convert value into a lower case string.\n            payload.value.lower(),\n        ],\n    }"
+    },
+    {
+      "source": "draw-7",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": \"hello-world\"}, got {\"text\": \"  Hello   World \", \"value\": \"hello---world\"}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": \"api-server\"}, got {\"text\": \"API Server\", \"value\": \"api-server\"}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": \"tiny-app\"}, got {\"text\": \"  Tiny   App  \", \"value\": \"tiny---app\"}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": \"line-break\"}, got {\"text\": \"line\\nbreak\", \"value\": \"line\\nbreak\"}"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    payload['value'] = payload['text'].lower().strip().replace(' ', '-')\n    return payload"
+    },
+    {
+      "source": "draw-8",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": \"hello-world\"}, got {\"text\": \"  Hello   World \", \"value\": \"--hello---world-\"}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": \"api-server\"}, got {\"text\": \"API Server\", \"value\": \"api-server\"}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": \"tiny-app\"}, got {\"text\": \"  Tiny   App  \", \"value\": \"--tiny---app--\"}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": \"line-break\"}, got {\"text\": \"line\\nbreak\", \"value\": \"line\\nbreak\"}"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    payload['value'] = payload['text'].replace(\" \", '-').lower()\n    return payload\n\ndef validate(payload):\n    payload['value'] = payload['value'].replace('-','-')\n    return payload"
+    },
+    {
+      "source": "repair-1",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 1,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": \"hello-world\"}, got {\"value\": \"--hello---world-\"}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": \"tiny-app\"}, got {\"value\": \"--tiny---app--\"}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": \"line-break\"}, got {\"value\": \"line\\nbreak\"}"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    return {'value': payload['text'].lower().replace(' ', '-')}\n\n# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    return {'value': payload['text'].lower().replace(' ', '-')}\n\n# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    return {'value': payload['text'].lower().replace(' ', '-')}"
+    },
+    {
+      "source": "repair-2",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 1,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": \"hello-world\"}, got {\"value\": \"--hello---world-\"}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": \"tiny-app\"}, got {\"value\": \"--tiny---app--\"}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": \"line-break\"}, got {\"value\": \"line\\nbreak\"}"
+          }
+        ],
+        "task_id": "Fullstack/01"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: lowercase payload.text, trim it, collapse all whitespace runs to one hyphen.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: string.\ndef transform(payload):\n    return {'value': payload['text'].lower().replace(' ', '-')}"
+    }
+  ],
+  "Fullstack/02": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 4,
+        "cases_total": 4,
+        "passed_all": true,
+        "failures": [],
+        "task_id": "Fullstack/02"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: integer floor of payload.amount * (100 - payload.percent) / 100.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {'value': int(payload['amount'] * (100 - payload['percent']) / 100)}"
+    }
+  ],
+  "Fullstack/03": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 4,
+        "cases_total": 4,
+        "passed_all": true,
+        "failures": [],
+        "task_id": "Fullstack/03"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: list of payload.numbers that are greater than or equal to payload.minimum, preserving input order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    return {'value': list(filter(lambda x: x >= payload['minimum'], payload['numbers']))}"
+    }
+  ],
+  "Fullstack/04": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 3,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 1,
+            "error": "ZeroDivisionError: division by zero"
+          }
+        ],
+        "task_id": "Fullstack/04"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: integer floor of 100 * payload.done / payload.total; return 0 if total is zero.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {'value': int(100 * payload['done'] / payload['total'])}"
+    },
+    {
+      "source": "draw-1",
+      "public_result": {
+        "syntax_valid": false,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "SyntaxError: expected ':' (<unknown>, line 36)"
+          },
+          {
+            "index": 1,
+            "error": "SyntaxError: expected ':' (<unknown>, line 36)"
+          },
+          {
+            "index": 2,
+            "error": "SyntaxError: expected ':' (<unknown>, line 36)"
+          },
+          {
+            "index": 3,
+            "error": "SyntaxError: expected ':' (<unknown>, line 36)"
+          }
+        ],
+        "task_id": "Fullstack/04"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: integer floor of 100 * payload.done / payload.total; return 0 if total is zero.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    if payload['total'] == 0:\n        return {'value': 0}\n    else:\n        return {'value': int(100 * payload['done'] / payload['total'])}\n\n\n# backend/validator.py - Python 3.11\n# Validate that a dict is valid.\ndef validate(payload):\n    if payload is None:\n        return False\n    if isinstance(payload, dict):\n        if 'total' in payload.keys() and 'done' in payload.keys():\n            if payload['total'] != 0 and payload['done'] != 0:\n                return True\n            else:\n                return False\n        else:\n            return False\n    else:\n        return False\n\n\n# backend/validator.py - Python 3.11\n# Validate that a dict is valid.\ndef validate(payload):\n    if payload is None:\n        return False\n    if isinstance(payload, dict):\n        if 'total' in payload.keys() and 'done' in payload.keys():\n            if payload['total'] != 0 and payload['done']"
+    },
+    {
+      "source": "draw-2",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "AttributeError: 'dict' object has no attribute 'total'"
+          },
+          {
+            "index": 1,
+            "error": "AttributeError: 'dict' object has no attribute 'total'"
+          },
+          {
+            "index": 2,
+            "error": "AttributeError: 'dict' object has no attribute 'total'"
+          },
+          {
+            "index": 3,
+            "error": "AttributeError: 'dict' object has no attribute 'total'"
+          }
+        ],
+        "task_id": "Fullstack/04"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: integer floor of 100 * payload.done / payload.total; return 0 if total is zero.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n  if payload.total == 0:\n    return {'value': 0}\n  else:\n    return {'value': int(100 * payload.done / payload.total)}"
+    },
+    {
+      "source": "draw-2-typed",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 4,
+        "cases_total": 4,
+        "passed_all": true,
+        "failures": [],
+        "task_id": "Fullstack/04"
+      },
+      "typed_rewrites": 3,
+      "code": "def transform(payload):\n    if payload['total'] == 0:\n        return {'value': 0}\n    else:\n        return {'value': int(100 * payload['done'] / payload['total'])}\n"
+    }
+  ],
+  "Fullstack/05": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 4,
+        "cases_total": 4,
+        "passed_all": true,
+        "failures": [],
+        "task_id": "Fullstack/05"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: count letters a,e,i,o,u in payload.text, ignoring case.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    result = {'value': 0}\n    for c in payload['text'].lower():\n        if c in 'aeiou':\n            result['value'] += 1\n    return result\n# TODO: Implement this function.\n# Hint: use the 'value' key of the dict to count the letters.\n# Hint: use the 'text' key of the dict to count the letters.\n# Hint: use the 'value' key of the dict to count the letters.\n# Hint: use the 'text' key of the dict to count the letters.\n# Hint: use the 'value' key of the dict to count the letters.\n# Hint: use the 'text' key of the dict to count the letters.\n# Hint: use the 'value' key of the dict to count the letters.\n# Hint: use the 'text' key of the dict to count"
+    }
+  ],
+  "Fullstack/06": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": 32}, got {\"value\": 32.0}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": 212}, got {\"value\": 212.0}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": 50}, got {\"value\": 50.0}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": 77}, got {\"value\": 77.0}"
+          }
+        ],
+        "task_id": "Fullstack/06"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {'value': round(payload['celsius'] * 9 / 5 + 32, 0)}"
+    },
+    {
+      "source": "draw-1",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": 32}, got {\"value\": 32.0}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": 212}, got {\"value\": 212.0}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": 50}, got {\"value\": 50.0}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": 77}, got {\"value\": 77.0}"
+          }
+        ],
+        "task_id": "Fullstack/06"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {\n        \"value\": round(payload[\"celsius\"] * 9 / 5 + 32, 1)\n    }"
+    },
+    {
+      "source": "draw-2",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "KeyError: 'temperature'"
+          },
+          {
+            "index": 1,
+            "error": "KeyError: 'temperature'"
+          },
+          {
+            "index": 2,
+            "error": "KeyError: 'temperature'"
+          },
+          {
+            "index": 3,
+            "error": "KeyError: 'temperature'"
+          }
+        ],
+        "task_id": "Fullstack/06"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return round((payload['temperature']*9)/5 + 32, 0)"
+    },
+    {
+      "source": "draw-3",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": 32}, got {\"value\": 32.0}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": 212}, got {\"value\": 212.0}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": 50}, got {\"value\": 50.0}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": 77}, got {\"value\": 77.0}"
+          }
+        ],
+        "task_id": "Fullstack/06"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {'value': round(payload['celsius'] * 9 / 5 + 32, 1)}\n\n# backend/data.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {'value': round(payload['celsius'] * 9 / 5 + 32, 1)}\n\n# backend/data.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {'value': round(payload['celsius'] * 9 / 5 + 32, 1)}"
+    },
+    {
+      "source": "draw-4",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "NameError: name 'data' is not defined"
+          },
+          {
+            "index": 1,
+            "error": "NameError: name 'data' is not defined"
+          },
+          {
+            "index": 2,
+            "error": "NameError: name 'data' is not defined"
+          },
+          {
+            "index": 3,
+            "error": "NameError: name 'data' is not defined"
+          }
+        ],
+        "task_id": "Fullstack/06"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {'value': round(payload['celsius'] * 9 / 5 + 32)}\n\nbackend = {\n    'round': transform\n}\n\nprint(backend['round'](data))"
+    },
+    {
+      "source": "draw-5",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": 32}, got {\"value\": 32.0}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": 212}, got {\"value\": 212.0}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": 50}, got {\"value\": 50.0}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": 77}, got {\"value\": 77.0}"
+          }
+        ],
+        "task_id": "Fullstack/06"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {\"value\": round(payload[\"celsius\"] * 9 / 5 + 32, 0)}"
+    },
+    {
+      "source": "draw-6",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "TypeError: Object of type builtin_function_or_method is not JSON serializable"
+          },
+          {
+            "index": 1,
+            "error": "TypeError: Object of type builtin_function_or_method is not JSON serializable"
+          },
+          {
+            "index": 2,
+            "error": "TypeError: Object of type builtin_function_or_method is not JSON serializable"
+          },
+          {
+            "index": 3,
+            "error": "TypeError: Object of type builtin_function_or_method is not JSON serializable"
+          }
+        ],
+        "task_id": "Fullstack/06"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    rounded = round(payload['celsius']*9/5 + 32, 1)\n    transformed = {'value':round}\n\n    return transformed\n\n# backend/routes.py - Python 3.11\n# Compute and return a dict: { 'celsius': x, 'farhenheit': y }.\n# The key should be a Python dict with the input data.\n# The value should be a dict with key 'value' and value type: number.\n# x and y are floats, rounded to one decimal place to keep the\n# final dict compact and easy to comprehend.\n# This script requires you to write the function.\n# This is a template script which you may change to use different input and output format, or to remove it altogether if you no longer need it.\nimport json\nimport os\n\n\n# read data from input file\n# The first line of the input is a number 'n', then 'n' lines of data (each line is a JSON object)\n# Each JSON object is a payload. The keys are \"celsius\","
+    },
+    {
+      "source": "draw-7",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "KeyError: 'value'"
+          },
+          {
+            "index": 1,
+            "error": "KeyError: 'value'"
+          },
+          {
+            "index": 2,
+            "error": "KeyError: 'value'"
+          },
+          {
+            "index": 3,
+            "error": "KeyError: 'value'"
+          }
+        ],
+        "task_id": "Fullstack/06"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    payload['value'] = round(payload['celsius'] * 9 / 5 + 32, 1)\n\n# frontend/requests.py - Python 3.11\n# Transform: payload.value to the nearest integer.\n# Input payload is a dict with key 'value'; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    payload['value'] = int(payload['value'])"
+    },
+    {
+      "source": "draw-8",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 4,
+        "cases_total": 4,
+        "passed_all": true,
+        "failures": [],
+        "task_id": "Fullstack/06"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: round payload.celsius * 9 / 5 + 32 to the nearest integer.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    rounded = round(payload['celsius'] * 9 / 5 + 32)\n    return {'value': rounded}\n\n# backend/logic.py - Python 3.11\n# Check if payload.key exists and is a number, if true -> 36.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef check_integrity(payload):\n    if payload.get('key') and payload['key'].isdigit():\n        return { 'value': 36 }\n    else:\n        return { 'value': 0 }\n\n# backend/logic.py - Python 3.11\n# Remove the key-value pair with key 'key'.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef remove(payload):\n    del payload['key']\n    return { 'value': 36 }\n\n# backend/logic.py - Python 3.11\n# Increment the value of key 'celsius'.\n# Input payload is"
+    }
+  ],
+  "Fullstack/07": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": false,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+          },
+          {
+            "index": 1,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+          },
+          {
+            "index": 2,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+          },
+          {
+            "index": 3,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    # TODO: Implement this function.\n    # Hint: Use the 'deduplicate' function from the 'collections' module.\n    # Hint: Use the 'sorted' function from the 'collections' module.\n    # Hint: Use the 'set' function from the 'collections' module.\n    # Hint: Use the 'list' function from the 'collections' module.\n    # Hint: Use the 'dict' function from the 'collections' module.\n    # Hint: Use the 'set' function from the 'collections' module.\n    # Hint: Use the 'list' function from the 'collections' module.\n    # Hint: Use the 'dict' function from the 'collections' module.\n    # Hint: Use the 'set' function from the 'collections' module.\n    # Hint: Use the 'list' function from the 'collections' module.\n   "
+    },
+    {
+      "source": "draw-1",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": [\"a\", \"b\"]}, got {\"a\": [\"tags\"]}"
+          },
+          {
+            "index": 1,
+            "error": "IndexError: list index out of range"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": [\"red\", \"blue\"]}, got {\"red\": [\"tags\"]}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": [\"q\", \"r\"]}, got {\"q\": [\"tags\"]}"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    output = {}\n    for key, value in payload.items():\n        if value[0] in output:\n            output[value[0]].append(key)\n        else:\n            output[value[0]] = [key]\n    for key, value in output.items():\n        output[key] = list(set(value))\n    return output"
+    },
+    {
+      "source": "draw-2",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": [\"a\", \"b\"]}, got {\"tags\": [\"a\", \"b\"]}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": []}, got {\"tags\": []}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": [\"red\", \"blue\"]}, got {\"tags\": [\"blue\", \"red\"]}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": [\"q\", \"r\"]}, got {\"tags\": [\"q\", \"r\"]}"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    return dict((k, sorted(list(set(v)))) for k,v in payload.items())"
+    },
+    {
+      "source": "draw-3",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 1,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": [\"a\", \"b\"]}, got {\"value\": [{\"tag\": \"a\"}, {\"tag\": \"b\"}, {\"tag\": \"a\"}]}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": [\"red\", \"blue\"]}, got {\"value\": [{\"tag\": \"red\"}, {\"tag\": \"red\"}, {\"tag\": \"blue\"}]}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": [\"q\", \"r\"]}, got {\"value\": [{\"tag\": \"q\"}, {\"tag\": \"r\"}, {\"tag\": \"q\"}]}"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    # Transform the list of strings into a list of dictionaries.\n    # The first dictionary has a key 'value' with the list of strings as the value.\n    return { 'value': [ { 'tag': x } for x in payload['tags'] ] }\n\n\n# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    # Transform the list of strings into a list of dictionaries.\n    # The first dictionary has a key 'value' with the list of strings as the value.\n    return { 'value': [ { 'tag': x } for x in payload['tags'] ] }\n\n\n# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\n"
+    },
+    {
+      "source": "draw-4",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": [\"a\", \"b\"]}, got {\"tags\": [\"a\", \"b\", \"a\"]}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": []}, got {\"tags\": []}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": [\"red\", \"blue\"]}, got {\"tags\": [\"red\", \"red\", \"blue\"]}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": [\"q\", \"r\"]}, got {\"tags\": [\"q\", \"r\", \"q\"]}"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    d = {}\n    for key in payload:\n        if key not in d:\n            d[key] = payload[key]\n    return d\n\n\n# backend/logic.py - Python 3.11\n# Compute: Dedup a list of strings.\n# Input string is a Python list of strings; return exactly a list of strings.\n# Input can contain duplicates.\ndef dedup(string_list):\n    new_string_list = []\n    for x in string_list:\n        if not x in new_string_list:\n            new_string_list.append(x)\n    return new_string_list"
+    },
+    {
+      "source": "draw-5",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "ValueError: 'tags' is not in list"
+          },
+          {
+            "index": 1,
+            "error": "ValueError: 'tags' is not in list"
+          },
+          {
+            "index": 2,
+            "error": "ValueError: 'tags' is not in list"
+          },
+          {
+            "index": 3,
+            "error": "ValueError: 'tags' is not in list"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    tags = list(payload.keys())\n    tags.sort(key=lambda x: (tags.index(x), x))\n    for key in tags:\n        payload[key] = list(set(payload[key]))\n    return payload"
+    },
+    {
+      "source": "draw-6",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "AttributeError: 'NoneType' object has no attribute 'get'"
+          },
+          {
+            "index": 1,
+            "error": "AttributeError: 'NoneType' object has no attribute 'get'"
+          },
+          {
+            "index": 2,
+            "error": "AttributeError: 'NoneType' object has no attribute 'get'"
+          },
+          {
+            "index": 3,
+            "error": "AttributeError: 'NoneType' object has no attribute 'get'"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    \"\"\"Transform: deduplicate tags in payload.payload.tags while preserving order.\"\"\"\n    deduplicated_tags = []\n    tag_dict = payload.get('payload').get('tags')\n    deduplicated_tags += tag_dict.get('tags', [])\n    deduplicated_tags.sort()\n    payload.get('payload').get('tags', []).clear()\n    payload.get('payload').get('tags', []).extend(deduplicated_tags)\n\n    return payload"
+    },
+    {
+      "source": "draw-7",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "TypeError: list indices must be integers or slices, not str"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": []}, got {}"
+          },
+          {
+            "index": 2,
+            "error": "TypeError: list indices must be integers or slices, not str"
+          },
+          {
+            "index": 3,
+            "error": "TypeError: list indices must be integers or slices, not str"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    output = {}\n    if 'tags' in payload:\n        # TODO: deduplicate in order of first-seen\n        for tag in payload['tags']:\n            output[tag] = payload['tags'][tag]\n    return output"
+    },
+    {
+      "source": "draw-8",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "AttributeError: 'dict' object has no attribute 'tags'"
+          },
+          {
+            "index": 1,
+            "error": "AttributeError: 'dict' object has no attribute 'tags'"
+          },
+          {
+            "index": 2,
+            "error": "AttributeError: 'dict' object has no attribute 'tags'"
+          },
+          {
+            "index": 3,
+            "error": "AttributeError: 'dict' object has no attribute 'tags'"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    value_list = []\n    for key, tag in payload.tags.items():\n        if tag == 'value':\n            value_list.append(payload[key])\n    return {'value': value_list}\n\n# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    value_list = []\n    for key, tag in payload.tags.items():\n        if tag == 'value':\n            value_list.append(payload[key])\n    return {'value': value_list}"
+    },
+    {
+      "source": "draw-8-typed",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "AttributeError: 'list' object has no attribute 'items'"
+          },
+          {
+            "index": 1,
+            "error": "AttributeError: 'list' object has no attribute 'items'"
+          },
+          {
+            "index": 2,
+            "error": "AttributeError: 'list' object has no attribute 'items'"
+          },
+          {
+            "index": 3,
+            "error": "AttributeError: 'list' object has no attribute 'items'"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 2,
+      "code": "def transform(payload):\n    value_list = []\n    for key, tag in payload['tags'].items():\n        if tag == 'value':\n            value_list.append(payload[key])\n    return {'value': value_list}\n\ndef transform(payload):\n    value_list = []\n    for key, tag in payload['tags'].items():\n        if tag == 'value':\n            value_list.append(payload[key])\n    return {'value': value_list}\n"
+    },
+    {
+      "source": "repair-1",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": [\"a\", \"b\"]}, got null"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": []}, got null"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": [\"red\", \"blue\"]}, got null"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": [\"q\", \"r\"]}, got null"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    # Transform the list of strings into a list of dictionaries.\n    # The first dictionary has a key 'value' with the list of strings as the value.\n    return { 'value': [ { 'tag': x } for x in sorted(payload['tags']) ] }\n# \n# \n# # backend/logic.py - Python 3.11\n# # Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# # Input payload is a Python dict; return exactly a dict with key 'value'.\n# # value type: list.\n# Rewrite the function below correctly, output code only.\n# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    # Transform the list of strings into a list of dictionaries.\n    # The first dictionary has a key 'value' with the list of strings as the value.\n    return"
+    },
+    {
+      "source": "repair-2",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 1,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": [\"a\", \"b\"]}, got {\"value\": [{\"tag\": \"a\"}, {\"tag\": \"b\"}, {\"tag\": \"a\"}]}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": [\"red\", \"blue\"]}, got {\"value\": [{\"tag\": \"red\"}, {\"tag\": \"red\"}, {\"tag\": \"blue\"}]}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": [\"q\", \"r\"]}, got {\"value\": [{\"tag\": \"q\"}, {\"tag\": \"r\"}, {\"tag\": \"q\"}]}"
+          }
+        ],
+        "task_id": "Fullstack/07"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    # Transform the list of strings into a list of dictionaries.\n    # The first dictionary has a key 'value' with the list of strings as the value.\n    return { 'value': [ { 'tag': x } for x in payload['tags'] ] }\n\n# backend/logic.py - Python 3.11\n# Compute: deduplicate strings in payload.tags while preserving their first-seen order.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: list.\ndef transform(payload):\n    # Transform the list of strings into a list of dictionaries.\n    # The first dictionary has a key 'value' with the list of strings as the value.\n    return { 'value': [ { 'tag': x } for x in payload['tags'] ] }"
+    }
+  ],
+  "Fullstack/08": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": 9}, got {\"value\": [2, 9, -1]}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": null}, got {\"value\": []}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": 8}, got {\"value\": [5, 8, 1]}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": -3}, got {\"value\": [-3, -9]}"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if not payload:\n        return None\n    return {'value': max(payload.values())}"
+    },
+    {
+      "source": "draw-1",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 3,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 1,
+            "error": "Expected {\"value\": null}, got null"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if len(payload['numbers']) == 0:\n        return None\n    return {'value': max(payload['numbers'])}"
+    },
+    {
+      "source": "draw-2",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 3,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 1,
+            "error": "ValueError: max() arg is an empty sequence"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n  values = payload.get('numbers')\n  if not values:\n    values = []\n  return {'value': max(values)}"
+    },
+    {
+      "source": "draw-3",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": 9}, got {\"value\": [2, 9, -1]}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": null}, got {\"value\": []}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": 8}, got {\"value\": [5, 8, 1]}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": -3}, got {\"value\": [-3, -9]}"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if len(payload) == 0:\n        return None\n    else:\n        return {'value': max(payload.values())}\n\n# backend/logic.py - Python 3.11\n# Compute: minimum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if len(payload) == 0:\n        return None\n    else:\n        return {'value': min(payload.values())}"
+    },
+    {
+      "source": "draw-4",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "ModuleNotFoundError: No module named 'utils'"
+          },
+          {
+            "index": 1,
+            "error": "ModuleNotFoundError: No module named 'utils'"
+          },
+          {
+            "index": 2,
+            "error": "ModuleNotFoundError: No module named 'utils'"
+          },
+          {
+            "index": 3,
+            "error": "ModuleNotFoundError: No module named 'utils'"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    max_val = max(payload.values())\n    return {'value': max_val}\n\n# backend/util.py - Python 3.11\n# Load the 'utils' module\nimport utils\n\n# Backend function 1 - Convert a Python dict to a JSON string.\n# Return exactly a Python string object (not an object of type 'bytes').\ndef transform2(payload):\n    return utils.to_json(payload)\n\n# Backend function 2 - Compute the sum of all the values in the given dictionary.\n# Return a number (integer or floating point) as the sum of the dictionary's values.\n# If no values are present in the dictionary, return 0.\ndef sum_values(payload):\n    return utils.sum_values(payload)\n\n# Backend function 3 - Filter a list of numbers.\n# Return a list of the same type as the input list.\n# The list itself may not be modified; instead, return a new list.\ndef filter_numbers(payload):\n    return utils.filter_numbers(payload)\n\n# Backend function 4 - Find the difference between the maximum and the minimum values\n# in a"
+    },
+    {
+      "source": "draw-5",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 3,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 1,
+            "error": "ValueError: max() arg is an empty sequence"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if payload is not None:\n        return {'value': max(payload['numbers'])}\n    else:\n        return None\n\n\n# backend/logic.py - Python 3.11\n# Return the sum of all numbers in payload.numbers.\n# Input payload is a Python dict; return an integer.\n# Example: payload = {'numbers': [1, 2, 3, 4]}\n# Return: 10\ndef compute(payload):\n    if payload is not None:\n        return sum(payload['numbers'])\n    else:\n        return 0"
+    },
+    {
+      "source": "draw-6",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": 9}, got {\"value\": [2, 9, -1]}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": null}, got {\"value\": []}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": 8}, got {\"value\": [5, 8, 1]}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": -3}, got {\"value\": [-3, -9]}"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if not payload:\n        return {'value': None}\n    else:\n        return {'value': max(payload.values())}\n\nif __name__ == '__main__':\n    testcases = [\n        [],\n        {'value': 1},\n        {'value': 2, 'key': 3},\n        {'value': 1, 'key': 1, 'key2': 2},\n        {'value': 1, 'key': None, 'key2': None},\n        {'value': 3, 'key': 4, 'key2': 5, 'key3': 6},\n        {'value': 5, 'key': None, 'key2': 1, 'key3': None},\n    ]\n\n    for testcase in testcases:\n        print(f\"Input:\\n{testcase}\")\n        print(f\"Output:\\n{transform(testcase)}\")"
+    },
+    {
+      "source": "draw-7",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": 9}, got 10"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": null}, got 0"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": 8}, got 14"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": -3}, got -12"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if 'numbers' in payload:\n        return max(payload['numbers'])\n    return None\n\n\n# backend/logic.py - Python 3.11\n# Compute: minimum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if 'numbers' in payload:\n        return min(payload['numbers'])\n    return None\n\n\n# backend/logic.py - Python 3.11\n# Compute: sum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if 'numbers' in payload:\n        return sum(payload['numbers'])\n    return None"
+    },
+    {
+      "source": "draw-8",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "Expected {\"value\": 9}, got {\"numbers\": null}"
+          },
+          {
+            "index": 1,
+            "error": "Expected {\"value\": null}, got {\"numbers\": null}"
+          },
+          {
+            "index": 2,
+            "error": "Expected {\"value\": 8}, got {\"numbers\": null}"
+          },
+          {
+            "index": 3,
+            "error": "Expected {\"value\": -3}, got {\"numbers\": null}"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n    if (not payload):\n        return None\n    return {'value': payload.get('numbers')[0]}\n\n# backend/transform.py - Python 3.11\n# Convert to a payload of list of integers, with only the 1st element in the list, if there are more than one.\n# Input payload is a Python dict; return exactly a dict with key 'numbers', having only one item.\n# value type: list-of-nullable-integer.\ndef transform(payload):\n    if (not payload):\n        return None\n    num = list(payload.get('numbers'))\n    if (len(num) != 1):\n        num = None\n    return {'numbers': num}"
+    },
+    {
+      "source": "repair-1",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 3,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 1,
+            "error": "ValueError: max() arg is an empty sequence"
+          }
+        ],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n  values = payload.get('numbers')\n  if not values:\n    values = []\n  return {'value': max(values)}"
+    },
+    {
+      "source": "repair-2",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 4,
+        "cases_total": 4,
+        "passed_all": true,
+        "failures": [],
+        "task_id": "Fullstack/08"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: maximum of payload.numbers, returning null (Python None) for an empty list.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: nullable-number.\ndef transform(payload):\n  values = payload.get('numbers')\n  if not values:\n    return {'value': None}\n  return {'value': max(values)}"
+    }
+  ],
+  "Fullstack/09": [
+    {
+      "source": "session017b-frozen-control",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 0,
+        "cases_total": 4,
+        "passed_all": false,
+        "failures": [
+          {
+            "index": 0,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          {
+            "index": 1,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          {
+            "index": 2,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          {
+            "index": 3,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          }
+        ],
+        "task_id": "Fullstack/09"
+      },
+      "typed_rewrites": 0,
+      "code": "# backend/logic.py - Python 3.11\n# Compute: number of whitespace-separated words in payload.text, zero for empty text.\n# Input payload is a Python dict; return exactly a dict with key 'value'.\n# value type: number.\ndef transform(payload):\n    return {'value': len(payload.text.split())}"
+    },
+    {
+      "source": "typed-ast",
+      "public_result": {
+        "syntax_valid": true,
+        "passed_count": 4,
+        "cases_total": 4,
+        "passed_all": true,
+        "failures": [],
+        "task_id": "Fullstack/09"
+      },
+      "typed_rewrites": 1,
+      "code": "def transform(payload):\n    return {'value': len(payload['text'].split())}\n"
+    }
+  ]
+}
