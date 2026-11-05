@@ -18,7 +18,7 @@ were supplied separately; this is **not independent autonomous infrastructure**.
 | ui | FAIL | NO |
 | css | PASS | YES |
 
-**[View Qwen's actual UI preview and generated source](docs/previews/session021/index.html)**
+**[View Qwen's actual UI preview and generated source](https://raw.githack.com/7clan/ai-wieght-optimiization/295d65f2fa397754547b112ccb93b57db78264eb/docs/previews/session021/index.html)**
 (static, script-free: **not** a running Express application).
 
 [Exact model predictions and repair history](experiments/session021_generated_app_predictions.json) ·
