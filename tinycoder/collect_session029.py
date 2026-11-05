@@ -183,13 +183,21 @@ def collect(root:Path):
 
     gallery=Path("docs/previews/session029")
     if gallery.exists() and any(gallery.iterdir()):
-        raise FileExistsError("Existing published preview")
-    gallery.mkdir(parents=True,exist_ok=True)
-    shutil.copy2(root/"preview/index.html",gallery/"index.html")
+        existing=gallery/"index.html"
+        if (not existing.exists() or
+            existing.read_text(encoding="utf-8")!=(root/"preview/index.html").read_text(encoding="utf-8")):
+            raise FileExistsError("Unexpected change to an existing published preview")
+    else:
+        gallery.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(root/"preview/index.html",gallery/"index.html")
     for role,p in ROLE_PATHS.items():
         dest=gallery/"generated"/p
         dest.parent.mkdir(parents=True,exist_ok=True)
-        shutil.copy2(root/"generated"/p,dest)
+        if dest.exists():
+            if dest.read_text(encoding="utf-8")!=(root/"generated"/p).read_text(encoding="utf-8"):
+                raise FileExistsError("Existing model/teacher source differs: "+p)
+        else:
+            shutil.copy2(root/"generated"/p,dest)
     save_json(Path("experiments/session029_teacher_report.json"),report)
     save_json(Path("experiments/session029_correction_pairs.json"),data)
     package_app(source,Path("apps/pocketledger-qwen-mentored"))
