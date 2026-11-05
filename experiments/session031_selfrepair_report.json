@@ -1,0 +1,489 @@
+{
+  "session": "031",
+  "status": "completed",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "weight_edits": 0,
+  "new_application": "DevMetrics",
+  "contract_sha256": "7a726a92f3ef99417e5871bfedf81a57854a8d40742c8d0132fa9ddb4c75c8a6",
+  "target_app_modules_from_qwen": [
+    "logic",
+    "store",
+    "api",
+    "ui",
+    "css"
+  ],
+  "teacher_bytes": 0,
+  "teacher_supplied_anything": false,
+  "self_repair_only": true,
+  "self_repair_rounds": 8,
+  "own_prior_session_bytes_in_prompts": [
+    "api",
+    "css"
+  ],
+  "permanent_weight_learning": false,
+  "trusted_scaffold": [
+    "file signatures/imports",
+    "evaluation runtime",
+    "React runtime",
+    "deployment gallery"
+  ],
+  "baseline": {
+    "public": {
+      "phase": "public",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received null"
+        },
+        "store": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:67:68: ERROR: Unterminated string literal"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: GET /api/entries envelope"
+        },
+        "ui": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:114:19: ERROR: Unexpected end of file"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "health": true
+      },
+      "ui_markup": null,
+      "failure_reasons": [
+        "store: Error: Transform failed with 1 error:\n<stdin>:67:68: ERROR: Unterminated string literal",
+        "ui: Error: Transform failed with 1 error:\n<stdin>:114:19: ERROR: Unexpected end of file",
+        "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received null",
+        "api: Error: GET /api/entries envelope"
+      ],
+      "completed_checks": 2
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received null"
+        },
+        "store": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:67:68: ERROR: Unterminated string literal"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: GET /api/entries envelope"
+        },
+        "ui": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:114:19: ERROR: Unexpected end of file"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "health": true
+      },
+      "ui_markup": null,
+      "failure_reasons": [
+        "store: Error: Transform failed with 1 error:\n<stdin>:67:68: ERROR: Unterminated string literal",
+        "ui: Error: Transform failed with 1 error:\n<stdin>:114:19: ERROR: Unexpected end of file",
+        "logic: Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received null",
+        "api: Error: GET /api/entries envelope"
+      ],
+      "completed_checks": 2
+    }
+  },
+  "final": {
+    "public": {
+      "phase": "public",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]"
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "TypeError: Assignment to constant variable."
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: POST envelope/status"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks state hook"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "logic_structured": true,
+        "health": true,
+        "get": true
+      },
+      "ui_markup": null,
+      "failure_reasons": [
+        "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]",
+        "store: TypeError: Assignment to constant variable.",
+        "api: Error: POST envelope/status",
+        "ui: Error: UI lacks state hook"
+      ],
+      "completed_checks": 4
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received [0,{},{},0,null]"
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "TypeError: Assignment to constant variable."
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: POST envelope/status"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks state hook"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "logic_structured": true,
+        "health": true,
+        "get": true
+      },
+      "ui_markup": null,
+      "failure_reasons": [
+        "logic: Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received [0,{},{},0,null]",
+        "store: TypeError: Assignment to constant variable.",
+        "api: Error: POST envelope/status",
+        "ui: Error: UI lacks state hook"
+      ],
+      "completed_checks": 4
+    }
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "modules_sha256": {
+        "logic": "de38e42067a4b62e452526835e7bbe357a1ccb71471b3622d0bfd9f2a1906467",
+        "store": "37ed2369a5f0d6d3ce9a41f3df251f39841c5eab0820e74a1fdb147cac0b5ce5",
+        "api": "5d675ffc01d14d97f4c1a4a643f71bde73ab4ef7531a0c6ab274baf6df33dac4",
+        "ui": "19c87a2e7f415c0ba0dd18e6955d8448d4caae59eb6a4b08d133528f14c03846",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "health": true
+        },
+        "completed_checks": 2
+      },
+      "elapsed_seconds": 361.0,
+      "output_tokens": 3032
+    },
+    {
+      "round": 1,
+      "modules_sha256": {
+        "logic": "de38e42067a4b62e452526835e7bbe357a1ccb71471b3622d0bfd9f2a1906467",
+        "store": "37ed2369a5f0d6d3ce9a41f3df251f39841c5eab0820e74a1fdb147cac0b5ce5",
+        "api": "5d675ffc01d14d97f4c1a4a643f71bde73ab4ef7531a0c6ab274baf6df33dac4",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "health": true
+        },
+        "completed_checks": 2
+      },
+      "elapsed_seconds": 803.4,
+      "output_tokens": 6614
+    },
+    {
+      "round": 2,
+      "modules_sha256": {
+        "logic": "de38e42067a4b62e452526835e7bbe357a1ccb71471b3622d0bfd9f2a1906467",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "5d675ffc01d14d97f4c1a4a643f71bde73ab4ef7531a0c6ab274baf6df33dac4",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "health": true
+        },
+        "completed_checks": 2
+      },
+      "elapsed_seconds": 1353.0,
+      "output_tokens": 11057
+    },
+    {
+      "round": 3,
+      "modules_sha256": {
+        "logic": "de38e42067a4b62e452526835e7bbe357a1ccb71471b3622d0bfd9f2a1906467",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "bf23d3129168e797066ea54f8e38371f2dfce755b27e55efd33b8755b74c4ef6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "health": true,
+          "get": true
+        },
+        "completed_checks": 3
+      },
+      "elapsed_seconds": 1812.5,
+      "output_tokens": 14871
+    },
+    {
+      "round": 4,
+      "modules_sha256": {
+        "logic": "de38e42067a4b62e452526835e7bbe357a1ccb71471b3622d0bfd9f2a1906467",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "bf23d3129168e797066ea54f8e38371f2dfce755b27e55efd33b8755b74c4ef6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "health": true,
+          "get": true
+        },
+        "completed_checks": 3
+      },
+      "elapsed_seconds": 2392.5,
+      "output_tokens": 19797
+    },
+    {
+      "round": 5,
+      "modules_sha256": {
+        "logic": "6cc1c45470afb4ed4acb10454220f3b4b7581fb8932b2d3c7b5474b14fb3e3ce",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "bf23d3129168e797066ea54f8e38371f2dfce755b27e55efd33b8755b74c4ef6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "health": true,
+          "get": true
+        },
+        "completed_checks": 4,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]",
+          "store: TypeError: Assignment to constant variable.",
+          "api: Error: POST envelope/status",
+          "ui: Error: UI lacks state hook"
+        ]
+      },
+      "elapsed_seconds": 3284.7,
+      "output_tokens": 25328
+    },
+    {
+      "round": 6,
+      "modules_sha256": {
+        "logic": "6cc1c45470afb4ed4acb10454220f3b4b7581fb8932b2d3c7b5474b14fb3e3ce",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "bf23d3129168e797066ea54f8e38371f2dfce755b27e55efd33b8755b74c4ef6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "health": true,
+          "get": true
+        },
+        "completed_checks": 4,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]",
+          "store: TypeError: Assignment to constant variable.",
+          "api: Error: POST envelope/status",
+          "ui: Error: UI lacks state hook"
+        ]
+      },
+      "elapsed_seconds": 4108.1,
+      "output_tokens": 30464
+    },
+    {
+      "round": 7,
+      "modules_sha256": {
+        "logic": "6cc1c45470afb4ed4acb10454220f3b4b7581fb8932b2d3c7b5474b14fb3e3ce",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "bf23d3129168e797066ea54f8e38371f2dfce755b27e55efd33b8755b74c4ef6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "health": true,
+          "get": true
+        },
+        "completed_checks": 4,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]",
+          "store: TypeError: Assignment to constant variable.",
+          "api: Error: POST envelope/status",
+          "ui: Error: UI lacks state hook"
+        ]
+      },
+      "elapsed_seconds": 5117.2,
+      "output_tokens": 36771
+    },
+    {
+      "round": 8,
+      "modules_sha256": {
+        "logic": "6cc1c45470afb4ed4acb10454220f3b4b7581fb8932b2d3c7b5474b14fb3e3ce",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "bf23d3129168e797066ea54f8e38371f2dfce755b27e55efd33b8755b74c4ef6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "health": true,
+          "get": true
+        },
+        "completed_checks": 4,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]",
+          "store: TypeError: Assignment to constant variable.",
+          "api: Error: POST envelope/status",
+          "ui: Error: UI lacks state hook"
+        ]
+      },
+      "elapsed_seconds": 6107.5,
+      "output_tokens": 42969
+    }
+  ],
+  "search": {
+    "candidate_count": 68,
+    "output_tokens": 42969,
+    "wall_seconds": 6109.71,
+    "max_rounds": 8,
+    "wall_budget_seconds": 6600,
+    "private_holdout_seen_during_selection": false
+  },
+  "ui_behavior_verified_in_jsdom": false,
+  "ui_browser_clicks_verified": false,
+  "production_ready": false
+}

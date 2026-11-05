@@ -1,0 +1,305 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>DevMetrics round 0 report — Qwen2.5-Coder-0.5B</title>
+<style>*{box-sizing:border-box}body{background:#0d1527;color:#e3ecf8;
+font:15px system-ui,sans-serif;margin:0}main{max-width:1080px;padding:34px 22px;
+margin:0 auto}h1{font-size:34px;letter-spacing:-.03em;margin:6px 0 10px}
+h2{font-size:20px;margin-top:34px}p{color:#b7c8e4;line-height:1.6}
+a{color:#9be4ec}table{border-collapse:collapse;width:100%;margin:14px 0}
+th,td{border:1px solid #33507a;padding:8px 11px;text-align:left;font-size:14px}
+th{background:#182a46}.pass,.fail{font-size:12px;font-weight:750;padding:6px 11px;
+border-radius:12px;display:inline-block;margin:3px}.pass{background:#165440;
+color:#b5ffdd}.fail{background:#67354b;color:#ffd6e1}
+section{background:#152442;border:1px solid #33507a;border-radius:12px;
+padding:20px;margin:18px 0}details{background:#152442;border:1px solid #33507a;
+border-radius:10px;padding:12px 16px;margin:10px 0}summary{cursor:pointer;
+font-weight:700}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;
+line-height:1.5;background:#0a1322;border-radius:8px;padding:14px}
+iframe{width:100%;height:640px;border:1px solid #33507a;border-radius:12px;
+background:white}.muted{color:#8fa3c4;font-size:13px}code{background:#0a1322;
+padding:2px 6px;border-radius:6px;font-size:13px}</style></head><body><main>
+<h1>DevMetrics — round 0 <span class="muted">(self-repair round)</span></h1>
+<p>Every module below is raw Qwen2.5-Coder-0.5B output from the Session031
+self-repair loop: public-contract prompt, its own previous attempt, public
+execution errors. Zero teacher bytes, zero human corrections.</p>
+<p><strong>Public score: 1/5 modules, 2 checks, integrated: no</strong></p>
+<div><span class="fail">logic: FAIL</span> <span class="fail">store: FAIL</span><div class="muted">persistence✗ store_delete✗ store_validation✗</div> <span class="fail">api: FAIL</span><div class="muted">health✓ get✗ post✗ post_invalid✗ delete✗ projects✗ summary✗</div> <span class="fail">ui: FAIL</span><div class="muted">ui_wiring✗ ui_offline✗</div> <span class="pass">css: PASS</span></div>
+<h2>Execution checks</h2>
+<p><code>health✓</code></p>
+<h2>Public failure reasons</h2>
+<ul><li>none recorded</li></ul>
+<h2>Model source (exact bytes)</h2>
+<details><summary>backend/logic.py</summary><pre>def summarize(payload):
+    # YOUR CODE HERE
+    pass</pre></details><details><summary>server/store.js</summary><pre>const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+  let entries = [];
+  let id = 0;
+  return {
+    list: function () {
+      return entries;
+    },
+    create: function (body) {
+      if (!body.project || !body.minutes || !body.date) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      if (entries.some((entry) =&gt; entry.project === body.project)) {
+        throw new Error(&#x27;Project already exists&#x27;);
+      }
+      if (entries.some((entry) =&gt; entry.date === body.date)) {
+        throw new Error(&#x27;Date already exists&#x27;);
+      }
+      if (entries.some((entry) =&gt; entry.minutes === body.minutes)) {
+        throw new Error(&#x27;Minutes already exists&#x27;);
+      }
+      const entry = {
+        id: id++,
+        project: body.project,
+        minutes: body.minutes,
+        date: body.date,
+        note: body.note,
+      };
+      entries.push(entry);
+      fs.writeFileSync(filePath, JSON.stringify(entries));
+      return entry;
+    },
+    delete: function (id) {
+      const index = entries.findIndex((entry) =&gt; entry.id === id);
+      if (index === -1) {
+        return false;
+      }
+      entries.splice(index, 1);
+      fs.writeFileSync(filePath, JSON.stringify(entries));
+      return true;
+    },
+  };
+}
+const store = createStore(&#x27;entries.json&#x27;);
+console.log(store.list());
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-</pre></details><details><summary>server/routes.js</summary><pre>const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+  const app = express();
+  app.use(express.json());
+  app.get(&#x27;/api/health&#x27;, (req, res) =&gt; {
+    res.json({ ok: true });
+  });
+  app.get(&#x27;/api/entries&#x27;, (req, res) =&gt; {
+    res.json(store.list());
+  });
+  app.post(&#x27;/api/entries&#x27;, (req, res) =&gt; {
+    try {
+      const entry = processor(req.body);
+      store.create(entry);
+      res.json({ item: entry });
+    } catch (err) {
+      res.status(400).json({ error: &#x27;Invalid entry&#x27; });
+    }
+  });
+  app.delete(&#x27;/api/entries/:id&#x27;, (req, res) =&gt; {
+    try {
+      store.delete(req.params.id);
+      res.json({ deleted: true });
+    } catch (err) {
+      res.status(400).json({ error: &#x27;Invalid entry&#x27; });
+    }
+  });
+  app.get(&#x27;/api/projects&#x27;, (req, res) =&gt; {
+    res.json(store.list());
+  });
+  app.get(&#x27;/api/summary&#x27;, (req, res) =&gt; {
+    res.json(processor({ entries: store.list() }));
+  });
+  return app;
+}
+module.exports = createApp;</pre></details><details><summary>client/App.jsx</summary><pre>const React = require(&#x27;react&#x27;);
+function App() {
+  const [entries, setEntries] = React.useState([]);
+  const [summary, setSummary] = React.useState({
+    total_minutes: 0,
+    by_project: {},
+    by_day: {},
+    active_projects: [],
+    busiest_day: {},
+  });
+  const [project, setProject] = React.useState(&#x27;&#x27;);
+  const [minutes, setMinutes] = React.useState(0);
+  const [date, setDate] = React.useState(&#x27;&#x27;);
+  const [note, setNote] = React.useState(&#x27;&#x27;);
+  const [filter, setFilter] = React.useState(&#x27;&#x27;);
+  const [active, setActive] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const [demo, setDemo] = React.useState([]);
+  const [demoEntries, setDemoEntries] = React.useState([]);
+  const [demoSummary, setDemoSummary] = React.useState({
+    total_minutes: 0,
+    by_project: {},
+    by_day: {},
+    active_projects: [],
+    busiest_day: {},
+  });
+  const [demoProject, setDemoProject] = React.useState(&#x27;&#x27;);
+  const [demoMinutes, setDemoMinutes] = React.useState(0);
+  const [demoDate, setDemoDate] = React.useState(&#x27;&#x27;);
+  const [demoNote, setDemoNote] = React.useState(&#x27;&#x27;);
+  const [demoFilter, setDemoFilter] = React.useState(&#x27;&#x27;);
+  const [demoActive, setDemoActive] = React.useState(false);
+  const [demoLoading, setDemoLoading] = React.useState(false);
+  const [demoError, setDemoError] = React.useState(false);
+  const [demoDemo, setDemoDemo] = React.useState([]);
+  const [demoDemoEntries, setDemoDemoEntries] = React.useState([]);
+  const [demoDemoSummary, setDemoDemoSummary] = React.useState({
+    total_minutes: 0,
+    by_project: {},
+    by_day: {},
+    active_projects: [],
+    busiest_day: {},
+  });
+  const [demoDemoProject, setDemoDemoProject] = React.useState(&#x27;&#x27;);
+  const [demoDemoMinutes, setDemoDemoMinutes] = React.useState(0);
+  const [demoDemoDate, setDemoDemoDate] = React.useState(&#x27;&#x27;);
+  const [demoDemoNote, setDemoDemoNote] = React.useState(&#x27;&#x27;);
+  const [demoDemoFilter, setDemoDemoFilter] = React.useState(&#x27;&#x27;);
+  const [demoDemoActive, setDemoDemoActive] = React.useState(false);
+  const [demoDemoLoading, setDemoDemoLoading] = React.useState(false);
+  const [demoDemoError, setDemoDemoError] = React.useState(false);
+  const [demoDemoDemo, setDemoDemoDemo] = React.useState([]);
+  const [demoDemoDemoEntries, setDemoDemoDemoEntries] = React.useState([]);
+  const [demoDemoDemoSummary, setDemoDemoDemoSummary] = React.useState({
+    total_minutes: 0,
+    by_project: {},
+    by_day: {},
+    active_projects: [],
+    busiest_day: {},
+  });
+  const [demoDemoDemoProject, setDemoDemoDemoProject] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoMinutes, setDemoDemoDemoMinutes] = React.useState(0);
+  const [demoDemoDemoDate, setDemoDemoDemoDate] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoNote, setDemoDemoDemoNote] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoFilter, setDemoDemoDemoFilter] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoActive, setDemoDemoDemoActive] = React.useState(false);
+  const [demoDemoDemoLoading, setDemoDemoDemoLoading] = React.useState(false);
+  const [demoDemoDemoError, setDemoDemoDemoError] = React.useState(false);
+  const [demoDemoDemoDemo, setDemoDemoDemoDemo] = React.useState([]);
+  const [demoDemoDemoDemoEntries, setDemoDemoDemoDemoEntries] = React.useState([]);
+  const [demoDemoDemoDemoSummary, setDemoDemoDemoDemoSummary] = React.useState({
+    total_minutes: 0,
+    by_project: {},
+    by_day: {},
+    active_projects: [],
+    busiest_day: {},
+  });
+  const [demoDemoDemoDemoProject, setDemoDemoDemoDemoProject] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoDemoMinutes, setDemoDemoDemoDemoMinutes] = React.useState(0);
+  const [demoDemoDemoDemoDate, setDemoDemoDemoDemoDate] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoDemoNote, setDemoDemoDemoDemoNote] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoDemoFilter, setDemoDemoDemoDemoFilter] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoDemoActive, setDemoDemoDemoDemoActive] = React.useState(false);
+  const [demoDemoDemoDemoLoading, setDemoDemoDemoDemoLoading] = React.useState(false);
+  const [demoDemoDemoDemoError, setDemoDemoDemoDemoError] = React.useState(false);
+  const [demoDemoDemoDemoDemo, setDemoDemoDemoDemoDemo] = React.useState([]);
+  const [demoDemoDemoDemoDemoEntries, setDemoDemoDemoDemoDemoEntries] = React.useState([]);
+  const [demoDemoDemoDemoDemoSummary, setDemoDemoDemoDemoDemoSummary] = React.useState({
+    total_minutes: 0,
+    by_project: {},
+    by_day: {},
+    active_projects: [],
+    busiest_day: {},
+  });
+  const [demoDemoDemoDemoDemoProject, setDemoDemoDemoDemoDemoProject] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoDemoDemoMinutes, setDemoDemoDemoDemoDemoMinutes] = React.useState(0);
+  const [demoDemoDemoDemoDemoDate, setDemoDemoDemoDemoDemoDate] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoDemoDemoNote, setDemoDemoDemoDemoDemoNote] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoDemoDemoFilter, setDemoDemoDemoDemoDemoFilter] = React.useState(&#x27;&#x27;);
+  const [demoDemoDemoDemoDemoActive, setDemoDemoDemoDemoDemoActive] = React.useState(false);
+  const [demoDemoDemoDemoDemoLoading, setDemoDemoDemoDemoDemoLoading] = React.useState(false);
+  const [demoDemoDemoDemoDemoError, setDemoDemoDemoDemoDemoError] = React.useState(false);
+  const [demoDemoDemoDemoDemoDemo, setDemoDemoDemoDemoDemoDemo] = React.useState([]);
+  const [demoDemoDemoDemoDemoDemoEntries, setDemoDemoDemoDemoDemoDemoEntries] = React.useState([]);
+  const [demoDemoDemoDemoDemoDemoSummary, setDemoDemoDemoDemoDemoDemoSummary] = React.useState({
+    total_minutes: 0,
+    by_project: {},
+    by_day: {},
+    active_projects: [],
+    busiest_day: {},
+  });
+</pre></details><details><summary>client/style.css</summary><pre>body {
+  background-color: #222;
+  color: #fff;
+  font-family: &#x27;Roboto&#x27;, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* BODY CONTENT */
+body &gt; div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* BODY CONTENT HEADER */
+body &gt; div &gt; div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition</pre></details>
+<p><a href="./index.html">Open this round&rsquo;s live app →</a> ·
+<a href="../index.html">Back to the session gallery</a></p>
+<p class="muted">Elapsed 361.0s · 3032 output tokens so far ·
+SHA-256 of every module is published in the session gallery ledger.</p>
+</main></body></html>

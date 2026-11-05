@@ -1,0 +1,56 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>DevMetrics — Qwen2.5-Coder-0.5B autonomous self-repair gallery</title>
+<style>*{box-sizing:border-box}body{background:#0d1527;color:#e3ecf8;
+font:15px system-ui,sans-serif;margin:0}main{max-width:1080px;padding:34px 22px;
+margin:0 auto}h1{font-size:34px;letter-spacing:-.03em;margin:6px 0 10px}
+h2{font-size:20px;margin-top:34px}p{color:#b7c8e4;line-height:1.6}
+a{color:#9be4ec}table{border-collapse:collapse;width:100%;margin:14px 0}
+th,td{border:1px solid #33507a;padding:8px 11px;text-align:left;font-size:14px}
+th{background:#182a46}.pass,.fail{font-size:12px;font-weight:750;padding:6px 11px;
+border-radius:12px;display:inline-block;margin:3px}.pass{background:#165440;
+color:#b5ffdd}.fail{background:#67354b;color:#ffd6e1}
+section{background:#152442;border:1px solid #33507a;border-radius:12px;
+padding:20px;margin:18px 0}details{background:#152442;border:1px solid #33507a;
+border-radius:10px;padding:12px 16px;margin:10px 0}summary{cursor:pointer;
+font-weight:700}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;
+line-height:1.5;background:#0a1322;border-radius:8px;padding:14px}
+iframe{width:100%;height:640px;border:1px solid #33507a;border-radius:12px;
+background:white}.muted{color:#8fa3c4;font-size:13px}code{background:#0a1322;
+padding:2px 6px;border-radius:6px;font-size:13px}</style></head><body><main>
+<h1>DevMetrics — the 0.5B model builds a full-stack dashboard</h1>
+<p>Frozen <strong>Qwen2.5-Coder-0.5B</strong> (494,032,768 parameters, no training,
+no weight edits) wrote every application byte of a React + Express + Python
+developer-analytics dashboard, then repaired its own failing modules using only
+public execution feedback. Teacher bytes: <strong>0</strong>. Human corrections:
+<strong>none</strong>. Every scored round below is deployed exactly as the model
+wrote it.</p>
+<h2>Score progression (public contract, Docker-verified)</h2>
+<table><tr><th>round</th><th>modules</th><th>passes</th><th>checks</th>
+<th>integrated</th><th>links</th></tr><tr><td>round 0</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>2</td><td>no</td><td><a href="rounds/00/index.html">live app</a> · <a href="rounds/00/report.html">report</a></td></tr><tr><td>round 1</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>2</td><td>no</td><td><a href="rounds/01/index.html">live app</a> · <a href="rounds/01/report.html">report</a></td></tr><tr><td>round 2</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>2</td><td>no</td><td><a href="rounds/02/index.html">live app</a> · <a href="rounds/02/report.html">report</a></td></tr><tr><td>round 3</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>3</td><td>no</td><td><a href="rounds/03/index.html">live app</a> · <a href="rounds/03/report.html">report</a></td></tr><tr><td>round 4</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>3</td><td>no</td><td><a href="rounds/04/index.html">live app</a> · <a href="rounds/04/report.html">report</a></td></tr><tr><td>round 5</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>4</td><td>no</td><td><a href="rounds/05/index.html">live app</a> · <a href="rounds/05/report.html">report</a></td></tr><tr><td>round 6</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>4</td><td>no</td><td><a href="rounds/06/index.html">live app</a> · <a href="rounds/06/report.html">report</a></td></tr><tr><td>round 7</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>4</td><td>no</td><td><a href="rounds/07/index.html">live app</a> · <a href="rounds/07/report.html">report</a></td></tr><tr><td>round 8</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>4</td><td>no</td><td><a href="rounds/08/index.html">live app</a> · <a href="rounds/08/report.html">report</a></td></tr></table>
+<h2>Independent holdout (first opened after selection froze)</h2>
+<p>Untouched greedy baseline: <strong>1/5</strong> modules,
+integrated no. After 8 self-repair round(s):
+<strong>1/5</strong> modules, integrated no.</p>
+<div><span class="fail">logic: FAIL</span> <span class="fail">store: FAIL</span><div class="muted">persistence✗ store_delete✗ store_validation✗</div> <span class="fail">api: FAIL</span><div class="muted">health✓ get✓ post✗ post_invalid✗ delete✗ projects✗ summary✗</div> <span class="fail">ui: FAIL</span><div class="muted">ui_wiring✗ ui_offline✗</div> <span class="pass">css: PASS</span></div>
+<h2>Final deployed app (runs the model&rsquo;s required offline demo mode)</h2>
+<iframe src="rounds/08/index.html" sandbox="allow-scripts allow-forms" loading="lazy" title="Qwen-generated DevMetrics UI"></iframe>
+<p><a href="rounds/08/index.html">Open the live app standalone →</a></p>
+<h2>Authorship ledger</h2>
+<table><tr><th>module</th><th>origin</th><th>sha-256</th><th>size</th></tr><tr><td>backend/logic.py</td><td>Qwen raw attempt #37 (resample, round 5)</td><td><code>6cc1c45470afb4ed…</code></td><td>801 bytes</td></tr><tr><td>server/store.js</td><td>Qwen raw attempt #15 (feedback-repair, round 2)</td><td><code>e6691820a0b584e3…</code></td><td>3085 bytes</td></tr><tr><td>server/routes.js</td><td>Qwen raw attempt #25 (resample, round 3)</td><td><code>bf23d3129168e797…</code></td><td>2336 bytes</td></tr><tr><td>client/App.jsx</td><td>Qwen raw attempt #12 (resample, round 1)</td><td><code>dde406e1b93fe991… (raw) / 94c4e70d761e93bf… (esbuild-compiled artifact deployed)</code></td><td>693 bytes</td></tr><tr><td>client/style.css</td><td>Qwen raw attempt #4 (baseline, round 0)</td><td><code>839eb48af4531b3e…</code></td><td>1162 bytes</td></tr></table>
+<h2>Verification and disclosure</h2>
+<p>Model code executed only inside network-disabled, read-only, unprivileged
+Docker (Express routes via supertest, Python via a restricted subprocess, React
+behavior in a jsdom realm with failing fetch). The static gallery serves the
+same model bytes with vendored React 18.3.1 UMD
+(<code>docs/vendor/</code>, sha-256 pinned); the evaluator itself runs React
+19.1.1. The jsdom mount is a behavioral DOM check, not a real browser click
+test. The Express/Python half cannot run on static hosting; CI verifies it
+end-to-end in Docker and publishes the report JSON below.</p>
+<p><a href="../../../../experiments/session031_selfrepair_report.json">report JSON</a> ·
+<a href="../../../../experiments/session031_selfrepair_predictions.json">predictions JSON</a> ·
+<a href="../../../index.html">mission dashboard</a></p>
+<p class="muted">68 model generations · 42969 output tokens ·
+6109.71s wall time · production_ready=false · no frontier-model parity claim.</p>
+</main></body></html>

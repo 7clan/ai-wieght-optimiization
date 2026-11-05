@@ -1,0 +1,275 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>DevMetrics round 7 report — Qwen2.5-Coder-0.5B</title>
+<style>*{box-sizing:border-box}body{background:#0d1527;color:#e3ecf8;
+font:15px system-ui,sans-serif;margin:0}main{max-width:1080px;padding:34px 22px;
+margin:0 auto}h1{font-size:34px;letter-spacing:-.03em;margin:6px 0 10px}
+h2{font-size:20px;margin-top:34px}p{color:#b7c8e4;line-height:1.6}
+a{color:#9be4ec}table{border-collapse:collapse;width:100%;margin:14px 0}
+th,td{border:1px solid #33507a;padding:8px 11px;text-align:left;font-size:14px}
+th{background:#182a46}.pass,.fail{font-size:12px;font-weight:750;padding:6px 11px;
+border-radius:12px;display:inline-block;margin:3px}.pass{background:#165440;
+color:#b5ffdd}.fail{background:#67354b;color:#ffd6e1}
+section{background:#152442;border:1px solid #33507a;border-radius:12px;
+padding:20px;margin:18px 0}details{background:#152442;border:1px solid #33507a;
+border-radius:10px;padding:12px 16px;margin:10px 0}summary{cursor:pointer;
+font-weight:700}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;
+line-height:1.5;background:#0a1322;border-radius:8px;padding:14px}
+iframe{width:100%;height:640px;border:1px solid #33507a;border-radius:12px;
+background:white}.muted{color:#8fa3c4;font-size:13px}code{background:#0a1322;
+padding:2px 6px;border-radius:6px;font-size:13px}</style></head><body><main>
+<h1>DevMetrics — round 7 <span class="muted">(self-repair round)</span></h1>
+<p>Every module below is raw Qwen2.5-Coder-0.5B output from the Session031
+self-repair loop: public-contract prompt, its own previous attempt, public
+execution errors. Zero teacher bytes, zero human corrections.</p>
+<p><strong>Public score: 1/5 modules, 4 checks, integrated: no</strong></p>
+<div><span class="fail">logic: FAIL</span> <span class="fail">store: FAIL</span><div class="muted">persistence✗ store_delete✗ store_validation✗</div> <span class="fail">api: FAIL</span><div class="muted">health✓ get✓ post✗ post_invalid✗ delete✗ projects✗ summary✗</div> <span class="fail">ui: FAIL</span><div class="muted">ui_wiring✗ ui_offline✗</div> <span class="pass">css: PASS</span></div>
+<h2>Execution checks</h2>
+<p><code>get✓</code> <code>health✓</code> <code>logic_structured✓</code></p>
+<h2>Public failure reasons</h2>
+<ul><li>logic: Expected {&quot;total_minutes&quot;:0,&quot;by_project&quot;:{},&quot;by_day&quot;:{},&quot;active_projects&quot;:0,&quot;busiest_day&quot;:null}, received [0,{},{},0,null]</li><li>store: TypeError: Assignment to constant variable.</li><li>api: Error: POST envelope/status</li><li>ui: Error: UI lacks state hook</li></ul>
+<h2>Model source (exact bytes)</h2>
+<details><summary>backend/logic.py</summary><pre>def summarize(payload):
+    # YOUR CODE HERE
+    return 0, {}, {}, 0, None
+
+# SAMPLE INPUT
+# {&quot;entries&quot;: [{&quot;project&quot;: &quot;Foo&quot;, &quot;minutes&quot;: 5, &quot;date&quot;: &quot;2018-02-21&quot;},
+#              {&quot;project&quot;: &quot;Foo&quot;, &quot;minutes&quot;: 10, &quot;date&quot;: &quot;2018-02-21&quot;},
+#              {&quot;project&quot;: &quot;Foo&quot;, &quot;minutes&quot;: 3, &quot;date&quot;: &quot;2018-02-20&quot;},
+#              {&quot;project&quot;: &quot;Bar&quot;, &quot;minutes&quot;: 15, &quot;date&quot;: &quot;2018-02-22&quot;},
+#              {&quot;project&quot;: &quot;Bar&quot;, &quot;minutes&quot;: 5, &quot;date&quot;: &quot;2018-02-22&quot;},
+#              {&quot;project&quot;: &quot;Bar&quot;, &quot;minutes&quot;: 10, &quot;date&quot;: &quot;2018-02-21&quot;},
+#              {&quot;project&quot;: &quot;Bar&quot;, &quot;minutes&quot;: 3, &quot;date&quot;: &quot;2018-02-20&quot;},
+#              {&quot;project&quot;: &quot;Bar&quot;, &quot;minutes&quot;: 3, &quot;date&quot;: &quot;2018-02-19&quot;},
+#              {&quot;project&quot;: &quot;Bar&quot;, &quot;minutes&quot;: 5, &quot;date&quot;: &quot;2018-02-19&quot;},
+#              {&quot;project&quot;: &quot;Bar&quot;, &quot;minutes&quot;: 10, &quot;date&quot;: &quot;2018-02-18</pre></details><details><summary>server/store.js</summary><pre>const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+    const entry = {};
+    if (fs.existsSync(filePath)) {
+        const json = fs.readFileSync(filePath).toString();
+        entry = JSON.parse(json);
+    }
+    else {
+        entry = [];
+    }
+    return {
+        list: () =&gt; entry,
+        create(body) {
+            const newEntry = {
+                id: &#x27;&#x27;,
+                project: body.project,
+                minutes: body.minutes,
+                date: body.date,
+                note: body.note,
+            };
+            if (newEntry.project === &#x27;&#x27; || newEntry.minutes === 0) {
+                throw new Error(&#x27;Invalid entry&#x27;);
+            }
+            newEntry.id = `${newEntry.project}-${newEntry.minutes}-${newEntry.date}`;
+            entry.push(newEntry);
+            fs.writeFileSync(filePath, JSON.stringify(entry));
+            return true;
+        },
+        delete(id) {
+            const index = entry.findIndex((entry) =&gt; entry.id === id);
+            if (index !== -1) {
+                entry.splice(index, 1);
+                fs.writeFileSync(filePath, JSON.stringify(entry));
+                return true;
+            }
+            return false;
+        },
+    };
+}
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes</pre></details><details><summary>server/routes.js</summary><pre>const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+  let app = express();
+  app.use(express.json());
+  //  GET /api/health
+  app.get(&#x27;/api/health&#x27;, function (req, res) {
+    res.status(200).json({ ok: true });
+  });
+  //  GET /api/entries
+  app.get(&#x27;/api/entries&#x27;, function (req, res) {
+    const entries = store.list();
+    res.status(200).json({ entries });
+  });
+  //  POST /api/entries
+  app.post(&#x27;/api/entries&#x27;, function (req, res) {
+    const entry = req.body;
+    store.create(entry)
+      .then((item) =&gt; res.status(201).json({ item }))
+      .catch((err) =&gt; {
+        res.status(400).json({ error: &#x27;Invalid entry&#x27; });
+      });
+  });
+  //  DELETE /api/entries/:id
+  app.delete(&#x27;/api/entries/:id&#x27;, function (req, res) {
+    const id = req.params.id;
+    store.delete(id)
+      .then((deleted) =&gt; {
+        if (deleted) {
+          res.status(200).json({ deleted });
+        } else {
+          res.status(404).json({ error: &#x27;Entry not found&#x27; });
+        }
+      })
+      .catch((err) =&gt; {
+        res.status(404).json({ error: &#x27;Entry not found&#x27; });
+      });
+  });
+  //  GET /api/projects
+  app.get(&#x27;/api/projects&#x27;, function (req, res) {
+    const projects = store.list().map((p) =&gt; ({
+      name: p.name,
+    }));
+    res.status(200).json({ projects });
+  });
+  //  GET /api/summary
+  app.get(&#x27;/api/summary&#x27;, function (req, res) {
+    const entries = store.list();
+    const project = req.query.project;
+    const minutes = req.query.minutes;
+    const date = req.query.date;
+    const note = req.query.note;
+    const entriesWithProject = entries
+      .filter((e) =&gt; (project ? e.project === project : true))
+      .filter((e) =&gt; (minutes ? e.minutes &gt;= minutes : true))
+      .filter((e) =&gt; (date ? e.date &gt;= date : true))
+      .filter((e) =&gt; (note ? e.note.indexOf(note) &gt;= 0 : true))
+      .sort((a, b) =&gt; {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        if (dateA &gt; dateB) {
+          return 1;
+        }
+        if (dateA &lt; dateB) {
+          return -1;
+        }
+        return 0;
+      });
+    const projectNames = entriesWithProject.map((e) =&gt; e.project);
+    const projectNamesSorted = projectNames.sort();
+    res.status(200).json({ entries: entriesWithProject, projectNamesSorted });
+  });
+  //  ENDPOINTS
+  return app;
+}
+module.exports = createApp;</pre></details><details><summary>client/App.jsx</summary><pre>const React = require(&#x27;react&#x27;);
+function App() {
+  // TODO: Implement function App.
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;React App&lt;/h1&gt;
+      &lt;hr&gt;&lt;/hr&gt;
+      &lt;hr&gt;&lt;/hr&gt;
+      &lt;div&gt;
+        &lt;div&gt;
+          &lt;p&gt;DEVMETRICS&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;hr&gt;&lt;/hr&gt;
+        &lt;div&gt;
+          &lt;div&gt;
+            &lt;div&gt;
+              &lt;p&gt;Health&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;hr&gt;&lt;/hr&gt;
+            &lt;div&gt;
+              &lt;p&gt;Entries&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;hr&gt;&lt;/hr&gt;
+            &lt;div&gt;
+              &lt;p&gt;Projects&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;hr&gt;&lt;/hr&gt;
+            &lt;div&gt;
+              &lt;p&gt;Summary&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+module.exports = App;</pre></details><details><summary>client/style.css</summary><pre>body {
+  background-color: #222;
+  color: #fff;
+  font-family: &#x27;Roboto&#x27;, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* BODY CONTENT */
+body &gt; div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* BODY CONTENT HEADER */
+body &gt; div &gt; div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition</pre></details>
+<p><a href="./index.html">Open this round&rsquo;s live app →</a> ·
+<a href="../index.html">Back to the session gallery</a></p>
+<p class="muted">Elapsed 5117.2s · 36771 output tokens so far ·
+SHA-256 of every module is published in the session gallery ledger.</p>
+</main></body></html>
