@@ -1,0 +1,78 @@
+name: Session 021 actual Qwen0.5B generated full-stack application
+
+on:
+  push:
+    branches: [exp/19-qwen-autonomous-app]
+    paths:
+      - .github/workflows/session021-autonomous-app-cpu.yml
+      - tinycoder/session021.py
+      - tinycoder/session021_contract.py
+      - tinycoder/session021_py_worker.py
+      - tinycoder/session021_worker.js
+      - tinycoder/session021_reference_smoke.py
+      - tinycoder/collect_session021.py
+      - tinycoder/publish_session021_links.py
+      - docker/session021-generated-app.Dockerfile
+      - tests/test_session021.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 210
+    env:
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install fixed 0.5B CPU inference dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch>=2.3,<3'
+          python -m pip install -r requirements.txt 'evalplus==0.3.1'
+      - name: Verify frozen spec and safety policy
+        run: |
+          python -m compileall -q tinycoder/session021.py tinycoder/session021_contract.py tinycoder/session021_py_worker.py tinycoder/collect_session021.py tinycoder/publish_session021_links.py
+          python -m unittest discover -s tests -p 'test_session021.py' -v
+          node --check tinycoder/session021_worker.js
+      - name: Build sandboxed Docker verification images
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+          docker build -f docker/session021-generated-app.Dockerfile -t tinycoder-session021-generated:1 .
+      - name: Prove evaluator can pass a known-good example
+        run: python -m tinycoder.session021_reference_smoke
+      - name: Generate actual app with Qwen0.5B and run bounded self-repair
+        run: python -m tinycoder.session021 --output-dir outputs/session021
+      - name: Preserve all model completions even if verification fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen0p5b-full-stack-real-completions
+          path: outputs/session021/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Validate reports and publish genuine generated files
+        run: |
+          python -m tinycoder.collect_session021 --output-dir outputs/session021
+          python -m json.tool experiments/session021_generated_app_report.json > /dev/null
+      - name: Commit measured results and safe static preview
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session021_generated_app_report.json experiments/session021_generated_app_predictions.json docs/previews/session021
+          git commit -m 'Publish actual Qwen0.5B generated FocusBoard code and measured results'
+          git push origin HEAD:exp/19-qwen-autonomous-app
+      - name: Pin generated UI preview to immutable source commit
+        run: |
+          python -m tinycoder.publish_session021_links --revision "$(git rev-parse HEAD)"
+          git add README.md
+          git commit -m 'Link to verified Qwen-generated app preview at immutable commit'
+          git push origin HEAD:exp/19-qwen-autonomous-app

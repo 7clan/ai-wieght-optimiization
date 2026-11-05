@@ -1,5 +1,23 @@
 # TinyCoder Weight Lab
 
+<!-- SESSION021-PENDING-START -->
+## Session 021 — Qwen0.5B autonomously generates a full-stack task board
+
+**In progress, no results yet.** The original unmodified
+`Qwen/Qwen2.5-Coder-0.5B` generates Python task statistics, Express routes,
+React UI and CSS for FocusBoard. A limited public-test search includes a
+sampled alternative and feedback-conditioned self-repair; the untouched
+holdout is not consulted until selection ends. All model-generated code runs
+only in restricted Docker. The database and evaluation infrastructure are
+trusted scaffolding, not model output.
+
+The run publishes *exact generated source*, measured pass/fail diagnostics,
+and a safe, script-free visual preview whether or not the app succeeds.
+Nothing should be represented as a completed model benchmark until the
+[CPU workflow](https://github.com/7clan/ai-wieght-optimiization/actions/workflows/session021-autonomous-app-cpu.yml)
+finishes and its collector verifies the evidence.
+<!-- SESSION021-PENDING-END -->
+
 <!-- REAL-PROJECT-MANAGER-START -->
 ## Real full-stack application — Orbit Project Manager (Session 020)
 
