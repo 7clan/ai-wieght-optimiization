@@ -65,15 +65,17 @@ def esbuild_binary():
     return ["npx", "--yes", "esbuild@0.25.9"]
 
 
-def transpile_ui(source: str) -> str:
+def transpile_ui(source: str):
     """Deterministic JSX->CJS compile, the exact transform the Docker
-    evaluator applies before executing the same source. Adds no logic;
-    both raw and compiled hashes are published in the ledger."""
+    evaluator applies before executing the same source. Adds no logic; both
+    raw and compiled hashes are published in the ledger. Returns None when the
+    module does not compile — the live page then embeds the model's raw bytes
+    and its error banner reports the failure honestly instead of hiding it."""
     proc = subprocess.run(esbuild_binary() + list(ESBUILD_ARGS),
                           input=source + "\nmodule.exports = App;\n",
                           capture_output=True, text=True, timeout=90)
     if proc.returncode or not proc.stdout.strip():
-        raise ValueError("esbuild transpile failed: " + proc.stderr[-300:])
+        return None
     return proc.stdout
 
 
@@ -187,10 +189,11 @@ background:#67354b;color:#ffd6e1;font:13px system-ui;padding:10px 14px}
 """
 
 
-def live_app_page(round_no: int, modules: dict, ui_compiled: str) -> str:
+def live_app_page(round_no: int, modules: dict, ui_compiled) -> str:
+    deployed = ui_compiled if ui_compiled is not None else modules["ui"]
     return (LIVE_TEMPLATE
             .replace("__ROUND__", str(round_no))
-            .replace("__APP_SRC__", js_literal(ui_compiled))
+            .replace("__APP_SRC__", js_literal(deployed))
             .replace("__CSS_SRC__", js_literal(modules["css"])))
 
 
@@ -456,8 +459,9 @@ def collect(root: Path):
     compiled_cache = {}
     for snap in pred["rounds"]:
         compiled_cache[snap["round"]] = transpile_ui(snap["modules"]["ui"])
-    ui_compiled_sha = hashlib.sha256(
-        compiled_cache[pred["rounds"][-1]["round"]].encode()).hexdigest()
+    final_compiled = compiled_cache[pred["rounds"][-1]["round"]]
+    ui_compiled_sha = (hashlib.sha256(final_compiled.encode()).hexdigest()
+                       if final_compiled is not None else "")
     rounds_dir = gallery / "rounds"
     rounds_dir.mkdir(parents=True)
     for index, snap in enumerate(pred["rounds"]):

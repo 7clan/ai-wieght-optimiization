@@ -65,7 +65,7 @@ jobs:
           ROUNDS="${{ github.event.inputs.rounds || '4' }}"
           RESUME="${{ github.event.inputs.resume }}"
           if [ "$RESUME" = "true" ] && [ -f experiments/session031_selfrepair_state.json ]; then
-            python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS" --resume
+            python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS" --resume --self-memory
           else
             python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS"
           fi

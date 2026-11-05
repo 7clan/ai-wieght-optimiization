@@ -254,3 +254,28 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Resume protocol: `--resume` reloads the published state file and continues
   later rounds with fresh deterministic seeds. Never reuse holdout results to
   choose candidates, and never publish a score without its deployed round page.
+
+## Session 031 amendments (after the first measured run)
+
+- The first four-round run is archived in its raw artifact; its state was
+  salvaged to `experiments/session031_selfrepair_state.json` so later rounds
+  continue from it instead of re-spending identical compute. The contract
+  (SPEC/GOALS/PUBLIC, `fingerprint()`) is frozen and unchanged across the
+  resume; only search budgets and acceptance signals changed, as follows.
+- Token ceilings for truncation-prone roles were raised (store 950→1200,
+  ui 1400→1900). These are search-budget parameters, not contract content.
+- The evaluator now records `logic_structured` when the generated Python
+  returns a structured value on a public case even if wrong, so genuine
+  attempts outrank `pass` stubs in acceptance. Fully passing modules are
+  unaffected.
+- Round snapshots now archive public `failure_reasons` for the report cards.
+- **Own-bytes self-memory**: with `--self-memory`, repair prompts may include
+  modules the SAME frozen model wrote and that passed Session030's independent
+  holdout (`experiments/session030_transfer_predictions.json`, api and css).
+  These are the model's own verified bytes from a prior session — never
+  teacher, human or scaffold code — and every use is disclosed in the report
+  field `own_prior_session_bytes_in_prompts`. The example is labeled as a
+  different application whose names must not be copied.
+- The live gallery deploys rounds whose UI does not compile as-is: the model's
+  raw bytes are embedded and the page shows the runtime failure via the
+  disclosed error banner. Broken rounds are never hidden or repaired by hand.

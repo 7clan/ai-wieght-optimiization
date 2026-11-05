@@ -29,13 +29,17 @@ from .session031_contract import (NAME, ROLES, PUBLIC, PREFIX, fingerprint,
                                    holdout, prompt)
 
 IMAGE = "tinycoder-session031-selfrepair:1"
-LIMITS = {"logic": 320, "store": 950, "api": 850, "ui": 1400, "css": 420}
+# Token ceilings raised after round 4 for truncation-prone roles (disclosed
+# search-budget change; the contract itself stays frozen).
+LIMITS = {"logic": 320, "store": 1200, "api": 850, "ui": 1900, "css": 420}
 BASE_SEED = 2026113100
 WALL_BUDGET_SECONDS = 6600
-ROLE_CHECKS = {"logic": (), "store": ("persistence", "store_delete", "store_validation"),
+ROLE_CHECKS = {"logic": ("logic_structured",),
+               "store": ("persistence", "store_delete", "store_validation"),
                "api": ("health", "get", "post", "post_invalid", "delete",
                        "projects", "summary"),
                "ui": ("ui_wiring", "ui_offline"), "css": ()}
+SELF_MEMORY_PATH = "experiments/session030_transfer_predictions.json"
 
 
 def evaluate(modules, cases, phase, *, timeout=75):
@@ -92,7 +96,8 @@ def snapshot(round_, modules, public, elapsed, tokens):
             "public": {"integrated": public["integrated"],
                        "passed": {r: public["modules"][r]["passed"] for r in ROLES},
                        "checks": dict(public["checks"]),
-                       "completed_checks": public["completed_checks"]},
+                       "completed_checks": public["completed_checks"],
+                       "failure_reasons": list(public.get("failure_reasons", []))},
             "elapsed_seconds": round(elapsed, 1), "output_tokens": tokens}
 
 
@@ -105,6 +110,25 @@ def load_state(path: Path):
     if set(state["selected"]) != set(ROLES) or set(state["baseline"]) != set(ROLES):
         raise ValueError("Corrupt resume state modules")
     return state
+
+
+def load_self_memory(path: str):
+    """Own-bytes memory: modules the SAME frozen model wrote and that passed
+    an independent holdout in Session030. Never teacher or human code."""
+    memory = {}
+    try:
+        prior = json.loads(Path(path).read_text(encoding="utf8"))
+        report_path = Path("experiments/session030_transfer_report.json")
+        report = (json.loads(report_path.read_text(encoding="utf8"))
+                  if report_path.is_file() else {})
+        passed = {r: v.get("passed") for r, v in
+                  report.get("guided", {}).get("holdout", {}).get("modules", {}).items()}
+        for role, source in (prior.get("selected") or {}).items():
+            if passed.get(role) and role in ROLES:
+                memory[role] = source
+    except (OSError, ValueError):
+        return {}
+    return memory
 
 
 def run(args):
@@ -163,6 +187,9 @@ def run(args):
         if baseline_public is None:
             baseline_public = evaluate(baseline, PUBLIC, "public")
 
+    self_memory = load_self_memory(SELF_MEMORY_PATH) if args.self_memory else {}
+    if self_memory:
+        print(json.dumps({"self_memory_roles": sorted(self_memory)}), flush=True)
     next_round = (rounds[-1]["round"] + 1) if rounds else 1
     for round_ in range(next_round, args.rounds + 1):
         if all(public["modules"][r]["passed"] for r in ROLES):
@@ -176,9 +203,11 @@ def run(args):
             if public["modules"][role]["passed"]:
                 continue
             error = public["modules"][role]["error"] or "Public contract failed"
+            own_example = self_memory.get(role, "")
             candidates = (
                 ("feedback-repair",
-                 prompt(role, error=error, previous=selected[role]),
+                 prompt(role, error=error, previous=selected[role],
+                        own_example=own_example),
                  BASE_SEED + 1000 + round_ * 100 + i),
                 ("resample", prompt(role),
                  BASE_SEED + 2000 + round_ * 100 + i),
@@ -228,6 +257,7 @@ def run(args):
               "target_app_modules_from_qwen": list(ROLES),
               "teacher_bytes": 0, "teacher_supplied_anything": False,
               "self_repair_only": True, "self_repair_rounds": len(rounds) - 1,
+              "own_prior_session_bytes_in_prompts": sorted(self_memory),
               "permanent_weight_learning": False,
               "trusted_scaffold": ["file signatures/imports", "evaluation runtime",
                                    "React runtime", "deployment gallery"],
@@ -271,6 +301,8 @@ def main():
     parser.add_argument("--output-dir", default="outputs/session031")
     parser.add_argument("--rounds", type=int, default=4)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--self-memory", action="store_true",
+                        help="Prompt with the model's own verified prior-session bytes")
     parser.add_argument("--state", default="experiments/session031_selfrepair_state.json")
     args = parser.parse_args()
     if args.rounds < 0 or args.rounds > 8:

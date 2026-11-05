@@ -184,6 +184,11 @@ async function main(){
   for(const sample of cases){
     const got=runPython(modules.logic,sample.payload);
     if(got.syntax_valid)output.modules.logic.syntax_valid=true;
+    // Distance-from-trivial signal: a real attempt returns a structured value
+    // even when wrong; a `pass` stub returns null. Degrades nothing when the
+    // module fully passes.
+    if(got.ok&&got.value&&typeof got.value==='object')
+      output.checks.logic_structured=true;
     if(!got.ok||!equal(got.value,sample.expected)){
       result('logic',false,got.error||('Expected '+JSON.stringify(sample.expected)+
         ', received '+JSON.stringify(got.value)));

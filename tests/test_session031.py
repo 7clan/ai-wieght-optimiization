@@ -44,6 +44,11 @@ class DevMetricsContractTests(unittest.TestCase):
         self.assertIn("PUBLIC CHECK FEEDBACK:", guided)
         self.assertIn("YOUR PREVIOUS ATTEMPT", guided)
         self.assertTrue(guided.endswith(PREFIX["store"]))
+        own = prompt("api", own_example="app.get('/api/items', (req, res) => {});")
+        self.assertIn("YOUR OWN PREVIOUSLY VERIFIED WORKING CODE", own)
+        self.assertIn("never its old names", own)
+        # Self-memory examples must be model bytes, never teacher constants.
+        self.assertNotIn("PocketLedger", own)
 
     def test_metric_ordering(self):
         def result(role_ok, checks, syntax=True, integrated=None):
@@ -72,6 +77,17 @@ class GallerySafetyTests(unittest.TestCase):
         self.assertNotIn("<", literal)
         self.assertEqual(json.loads(literal), hostile)
         self.assertEqual(json.loads(js_literal("a<b")), "a<b")
+
+    def test_live_page_with_uncompilable_ui_shows_raw_bytes(self):
+        modules = {"ui": "const React = require('react');\nfunction App() {\n  return <h1>broken",
+                   "css": "body {\n  background: #0d1527;\n}",
+                   "logic": "x", "store": "x", "api": "x"}
+        page = live_app_page(1, modules, None)
+        start = page.index("var APP_SRC=") + len("var APP_SRC=")
+        end = page.index(";\n", start)
+        # Raw uncompiled model bytes are deployed; the runtime error banner
+        # reports the syntax failure honestly.
+        self.assertEqual(json.loads(page[start:end]), modules["ui"])
 
     def test_live_page_embeds_model_source_verbatim_and_no_teacher_code(self):
         modules = {"ui": "const React = require('react');\nfunction App() {\n"

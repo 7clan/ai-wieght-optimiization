@@ -156,7 +156,14 @@ ENDPOINTS = ("GET /api/health", "GET /api/entries", "POST /api/entries",
 DEMO_PROJECTS = ("api-server", "mobile-ui", "docs")
 
 
-def prompt(role, error: str = "", previous: str = "") -> str:
+def prompt(role, error: str = "", previous: str = "",
+            own_example: str = "") -> str:
+    """Build a generation prompt.
+
+    Allowed inputs ONLY: the public contract, the model's own previous attempt,
+    public execution feedback, and (optionally) the model's OWN verified bytes
+    from an earlier session — self-memory, never teacher- or human-written code.
+    """
     if role not in ROLES:
         raise ValueError(role)
     c = "#" if role == "logic" else "/*" if role == "css" else "//"
@@ -165,17 +172,25 @@ def prompt(role, error: str = "", previous: str = "") -> str:
     def line(x):
         return f"{c} {x}{end}\n"
 
+    def block(text):
+        return "".join(line(x[:120]) for x in text.splitlines()[:34])
+
     text = line("NEW DEVMETRICS TASK. Generate only the completion under the final signature.")
     text += "".join(line(x) for x in GOALS[role].splitlines())
     text += line("FIELD NAMES (use exactly): " + ", ".join(FIELDS) + ".")
     if role in ("api", "ui"):
         text += line("ENDPOINTS (use exactly): " + "; ".join(ENDPOINTS) + ".")
+    if own_example:
+        text += line("YOUR OWN PREVIOUSLY VERIFIED WORKING CODE from a different")
+        text += line("application you wrote (different field names and routes;")
+        text += line("apply its structure only, never its old names):")
+        text += block(own_example)
     if error:
         text += line("PUBLIC CHECK FEEDBACK: " + " ".join(str(error).split())[:300])
     if previous:
         lines = previous[-1200:].splitlines()[-16:]
         if role == "logic":
-            text += "".join(line("# your previous attempt (tail):"))
+            text += line("your previous attempt (tail):")
             text += "".join(line(x[:110]) for x in lines)
         else:
             text += line("YOUR PREVIOUS ATTEMPT (tail) still fails; write a corrected full body:")
