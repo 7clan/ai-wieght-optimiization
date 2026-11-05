@@ -27,7 +27,7 @@ def main():
         try:
             assert request(args.base, "/api/health")["ok"]
             break
-        except (URLError, AssertionError):
+        except (URLError, ConnectionError, TimeoutError, AssertionError):
             if attempt == 39:
                 raise
             time.sleep(1)
