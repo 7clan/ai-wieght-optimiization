@@ -126,6 +126,14 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Explicitly distinguish model-generated-only from scaffold-assisted app
   results. The latter must never be called a 0.5B model-only pass@1 gain.
 
+## Session 018 — extreme bounded Python search
+
+- Branch `exp/16-extreme-python-search` is based on completed Session017b results. Freeze exact `guided_scaffold` React/Express bytes; modify only Python `logic` source.
+- Keep untouched Qwen2.5-Coder-0.5B (494,032,768 parameters); no backpropagation, training, LoRA, or weight edits.
+- Select using only two original plus two additional authored PUBLIC distinguishing inputs per app, generic type-directed AST normalization, up to 8 samples and 2 feedback repairs. Load independent holdout values only after all candidate selection finishes.
+- Execute all generated code exclusively inside network-disabled, read-only, unprivileged Docker. Preserve public candidate diagnostics, selected source, extra inference and wall time.
+- The collector must reproduce all task-level holdout metrics and the frozen 5/10 Session017b control; reject any React/Express changes. These are ten custom mini-apps, not independent production benchmarks.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.

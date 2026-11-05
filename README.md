@@ -1,5 +1,10 @@
 # TinyCoder Weight Lab
 
+<!-- SESSION018-PENDING-START -->
+*Session018 8-sample/2-repair Python-only comparison pending actual verified CPU run; no metrics claimed.*
+<!-- SESSION018-PENDING-END -->
+
+
 ## Session 017b — contract-derived React scaffold (measured)
 
 **No new model inference or edits.** Reused the exact Session017 frozen

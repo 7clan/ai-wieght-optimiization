@@ -1,0 +1,76 @@
+name: Session 018 extreme Python-only 0.5B execution search
+
+on:
+  push:
+    branches: [exp/16-extreme-python-search]
+    paths:
+      - .github/workflows/session018-extreme-cpu.yml
+      - tinycoder/session018.py
+      - tinycoder/session018_probes.py
+      - tinycoder/session018_py_worker.py
+      - tinycoder/collect_session018.py
+      - docker/session018-python.Dockerfile
+      - tests/test_session018.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 210
+    env:
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      TOKENIZERS_PARALLELISM: "false"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install frozen CPU model and test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.3,<3"
+          python -m pip install -r requirements.txt "evalplus==0.3.1"
+      - name: Verify public fixtures, AST and isolated evaluator protocol
+        run: |
+          python -m compileall -q tinycoder/session018.py tinycoder/session018_probes.py tinycoder/session018_py_worker.py tinycoder/collect_session018.py
+          python -m unittest discover -s tests -p 'test_session018.py' -v
+          python -m unittest discover -s tests -p 'test_session017.py' -v
+      - name: Build strictly isolated verification containers
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+          docker build -f docker/session018-python.Dockerfile -t tinycoder-session018-python:1 .
+      - name: Run 8-draw Python search, 2 feedback repairs, frozen holdout
+        run: |
+          python -m tinycoder.session018 --output-dir outputs/session018 --batch-size 4 --workers 4
+      - name: Preserve intermediate public diagnostics and final holdout evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session018-extreme-candidates-and-holdout
+          path: outputs/session018/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Independently recompute all scores and publication provenance
+        run: |
+          python -m tinycoder.collect_session018 --output-dir outputs/session018
+          python -m json.tool experiments/session018_extreme_report.json > /dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: session018-verified-report-and-sources
+          path: |
+            experiments/session018_extreme_report.json
+            experiments/session018_extreme_predictions.json
+            experiments/session018_extreme_public_candidates.json
+            README.md
+      - name: Commit only validated Session018 reports and README
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session018_extreme_report.json experiments/session018_extreme_predictions.json experiments/session018_extreme_public_candidates.json
+          git commit -m 'Publish measured Session018 extreme Python-only search'
+          git push origin HEAD:exp/16-extreme-python-search
