@@ -1,22 +1,33 @@
 # TinyCoder Weight Lab
 
-<!-- SESSION021-PENDING-START -->
-## Session 021 — Qwen0.5B autonomously generates a full-stack task board
+<!-- SESSION021-GENERATED-APP-START -->
+## Session 021 — actual Qwen0.5B-generated FocusBoard application
 
-**In progress, no results yet.** The original unmodified
-`Qwen/Qwen2.5-Coder-0.5B` generates Python task statistics, Express routes,
-React UI and CSS for FocusBoard. A limited public-test search includes a
-sampled alternative and feedback-conditioned self-repair; the untouched
-holdout is not consulted until selection ends. All model-generated code runs
-only in restricted Docker. The database and evaluation infrastructure are
-trusted scaffolding, not model output.
+The **frozen base Qwen2.5-Coder-0.5B** generated the Python logic, Express
+routes, React app and CSS directly. Every original completion, sampled attempt,
+feedback repair and selection is archived. No gradients, adapters or weight
+changes were used. A trusted SQLite adapter, bridge and build/test environment
+were supplied separately; this is **not independent autonomous infrastructure**.
 
-The run publishes *exact generated source*, measured pass/fail diagnostics,
-and a safe, script-free visual preview whether or not the app succeeds.
-Nothing should be represented as a completed model benchmark until the
-[CPU workflow](https://github.com/7clan/ai-wieght-optimiization/actions/workflows/session021-autonomous-app-cpu.yml)
-finishes and its collector verifies the evidence.
-<!-- SESSION021-PENDING-END -->
+**Integrated contract result: FAIL** (selected after bounded public tests).
+
+| Model-written module | Holdout contract | Syntax |
+| --- | --- | --- |
+| logic | FAIL | YES |
+| api | FAIL | YES |
+| ui | FAIL | NO |
+| css | PASS | YES |
+
+**[View Qwen's actual UI preview and generated source](docs/previews/session021/index.html)**
+(static, script-free: **not** a running Express application).
+
+[Exact model predictions and repair history](experiments/session021_generated_app_predictions.json) ·
+[Measured report](experiments/session021_generated_app_report.json).
+
+This is one custom application and limited contract testing, not evidence of
+production-grade software or parity with frontier coding systems. It does not
+include an interactive browser-end-to-end assertion suite or security audit.
+<!-- SESSION021-GENERATED-APP-END -->
 
 <!-- REAL-PROJECT-MANAGER-START -->
 ## Real full-stack application — Orbit Project Manager (Session 020)

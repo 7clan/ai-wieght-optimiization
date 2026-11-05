@@ -1,0 +1,431 @@
+{
+  "baseline": {
+    "logic": "# FocusBoard public specification:\n# Build FocusBoard, a small but real task manager with a responsive React UI,\n# Express JSON API, and Python task statistics. Users can create tasks, view them,\n# mark them complete/incomplete, delete them, and see total/completed/remaining.\n# Tasks have id (string), title (nonempty string), priority (low/medium/high),\n# done (boolean). The trusted harness supplies a persistent SQLite store and\n# a bridge that invokes your Python transform(payload) function. Do not copy\n# the implementation from any existing repository file; write the four modules.\n# \n# API contract:\n#   GET /api/tasks              -> HTTP 200 {tasks:[...]}\n#   POST /api/tasks             -> HTTP 201 {task:{id,title,priority,done}}\n#   PATCH /api/tasks/:id        -> HTTP 200 {task:{id,title,priority,done}}\n#   DELETE /api/tasks/:id       -> HTTP 200 {deleted:true}\n#   GET /api/summary            -> HTTP 200 {total,completed,remaining}\n# \n# The supplied store implements list(), create(body), update(id, body), delete(id).\n# The supplied processor accepts {tasks: store.list()} and returns the Python\n# statistics result. The generated Express module must export createApp(store,\n# processor) returning an Express instance. The generated React App component\n# must display a task-list heading, an entry form, complete-toggle and delete\n# buttons, and fetch data from the API. Do not use any external component library.\n# backend/logic.py Python 3.11.\n# Return exactly {total:int,completed:int,remaining:int}.\n# Count done=True as completed. No external libraries.\ndef transform(payload):\n    return payload\n\n# backend/logic.py Python 3.11.\n# Return exactly {total:int,completed:int,remaining:int}.\n# Count done=True as completed. No external libraries.\ndef processor(store):\n    return {\n        'total': store.total,\n        'completed': store.completed,\n        'remaining': store.remaining\n    }\n\n# backend/store.py Python 3.11.\n# Return exactly {list:[...],total:int,completed:int,remaining:int}.\n# Count done=True as completed. No external libraries.\ndef list(store):\n    return {\n        'list': store.list(),\n        'total': store.total,\n        'completed': store.completed,\n        'remaining': store.remaining\n    }\n\n# backend/store.py Python 3.11.\n# Return exactly {list:[...],total:int,completed:int,remaining:int}.\n# Count done=True as completed. No external libraries.\ndef create(store):\n    return {\n        'list': store.create(),\n       ",
+    "api": "const express = require('express');\n// Build FocusBoard, a small but real task manager with a responsive React UI,\n// Express JSON API, and Python task statistics. Users can create tasks, view them,\n// mark them complete/incomplete, delete them, and see total/completed/remaining.\n// Tasks have id (string), title (nonempty string), priority (low/medium/high),\n// done (boolean). The trusted harness supplies a persistent SQLite store and\n// a bridge that invokes your Python transform(payload) function. Do not copy\n// the implementation from any existing repository file; write the four modules.\n// \n// API contract:\n//   GET /api/tasks              -> HTTP 200 {tasks:[...]}\n//   POST /api/tasks             -> HTTP 201 {task:{id,title,priority,done}}\n//   PATCH /api/tasks/:id        -> HTTP 200 {task:{id,title,priority,done}}\n//   DELETE /api/tasks/:id       -> HTTP 200 {deleted:true}\n//   GET /api/summary            -> HTTP 200 {total,completed,remaining}\n// \n// The supplied store implements list(), create(body), update(id, body), delete(id).\n// The supplied processor accepts {tasks: store.list()} and returns the Python\n// statistics result. The generated Express module must export createApp(store,\n// processor) returning an Express instance. The generated React App component\n// must display a task-list heading, an entry form, complete-toggle and delete\n// buttons, and fetch data from the API. Do not use any external component library.\n// server/routes.js. No database or other imports.\nfunction createApp(store, processor) {\n  const app = express();\n  app.use(express.json());\n  app.use(express.urlencoded({ extended: true }));\n  app.use(express.static('public'));\n  app.use(express.static('dist'));\n  app.use(express.static('node_modules'));\n  app.use(express.static('node_modules/react'));\n  app.use(express.static('node_modules/react-dom'));\n  app.use(express.static('node_modules/react-router'));\n  app.use(express.static('node_modules/react-router-dom'));\n  app.use(express.static('node_modules/react-router-dom/dist'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.css'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('",
+    "ui": "const React = require('react');\nconst {useEffect, useState} = React;\n// Build FocusBoard, a small but real task manager with a responsive React UI,\n// Express JSON API, and Python task statistics. Users can create tasks, view them,\n// mark them complete/incomplete, delete them, and see total/completed/remaining.\n// Tasks have id (string), title (nonempty string), priority (low/medium/high),\n// done (boolean). The trusted harness supplies a persistent SQLite store and\n// a bridge that invokes your Python transform(payload) function. Do not copy\n// the implementation from any existing repository file; write the four modules.\n// \n// API contract:\n//   GET /api/tasks              -> HTTP 200 {tasks:[...]}\n//   POST /api/tasks             -> HTTP 201 {task:{id,title,priority,done}}\n//   PATCH /api/tasks/:id        -> HTTP 200 {task:{id,title,priority,done}}\n//   DELETE /api/tasks/:id       -> HTTP 200 {deleted:true}\n//   GET /api/summary            -> HTTP 200 {total,completed,remaining}\n// \n// The supplied store implements list(), create(body), update(id, body), delete(id).\n// The supplied processor accepts {tasks: store.list()} and returns the Python\n// statistics result. The generated Express module must export createApp(store,\n// processor) returning an Express instance. The generated React App component\n// must display a task-list heading, an entry form, complete-toggle and delete\n// buttons, and fetch data from the API. Do not use any external component library.\n// client/App.jsx. React hooks and fetch are available.\nfunction App() {\n  const [tasks, setTasks] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [completed, setCompleted] = useState(0);\n  const [remaining, setRemaining] = useState(0);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n  const [api, setApi] = useState(null);\n  const [processor, setProcessor] = useState(null);\n  const [store, setStore] = useState(null);\n  const [apiUrl, setApiUrl] = useState('http://localhost:8080/api');\n  const [apiToken, setApiToken] = useState('');\n  const [apiUsername, setApiUsername] = useState('');\n  const [apiPassword, setApiPassword] = useState('');\n  const [apiUsernameToken, setApiUsernameToken] = useState('');\n  const [apiPasswordToken, setApiPasswordToken] = useState('');\n  const [apiUsernamePassword, setApiUsernamePassword] = useState('');\n  const [apiUsernamePasswordToken, setApiUsernamePasswordToken] = useState('');\n  const [apiUsernamePasswordToken2, setApiUsernamePasswordToken2] = useState('');\n  const [apiUsernamePasswordToken3, setApiUsernamePasswordToken3] = useState('');\n  const [apiUsernamePasswordToken4, setApiUsernamePasswordToken4] = useState('');\n  const [apiUsernamePasswordToken5, setApiUsernamePasswordToken5] = useState('');\n  const [apiUsernamePasswordToken6, setApiUsernamePasswordToken6] = useState('');\n  const [apiUsernamePasswordToken7, setApiUsernamePasswordToken7] = useState('');\n  const [apiUsernamePasswordToken8, setApiUsernamePasswordToken8] = useState('');\n  const [apiUsernamePasswordToken9, setApiUsernamePasswordToken9] = useState('');\n  const [apiUsernamePasswordToken10, setApiUsernamePasswordToken10] = useState('');\n  const [apiUsernamePasswordToken11, setApiUsernamePasswordToken11] = useState('');\n  const [apiUsernamePasswordToken12, setApiUsernamePasswordToken12] = useState('');\n  const [apiUsernamePasswordToken13, setApiUsernamePasswordToken13] = useState('');\n  const [apiUsernamePasswordToken14, setApiUsernamePasswordToken14] = useState('');\n  const [apiUsernamePasswordToken15, setApiUsernamePasswordToken15] = useState('');\n  const [apiUsernamePasswordToken16, setApiUsernamePasswordToken16] = useState('');\n  const [apiUsernamePasswordToken17, setApiUsernamePasswordToken17] = useState('');\n  const [apiUsernamePassword",
+    "css": "/* client/style.css: modern responsive FocusBoard task-manager styles.\n   Use only CSS, no scripts or external URLs. */\nbody {\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  line-height: 1.4;\n  color: #333;\n  background-color: #fff;\n  margin: 0;\n  padding: 0;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container .focusboard-content {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container .focusboard-content .focusboard-header {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container .focusboard-content .focusboard-header .focusboard-header-title {\n  font-size"
+  },
+  "selected": {
+    "logic": "# FocusBoard public specification:\n# Build FocusBoard, a small but real task manager with a responsive React UI,\n# Express JSON API, and Python task statistics. Users can create tasks, view them,\n# mark them complete/incomplete, delete them, and see total/completed/remaining.\n# Tasks have id (string), title (nonempty string), priority (low/medium/high),\n# done (boolean). The trusted harness supplies a persistent SQLite store and\n# a bridge that invokes your Python transform(payload) function. Do not copy\n# the implementation from any existing repository file; write the four modules.\n# \n# API contract:\n#   GET /api/tasks              -> HTTP 200 {tasks:[...]}\n#   POST /api/tasks             -> HTTP 201 {task:{id,title,priority,done}}\n#   PATCH /api/tasks/:id        -> HTTP 200 {task:{id,title,priority,done}}\n#   DELETE /api/tasks/:id       -> HTTP 200 {deleted:true}\n#   GET /api/summary            -> HTTP 200 {total,completed,remaining}\n# \n# The supplied store implements list(), create(body), update(id, body), delete(id).\n# The supplied processor accepts {tasks: store.list()} and returns the Python\n# statistics result. The generated Express module must export createApp(store,\n# processor) returning an Express instance. The generated React App component\n# must display a task-list heading, an entry form, complete-toggle and delete\n# buttons, and fetch data from the API. Do not use any external component library.\n# backend/logic.py Python 3.11.\n# Return exactly {total:int,completed:int,remaining:int}.\n# Count done=True as completed. No external libraries.\ndef transform(payload):\n    data = payload.json()\n    return {\n        'total': data['total'],\n        'completed': data['completed'],\n        'remaining': data['remaining']\n    }\n \nbackend.store.create = create\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.store.list = list\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend",
+    "api": "const express = require('express');\n// Build FocusBoard, a small but real task manager with a responsive React UI,\n// Express JSON API, and Python task statistics. Users can create tasks, view them,\n// mark them complete/incomplete, delete them, and see total/completed/remaining.\n// Tasks have id (string), title (nonempty string), priority (low/medium/high),\n// done (boolean). The trusted harness supplies a persistent SQLite store and\n// a bridge that invokes your Python transform(payload) function. Do not copy\n// the implementation from any existing repository file; write the four modules.\n// \n// API contract:\n//   GET /api/tasks              -> HTTP 200 {tasks:[...]}\n//   POST /api/tasks             -> HTTP 201 {task:{id,title,priority,done}}\n//   PATCH /api/tasks/:id        -> HTTP 200 {task:{id,title,priority,done}}\n//   DELETE /api/tasks/:id       -> HTTP 200 {deleted:true}\n//   GET /api/summary            -> HTTP 200 {total,completed,remaining}\n// \n// The supplied store implements list(), create(body), update(id, body), delete(id).\n// The supplied processor accepts {tasks: store.list()} and returns the Python\n// statistics result. The generated Express module must export createApp(store,\n// processor) returning an Express instance. The generated React App component\n// must display a task-list heading, an entry form, complete-toggle and delete\n// buttons, and fetch data from the API. Do not use any external component library.\n// server/routes.js. No database or other imports.\nfunction createApp(store, processor) {\n  const app = express();\n  app.use(express.json());\n  app.use(express.urlencoded({ extended: true }));\n  app.use(express.static('public'));\n  app.get('/api/summary', (req, res) => {\n    const summary = processor(store);\n    res.json(summary);\n  });\n  app.post('/api/tasks', (req, res) => {\n    const newTask = processor(store, req.body);\n    res.json(newTask);\n  });\n  app.patch('/api/tasks/:id', (req, res) => {\n    const updatedTask = processor(store, req.body);\n    res.json(updatedTask);\n  });\n  app.delete('/api/tasks/:id', (req, res) => {\n    const deletedTask = processor(store, req.params.id);\n    res.json(deletedTask);\n  });\n  return app;\n}",
+    "ui": "const React = require('react');\nconst {useEffect, useState} = React;\n// Build FocusBoard, a small but real task manager with a responsive React UI,\n// Express JSON API, and Python task statistics. Users can create tasks, view them,\n// mark them complete/incomplete, delete them, and see total/completed/remaining.\n// Tasks have id (string), title (nonempty string), priority (low/medium/high),\n// done (boolean). The trusted harness supplies a persistent SQLite store and\n// a bridge that invokes your Python transform(payload) function. Do not copy\n// the implementation from any existing repository file; write the four modules.\n// \n// API contract:\n//   GET /api/tasks              -> HTTP 200 {tasks:[...]}\n//   POST /api/tasks             -> HTTP 201 {task:{id,title,priority,done}}\n//   PATCH /api/tasks/:id        -> HTTP 200 {task:{id,title,priority,done}}\n//   DELETE /api/tasks/:id       -> HTTP 200 {deleted:true}\n//   GET /api/summary            -> HTTP 200 {total,completed,remaining}\n// \n// The supplied store implements list(), create(body), update(id, body), delete(id).\n// The supplied processor accepts {tasks: store.list()} and returns the Python\n// statistics result. The generated Express module must export createApp(store,\n// processor) returning an Express instance. The generated React App component\n// must display a task-list heading, an entry form, complete-toggle and delete\n// buttons, and fetch data from the API. Do not use any external component library.\n// client/App.jsx. React hooks and fetch are available.\nfunction App() {\n  const [tasks, setTasks] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [completed, setCompleted] = useState(0);\n  const [remaining, setRemaining] = useState(0);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n  const [api, setApi] = useState(null);\n  const [processor, setProcessor] = useState(null);\n  const [store, setStore] = useState(null);\n  const [apiUrl, setApiUrl] = useState('http://localhost:8080/api');\n  const [apiToken, setApiToken] = useState('');\n  const [apiUsername, setApiUsername] = useState('');\n  const [apiPassword, setApiPassword] = useState('');\n  const [apiUsernameToken, setApiUsernameToken] = useState('');\n  const [apiPasswordToken, setApiPasswordToken] = useState('');\n  const [apiUsernamePassword, setApiUsernamePassword] = useState('');\n  const [apiUsernamePasswordToken, setApiUsernamePasswordToken] = useState('');\n  const [apiUsernamePasswordToken2, setApiUsernamePasswordToken2] = useState('');\n  const [apiUsernamePasswordToken3, setApiUsernamePasswordToken3] = useState('');\n  const [apiUsernamePasswordToken4, setApiUsernamePasswordToken4] = useState('');\n  const [apiUsernamePasswordToken5, setApiUsernamePasswordToken5] = useState('');\n  const [apiUsernamePasswordToken6, setApiUsernamePasswordToken6] = useState('');\n  const [apiUsernamePasswordToken7, setApiUsernamePasswordToken7] = useState('');\n  const [apiUsernamePasswordToken8, setApiUsernamePasswordToken8] = useState('');\n  const [apiUsernamePasswordToken9, setApiUsernamePasswordToken9] = useState('');\n  const [apiUsernamePasswordToken10, setApiUsernamePasswordToken10] = useState('');\n  const [apiUsernamePasswordToken11, setApiUsernamePasswordToken11] = useState('');\n  const [apiUsernamePasswordToken12, setApiUsernamePasswordToken12] = useState('');\n  const [apiUsernamePasswordToken13, setApiUsernamePasswordToken13] = useState('');\n  const [apiUsernamePasswordToken14, setApiUsernamePasswordToken14] = useState('');\n  const [apiUsernamePasswordToken15, setApiUsernamePasswordToken15] = useState('');\n  const [apiUsernamePasswordToken16, setApiUsernamePasswordToken16] = useState('');\n  const [apiUsernamePasswordToken17, setApiUsernamePasswordToken17] = useState('');\n  const [apiUsernamePassword",
+    "css": "/* client/style.css: modern responsive FocusBoard task-manager styles.\n   Use only CSS, no scripts or external URLs. */\nbody {\n  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  line-height: 1.4;\n  color: #333;\n  background-color: #fff;\n  margin: 0;\n  padding: 0;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container .focusboard-content {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container .focusboard-content .focusboard-header {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container .focusboard-content .focusboard-header .focusboard-header-title {\n  font-size"
+  },
+  "candidates": [
+    {
+      "stage": "baseline",
+      "role": "logic",
+      "raw": "    return payload\n\n# backend/logic.py Python 3.11.\n# Return exactly {total:int,completed:int,remaining:int}.\n# Count done=True as completed. No external libraries.\ndef processor(store):\n    return {\n        'total': store.total,\n        'completed': store.completed,\n        'remaining': store.remaining\n    }\n\n# backend/store.py Python 3.11.\n# Return exactly {list:[...],total:int,completed:int,remaining:int}.\n# Count done=True as completed. No external libraries.\ndef list(store):\n    return {\n        'list': store.list(),\n        'total': store.total,\n        'completed': store.completed,\n        'remaining': store.remaining\n    }\n\n# backend/store.py Python 3.11.\n# Return exactly {list:[...],total:int,completed:int,remaining:int}.\n# Count done=True as completed. No external libraries.\ndef create(store):\n    return {\n        'list': store.create(),\n       ",
+      "output_tokens": 200
+    },
+    {
+      "stage": "baseline",
+      "role": "api",
+      "raw": "  app.use(express.urlencoded({ extended: true }));\n  app.use(express.static('public'));\n  app.use(express.static('dist'));\n  app.use(express.static('node_modules'));\n  app.use(express.static('node_modules/react'));\n  app.use(express.static('node_modules/react-dom'));\n  app.use(express.static('node_modules/react-router'));\n  app.use(express.static('node_modules/react-router-dom'));\n  app.use(express.static('node_modules/react-router-dom/dist'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.css'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('node_modules/react-router-dom/dist/index.js.map'));\n  app.use(express.static('",
+      "output_tokens": 480
+    },
+    {
+      "stage": "baseline",
+      "role": "ui",
+      "raw": "  const [tasks, setTasks] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [completed, setCompleted] = useState(0);\n  const [remaining, setRemaining] = useState(0);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n  const [api, setApi] = useState(null);\n  const [processor, setProcessor] = useState(null);\n  const [store, setStore] = useState(null);\n  const [apiUrl, setApiUrl] = useState('http://localhost:8080/api');\n  const [apiToken, setApiToken] = useState('');\n  const [apiUsername, setApiUsername] = useState('');\n  const [apiPassword, setApiPassword] = useState('');\n  const [apiUsernameToken, setApiUsernameToken] = useState('');\n  const [apiPasswordToken, setApiPasswordToken] = useState('');\n  const [apiUsernamePassword, setApiUsernamePassword] = useState('');\n  const [apiUsernamePasswordToken, setApiUsernamePasswordToken] = useState('');\n  const [apiUsernamePasswordToken2, setApiUsernamePasswordToken2] = useState('');\n  const [apiUsernamePasswordToken3, setApiUsernamePasswordToken3] = useState('');\n  const [apiUsernamePasswordToken4, setApiUsernamePasswordToken4] = useState('');\n  const [apiUsernamePasswordToken5, setApiUsernamePasswordToken5] = useState('');\n  const [apiUsernamePasswordToken6, setApiUsernamePasswordToken6] = useState('');\n  const [apiUsernamePasswordToken7, setApiUsernamePasswordToken7] = useState('');\n  const [apiUsernamePasswordToken8, setApiUsernamePasswordToken8] = useState('');\n  const [apiUsernamePasswordToken9, setApiUsernamePasswordToken9] = useState('');\n  const [apiUsernamePasswordToken10, setApiUsernamePasswordToken10] = useState('');\n  const [apiUsernamePasswordToken11, setApiUsernamePasswordToken11] = useState('');\n  const [apiUsernamePasswordToken12, setApiUsernamePasswordToken12] = useState('');\n  const [apiUsernamePasswordToken13, setApiUsernamePasswordToken13] = useState('');\n  const [apiUsernamePasswordToken14, setApiUsernamePasswordToken14] = useState('');\n  const [apiUsernamePasswordToken15, setApiUsernamePasswordToken15] = useState('');\n  const [apiUsernamePasswordToken16, setApiUsernamePasswordToken16] = useState('');\n  const [apiUsernamePasswordToken17, setApiUsernamePasswordToken17] = useState('');\n  const [apiUsernamePassword",
+      "output_tokens": 560
+    },
+    {
+      "stage": "baseline",
+      "role": "css",
+      "raw": "  font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  line-height: 1.4;\n  color: #333;\n  background-color: #fff;\n  margin: 0;\n  padding: 0;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container .focusboard-content {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container .focusboard-content .focusboard-header {\n  width: 100%;\n  height: 100%;\n  position: relative;\n  overflow: hidden;\n}\n\n/* The main container for the FocusBoard. */\n.focusboard .focusboard-container .focusboard-content .focusboard-header .focusboard-header-title {\n  font-size",
+      "output_tokens": 300
+    },
+    {
+      "stage": "sample",
+      "role": "logic",
+      "raw": "    # payload: {task: {id: ..., title: ..., priority: ..., done: ...}}\n    # update the task: {id: ..., title: ..., priority: ..., done: ...}\n    # return the updated task: {id: ..., title: ..., priority: ..., done: ...}\n    return payload\n\ndef createApp(store, processor):\n    # store: {list: ...}\n    # processor: {tasks: {list: ...}}\n    # return an Express app\n    return None\n\ndef createTask(store, title, priority, done):\n    # store: {list: ...}\n    # title: string\n    # priority: low, medium, high\n    # done: boolean\n    # return the id of the new task: string\n    return None\n\ndef createTaskList(store):\n    # store: {list: ...}\n    # return a task list\n    return None\n\ndef createTaskForm(store):\n   ",
+      "output_tokens": 200,
+      "public": {
+        "phase": "public",
+        "modules": {
+          "logic": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "expected an indented block after function definition on line 51 (<unknown>, line 52)"
+          },
+          "api": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:60:26: ERROR: Unterminated string literal"
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+          },
+          "css": {
+            "syntax_valid": true,
+            "passed": true,
+            "error": null
+          }
+        },
+        "integrated": false,
+        "checks": {},
+        "ui_markup": null,
+        "failure_reasons": [
+          "api: Error: Transform failed with 1 error:\n<stdin>:60:26: ERROR: Unterminated string literal",
+          "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+          "logic: expected an indented block after function definition on line 51 (<unknown>, line 52)"
+        ],
+        "completed_checks": 1
+      },
+      "accepted": false
+    },
+    {
+      "stage": "sample",
+      "role": "api",
+      "raw": "  app.use(express.urlencoded({ extended: true }));\n  app.use(express.static('public'));\n  app.get('/api/summary', (req, res) => {\n    const summary = processor(store);\n    res.json(summary);\n  });\n  app.post('/api/tasks', (req, res) => {\n    const newTask = processor(store, req.body);\n    res.json(newTask);\n  });\n  app.patch('/api/tasks/:id', (req, res) => {\n    const updatedTask = processor(store, req.body);\n    res.json(updatedTask);\n  });\n  app.delete('/api/tasks/:id', (req, res) => {\n    const deletedTask = processor(store, req.params.id);\n    res.json(deletedTask);\n  });\n  return app;\n}",
+      "output_tokens": 163,
+      "public": {
+        "phase": "public",
+        "modules": {
+          "logic": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "'{' was never closed (<unknown>, line 54)"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: GET /api/tasks contract"
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+          },
+          "css": {
+            "syntax_valid": true,
+            "passed": true,
+            "error": null
+          }
+        },
+        "integrated": false,
+        "checks": {},
+        "ui_markup": null,
+        "failure_reasons": [
+          "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+          "logic: '{' was never closed (<unknown>, line 54)",
+          "api: Error: GET /api/tasks contract"
+        ],
+        "completed_checks": 1
+      },
+      "accepted": true
+    },
+    {
+      "stage": "sample",
+      "role": "ui",
+      "raw": "  // TODO: Implement the API contract.\n  // This function returns a promise that resolves to the results of create().\n  const [tasks, setTasks] = useState(null);\n  const [store, processor] = useStore();\n  useEffect(() => {\n    // TODO: Fetch the data from the API.\n    // If the data is successfully fetched, set the tasks state to its result.\n    // If there is an error, set tasks to null.\n    // Hint: You can use the fetch() API to fetch the data from the API.\n    // Hint: You can use the useStore() hook to access the store.\n    // Hint: You can use the usePromise() hook to handle promise responses.\n    const request = fetch('https://my-json-server.typicode.com/tommy123456789/TaskManager/data.json');\n    request.then(response => response.json()).then(json => setTasks(json));\n  }, []);\n  // TODO: Implement the API contract.\n  // This function returns a promise that resolves to the results of update().\n  // It must be invoked with the id and body of the task to be updated.\n  const [id, setId] = useState(null);\n  const [body, setBody] = useState(null);\n  const [updatedTasks, setUpdatedTasks] = useState(null);\n  const [showEdit, setShowEdit] = useState(false);\n  const [task, setTask] = useState(null);\n  useEffect(() => {\n    // TODO: Implement the API contract.\n    // This function returns a promise that resolves to the results of update().\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id and body of the task to be updated.\n    // It must be invoked with the id",
+      "output_tokens": 560,
+      "public": {
+        "phase": "public",
+        "modules": {
+          "logic": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "'{' was never closed (<unknown>, line 54)"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: GET /api/tasks contract"
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:64:19: ERROR: Unexpected end of file"
+          },
+          "css": {
+            "syntax_valid": true,
+            "passed": true,
+            "error": null
+          }
+        },
+        "integrated": false,
+        "checks": {},
+        "ui_markup": null,
+        "failure_reasons": [
+          "ui: Error: Transform failed with 1 error:\n<stdin>:64:19: ERROR: Unexpected end of file",
+          "logic: '{' was never closed (<unknown>, line 54)",
+          "api: Error: GET /api/tasks contract"
+        ],
+        "completed_checks": 1
+      },
+      "accepted": false
+    },
+    {
+      "stage": "repair1",
+      "role": "logic",
+      "raw": "    data = payload.json()\n    return {\n        'total': data['total'],\n        'completed': data['completed'],\n        'remaining': data['remaining']\n    }\n \nbackend.store.create = create\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.store.list = list\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend.logic = processor\nbackend.store = backend.store\nbackend.store.update = update\nbackend.store.delete = delete\nbackend",
+      "output_tokens": 200,
+      "public": {
+        "phase": "public",
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "NameError: name 'create' is not defined"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: GET /api/tasks contract"
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+          },
+          "css": {
+            "syntax_valid": true,
+            "passed": true,
+            "error": null
+          }
+        },
+        "integrated": false,
+        "checks": {},
+        "ui_markup": null,
+        "failure_reasons": [
+          "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+          "logic: NameError: name 'create' is not defined",
+          "api: Error: GET /api/tasks contract"
+        ],
+        "completed_checks": 1
+      },
+      "accepted": true
+    },
+    {
+      "stage": "repair1",
+      "role": "api",
+      "raw": "  app.use(express.urlencoded({ extended: true }));\n  app.use(express.static('public'));\n  app.get('/api/summary', (req, res) => {\n    const summary = processor(store);\n    res.json(summary);\n  });\n  app.post('/api/tasks', (req, res) => {\n    const newTask = processor(store, req.body);\n    res.json(newTask);\n  });\n  app.patch('/api/tasks/:id', (req, res) => {\n    const updatedTask = processor(store, req.body);\n    res.json(updatedTask);\n  });\n  app.delete('/api/tasks/:id', (req, res) => {\n    const deletedTask = processor(store, req.params.id);\n    res.json(deletedTask);\n  });\n  return app;\n}\n// Note: These imports are not necessary. They are included only for the\n// ease of testing. Do not use any external component library.\n// server/index.js. No database or other imports.\nconst { createApp } = require('./server/routes');\nconst { createTask } = require('./server/task');\nconst { createStatistics } = require('./server/statistics');\nconst store = require('./server/store');\nconst processor = require('./server/processor');\n// Build the Express app and register the API endpoints. The\n// server/routes.js module exports an Express function that returns an Express\n// instance. The generated React App component must display a task-list heading,\n// an entry form, complete-toggle and delete buttons, and fetch data from the API.\n// Do not use any external component library.\nconst app = createApp(store, processor);\n// The server/routes.js module exports an Express function that returns an\n// Express instance. The generated React App component must display a task-list\n// heading, an entry form, complete-toggle and delete buttons, and fetch data from\n// the API. Do not use any external component library.\napp.get('/api/summary', createStatistics(store, processor));\napp.post('/api/tasks', createTask(store, processor));\napp.patch('/api/tasks/:id', createTask(store, processor));\napp.delete('/api/tasks/:id', createTask(store, processor));\napp.listen(3000);",
+      "output_tokens": 453,
+      "public": {
+        "phase": "public",
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "NameError: name 'create' is not defined"
+          },
+          "api": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:50:8: ERROR: The symbol \"createApp\" has already been declared"
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+          },
+          "css": {
+            "syntax_valid": true,
+            "passed": true,
+            "error": null
+          }
+        },
+        "integrated": false,
+        "checks": {},
+        "ui_markup": null,
+        "failure_reasons": [
+          "api: Error: Transform failed with 1 error:\n<stdin>:50:8: ERROR: The symbol \"createApp\" has already been declared",
+          "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+          "logic: NameError: name 'create' is not defined"
+        ],
+        "completed_checks": 1
+      },
+      "accepted": false
+    },
+    {
+      "stage": "repair1",
+      "role": "ui",
+      "raw": "  const [tasks, setTasks] = useState([])\n  const [loading, setLoading] = useState(true)\n  const [error, setError] = useState(false)\n  const [doneTasks, setDoneTasks] = useState([])\n\n  useEffect(() => {\n    (async () => {\n      const { data } = await fetch('/api/tasks')\n      setTasks(data)\n    })()\n  }, [])\n\n  useEffect(() => {\n    (async () => {\n      const { data } = await fetch('/api/summary')\n      setError(false)\n      setDoneTasks(data)\n    })()\n  }, [])\n\n  useEffect(() => {\n    (async () => {\n      const { data } = await fetch('/api/summary')\n      setError(false)\n      setDoneTasks(data)\n    })()\n  }, [])\n\n  return (\n    <>\n      <div className=\"App\">\n        <h1>Task List</h1>\n        <div className=\"task-list\">\n          {tasks.map((task) => (\n            <div key={task.id} className=\"task\">\n              <div className=\"task-info\">\n                <div className=\"task-title\">{task.title}</div>\n                <div className=\"task-priority\">{task.priority}</div>\n              </div>\n              <div className=\"task-actions\">\n                <button className=\"task-complete\" onClick={() => {\n                  setTasks((old) => old.map((t) => t.id === task.id ? { ...t, done: !t.done } : t));\n                }}>\n                  <i className={t.done ? 'fas fa-check' : 'fas fa-times'} />\n                </button>\n                <button className=\"task-delete\" onClick={() => {\n                  fetch('/api/tasks', {\n                    method: 'DELETE',\n                    headers: {\n                      'Content-Type': 'application/json',\n                      'X-API-Key': 'YOUR API KEY HERE'\n                    },\n                    body: JSON.stringify({ id: task.id })\n                  })\n                    .then((res) => res.json())\n                    .then((res) => {\n                      if (res.deleted) {\n                        setTasks((old) => old.filter((t) => t.id !== task.id))\n                      }\n                    })\n                    .catch((err) => console.log(err));\n                }}>Delete</button>\n              </div>\n            </div>\n          ))}\n        </div>\n        <div className=\"task-form\">\n          <form>\n            <input type=\"text\" placeholder=\"title\" value={''} onChange={(e) => {\n              setTasks((old) => old.map((t) => t.id === task.id ? { ...t, title: e.target.value } : t));\n            }} />\n            <input type=\"number\" placeholder",
+      "output_tokens": 560,
+      "public": {
+        "phase": "public",
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "NameError: name 'create' is not defined"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: GET /api/tasks contract"
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:98:6: ERROR: Expected \">\" but found \".\""
+          },
+          "css": {
+            "syntax_valid": true,
+            "passed": true,
+            "error": null
+          }
+        },
+        "integrated": false,
+        "checks": {},
+        "ui_markup": null,
+        "failure_reasons": [
+          "ui: Error: Transform failed with 1 error:\n<stdin>:98:6: ERROR: Expected \">\" but found \".\"",
+          "logic: NameError: name 'create' is not defined",
+          "api: Error: GET /api/tasks contract"
+        ],
+        "completed_checks": 1
+      },
+      "accepted": false
+    },
+    {
+      "stage": "repair2",
+      "role": "logic",
+      "raw": "    return payload\n\ndef create(store):\n    return { 'id': create_id(store) }\n\ndef delete(id):\n    return { 'id': id }\n\ndef update(id, body):\n    return { 'id': id }\n\ndef create_id(store):\n    return 'task_' + create_id_counter(store)",
+      "output_tokens": 63,
+      "public": {
+        "phase": "public",
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "expected {\"total\":0,\"completed\":0,\"remaining\":0}, got {\"tasks\":[]}"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: GET /api/tasks contract"
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+          },
+          "css": {
+            "syntax_valid": true,
+            "passed": true,
+            "error": null
+          }
+        },
+        "integrated": false,
+        "checks": {},
+        "ui_markup": null,
+        "failure_reasons": [
+          "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+          "logic: expected {\"total\":0,\"completed\":0,\"remaining\":0}, got {\"tasks\":[]}",
+          "api: Error: GET /api/tasks contract"
+        ],
+        "completed_checks": 1
+      },
+      "accepted": false
+    },
+    {
+      "stage": "repair2",
+      "role": "api",
+      "raw": "  app.use(express.urlencoded({ extended: true }));\n  app.use(express.static('public'));\n  app.get('/api/summary', (req, res) => {\n    const summary = processor(store);\n    res.json(summary);\n  });\n  app.post('/api/tasks', (req, res) => {\n    const newTask = processor(store, req.body);\n    res.json(newTask);\n  });\n  app.patch('/api/tasks/:id', (req, res) => {\n    const updatedTask = processor(store, req.body);\n    res.json(updatedTask);\n  });\n  app.delete('/api/tasks/:id', (req, res) => {\n    const deletedTask = processor(store, req.params.id);\n    res.json(deletedTask);\n  });\n  return app;\n}\n// Create the Express app with the supplied store and processor.\nconst app = createApp({}, processor);\n\n// Define a default API endpoint.\napp.get('/api/tasks', (req, res) => {\n  res.json(store.list());\n});\napp.post('/api/tasks', (req, res) => {\n  store.create(req.body);\n  res.json(req.body);\n});\napp.patch('/api/tasks/:id', (req, res) => {\n  store.update(req.params.id, req.body);\n  res.json(req.body);\n});\napp.delete('/api/tasks/:id', (req, res) => {\n  store.delete(req.params.id);\n  res.json({ deleted: true });\n});\n\n// Define a summary endpoint.\napp.get('/api/summary', (req, res) => {\n  res.json(processor(store));\n});\n\n// Start the Express server.\napp.listen(3000, () => {\n  console.log('Express server listening on port 3000');\n});\n\n// The processor transforms the store and returns the Python statistics result.\n// The supplied store implements list(), create(body), update(id, body), and\n// delete(id). The supplied processor accepts {tasks: store.list()} and returns\n// the Python statistics result.\nfunction processor(store) {\n  return {\n    list() {\n      return store.list();\n    },\n    create(body) {\n      return store.create(body);\n    },\n    update(id, body) {\n      return store.update(id, body);\n    },\n    delete(id) {\n      return store.delete(id);\n    }\n  };\n",
+      "output_tokens": 480,
+      "public": {
+        "phase": "public",
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "NameError: name 'create' is not defined"
+          },
+          "api": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:97:25: ERROR: Unexpected end of file"
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+          },
+          "css": {
+            "syntax_valid": true,
+            "passed": true,
+            "error": null
+          }
+        },
+        "integrated": false,
+        "checks": {},
+        "ui_markup": null,
+        "failure_reasons": [
+          "api: Error: Transform failed with 1 error:\n<stdin>:97:25: ERROR: Unexpected end of file",
+          "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+          "logic: NameError: name 'create' is not defined"
+        ],
+        "completed_checks": 1
+      },
+      "accepted": false
+    },
+    {
+      "stage": "repair2",
+      "role": "ui",
+      "raw": "  const [tasks, setTasks] = useState([]);\n  const [newTask, setNewTask] = useState('');\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n  const [apiUsernamePasswordToken1, setApiUsernamePasswordToken1] = useState('');\n  const [apiUsernamePasswordToken2, setApiUsernamePasswordToken2] = useState('');\n  const [apiUsernamePasswordToken3, setApiUsernamePasswordToken3] = useState('');\n  const [apiUsernamePasswordToken4, setApiUsernamePasswordToken4] = useState('');\n  const [apiUsernamePasswordToken5, setApiUsernamePasswordToken5] = useState('');\n  const [apiUsernamePasswordToken6, setApiUsernamePasswordToken6] = useState('');\n  const [apiUsernamePasswordToken7, setApiUsernamePasswordToken7] = useState('');\n  const [apiUsernamePasswordToken8, setApiUsernamePasswordToken8] = useState('');\n  const [apiUsernamePasswordToken9, setApiUsernamePasswordToken9] = useState('');\n  const [apiUsernamePasswordToken10, setApiUsernamePasswordToken10] = useState('');\n  const [apiUsernamePasswordToken11, setApiUsernamePasswordToken11] = useState('');\n  const [apiUsernamePasswordToken12, setApiUsernamePasswordToken12] = useState('');\n  const [apiUsernamePasswordToken13, setApiUsernamePasswordToken13] = useState('');\n  const [apiUsernamePasswordToken14, setApiUsernamePasswordToken14] = useState('');\n  const [apiUsernamePasswordToken15, setApiUsernamePasswordToken15] = useState('');\n  const [apiUsernamePasswordToken16, setApiUsernamePasswordToken16] = useState('');\n  const [apiUsernamePasswordToken17, setApiUsernamePasswordToken17] = useState('');\n  const [apiUsernamePasswordToken18, setApiUsernamePasswordToken18] = useState('');\n  const [apiUsernamePasswordToken19, setApiUsernamePasswordToken19] = useState('');\n  const [apiUsernamePasswordToken20, setApiUsernamePasswordToken20] = useState('');\n  const [apiUsernamePasswordToken21, setApiUsernamePasswordToken21] = useState('');\n  const [apiUsernamePasswordToken22, setApiUsernamePasswordToken22] = useState('');\n  const [apiUsernamePasswordToken23, setApiUsernamePasswordToken23] = useState('');\n  const [apiUsernamePasswordToken24, setApiUsernamePasswordToken24] = useState('');\n  const [apiUsernamePasswordToken25, setApiUsernamePasswordToken25] = useState('');\n  const [api",
+      "output_tokens": 560,
+      "public": {
+        "phase": "public",
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "NameError: name 'create' is not defined"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: GET /api/tasks contract"
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:56:0: ERROR: Expected \"]\" but found \"module\""
+          },
+          "css": {
+            "syntax_valid": true,
+            "passed": true,
+            "error": null
+          }
+        },
+        "integrated": false,
+        "checks": {},
+        "ui_markup": null,
+        "failure_reasons": [
+          "ui: Error: Transform failed with 1 error:\n<stdin>:56:0: ERROR: Expected \"]\" but found \"module\"",
+          "logic: NameError: name 'create' is not defined",
+          "api: Error: GET /api/tasks contract"
+        ],
+        "completed_checks": 1
+      },
+      "accepted": false
+    }
+  ],
+  "accepted": [
+    {
+      "stage": "sample",
+      "role": "api",
+      "score": [
+        0,
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "stage": "repair1",
+      "role": "logic",
+      "score": [
+        0,
+        1,
+        1,
+        3
+      ]
+    }
+  ]
+}

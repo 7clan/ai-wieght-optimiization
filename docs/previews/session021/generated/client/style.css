@@ -1,0 +1,49 @@
+/* client/style.css: modern responsive FocusBoard task-manager styles.
+   Use only CSS, no scripts or external URLs. */
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard .focusboard-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard .focusboard-container .focusboard-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard .focusboard-container .focusboard-content .focusboard-header {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard .focusboard-container .focusboard-content .focusboard-header .focusboard-header-title {
+  font-size

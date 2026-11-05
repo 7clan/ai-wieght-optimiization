@@ -1,0 +1,229 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; style-src &#39;unsafe-inline&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;"><title>Actual Qwen0.5B app: FocusBoard</title><style>
+:root{font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#e4ecfa;background:#0b1220}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1120px;margin:auto;padding:54px 23px}
+h1{font-size:clamp(35px,5vw,55px);letter-spacing:-.045em;margin:24px 0 12px}
+p{line-height:1.6;color:#afc0d6}.lead{max-width:740px}.logo{font-size:12px;color:#8ed7e9;font-weight:800;letter-spacing:.18em}
+a{color:#9be4ec}.label{font-size:12px;color:#9fb2d0}.status{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0}
+.badge{border-radius:99px;padding:7px 11px;background:#2c3851;font-size:12px;font-weight:750}
+.good{background:#15493d;color:#a4f1d6}.bad{background:#552b37;color:#ffb2b8}
+.panel{background:#162238;border:1px solid #31435e;padding:26px;border-radius:18px;margin:25px 0}
+.canvas{background:#f8fafc;border-radius:14px;color:#233245;min-height:240px;padding:25px;overflow:auto}
+.canvas input,.canvas button{padding:9px;border:1px solid #bac6d4;border-radius:7px;margin:6px}
+.canvas button{background:#dfe8fa;color:#182d48}.canvas h1,.canvas h2{color:#172a47;font-size:25px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#0b1424;border:1px solid #263d57;border-radius:12px;padding:18px;color:#dbe9f7;font-size:12px}
+details{margin:12px 0;background:#152034;border:1px solid #30405b;border-radius:12px;padding:17px}
+summary{cursor:pointer;font-weight:800}footer{margin-top:50px;border-top:1px solid #29435d;padding-top:22px;color:#94a6c0}
+</style></head><body><main class="wrap"><div class="logo">TINY CODER · SESSION 021</div><h1>What did the 0.5B model actually make?</h1><p class="lead">This page contains the real model-generated code and the React markup it rendered inside restricted Docker. The screenshot is static and script-free, not a live server. The SQLite adapter, build tools and verification tests were provided externally.</p><div class="status"><span class="badge bad">LOGIC: FAIL</span><span class="badge bad">API: FAIL</span><span class="badge bad">UI: FAIL</span><span class="badge good">CSS: PASS</span></div><div class="panel"><span class="label">MODEL-RENDERED UI SNAPSHOT</span><div class="canvas"><p>Qwen's React component did not render in the restricted Docker test.</p></div></div><div class="panel"><strong>Holdout outcome</strong><p>Integrated contract did not pass.</p><ul><li>ui: Error: Transform failed with 1 error:
+&lt;stdin&gt;:60:0: ERROR: Expected &quot;]&quot; but found &quot;module&quot;</li><li>logic: NameError: name &#x27;create&#x27; is not defined</li><li>api: Error: GET /api/tasks contract</li></ul></div><details><summary>Actual generated LOGIC source</summary><pre># FocusBoard public specification:
+# Build FocusBoard, a small but real task manager with a responsive React UI,
+# Express JSON API, and Python task statistics. Users can create tasks, view them,
+# mark them complete/incomplete, delete them, and see total/completed/remaining.
+# Tasks have id (string), title (nonempty string), priority (low/medium/high),
+# done (boolean). The trusted harness supplies a persistent SQLite store and
+# a bridge that invokes your Python transform(payload) function. Do not copy
+# the implementation from any existing repository file; write the four modules.
+# 
+# API contract:
+#   GET /api/tasks              -&gt; HTTP 200 {tasks:[...]}
+#   POST /api/tasks             -&gt; HTTP 201 {task:{id,title,priority,done}}
+#   PATCH /api/tasks/:id        -&gt; HTTP 200 {task:{id,title,priority,done}}
+#   DELETE /api/tasks/:id       -&gt; HTTP 200 {deleted:true}
+#   GET /api/summary            -&gt; HTTP 200 {total,completed,remaining}
+# 
+# The supplied store implements list(), create(body), update(id, body), delete(id).
+# The supplied processor accepts {tasks: store.list()} and returns the Python
+# statistics result. The generated Express module must export createApp(store,
+# processor) returning an Express instance. The generated React App component
+# must display a task-list heading, an entry form, complete-toggle and delete
+# buttons, and fetch data from the API. Do not use any external component library.
+# backend/logic.py Python 3.11.
+# Return exactly {total:int,completed:int,remaining:int}.
+# Count done=True as completed. No external libraries.
+def transform(payload):
+    data = payload.json()
+    return {
+        &#x27;total&#x27;: data[&#x27;total&#x27;],
+        &#x27;completed&#x27;: data[&#x27;completed&#x27;],
+        &#x27;remaining&#x27;: data[&#x27;remaining&#x27;]
+    }
+ 
+backend.store.create = create
+backend.store.update = update
+backend.store.delete = delete
+backend.store.list = list
+backend.logic = processor
+backend.store = backend.store
+backend.store.update = update
+backend.store.delete = delete
+backend.logic = processor
+backend.store = backend.store
+backend.store.update = update
+backend.store.delete = delete
+backend.logic = processor
+backend.store = backend.store
+backend.store.update = update
+backend.store.delete = delete
+backend.logic = processor
+backend.store = backend.store
+backend.store.update = update
+backend.store.delete = delete
+backend.logic = processor
+backend.store = backend.store
+backend.store.update = update
+backend.store.delete = delete
+backend.logic = processor
+backend.store = backend.store
+backend.store.update = update
+backend.store.delete = delete
+backend</pre></details><details><summary>Actual generated API source</summary><pre>const express = require(&#x27;express&#x27;);
+// Build FocusBoard, a small but real task manager with a responsive React UI,
+// Express JSON API, and Python task statistics. Users can create tasks, view them,
+// mark them complete/incomplete, delete them, and see total/completed/remaining.
+// Tasks have id (string), title (nonempty string), priority (low/medium/high),
+// done (boolean). The trusted harness supplies a persistent SQLite store and
+// a bridge that invokes your Python transform(payload) function. Do not copy
+// the implementation from any existing repository file; write the four modules.
+// 
+// API contract:
+//   GET /api/tasks              -&gt; HTTP 200 {tasks:[...]}
+//   POST /api/tasks             -&gt; HTTP 201 {task:{id,title,priority,done}}
+//   PATCH /api/tasks/:id        -&gt; HTTP 200 {task:{id,title,priority,done}}
+//   DELETE /api/tasks/:id       -&gt; HTTP 200 {deleted:true}
+//   GET /api/summary            -&gt; HTTP 200 {total,completed,remaining}
+// 
+// The supplied store implements list(), create(body), update(id, body), delete(id).
+// The supplied processor accepts {tasks: store.list()} and returns the Python
+// statistics result. The generated Express module must export createApp(store,
+// processor) returning an Express instance. The generated React App component
+// must display a task-list heading, an entry form, complete-toggle and delete
+// buttons, and fetch data from the API. Do not use any external component library.
+// server/routes.js. No database or other imports.
+function createApp(store, processor) {
+  const app = express();
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.static(&#x27;public&#x27;));
+  app.get(&#x27;/api/summary&#x27;, (req, res) =&gt; {
+    const summary = processor(store);
+    res.json(summary);
+  });
+  app.post(&#x27;/api/tasks&#x27;, (req, res) =&gt; {
+    const newTask = processor(store, req.body);
+    res.json(newTask);
+  });
+  app.patch(&#x27;/api/tasks/:id&#x27;, (req, res) =&gt; {
+    const updatedTask = processor(store, req.body);
+    res.json(updatedTask);
+  });
+  app.delete(&#x27;/api/tasks/:id&#x27;, (req, res) =&gt; {
+    const deletedTask = processor(store, req.params.id);
+    res.json(deletedTask);
+  });
+  return app;
+}</pre></details><details><summary>Actual generated UI source</summary><pre>const React = require(&#x27;react&#x27;);
+const {useEffect, useState} = React;
+// Build FocusBoard, a small but real task manager with a responsive React UI,
+// Express JSON API, and Python task statistics. Users can create tasks, view them,
+// mark them complete/incomplete, delete them, and see total/completed/remaining.
+// Tasks have id (string), title (nonempty string), priority (low/medium/high),
+// done (boolean). The trusted harness supplies a persistent SQLite store and
+// a bridge that invokes your Python transform(payload) function. Do not copy
+// the implementation from any existing repository file; write the four modules.
+// 
+// API contract:
+//   GET /api/tasks              -&gt; HTTP 200 {tasks:[...]}
+//   POST /api/tasks             -&gt; HTTP 201 {task:{id,title,priority,done}}
+//   PATCH /api/tasks/:id        -&gt; HTTP 200 {task:{id,title,priority,done}}
+//   DELETE /api/tasks/:id       -&gt; HTTP 200 {deleted:true}
+//   GET /api/summary            -&gt; HTTP 200 {total,completed,remaining}
+// 
+// The supplied store implements list(), create(body), update(id, body), delete(id).
+// The supplied processor accepts {tasks: store.list()} and returns the Python
+// statistics result. The generated Express module must export createApp(store,
+// processor) returning an Express instance. The generated React App component
+// must display a task-list heading, an entry form, complete-toggle and delete
+// buttons, and fetch data from the API. Do not use any external component library.
+// client/App.jsx. React hooks and fetch are available.
+function App() {
+  const [tasks, setTasks] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [completed, setCompleted] = useState(0);
+  const [remaining, setRemaining] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [api, setApi] = useState(null);
+  const [processor, setProcessor] = useState(null);
+  const [store, setStore] = useState(null);
+  const [apiUrl, setApiUrl] = useState(&#x27;http://localhost:8080/api&#x27;);
+  const [apiToken, setApiToken] = useState(&#x27;&#x27;);
+  const [apiUsername, setApiUsername] = useState(&#x27;&#x27;);
+  const [apiPassword, setApiPassword] = useState(&#x27;&#x27;);
+  const [apiUsernameToken, setApiUsernameToken] = useState(&#x27;&#x27;);
+  const [apiPasswordToken, setApiPasswordToken] = useState(&#x27;&#x27;);
+  const [apiUsernamePassword, setApiUsernamePassword] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken, setApiUsernamePasswordToken] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken2, setApiUsernamePasswordToken2] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken3, setApiUsernamePasswordToken3] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken4, setApiUsernamePasswordToken4] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken5, setApiUsernamePasswordToken5] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken6, setApiUsernamePasswordToken6] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken7, setApiUsernamePasswordToken7] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken8, setApiUsernamePasswordToken8] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken9, setApiUsernamePasswordToken9] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken10, setApiUsernamePasswordToken10] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken11, setApiUsernamePasswordToken11] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken12, setApiUsernamePasswordToken12] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken13, setApiUsernamePasswordToken13] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken14, setApiUsernamePasswordToken14] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken15, setApiUsernamePasswordToken15] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken16, setApiUsernamePasswordToken16] = useState(&#x27;&#x27;);
+  const [apiUsernamePasswordToken17, setApiUsernamePasswordToken17] = useState(&#x27;&#x27;);
+  const [apiUsernamePassword</pre></details><details><summary>Actual generated CSS source</summary><pre>/* client/style.css: modern responsive FocusBoard task-manager styles.
+   Use only CSS, no scripts or external URLs. */
+body {
+  font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard .focusboard-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard .focusboard-container .focusboard-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard .focusboard-container .focusboard-content .focusboard-header {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* The main container for the FocusBoard. */
+.focusboard .focusboard-container .focusboard-content .focusboard-header .focusboard-header-title {
+  font-size</pre></details><footer>Untrusted generated JavaScript is never served for execution in your browser. All model code was evaluated in unprivileged, network-disabled containers.</footer></main></body></html>

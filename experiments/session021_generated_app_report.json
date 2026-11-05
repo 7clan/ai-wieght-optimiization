@@ -1,0 +1,199 @@
+{
+  "status": "completed",
+  "session": "021",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "model_weight_edits": 0,
+  "app": "FocusBoard",
+  "task_type": "authored_end_to_end_task_board_not_independent_benchmark",
+  "spec_sha256": "60a7874f83f897af56c34d0b481e9c14cf8bda8dc9d2e6404535d9edd55a5f20",
+  "model_generated_roles": [
+    "logic",
+    "api",
+    "ui",
+    "css"
+  ],
+  "trusted_components": [
+    "SQLite store adapter",
+    "Python bridge",
+    "Vite build",
+    "Docker test runner",
+    "preview sanitizer"
+  ],
+  "baseline": {
+    "public": {
+      "phase": "public",
+      "modules": {
+        "logic": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "'{' was never closed (<unknown>, line 54)"
+        },
+        "api": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:60:26: ERROR: Unterminated string literal"
+        },
+        "ui": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": false,
+      "checks": {},
+      "ui_markup": null,
+      "failure_reasons": [
+        "api: Error: Transform failed with 1 error:\n<stdin>:60:26: ERROR: Unterminated string literal",
+        "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+        "logic: '{' was never closed (<unknown>, line 54)"
+      ],
+      "completed_checks": 1
+    },
+    "holdout": {
+      "phase": "holdout",
+      "modules": {
+        "logic": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "'{' was never closed (<unknown>, line 54)"
+        },
+        "api": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:60:26: ERROR: Unterminated string literal"
+        },
+        "ui": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": false,
+      "checks": {},
+      "ui_markup": null,
+      "failure_reasons": [
+        "api: Error: Transform failed with 1 error:\n<stdin>:60:26: ERROR: Unterminated string literal",
+        "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+        "logic: '{' was never closed (<unknown>, line 54)"
+      ],
+      "completed_checks": 1
+    }
+  },
+  "selected": {
+    "public": {
+      "phase": "public",
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "NameError: name 'create' is not defined"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: GET /api/tasks contract"
+        },
+        "ui": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": false,
+      "checks": {},
+      "ui_markup": null,
+      "failure_reasons": [
+        "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+        "logic: NameError: name 'create' is not defined",
+        "api: Error: GET /api/tasks contract"
+      ],
+      "completed_checks": 1
+    },
+    "holdout": {
+      "phase": "holdout",
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "NameError: name 'create' is not defined"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: GET /api/tasks contract"
+        },
+        "ui": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\""
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": false,
+      "checks": {},
+      "ui_markup": null,
+      "failure_reasons": [
+        "ui: Error: Transform failed with 1 error:\n<stdin>:60:0: ERROR: Expected \"]\" but found \"module\"",
+        "logic: NameError: name 'create' is not defined",
+        "api: Error: GET /api/tasks contract"
+      ],
+      "completed_checks": 1
+    }
+  },
+  "search": {
+    "stages": [
+      "baseline",
+      "sample",
+      "repair1",
+      "repair2"
+    ],
+    "accepted": [
+      {
+        "stage": "sample",
+        "role": "api",
+        "score": [
+          0,
+          1,
+          1,
+          2
+        ]
+      },
+      {
+        "stage": "repair1",
+        "role": "logic",
+        "score": [
+          0,
+          1,
+          1,
+          3
+        ]
+      }
+    ],
+    "candidate_count": 13,
+    "generated_output_tokens": 4779,
+    "wall_seconds": 791.68,
+    "holdout_consulted_before_search_finished": false
+  },
+  "caveats": "Tests check generated Python, Express CRUD routes and React server-rendered structure. No browser click-through test, real model-generated persistence layer, security audit or frontier-model parity claim. This is a partially scaffolded full-stack system; failures remain visible."
+}
