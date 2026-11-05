@@ -17,11 +17,8 @@
   "teacher_bytes": 0,
   "teacher_supplied_anything": false,
   "self_repair_only": true,
-  "self_repair_rounds": 8,
-  "own_prior_session_bytes_in_prompts": [
-    "api",
-    "css"
-  ],
+  "self_repair_rounds": 12,
+  "own_prior_session_bytes_in_prompts": [],
   "permanent_weight_learning": false,
   "trusted_scaffold": [
     "file signatures/imports",
@@ -122,8 +119,8 @@
       "modules": {
         "logic": {
           "syntax_valid": true,
-          "passed": false,
-          "error": "Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]"
+          "passed": true,
+          "error": null
         },
         "store": {
           "syntax_valid": true,
@@ -133,7 +130,7 @@
         "api": {
           "syntax_valid": true,
           "passed": false,
-          "error": "Error: POST envelope/status"
+          "error": "Error: POST must answer 400 {error} for invalid input"
         },
         "ui": {
           "syntax_valid": true,
@@ -149,16 +146,17 @@
       "checks": {
         "logic_structured": true,
         "health": true,
-        "get": true
+        "get": true,
+        "post": true
       },
       "ui_markup": null,
       "failure_reasons": [
-        "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]",
         "store: TypeError: Assignment to constant variable.",
-        "api: Error: POST envelope/status",
-        "ui: Error: UI lacks state hook"
+        "api: Error: POST must answer 400 {error} for invalid input",
+        "ui: Error: UI lacks state hook",
+        "integration: TypeError: Assignment to constant variable."
       ],
-      "completed_checks": 4
+      "completed_checks": 6
     },
     "holdout": {
       "phase": "holdout",
@@ -166,8 +164,8 @@
       "modules": {
         "logic": {
           "syntax_valid": true,
-          "passed": false,
-          "error": "Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received [0,{},{},0,null]"
+          "passed": true,
+          "error": null
         },
         "store": {
           "syntax_valid": true,
@@ -177,7 +175,7 @@
         "api": {
           "syntax_valid": true,
           "passed": false,
-          "error": "Error: POST envelope/status"
+          "error": "Error: POST must answer 400 {error} for invalid input"
         },
         "ui": {
           "syntax_valid": true,
@@ -193,16 +191,17 @@
       "checks": {
         "logic_structured": true,
         "health": true,
-        "get": true
+        "get": true,
+        "post": true
       },
       "ui_markup": null,
       "failure_reasons": [
-        "logic: Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received [0,{},{},0,null]",
         "store: TypeError: Assignment to constant variable.",
-        "api: Error: POST envelope/status",
-        "ui: Error: UI lacks state hook"
+        "api: Error: POST must answer 400 {error} for invalid input",
+        "ui: Error: UI lacks state hook",
+        "integration: TypeError: Assignment to constant variable."
       ],
-      "completed_checks": 4
+      "completed_checks": 6
     }
   },
   "rounds": [
@@ -473,14 +472,152 @@
       },
       "elapsed_seconds": 6107.5,
       "output_tokens": 42969
+    },
+    {
+      "round": 9,
+      "modules_sha256": {
+        "logic": "6cc1c45470afb4ed4acb10454220f3b4b7581fb8932b2d3c7b5474b14fb3e3ce",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "bf23d3129168e797066ea54f8e38371f2dfce755b27e55efd33b8755b74c4ef6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "health": true,
+          "get": true
+        },
+        "completed_checks": 4,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]",
+          "store: TypeError: Assignment to constant variable.",
+          "api: Error: POST envelope/status",
+          "ui: Error: UI lacks state hook"
+        ]
+      },
+      "elapsed_seconds": 7438.8,
+      "output_tokens": 51013
+    },
+    {
+      "round": 10,
+      "modules_sha256": {
+        "logic": "6cc1c45470afb4ed4acb10454220f3b4b7581fb8932b2d3c7b5474b14fb3e3ce",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "9ff8a62df96ddd0b9e5737583d7c3c10ebe8020a90bac3c759eb8d87acf8a6c6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "health": true,
+          "get": true,
+          "post": true
+        },
+        "completed_checks": 4,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received [0,{},{},0,null]",
+          "store: TypeError: Assignment to constant variable.",
+          "api: Error: POST must answer 400 {error} for invalid input",
+          "ui: Error: UI lacks state hook"
+        ]
+      },
+      "elapsed_seconds": 8218.0,
+      "output_tokens": 55735
+    },
+    {
+      "round": 11,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "9ff8a62df96ddd0b9e5737583d7c3c10ebe8020a90bac3c759eb8d87acf8a6c6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "health": true,
+          "get": true,
+          "post": true
+        },
+        "completed_checks": 6,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: Error: POST must answer 400 {error} for invalid input",
+          "ui: Error: UI lacks state hook",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 9380.9,
+      "output_tokens": 62714
+    },
+    {
+      "round": 12,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "9ff8a62df96ddd0b9e5737583d7c3c10ebe8020a90bac3c759eb8d87acf8a6c6",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "health": true,
+          "get": true,
+          "post": true
+        },
+        "completed_checks": 6,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: Error: POST must answer 400 {error} for invalid input",
+          "ui: Error: UI lacks state hook",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 10588.2,
+      "output_tokens": 69672
     }
   ],
   "search": {
-    "candidate_count": 68,
-    "output_tokens": 42969,
-    "wall_seconds": 6109.71,
-    "max_rounds": 8,
-    "wall_budget_seconds": 6600,
+    "candidate_count": 110,
+    "output_tokens": 69672,
+    "wall_seconds": 10590.68,
+    "max_rounds": 12,
+    "wall_budget_seconds": 14400,
     "private_holdout_seen_during_selection": false
   },
   "ui_behavior_verified_in_jsdom": false,

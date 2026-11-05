@@ -10,8 +10,8 @@ unsandboxed. Live deployment: `docs/gallery/session031/`.
 
 | module | sha-256 |
 | --- | --- |
-| backend/logic.py | `6cc1c45470afb4ed4acb10454220f3b4b7581fb8932b2d3c7b5474b14fb3e3ce` |
+| backend/logic.py | `757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592` |
 | server/store.js | `e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864` |
-| server/routes.js | `bf23d3129168e797066ea54f8e38371f2dfce755b27e55efd33b8755b74c4ef6` |
+| server/routes.js | `9ff8a62df96ddd0b9e5737583d7c3c10ebe8020a90bac3c759eb8d87acf8a6c6` |
 | client/App.jsx | `dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370` |
 | client/style.css | `839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9` |
