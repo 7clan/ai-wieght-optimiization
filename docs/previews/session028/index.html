@@ -16,7 +16,7 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}a{color:#8fe3f3}<
 The supervising agent supplied only required signatures, testing and execution tools,
 not application logic. This safe source viewer is static and script-free; it is not
 a deployed Express application or proof of production readiness.</p>
-<div class="badges"><span class="badge pass">LOGIC: PASS</span><span class="badge fail">STORE: FAIL</span><span class="badge fail">API: FAIL</span><span class="badge fail">UI: FAIL</span><span class="badge pass">CSS: PASS</span></div>
+<p><a href="teaching.html">Open the full teacher–student replay (all generated attempts and public failures)</a></p><div class="badges"><span class="badge pass">LOGIC: PASS</span><span class="badge fail">STORE: FAIL</span><span class="badge fail">API: FAIL</span><span class="badge fail">UI: FAIL</span><span class="badge pass">CSS: PASS</span></div>
 <section class="panel"><h2>Actual React server-rendered markup</h2><div class="render"><div><h1>PocketLedger</h1><div><label>Description</label><input type="text"><label>Amount (cents)</label><input type="number"><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div></div></section><section class="panel"><h2>Independent holdout</h2><p>Integrated FAIL</p><ul><li>api: ReferenceError: app is not defined</li><li>store: Error: ENOENT: no such file or directory, open &#x27;/tmp/pocket027-NtQIQ6/expenses.json&#x27;</li><li>ui: Error: UI lacks state hook</li></ul></section><details><summary>backend/logic.py</summary><pre>def transform(payload):
     expenses = payload.get(&#x27;expenses&#x27;, [])
     by_category = {}

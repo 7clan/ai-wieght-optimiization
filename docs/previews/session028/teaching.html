@@ -1,0 +1,1030 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'">
+<title>Qwen0.5B teacher–student replay</title><style>
+*{box-sizing:border-box}body{background:#0c1424;color:#e5ecfa;font:15px system-ui;margin:0}
+main{max-width:1000px;margin:45px auto;padding:20px}h1{font-size:38px;letter-spacing:-.035em}
+.lede{color:#b6c7df;line-height:1.6}.attempt{background:#18243a;border:1px solid #32425b;
+padding:22px;border-radius:14px;margin:22px 0}header{display:flex;align-items:center;gap:15px;flex-wrap:wrap}
+h2{font-size:22px;flex:1;margin:6px 0}.status{font-size:12px;font-weight:800;padding:7px 12px;border-radius:20px}
+.pass{background:#17513e;color:#a7f6c2}.fail{background:#653044;color:#ffd4de}
+.number{color:#95a7cb;font-weight:800}p{color:#c9d6e9}details{margin:12px 0;padding:14px;
+background:#101b2f;border-radius:9px;border:1px solid #2c3953}
+summary{cursor:pointer;font-weight:750}pre{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5;
+font-size:12px;color:#d7ecff}a{color:#8fe3f3}code{overflow-wrap:anywhere}</style></head>
+<body><main><a href="index.html">← Back to the source and preview</a>
+<h1>Watch how Qwen was taught</h1>
+<p class="lede">Recorded teacher feedback, other-domain demonstrations, and the
+exact code Qwen produced in each round. This is a replay of real CPU inference,
+not real-time streaming. The model's weights were not updated.</p>
+<p>Final independent holdout: <strong>FAIL</strong>.
+logic PASS, store FAIL, api FAIL, ui FAIL, css PASS</p><section class="attempt">
+<header><span class="number">#01</span>
+<h2>LOGIC — mentor round 1</h2>
+<span class="status pass">PASS</span></header>
+<p>Student result: <strong>kept for next round</strong>.
+Output tokens: 85.</p>
+<p>Public test feedback: <code>none</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre># TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain:
+# This music algorithm receives a dict, extracts its LIST, then groups records.
+def summarize_songs(payload):
+    songs = payload.get(&#x27;songs&#x27;, [])
+    by_artist = {}
+    for song in songs:
+        who = song[&#x27;artist&#x27;]
+        by_artist[who] = by_artist.get(who, 0) + song[&#x27;seconds&#x27;]
+    return {&#x27;count&#x27;: len(songs), &#x27;seconds&#x27;: sum(s[&#x27;seconds&#x27;] for s in songs),
+            &#x27;by_artist&#x27;: by_artist}
+# Notice: do NOT iterate payload dictionary keys; do NOT filter one group.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre># TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain:
+# This music algorithm receives a dict, extracts its LIST, then groups records.
+def summarize_songs(payload):
+    songs = payload.get(&#x27;songs&#x27;, [])
+    by_artist = {}
+    for song in songs:
+        who = song[&#x27;artist&#x27;]
+        by_artist[who] = by_artist.get(who, 0) + song[&#x27;seconds&#x27;]
+    return {&#x27;count&#x27;: len(songs), &#x27;seconds&#x27;: sum(s[&#x27;seconds&#x27;] for s in songs),
+            &#x27;by_artist&#x27;: by_artist}
+# Notice: do NOT iterate payload dictionary keys; do NOT filter one group.
+
+# POCKETLEDGER TASK: Implement backend/logic.py transform(payload). Input is a dict with
+#   key &#x27;expenses&#x27; containing a list of dicts. Return dict keys count,
+#   total_cents and by_category. Count items. Sum amount_cents across ALL categories,
+#   grouping by each item&#x27;s category. For no expenses return zero counts and {}.
+#   Use Python only. Complete the function, do not repeat this comment.
+# LAST STUDENT ERROR: TypeError: string indices must be integers, not &#x27;str&#x27;
+def transform(payload):
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>    expenses = payload.get(&#x27;expenses&#x27;, [])
+    by_category = {}
+    for expense in expenses:
+        category = expense[&#x27;category&#x27;]
+        by_category[category] = by_category.get(category, 0) + expense[&#x27;amount_cents&#x27;]
+    return {&#x27;count&#x27;: len(expenses), &#x27;total_cents&#x27;: sum(expense[&#x27;amount_cents&#x27;] for expense in expenses),
+            &#x27;by_category&#x27;: by_category}</pre></details>
+</section><section class="attempt">
+<header><span class="number">#02</span>
+<h2>STORE — mentor round 1</h2>
+<span class="status fail">FAIL</span></header>
+<p>Student result: <strong>rejected</strong>.
+Output tokens: 650.</p>
+<p>Public test feedback: <code>Error: Transform failed with 1 error:
+&lt;stdin&gt;:15:11: ERROR: Expected identifier but found &quot;delete&quot;</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: persisted bookmarks.
+const fs = require(&#x27;node:fs&#x27;);
+function openBookmarks(filename) {
+  function read() {
+    if (!fs.existsSync(filename)) return [];
+    return JSON.parse(fs.readFileSync(filename, &#x27;utf8&#x27;));
+  }
+  function write(items) { fs.writeFileSync(filename, JSON.stringify(items)); }
+  return {
+    list: () =&gt; read(),
+    add: (bookmark) =&gt; { const all=read(); all.push(bookmark); write(all); return bookmark; },
+    remove: (url) =&gt; { const before=read(); const after=before.filter(x=&gt;x.url!==url);
+                       write(after); return before.length!==after.length; }
+  };
+}
+// Notice: on initial access avoid ENOENT; after EACH mutation write the JSON array.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: persisted bookmarks.
+const fs = require(&#x27;node:fs&#x27;);
+function openBookmarks(filename) {
+  function read() {
+    if (!fs.existsSync(filename)) return [];
+    return JSON.parse(fs.readFileSync(filename, &#x27;utf8&#x27;));
+  }
+  function write(items) { fs.writeFileSync(filename, JSON.stringify(items)); }
+  return {
+    list: () =&gt; read(),
+    add: (bookmark) =&gt; { const all=read(); all.push(bookmark); write(all); return bookmark; },
+    remove: (url) =&gt; { const before=read(); const after=before.filter(x=&gt;x.url!==url);
+                       write(after); return before.length!==after.length; }
+  };
+}
+// Notice: on initial access avoid ENOENT; after EACH mutation write the JSON array.
+
+// POCKETLEDGER TASK: Implement server/store.js createStore(filePath). Return methods
+//   list(), create(body), delete(id). On a NEW file path list() must return [].
+//   On each create or delete persist the complete JSON array using fs.writeFileSync.
+//   A new createStore(filePath) instance must load the prior state. Create returns
+//   an expense with a string id. Reject empty description and invalid/nonpositive
+//   integer amount_cents with Error. Delete returns boolean. Complete and close
+//   the function. No other packages.
+// LAST STUDENT ERROR: Error: ENOENT: no such file or directory, open &#x27;/tmp/pocket027-8wJCuC/expenses.json&#x27;
+const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>  function list() {
+    if (!fs.existsSync(filePath)) return [];
+    return JSON.parse(fs.readFileSync(filePath, &#x27;utf8&#x27;));
+  }
+  function create(body) {
+    if (!body.description || !body.amount_cents) return new Error(&#x27;Invalid expense&#x27;);
+    const all=list();
+    const newExpense={...body, id:crypto.randomUUID()};
+    all.push(newExpense);
+    write(all);
+    return newExpense;
+  }
+  function delete(id) {
+    const all=list();
+    const after=all.filter(x=&gt;x.id!==id);
+    write(after);
+    return after.length!==all.length;
+  }
+  function write(items) { fs.writeFileSync(filePath, JSON.stringify(items)); }
+  return { list, create, delete };
+}
+// POCKETLEDGER TASK: Implement server/store.js createBookmarks(filePath). Return
+//   methods list(), add(url), remove(url). On a NEW file path list() must return
+//   [].
+//   On each create or delete persist the complete JSON array using fs.writeFileSync.
+//   A new createStore(filePath) instance must load the prior state. Create returns
+//   an expense with a string id. Reject empty description and invalid/nonpositive
+//   integer amount_cents with Error. Delete returns boolean. Complete and close
+//   the function. No other packages.
+// LAST STUDENT ERROR: Error: ENOENT: no such file or directory, open &#x27;/tmp/pocket027-8wJCuC/expenses.json&#x27;
+const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+  function list() {
+    if (!fs.existsSync(filePath)) return [];
+    return JSON.parse(fs.readFileSync(filePath, &#x27;utf8&#x27;));
+  }
+  function create(body) {
+    if (!body.description || !body.amount_cents) return new Error(&#x27;Invalid expense&#x27;);
+    const all=list();
+    const newExpense={...body, id:crypto.randomUUID()};
+    all.push(newExpense);
+    write(all);
+    return newExpense;
+  }
+  function add(url) {
+    const all=list();
+    const after=all.filter(x=&gt;x.url!==url);
+    write(after);
+    return after.length!==all.length;
+  }
+  function remove(url) {
+    const all=list();
+    const after=all.filter(x=&gt;x.url!==url);
+    write(after);
+    return after.length!==all.length;
+  }
+  function write(items) { fs.writeFileSync(filePath, JSON.stringify(items)); }
+  return { list, create, add, remove };
+}
+// POCKETLEDGER TASK: Implement server/store.js createBookmarks(filePath). Return
+//   methods list(), add(url), remove(url). On a NEW file path list() must return
+//   [].
+//   On each create or delete persist the complete JSON array using fs.writeFileSync.
+//   A new createStore(filePath) instance must load the prior state. Create returns
+//   an expense with a string id. Reject empty description and invalid/nonpositive
+//   integer amount_cents with Error. Delete returns boolean. Complete and close
+//   the function. No other packages.
+// LAST STUDENT ERROR: Error: ENOENT: no such file or directory, open &#x27;/</pre></details>
+</section><section class="attempt">
+<header><span class="number">#03</span>
+<h2>API — mentor round 1</h2>
+<span class="status fail">FAIL</span></header>
+<p>Student result: <strong>rejected</strong>.
+Output tokens: 650.</p>
+<p>Public test feedback: <code>Error: Transform failed with 3 errors:
+&lt;stdin&gt;:21:6: ERROR: The symbol &quot;express&quot; has already been declared
+&lt;stdin&gt;:41:6: ERROR: The symbol &quot;express&quot; has already been declared
+&lt;stdin&gt;:47:0: ERROR: Expected &quot;)&quot; but found &quot;module&quot;</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: reading-library API.
+const express = require(&#x27;express&#x27;);
+function makeLibrary(books) {
+  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(200).json({books:books.list()}));
+  server.post(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(201).json({book:books.add(req.body)}));
+  server.delete(&#x27;/api/books/:id&#x27;, (req,res) =&gt; res.json({deleted:books.remove(req.params.id)}));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: reading-library API.
+const express = require(&#x27;express&#x27;);
+function makeLibrary(books) {
+  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(200).json({books:books.list()}));
+  server.post(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(201).json({book:books.add(req.body)}));
+  server.delete(&#x27;/api/books/:id&#x27;, (req,res) =&gt; res.json({deleted:books.remove(req.params.id)}));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+
+// POCKETLEDGER TASK: Implement server/routes.js createApp(store, processor). All handlers
+//   MUST be defined INSIDE createApp, and it MUST return the Express app.
+//   Use express.json(); GET /api/expenses -&gt; {expenses:store.list()};
+//   POST /api/expenses -&gt; status 201 {expense:store.create(req.body)};
+//   DELETE /api/expenses/:id -&gt; {deleted:store.delete(req.params.id)};
+//   GET /api/summary -&gt; processor({expenses:store.list()}) directly as JSON.
+//   Do NOT app.listen() and do NOT call req/res outside route handlers.
+//   Complete the function, do not repeat this comment.
+// LAST STUDENT ERROR: ReferenceError: app is not defined
+const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(200).json({expenses:store.list()}));
+  server.post(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(201).json({expense:processor(req.body)}));
+  server.delete(&#x27;/api/expenses/:id&#x27;, (req,res) =&gt; res.json({deleted:processor(req.params.id)}));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+
+// POCKETLEDGER TASK: Implement server/routes.js createApp(store, processor). All handlers
+//   MUST be defined INSIDE createApp, and it MUST return the Express app.
+//   Use express.json(); GET /api/expenses -&gt; {expenses:store.list()};
+//   POST /api/expenses -&gt; status 201 {expense:store.create(req.body)};
+//   DELETE /api/expenses/:id -&gt; {deleted:store.delete(req.params.id)};
+//   GET /api/summary -&gt; processor({expenses:store.list()}) directly as JSON.
+//   Do NOT app.listen() and do NOT call req/res outside route handlers.
+//   Complete the function, do not repeat this comment.
+// LAST STUDENT ERROR: ReferenceError: app is not defined
+const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(200).json({expenses:store.list()}));
+  server.post(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(201).json({expense:processor(req.body)}));
+  server.delete(&#x27;/api/expenses/:id&#x27;, (req,res) =&gt; res.json({deleted:processor(req.params.id)}));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+
+// POCKETLEDGER TASK: Implement server/routes.js createApp(store, processor). All handlers
+//   MUST be defined INSIDE createApp, and it MUST return the Express app.
+//   Use express.json(); GET /api/expenses -&gt; {expenses:store.list()};
+//   POST /api/expenses -&gt; status 201 {expense:store.create(req.body)};
+//   DELETE /api/expenses/:id -&gt; {deleted:store.delete(req.params.id)};
+//   GET /api/summary -&gt; processor({expenses:store.list()}) directly as JSON.
+//   Do NOT app.listen() and do NOT call req/res outside route handlers.
+//   Complete the function, do not repeat this comment.
+// LAST STUDENT ERROR: ReferenceError: app is not defined
+const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(200).json({expenses:store.list()}));
+  server.post(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(201).json({expense:processor(req.body)}</pre></details>
+</section><section class="attempt">
+<header><span class="number">#04</span>
+<h2>UI — mentor round 1</h2>
+<span class="status fail">FAIL</span></header>
+<p>Student result: <strong>rejected</strong>.
+Output tokens: 900.</p>
+<p>Public test feedback: <code>Error: Transform failed with 1 error:
+&lt;stdin&gt;:61:14: ERROR: Expected &quot;&gt;&quot; but found &quot;=&quot;</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: editable reading list.
+const React = require(&#x27;react&#x27;);
+function ReadingListDemo() {
+  const [books,setBooks]=React.useState([]);
+  const [title,setTitle]=React.useState(&#x27;&#x27;);
+  async function refresh(){const r=await fetch(&#x27;/api/books&#x27;);const data=await r.json();
+    setBooks(data.books||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function add(e){e.preventDefault();await fetch(&#x27;/api/books&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({title})});
+    setTitle(&#x27;&#x27;);await refresh();}
+  async function remove(id){await fetch(&#x27;/api/books/&#x27;+id,{method:&#x27;DELETE&#x27;});await refresh();}
+  return &lt;main&gt;&lt;h1&gt;Reading list&lt;/h1&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={title} onChange={e=&gt;setTitle(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;
+    &lt;ul&gt;{books.map(book=&gt;&lt;li key={book.id}&gt;{book.title}
+    &lt;button onClick={()=&gt;remove(book.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;&lt;/main&gt;;
+}
+// Notice: data is loaded with useEffect; events call POST or DELETE then refresh.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: editable reading list.
+const React = require(&#x27;react&#x27;);
+function ReadingListDemo() {
+  const [books,setBooks]=React.useState([]);
+  const [title,setTitle]=React.useState(&#x27;&#x27;);
+  async function refresh(){const r=await fetch(&#x27;/api/books&#x27;);const data=await r.json();
+    setBooks(data.books||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function add(e){e.preventDefault();await fetch(&#x27;/api/books&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({title})});
+    setTitle(&#x27;&#x27;);await refresh();}
+  async function remove(id){await fetch(&#x27;/api/books/&#x27;+id,{method:&#x27;DELETE&#x27;});await refresh();}
+  return &lt;main&gt;&lt;h1&gt;Reading list&lt;/h1&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={title} onChange={e=&gt;setTitle(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;
+    &lt;ul&gt;{books.map(book=&gt;&lt;li key={book.id}&gt;{book.title}
+    &lt;button onClick={()=&gt;remove(book.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;&lt;/main&gt;;
+}
+// Notice: data is loaded with useEffect; events call POST or DELETE then refresh.
+
+// POCKETLEDGER TASK: Implement client/App.jsx function App() with React hooks and JSX.
+//   useState for expenses, description, amount and summary; useEffect to fetch
+//   GET /api/expenses and GET /api/summary. Provide an editable description input
+//   and amount input with onChange, an Add expense submit/click handler sending
+//   POST /api/expenses JSON, and Delete buttons sending DELETE /api/expenses/:id.
+//   Refresh expenses and summary after edits; render a category summary, a list
+//   and title PocketLedger. Complete the function, export with module.exports.
+//   No extra libraries. Do not repeat this comment.
+// LAST STUDENT ERROR: Error: UI lacks state hook
+const React = require(&#x27;react&#x27;);
+function App() {
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>  const [expenses,setExpenses]=React.useState([]);
+  const [description,setDescription]=React.useState(&#x27;&#x27;);
+  const [amount,setAmount]=React.useState(&#x27;&#x27;);
+  const [summary,setSummary]=React.useState(&#x27;&#x27;);
+  async function refresh(){const r=await fetch(&#x27;/api/expenses&#x27;);const data=await r.json();
+    setExpenses(data.expenses||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function add(e){e.preventDefault();await fetch(&#x27;/api/expenses&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({description,amount})});
+    setDescription(&#x27;&#x27;);setAmount(&#x27;&#x27;);await refresh();}
+  async function remove(id){await fetch(&#x27;/api/expenses/&#x27;+id,{method:&#x27;DELETE&#x27;});await refresh();}
+  return &lt;main&gt;&lt;h1&gt;PocketLedger&lt;/h1&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={description} onChange={e=&gt;setDescription(e.target.value)}/&gt;
+    &lt;input value={amount} onChange={e=&gt;setAmount(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Category Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+    &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;</pre></details>
+</section><section class="attempt">
+<header><span class="number">#05</span>
+<h2>STORE — mentor round 2</h2>
+<span class="status fail">FAIL</span></header>
+<p>Student result: <strong>rejected</strong>.
+Output tokens: 650.</p>
+<p>Public test feedback: <code>Error: Transform failed with 1 error:
+&lt;stdin&gt;:15:11: ERROR: Expected identifier but found &quot;delete&quot;</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: persisted bookmarks.
+const fs = require(&#x27;node:fs&#x27;);
+function openBookmarks(filename) {
+  function read() {
+    if (!fs.existsSync(filename)) return [];
+    return JSON.parse(fs.readFileSync(filename, &#x27;utf8&#x27;));
+  }
+  function write(items) { fs.writeFileSync(filename, JSON.stringify(items)); }
+  return {
+    list: () =&gt; read(),
+    add: (bookmark) =&gt; { const all=read(); all.push(bookmark); write(all); return bookmark; },
+    remove: (url) =&gt; { const before=read(); const after=before.filter(x=&gt;x.url!==url);
+                       write(after); return before.length!==after.length; }
+  };
+}
+// Notice: on initial access avoid ENOENT; after EACH mutation write the JSON array.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: persisted bookmarks.
+const fs = require(&#x27;node:fs&#x27;);
+function openBookmarks(filename) {
+  function read() {
+    if (!fs.existsSync(filename)) return [];
+    return JSON.parse(fs.readFileSync(filename, &#x27;utf8&#x27;));
+  }
+  function write(items) { fs.writeFileSync(filename, JSON.stringify(items)); }
+  return {
+    list: () =&gt; read(),
+    add: (bookmark) =&gt; { const all=read(); all.push(bookmark); write(all); return bookmark; },
+    remove: (url) =&gt; { const before=read(); const after=before.filter(x=&gt;x.url!==url);
+                       write(after); return before.length!==after.length; }
+  };
+}
+// Notice: on initial access avoid ENOENT; after EACH mutation write the JSON array.
+
+// POCKETLEDGER TASK: Implement server/store.js createStore(filePath). Return methods
+//   list(), create(body), delete(id). On a NEW file path list() must return [].
+//   On each create or delete persist the complete JSON array using fs.writeFileSync.
+//   A new createStore(filePath) instance must load the prior state. Create returns
+//   an expense with a string id. Reject empty description and invalid/nonpositive
+//   integer amount_cents with Error. Delete returns boolean. Complete and close
+//   the function. No other packages.
+// LAST STUDENT ERROR: Error: ENOENT: no such file or directory, open &#x27;/tmp/pocket027-8wJCuC/expenses.json&#x27;
+const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>  function list() { return fs.readFileSync(filePath, &#x27;utf8&#x27;); }
+  function create(body) {
+    const list = list();
+    const expenses = JSON.parse(list);
+    const { url } = body;
+    if (!url) return Error(&#x27;Error: empty url&#x27;);
+    if (!Number.isInteger(parseInt(body.amount_cents))) return Error(&#x27;Error: invalid amount_cents&#x27;);
+    const expense = { url, amount_cents: Number.parseInt(body.amount_cents) };
+    if (expense.url) expenses.push(expense);
+    fs.writeFileSync(filePath, JSON.stringify(expenses));
+    return expense;
+  }
+  function delete(url) {
+    const list = list();
+    const expenses = JSON.parse(list);
+    const toDelete = expenses.filter(x =&gt; x.url !== url);
+    fs.writeFileSync(filePath, JSON.stringify(toDelete));
+    return toDelete.length !== expenses.length;
+  }
+  return { list, create, delete };
+}
+// TEST: testStore = createStore(&#x27;expenses.json&#x27;);
+// testStore.list(); // =&gt; []
+// testStore.create({ url: &#x27;http://google.com&#x27;, amount_cents: 100 }).then(
+//   expense =&gt; console.log(expense),
+//   error =&gt; console.error(error)
+// ); // =&gt; {url: &#x27;http://google.com&#x27;, amount_cents: 100}
+// testStore.create({ url: &#x27;http://google.com&#x27;, amount_cents: 5000 }).then(
+//   expense =&gt; console.log(expense),
+//   error =&gt; console.error(error)
+// ); // =&gt; Error: Error: invalid amount_cents
+// testStore.create({ url: &#x27;http://google.com&#x27;, amount_cents: 9000 }).then(
+//   expense =&gt; console.log(expense),
+//   error =&gt; console.error(error)
+// ); // =&gt; Error: Error: invalid amount_cents
+// testStore.create({ url: &#x27;http://google.com&#x27;, amount_cents: 100 }).then(
+//   expense =&gt; console.log(expense),
+//   error =&gt; console.error(error)
+// ); // =&gt; {url: &#x27;http://google.com&#x27;, amount_cents: 100}
+// testStore.delete(&#x27;http://google.com&#x27;); // =&gt; true
+// testStore.delete(&#x27;http://google.com&#x27;); // =&gt; false
+// testStore.list(); // =&gt; [{url: &#x27;http://google.com&#x27;, amount_cents: 100}]
+
+// POCKETLEDGER TASK: Implement server/store.js loadFromFile(filename). Return
+//   methods list(), create(body), delete(id). On a NEW file path list() must
+//   return [].
+//   On each create or delete persist the complete JSON array using fs.writeFileSync.
+//   A new createStore(filename) instance must load the prior state. Create returns
+//   an expense with a string id. Reject empty description and invalid/nonpositive
+//   integer amount_cents with Error. Delete returns boolean. Complete and close
+//   the function. No other packages.
+// LAST STUDENT ERROR: Error: ENOENT: no such file or directory, open &#x27;/tmp/pocket027-8wJ</pre></details>
+</section><section class="attempt">
+<header><span class="number">#06</span>
+<h2>API — mentor round 2</h2>
+<span class="status fail">FAIL</span></header>
+<p>Student result: <strong>rejected</strong>.
+Output tokens: 650.</p>
+<p>Public test feedback: <code>Error: Transform failed with 3 errors:
+&lt;stdin&gt;:22:6: ERROR: The symbol &quot;express&quot; has already been declared
+&lt;stdin&gt;:43:6: ERROR: The symbol &quot;express&quot; has already been declared
+&lt;stdin&gt;:46:25: ERROR: Unexpected end of file</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: reading-library API.
+const express = require(&#x27;express&#x27;);
+function makeLibrary(books) {
+  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(200).json({books:books.list()}));
+  server.post(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(201).json({book:books.add(req.body)}));
+  server.delete(&#x27;/api/books/:id&#x27;, (req,res) =&gt; res.json({deleted:books.remove(req.params.id)}));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: reading-library API.
+const express = require(&#x27;express&#x27;);
+function makeLibrary(books) {
+  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(200).json({books:books.list()}));
+  server.post(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(201).json({book:books.add(req.body)}));
+  server.delete(&#x27;/api/books/:id&#x27;, (req,res) =&gt; res.json({deleted:books.remove(req.params.id)}));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+
+// POCKETLEDGER TASK: Implement server/routes.js createApp(store, processor). All handlers
+//   MUST be defined INSIDE createApp, and it MUST return the Express app.
+//   Use express.json(); GET /api/expenses -&gt; {expenses:store.list()};
+//   POST /api/expenses -&gt; status 201 {expense:store.create(req.body)};
+//   DELETE /api/expenses/:id -&gt; {deleted:store.delete(req.params.id)};
+//   GET /api/summary -&gt; processor({expenses:store.list()}) directly as JSON.
+//   Do NOT app.listen() and do NOT call req/res outside route handlers.
+//   Complete the function, do not repeat this comment.
+// LAST STUDENT ERROR: ReferenceError: app is not defined
+const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(200).json({expenses:store.list()}));
+  server.post(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(201).json({expense:store.create(req.body)}));
+  server.delete(&#x27;/api/expenses/:id&#x27;, (req,res) =&gt; res.json({deleted:store.delete(req.params.id)}));
+  server.post(&#x27;/api/summary&#x27;, (req,res) =&gt; res.status(201).json(processor({expenses:store.list()})));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+
+// POCKETLEDGER TASK: Implement server/routes.js createApp(store, processor). All handlers
+//   MUST be defined INSIDE createApp, and it MUST return the Express app.
+//   Use express.json(); GET /api/expenses -&gt; {expenses:store.list()};
+//   POST /api/expenses -&gt; status 201 {expense:store.create(req.body)};
+//   DELETE /api/expenses/:id -&gt; {deleted:store.delete(req.params.id)};
+//   GET /api/summary -&gt; processor({expenses:store.list()}) directly as JSON.
+//   Do NOT app.listen() and do NOT call req/res outside route handlers.
+//   Complete the function, do not repeat this comment.
+// LAST STUDENT ERROR: ReferenceError: app is not defined
+const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(200).json({expenses:store.list()}));
+  server.post(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(201).json({expense:store.create(req.body)}));
+  server.delete(&#x27;/api/expenses/:id&#x27;, (req,res) =&gt; res.json({deleted:store.delete(req.params.id)}));
+  server.post(&#x27;/api/summary&#x27;, (req,res) =&gt; res.status(201).json(processor({expenses:store.list()})));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+
+// POCKETLEDGER TASK: Implement server/routes.js createApp(store, processor). All handlers
+//   MUST be defined INSIDE createApp, and it MUST return the Express app.
+//   Use express.json(); GET /api/expenses -&gt; {expenses:store.list()};
+//   POST /api/expenses -&gt; status 201 {expense:store.create(req.body)};
+//   DELETE /api/expenses/:id -&gt; {deleted:store.delete(req.params.id)};
+//   GET /api/summary -&gt; processor({expenses:store.list()}) directly as JSON.
+//   Do NOT app.listen() and do NOT call req/res outside route handlers.
+//   Complete the function, do not repeat this comment.
+// LAST STUDENT ERROR: ReferenceError: app is not defined
+const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+</pre></details>
+</section><section class="attempt">
+<header><span class="number">#07</span>
+<h2>UI — mentor round 2</h2>
+<span class="status fail">FAIL</span></header>
+<p>Student result: <strong>rejected</strong>.
+Output tokens: 900.</p>
+<p>Public test feedback: <code>Error: Transform failed with 1 error:
+&lt;stdin&gt;:36:6: ERROR: The symbol &quot;React&quot; has already been declared</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: editable reading list.
+const React = require(&#x27;react&#x27;);
+function ReadingListDemo() {
+  const [books,setBooks]=React.useState([]);
+  const [title,setTitle]=React.useState(&#x27;&#x27;);
+  async function refresh(){const r=await fetch(&#x27;/api/books&#x27;);const data=await r.json();
+    setBooks(data.books||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function add(e){e.preventDefault();await fetch(&#x27;/api/books&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({title})});
+    setTitle(&#x27;&#x27;);await refresh();}
+  async function remove(id){await fetch(&#x27;/api/books/&#x27;+id,{method:&#x27;DELETE&#x27;});await refresh();}
+  return &lt;main&gt;&lt;h1&gt;Reading list&lt;/h1&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={title} onChange={e=&gt;setTitle(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;
+    &lt;ul&gt;{books.map(book=&gt;&lt;li key={book.id}&gt;{book.title}
+    &lt;button onClick={()=&gt;remove(book.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;&lt;/main&gt;;
+}
+// Notice: data is loaded with useEffect; events call POST or DELETE then refresh.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: editable reading list.
+const React = require(&#x27;react&#x27;);
+function ReadingListDemo() {
+  const [books,setBooks]=React.useState([]);
+  const [title,setTitle]=React.useState(&#x27;&#x27;);
+  async function refresh(){const r=await fetch(&#x27;/api/books&#x27;);const data=await r.json();
+    setBooks(data.books||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function add(e){e.preventDefault();await fetch(&#x27;/api/books&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({title})});
+    setTitle(&#x27;&#x27;);await refresh();}
+  async function remove(id){await fetch(&#x27;/api/books/&#x27;+id,{method:&#x27;DELETE&#x27;});await refresh();}
+  return &lt;main&gt;&lt;h1&gt;Reading list&lt;/h1&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={title} onChange={e=&gt;setTitle(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;
+    &lt;ul&gt;{books.map(book=&gt;&lt;li key={book.id}&gt;{book.title}
+    &lt;button onClick={()=&gt;remove(book.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;&lt;/main&gt;;
+}
+// Notice: data is loaded with useEffect; events call POST or DELETE then refresh.
+
+// POCKETLEDGER TASK: Implement client/App.jsx function App() with React hooks and JSX.
+//   useState for expenses, description, amount and summary; useEffect to fetch
+//   GET /api/expenses and GET /api/summary. Provide an editable description input
+//   and amount input with onChange, an Add expense submit/click handler sending
+//   POST /api/expenses JSON, and Delete buttons sending DELETE /api/expenses/:id.
+//   Refresh expenses and summary after edits; render a category summary, a list
+//   and title PocketLedger. Complete the function, export with module.exports.
+//   No extra libraries. Do not repeat this comment.
+// LAST STUDENT ERROR: Error: UI lacks state hook
+const React = require(&#x27;react&#x27;);
+function App() {
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>  const [expenses,setExpenses]=React.useState([]);
+  const [description,setDescription]=React.useState(&#x27;&#x27;);
+  const [amount,setAmount]=React.useState(&#x27;&#x27;);
+  async function refresh(){const r=await fetch(&#x27;/api/expenses&#x27;);const data=await r.json();
+    setExpenses(data.expenses||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function add(e){e.preventDefault();await fetch(&#x27;/api/expenses&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({description,
+    amount})});
+    setDescription(&#x27;&#x27;);await refresh();}
+  async function remove(id){await fetch(&#x27;/api/expenses/&#x27;+id,{method:&#x27;DELETE&#x27;});await refresh();}
+  return &lt;main&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={description} onChange={e=&gt;setDescription(e.target.value)}/&gt;
+    &lt;input value={amount} onChange={e=&gt;setAmount(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;
+    &lt;ul&gt;&lt;li&gt;
+      {expenses.map(expense=&gt;&lt;Expense description={expense.description}
+        amount={expense.amount} summary={expense.summary} key={expense.id}/&gt;)}&lt;/li&gt;&lt;/ul&gt;
+    &lt;ul&gt;&lt;li&gt;
+      &lt;Category summary=&quot;Category 1&quot; summaryCost={10000} expenses={expenses.filter(e=&gt;e.summary===&#x27;Category 1&#x27;)}/&gt;&lt;/li&gt;
+    &lt;/ul&gt;&lt;/main&gt;;
+}
+// Notice: data is loaded with useEffect; events call POST or DELETE then refresh.
+
+// POCKETLEDGER TASK: Implement client/App.jsx function App() with React hooks and JSX.
+//   useState for expenses, description, amount and summary; useEffect to fetch
+//   GET /api/expenses and GET /api/summary. Provide an editable description input
+//   and amount input with onChange, an Add expense submit/click handler sending
+//   POST /api/expenses JSON, and Delete buttons sending DELETE /api/expenses/:id.
+//   Refresh expenses and summary after edits; render a category summary, a list
+//   and title PocketLedger. Complete the function, export with module.exports.
+//   No extra libraries. Do not repeat this comment.
+// LAST STUDENT ERROR: Error: UI lacks state hook
+const React = require(&#x27;react&#x27;);
+function App() {
+  const [expenses,setExpenses]=React.useState([]);
+  const [description,setDescription]=React.useState(&#x27;&#x27;);
+  const [amount,setAmount]=React.useState(&#x27;&#x27;);
+  async function refresh(){const r=await fetch(&#x27;/api/expenses&#x27;);const data=await r.json();
+    setExpenses(data.expenses||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function add(e){e.preventDefault();await fetch(&#x27;/api/expenses&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({description,amount})});
+    setDescription(&#x27;&#x27;);await refresh();}
+  async function remove(id){await fetch(&#x27;/api/expenses/&#x27;+id,{method:&#x27;DELETE&#x27;});await refresh();}
+  return &lt;main&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={description} onChange={e=&gt;setDescription(e.target.value)}/&gt;
+    &lt;input value={amount} onChange={e=&gt;setAmount(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;
+    &lt;ul&gt;&lt;li&gt;
+      {expenses.map(expense=&gt;&lt;Expense description={expense.description}
+        amount={expense.amount} summary={expense.summary} key={expense.id}/&gt;)}&lt;/li&gt;&lt;/ul&gt;
+    &lt;ul&gt;&lt;li&gt;
+      &lt;Category summary=&quot;Category 1&quot; summaryCost={10000} expenses={expenses.filter(e=&gt;e.summary===&#x27;Category 1&#x27;)}/&gt;&lt;/li&gt;
+    &lt;/ul&gt;&lt;/main&gt;;
+}
+// Notice: data is loaded with useEffect; events call POST or DELETE then refresh.
+
+// POCKETLEDGER TASK: Implement client/App.jsx function App() with React hooks and JSX.
+//   useState for expenses, description, amount and summary; useEffect to fetch
+//   GET /api/expenses and GET /api/summary. Provide an editable description input
+//   and amount input with onChange, an Add expense submit/click handler sending
+//   POST /api/expenses JSON, and Delete buttons sending DELETE /api/expenses/:id.
+//   Refresh expenses and summary after edits; render a category summary, a list
+//</pre></details>
+</section><section class="attempt">
+<header><span class="number">#08</span>
+<h2>STORE — mentor round 3</h2>
+<span class="status fail">FAIL</span></header>
+<p>Student result: <strong>rejected</strong>.
+Output tokens: 650.</p>
+<p>Public test feedback: <code>Error: Transform failed with 1 error:
+&lt;stdin&gt;:12:11: ERROR: Expected identifier but found &quot;delete&quot;</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: persisted bookmarks.
+const fs = require(&#x27;node:fs&#x27;);
+function openBookmarks(filename) {
+  function read() {
+    if (!fs.existsSync(filename)) return [];
+    return JSON.parse(fs.readFileSync(filename, &#x27;utf8&#x27;));
+  }
+  function write(items) { fs.writeFileSync(filename, JSON.stringify(items)); }
+  return {
+    list: () =&gt; read(),
+    add: (bookmark) =&gt; { const all=read(); all.push(bookmark); write(all); return bookmark; },
+    remove: (url) =&gt; { const before=read(); const after=before.filter(x=&gt;x.url!==url);
+                       write(after); return before.length!==after.length; }
+  };
+}
+// Notice: on initial access avoid ENOENT; after EACH mutation write the JSON array.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: persisted bookmarks.
+const fs = require(&#x27;node:fs&#x27;);
+function openBookmarks(filename) {
+  function read() {
+    if (!fs.existsSync(filename)) return [];
+    return JSON.parse(fs.readFileSync(filename, &#x27;utf8&#x27;));
+  }
+  function write(items) { fs.writeFileSync(filename, JSON.stringify(items)); }
+  return {
+    list: () =&gt; read(),
+    add: (bookmark) =&gt; { const all=read(); all.push(bookmark); write(all); return bookmark; },
+    remove: (url) =&gt; { const before=read(); const after=before.filter(x=&gt;x.url!==url);
+                       write(after); return before.length!==after.length; }
+  };
+}
+// Notice: on initial access avoid ENOENT; after EACH mutation write the JSON array.
+
+// POCKETLEDGER TASK: Implement server/store.js createStore(filePath). Return methods
+//   list(), create(body), delete(id). On a NEW file path list() must return [].
+//   On each create or delete persist the complete JSON array using fs.writeFileSync.
+//   A new createStore(filePath) instance must load the prior state. Create returns
+//   an expense with a string id. Reject empty description and invalid/nonpositive
+//   integer amount_cents with Error. Delete returns boolean. Complete and close
+//   the function. No other packages.
+// LAST STUDENT ERROR: Error: ENOENT: no such file or directory, open &#x27;/tmp/pocket027-8wJCuC/expenses.json&#x27;
+// REPAIR CHECKLIST: Use all response fields. Close all blocks.
+const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>  let state = [];
+  function list() { return state; }
+  function create(body) {
+    let { amount_cents, description } = body;
+    if (amount_cents &lt; 0 || !Number.isInteger(amount_cents)) throw Error(&#x27;Invalid amount&#x27;);
+    if (description.length === 0) throw Error(&#x27;Invalid description&#x27;);
+    state = state.concat(body);
+    return body;
+  }
+  function delete(id) { state = state.filter(x =&gt; x.id !== id); }
+  return { list, create, delete };
+}
+// POCKETLEDGER TASK: Implement server/store.js delete(id). On a NEW file path delete()
+//   must return boolean. Complete and close the function. No other packages.
+const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+  let state = [];
+  function list() { return state; }
+  function create(body) {
+    let { amount_cents, description } = body;
+    if (amount_cents &lt; 0 || !Number.isInteger(amount_cents)) throw Error(&#x27;Invalid amount&#x27;);
+    if (description.length === 0) throw Error(&#x27;Invalid description&#x27;);
+    state = state.concat(body);
+    return body;
+  }
+  function delete(id) { state = state.filter(x =&gt; x.id !== id); }
+  return { list, create, delete };
+}
+
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore } = require(&#x27;./server/store.js&#x27;);
+const { createStore }</pre></details>
+</section><section class="attempt">
+<header><span class="number">#09</span>
+<h2>API — mentor round 3</h2>
+<span class="status fail">FAIL</span></header>
+<p>Student result: <strong>rejected</strong>.
+Output tokens: 251.</p>
+<p>Public test feedback: <code>ReferenceError: Store is not defined</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: reading-library API.
+const express = require(&#x27;express&#x27;);
+function makeLibrary(books) {
+  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(200).json({books:books.list()}));
+  server.post(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(201).json({book:books.add(req.body)}));
+  server.delete(&#x27;/api/books/:id&#x27;, (req,res) =&gt; res.json({deleted:books.remove(req.params.id)}));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: reading-library API.
+const express = require(&#x27;express&#x27;);
+function makeLibrary(books) {
+  const server = express();
+  server.use(express.json());
+  server.get(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(200).json({books:books.list()}));
+  server.post(&#x27;/api/books&#x27;, (req,res) =&gt; res.status(201).json({book:books.add(req.body)}));
+  server.delete(&#x27;/api/books/:id&#x27;, (req,res) =&gt; res.json({deleted:books.remove(req.params.id)}));
+  return server;
+}
+// Notice: every server.route() is INSIDE the factory, then return server.
+
+// POCKETLEDGER TASK: Implement server/routes.js createApp(store, processor). All handlers
+//   MUST be defined INSIDE createApp, and it MUST return the Express app.
+//   Use express.json(); GET /api/expenses -&gt; {expenses:store.list()};
+//   POST /api/expenses -&gt; status 201 {expense:store.create(req.body)};
+//   DELETE /api/expenses/:id -&gt; {deleted:store.delete(req.params.id)};
+//   GET /api/summary -&gt; processor({expenses:store.list()}) directly as JSON.
+//   Do NOT app.listen() and do NOT call req/res outside route handlers.
+//   Complete the function, do not repeat this comment.
+// LAST STUDENT ERROR: ReferenceError: app is not defined
+// REPAIR CHECKLIST: Use all response fields. Close all blocks.
+const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>  const app = express();
+  app.use(express.json());
+  app.get(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(200).json({expenses:store.list()}));
+  app.post(&#x27;/api/expenses&#x27;, (req,res) =&gt; res.status(201).json({expense:processor(req.body)}));
+  app.delete(&#x27;/api/expenses/:id&#x27;, (req,res) =&gt; res.json({deleted:processor(req.params.id)}));
+  app.get(&#x27;/api/summary&#x27;, (req,res) =&gt; res.json(processor(store.list())));
+  return app;
+}
+// LAST STUDENT ERROR: ReferenceError: processor is not defined
+// REPAIR CHECKLIST: Use all response fields. Close all blocks.
+const processor = (expenses) =&gt; {
+  let total = 0;
+  for (const expense of expenses) {
+    total += expense.amount;
+  }
+  return {total:total, expenses};
+}
+const store = new Store();
+const app = createApp(store, processor);
+app.listen(3000);
+// REPAIR CHECKLIST: Use all response fields. Close all blocks.
+// REPAIR CHECKLIST: Use all response fields. Close all blocks.</pre></details>
+</section><section class="attempt">
+<header><span class="number">#10</span>
+<h2>UI — mentor round 3</h2>
+<span class="status fail">FAIL</span></header>
+<p>Student result: <strong>rejected</strong>.
+Output tokens: 900.</p>
+<p>Public test feedback: <code>Error: Transform failed with 3 errors:
+&lt;stdin&gt;:48:6: ERROR: The symbol &quot;React&quot; has already been declared
+&lt;stdin&gt;:67:70: ERROR: The constant &quot;data&quot; must be initialized
+&lt;stdin&gt;:68:19: ERROR: Unexpected end of file</code></p>
+<details><summary>What the teacher demonstrated (a different task)</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: editable reading list.
+const React = require(&#x27;react&#x27;);
+function ReadingListDemo() {
+  const [books,setBooks]=React.useState([]);
+  const [title,setTitle]=React.useState(&#x27;&#x27;);
+  async function refresh(){const r=await fetch(&#x27;/api/books&#x27;);const data=await r.json();
+    setBooks(data.books||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function add(e){e.preventDefault();await fetch(&#x27;/api/books&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({title})});
+    setTitle(&#x27;&#x27;);await refresh();}
+  async function remove(id){await fetch(&#x27;/api/books/&#x27;+id,{method:&#x27;DELETE&#x27;});await refresh();}
+  return &lt;main&gt;&lt;h1&gt;Reading list&lt;/h1&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={title} onChange={e=&gt;setTitle(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;
+    &lt;ul&gt;{books.map(book=&gt;&lt;li key={book.id}&gt;{book.title}
+    &lt;button onClick={()=&gt;remove(book.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;&lt;/main&gt;;
+}
+// Notice: data is loaded with useEffect; events call POST or DELETE then refresh.
+</pre></details>
+<details><summary>Exact student prompt</summary><pre>// TEACHER&#x27;S WORKED EXAMPLE from an UNRELATED domain: editable reading list.
+const React = require(&#x27;react&#x27;);
+function ReadingListDemo() {
+  const [books,setBooks]=React.useState([]);
+  const [title,setTitle]=React.useState(&#x27;&#x27;);
+  async function refresh(){const r=await fetch(&#x27;/api/books&#x27;);const data=await r.json();
+    setBooks(data.books||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function add(e){e.preventDefault();await fetch(&#x27;/api/books&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({title})});
+    setTitle(&#x27;&#x27;);await refresh();}
+  async function remove(id){await fetch(&#x27;/api/books/&#x27;+id,{method:&#x27;DELETE&#x27;});await refresh();}
+  return &lt;main&gt;&lt;h1&gt;Reading list&lt;/h1&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={title} onChange={e=&gt;setTitle(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;
+    &lt;ul&gt;{books.map(book=&gt;&lt;li key={book.id}&gt;{book.title}
+    &lt;button onClick={()=&gt;remove(book.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;&lt;/main&gt;;
+}
+// Notice: data is loaded with useEffect; events call POST or DELETE then refresh.
+
+// POCKETLEDGER TASK: Implement client/App.jsx function App() with React hooks and JSX.
+//   useState for expenses, description, amount and summary; useEffect to fetch
+//   GET /api/expenses and GET /api/summary. Provide an editable description input
+//   and amount input with onChange, an Add expense submit/click handler sending
+//   POST /api/expenses JSON, and Delete buttons sending DELETE /api/expenses/:id.
+//   Refresh expenses and summary after edits; render a category summary, a list
+//   and title PocketLedger. Complete the function, export with module.exports.
+//   No extra libraries. Do not repeat this comment.
+// LAST STUDENT ERROR: Error: UI lacks state hook
+// REPAIR CHECKLIST: Use all response fields. Close all blocks.
+const React = require(&#x27;react&#x27;);
+function App() {
+</pre></details>
+<details><summary>Qwen's raw generated continuation</summary><pre>  const [expenses,setExpenses]=React.useState([]);
+  const [summary,setSummary]=React.useState(&#x27;&#x27;);
+  const [description,setDescription]=React.useState(&#x27;&#x27;);
+  async function add(e){e.preventDefault();
+    await fetch(&#x27;/api/expenses&#x27;,{method:&#x27;POST&#x27;,
+      headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({description,
+        amount:summary,category:expenses[0].category})});
+    setDescription(&#x27;&#x27;);setSummary(&#x27;&#x27;);
+    setExpenses([]);}
+  async function remove(id){await fetch(&#x27;/api/expenses/&#x27;+id,{method:&#x27;DELETE&#x27;});}
+  async function removeCategory(id){await fetch(&#x27;/api/summary&#x27;,{method:&#x27;DELETE&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({category:id})});
+    setSummary(&#x27;&#x27;);setExpenses([]);}
+  async function addCategory(e){e.preventDefault();await fetch(&#x27;/api/summary&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({category:summary})});
+    setDescription(&#x27;&#x27;);setSummary(&#x27;&#x27;);
+    setExpenses([]);}
+  async function refresh(){const r=await fetch(&#x27;/api/expenses&#x27;);const data=await r.json();
+    setExpenses(data.expenses||[]);}
+  React.useEffect(()=&gt;{refresh();},[]);
+  async function refreshSummary(){const r=await fetch(&#x27;/api/summary&#x27;);
+    const data=await r.json();setSummary(data.summary||&#x27;&#x27;);}
+  React.useEffect(()=&gt;{refreshSummary();},[]);
+  return &lt;main&gt;&lt;h1&gt;PocketLedger&lt;/h1&gt;&lt;form onSubmit={add}&gt;
+    &lt;input value={description} onChange={e=&gt;setDescription(e.target.value)}/&gt;
+    &lt;input value={summary} onChange={e=&gt;setSummary(e.target.value)}/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;&lt;/form&gt;&lt;h2&gt;Expenses&lt;/h2&gt;
+    &lt;ul&gt;{expenses.map(expense=&gt;&lt;li key={expense.id}&gt;{expense.description}
+      &lt;button onClick={()=&gt;remove(expense.id)}&gt;Remove&lt;/button&gt;&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;h2&gt;Summary&lt;/h2&gt;
+    &lt;input value={summary} onChange={e=&gt;setSummary(e.target.value)}/&gt;
+    &lt;button onClick={addCategory}&gt;Add Category&lt;/button&gt;&lt;/main&gt;;
+}
+// Notice: data is loaded with useEffect; events call POST or DELETE then refresh.
+
+// POCKETLEDGER TASK: Implement client/App.jsx function App() with React hooks and JSX.
+//   useState for expenses, description, amount and summary; useEffect to fetch
+//   GET /api/expenses and GET /api/summary. Provide an editable description input
+//   and amount input with onChange, an Add expense submit/click handler sending
+//   POST /api/expenses JSON, and Delete buttons sending DELETE /api/expenses/:id.
+//   Refresh expenses and summary after edits; render a category summary, a list
+//   and title PocketLedger. Complete the function, export with module.exports.
+//   No extra libraries. Do not repeat this comment.
+// LAST STUDENT ERROR: UI lacks state hook
+// REPAIR CHECKLIST: Use all response fields. Close all blocks.
+const React = require(&#x27;react&#x27;);
+function App() {
+  const [expenses,setExpenses]=React.useState([]);
+  const [summary,setSummary]=React.useState(&#x27;&#x27;);
+  const [description,setDescription]=React.useState(&#x27;&#x27;);
+  async function add(e){e.preventDefault();
+    await fetch(&#x27;/api/expenses&#x27;,{method:&#x27;POST&#x27;,
+      headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({description,
+        amount:summary,category:expenses[0].category})});
+    setDescription(&#x27;&#x27;);setSummary(&#x27;&#x27;);
+    setExpenses([]);}
+  async function remove(id){await fetch(&#x27;/api/expenses/&#x27;+id,{method:&#x27;DELETE&#x27;});}
+  async function removeCategory(id){await fetch(&#x27;/api/summary&#x27;,{method:&#x27;DELETE&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({category:id})});
+    setSummary(&#x27;&#x27;);setExpenses([]);}
+  async function addCategory(e){e.preventDefault();await fetch(&#x27;/api/summary&#x27;,{method:&#x27;POST&#x27;,
+    headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},body:JSON.stringify({category:summary})});
+    setDescription(&#x27;&#x27;);setSummary(&#x27;&#x27;);
+    setExpenses([]);}
+  async function refresh(){const r=await fetch(&#x27;/api/expenses&#x27;);const data</pre></details>
+</section><p class="lede">All generated code was evaluated only inside restricted,
+network-disabled, read-only and nonroot Docker. A green check on static UI
+heuristics is not proof of browser-click functionality.</p></main></body></html>

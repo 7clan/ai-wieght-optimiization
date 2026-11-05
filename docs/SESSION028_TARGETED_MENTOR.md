@@ -25,8 +25,10 @@ the public errors from its preceding Session027 attempt.
 3. Sample up to three model continuations for each failing role. Execute each
    candidate only in read-only, nonroot, network-disabled, bounded Docker.
 4. Accept only public score improvements, role by role. Freeze selection.
-5. Evaluate both baseline and selected code on newly authored private values
-   unused in Session027. Preserve all model raw text and teacher messages.
+5. Evaluate both baseline and selected code on two new private nonempty values,
+   plus one repeated public empty-list control case. Preserve all model raw
+   text and teacher messages. The three-value result is **exploratory**, not
+   a fully independent holdout due to that intentional control overlap.
 6. Publish a sanitized **static** preview and honest independent holdout
    results. A page showing React markup does not establish browser clicks or
    live server operations.
