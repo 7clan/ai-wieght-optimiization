@@ -1,0 +1,27 @@
+{
+  "schema": "public_teacher_patterns_v1",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "provenance": "Session023-024 public, mentor-observed feedback only; no held-out test values",
+  "patterns": [
+    {
+      "id": "express-response-shape",
+      "domain": "express",
+      "tags": ["express", "api", "res.json", "get", "post", "patch", "contract", "json", "response", "envelope"],
+      "observed_failure": "An API route returned the correct underlying data in the wrong JSON envelope.",
+      "general_rule": "Before writing a route, list the exact response keys and nesting expected by its contract; then place the result under those keys.",
+      "verification": "Check HTTP status and the entire response shape in a public route test, not just whether the data exists.",
+      "source": "session023_public_feedback"
+    },
+    {
+      "id": "copy-structure-not-api-names",
+      "domain": "express",
+      "tags": ["express", "api", "delete", "remove", "store", "interface", "method", "routes", "call"],
+      "observed_failure": "A DELETE route copied remove() from an analogous example although its available store interface used delete().",
+      "general_rule": "Transfer a worked example's structure, not its identifiers. Re-read the current task's allowed interface and use its exact method name and argument signature.",
+      "verification": "Execute the public DELETE test and verify its documented boolean response. If it fails, compare the called method name to the supplied interface.",
+      "source": "session024_public_feedback"
+    }
+  ]
+}
