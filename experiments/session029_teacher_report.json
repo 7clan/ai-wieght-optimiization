@@ -1,0 +1,199 @@
+{
+  "session": "029",
+  "status": "completed",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "student_inference_calls": 0,
+  "training_steps": 0,
+  "weight_edits": 0,
+  "qwen_only": {
+    "public": {
+      "phase": "public",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-icfv5x/expenses.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "ReferenceError: app is not defined"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks state hook"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "api: ReferenceError: app is not defined",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-icfv5x/expenses.json'",
+        "ui: Error: UI lacks state hook"
+      ],
+      "completed_checks": 2
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-JwJoCF/expenses.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "ReferenceError: app is not defined"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks state hook"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "api: ReferenceError: app is not defined",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-JwJoCF/expenses.json'",
+        "ui: Error: UI lacks state hook"
+      ],
+      "completed_checks": 2
+    }
+  },
+  "teacher_corrected": {
+    "public": {
+      "phase": "public",
+      "integrated": true,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "persistence": true,
+        "store_delete": true,
+        "get": true,
+        "post": true,
+        "summary": true,
+        "delete": true,
+        "ui_wiring": true,
+        "integration": true
+      },
+      "ui_markup": "<div class=\"ledger\"><header><p class=\"eyebrow\">Your personal budget</p><h1>PocketLedger</h1><p>Track small expenses and understand where your money goes.</p></header><section class=\"summary\"><h2>Overview</h2><p class=\"total\">0.00</p><p>0 expenses recorded</p><ul></ul></section><section><h2>Add an expense</h2><form><label>Description<input aria-label=\"Description\" value=\"\"/></label><label>Amount in cents<input aria-label=\"Amount in cents\" type=\"number\" min=\"1\" value=\"\"/></label><label>Category<select><option value=\"other\" selected=\"\">Other</option><option value=\"food\">Food</option><option value=\"travel\">Travel</option></select></label><button type=\"submit\">Add Expense</button></form><p aria-live=\"polite\"></p></section><section><h2>Recent expenses</h2><p>No expenses yet.</p></section></div>",
+      "failure_reasons": [],
+      "completed_checks": 13
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": true,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "persistence": true,
+        "store_delete": true,
+        "get": true,
+        "post": true,
+        "summary": true,
+        "delete": true,
+        "ui_wiring": true,
+        "integration": true
+      },
+      "ui_markup": "<div class=\"ledger\"><header><p class=\"eyebrow\">Your personal budget</p><h1>PocketLedger</h1><p>Track small expenses and understand where your money goes.</p></header><section class=\"summary\"><h2>Overview</h2><p class=\"total\">0.00</p><p>0 expenses recorded</p><ul></ul></section><section><h2>Add an expense</h2><form><label>Description<input aria-label=\"Description\" value=\"\"/></label><label>Amount in cents<input aria-label=\"Amount in cents\" type=\"number\" min=\"1\" value=\"\"/></label><label>Category<select><option value=\"other\" selected=\"\">Other</option><option value=\"food\">Food</option><option value=\"travel\">Travel</option></select></label><button type=\"submit\">Add Expense</button></form><p aria-live=\"polite\"></p></section><section><h2>Recent expenses</h2><p>No expenses yet.</p></section></div>",
+      "failure_reasons": [],
+      "completed_checks": 13
+    }
+  },
+  "qwen_unchanged_roles": [
+    "logic",
+    "css"
+  ],
+  "teacher_rewritten_roles": [
+    "store",
+    "api",
+    "ui"
+  ],
+  "authorship": {
+    "logic": "Qwen-only, unchanged",
+    "store": "teacher correction, NOT Qwen-only",
+    "api": "teacher correction, NOT Qwen-only",
+    "ui": "teacher correction, NOT Qwen-only",
+    "css": "Qwen-only, unchanged"
+  },
+  "model_full_app_success_claim": false,
+  "ui_browser_clicks_verified": false,
+  "holdout_disclosure": "2 novel nonempty cases plus 1 repeated public empty-list control",
+  "wall_seconds": 1.73
+}

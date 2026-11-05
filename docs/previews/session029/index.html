@@ -1,0 +1,283 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'">
+<title>PocketLedger teacher-corrected app — exact source</title>
+<style>*{box-sizing:border-box}body{background:#101a31;color:#edf3ff;font:15px system-ui;margin:0}
+main{max-width:1050px;margin:50px auto;padding:20px}h1{font-size:40px}
+p{color:#b8c8e0;line-height:1.6}.badges{display:flex;flex-wrap:wrap;gap:9px;margin:25px 0}
+.badge{font-weight:700;padding:8px 12px;border-radius:15px;background:#4c5566;font-size:12px}
+.pass{background:#12543c;color:#b5ffcf}.fail{background:#5d2738;color:#ffd6de}
+section,details{background:#1a2a45;border:1px solid #344a6e;border-radius:12px;
+padding:19px;margin:17px 0}.render{background:#fff;color:#172341;padding:26px;
+border-radius:8px;overflow:auto}.render input,.render button{margin:7px;padding:8px}
+summary{font-weight:700;cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;
+font-size:12px;line-height:1.6}a{color:#a4e8ff}</style></head>
+<body><main><h1>PocketLedger — teacher-corrected</h1>
+<p>This is a real full-stack SOURCE integration verified inside restricted Docker.
+Qwen authored the Python summary and original CSS; the teacher rewrote storage,
+Express and React after observing Qwen's failures. The test evidence is linked
+alongside every file. No claim of independent 0.5B full-app success is made.
+This safe source preview is static and scripts cannot run here.</p>
+<div class="badges"><span class="badge pass">LOGIC: PASS (Qwen-only, unchanged)</span><span class="badge pass">STORE: PASS (teacher correction, NOT Qwen-only)</span><span class="badge pass">API: PASS (teacher correction, NOT Qwen-only)</span><span class="badge pass">UI: PASS (teacher correction, NOT Qwen-only)</span><span class="badge pass">CSS: PASS (Qwen-only, unchanged)</span></div><section><h2>Actual React markup</h2>
+<div class="render"><div class="ledger"><header><p class="eyebrow">Your personal budget</p><h1>PocketLedger</h1><p>Track small expenses and understand where your money goes.</p></header><section class="summary"><h2>Overview</h2><p class="total">0.00</p><p>0 expenses recorded</p><ul></ul></section><section><h2>Add an expense</h2><p></p></section><section><h2>Recent expenses</h2><p>No expenses yet.</p></section></div></div></section>
+<section><h2>Verification</h2><p>Docker-integrated result: PASS</p></section><details><summary>backend/logic.py — Qwen-only, unchanged</summary><pre>def transform(payload):
+    expenses = payload.get(&#x27;expenses&#x27;, [])
+    by_category = {}
+    for expense in expenses:
+        category = expense[&#x27;category&#x27;]
+        by_category[category] = by_category.get(category, 0) + expense[&#x27;amount_cents&#x27;]
+    return {&#x27;count&#x27;: len(expenses), &#x27;total_cents&#x27;: sum(expense[&#x27;amount_cents&#x27;] for expense in expenses),
+            &#x27;by_category&#x27;: by_category}</pre></details><details><summary>server/store.js — teacher correction, NOT Qwen-only</summary><pre>const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+  function read() {
+    if (!fs.existsSync(filePath)) return [];
+    return JSON.parse(fs.readFileSync(filePath, &#x27;utf8&#x27;));
+  }
+  function write(items) {
+    fs.writeFileSync(filePath, JSON.stringify(items, null, 2));
+  }
+  return {
+    list() {
+      return read();
+    },
+    create(body) {
+      if (!body || typeof body.description !== &#x27;string&#x27; ||
+          !body.description.trim() || !Number.isInteger(body.amount_cents) ||
+          body.amount_cents &lt;= 0) {
+        throw new Error(&#x27;Description and positive integer amount required&#x27;);
+      }
+      const items = read();
+      const id = String(items.reduce((max, row) =&gt; Math.max(max, Number(row.id) || 0), 0) + 1);
+      const expense = {
+        id,
+        description: body.description.trim(),
+        amount_cents: body.amount_cents,
+        category: [&#x27;food&#x27;, &#x27;travel&#x27;, &#x27;other&#x27;].includes(body.category) ? body.category : &#x27;other&#x27;
+      };
+      items.push(expense);
+      write(items);
+      return expense;
+    },
+    delete(id) {
+      const items = read();
+      const filtered = items.filter(row =&gt; row.id !== String(id));
+      if (filtered.length === items.length) return false;
+      write(filtered);
+      return true;
+    }
+  };
+}
+</pre></details><details><summary>server/routes.js — teacher correction, NOT Qwen-only</summary><pre>const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+  const app = express();
+  app.use(express.json());
+  app.get(&#x27;/api/expenses&#x27;, (_req, res) =&gt; {
+    res.status(200).json({expenses: store.list()});
+  });
+  app.post(&#x27;/api/expenses&#x27;, (req, res) =&gt; {
+    try {
+      res.status(201).json({expense: store.create(req.body)});
+    } catch (error) {
+      res.status(400).json({error: error.message});
+    }
+  });
+  app.delete(&#x27;/api/expenses/:id&#x27;, (req, res) =&gt; {
+    res.status(200).json({deleted: store.delete(req.params.id)});
+  });
+  app.get(&#x27;/api/summary&#x27;, (_req, res) =&gt; {
+    res.status(200).json(processor({expenses: store.list()}));
+  });
+  return app;
+}
+</pre></details><details><summary>client/App.jsx — teacher correction, NOT Qwen-only</summary><pre>const React = require(&#x27;react&#x27;);
+function App() {
+  const [expenses, setExpenses] = React.useState([]);
+  const [summary, setSummary] = React.useState({count: 0, total_cents: 0, by_category: {}});
+  const [description, setDescription] = React.useState(&#x27;&#x27;);
+  const [amount, setAmount] = React.useState(&#x27;&#x27;);
+  const [category, setCategory] = React.useState(&#x27;other&#x27;);
+  const [notice, setNotice] = React.useState(&#x27;&#x27;);
+
+  async function refresh() {
+    const [expensesResponse, summaryResponse] = await Promise.all([
+      fetch(&#x27;/api/expenses&#x27;), fetch(&#x27;/api/summary&#x27;)
+    ]);
+    if (!expensesResponse.ok || !summaryResponse.ok) throw new Error(&#x27;Loading expenses failed&#x27;);
+    const expensesData = await expensesResponse.json();
+    const summaryData = await summaryResponse.json();
+    setExpenses(expensesData.expenses);
+    setSummary(summaryData);
+  }
+
+  React.useEffect(() =&gt; {
+    refresh().catch(error =&gt; setNotice(error.message));
+  }, []);
+
+  async function addExpense(event) {
+    event.preventDefault();
+    const cents = Number(amount);
+    if (!description.trim() || !Number.isInteger(cents) || cents &lt;= 0) {
+      setNotice(&#x27;Enter a description and positive amount in cents.&#x27;);
+      return;
+    }
+    try {
+      const response = await fetch(&#x27;/api/expenses&#x27;, {
+        method: &#x27;POST&#x27;,
+        headers: {&#x27;Content-Type&#x27;: &#x27;application/json&#x27;},
+        body: JSON.stringify({description: description.trim(), amount_cents: cents, category})
+      });
+      if (!response.ok) throw new Error(&#x27;Could not add expense&#x27;);
+      setDescription(&#x27;&#x27;);
+      setAmount(&#x27;&#x27;);
+      setNotice(&#x27;Expense added.&#x27;);
+      await refresh();
+    } catch (error) {
+      setNotice(error.message);
+    }
+  }
+
+  async function deleteExpense(id) {
+    try {
+      const response = await fetch(&#x27;/api/expenses/&#x27; + encodeURIComponent(id), {method: &#x27;DELETE&#x27;});
+      if (!response.ok) throw new Error(&#x27;Could not delete expense&#x27;);
+      setNotice(&#x27;Expense deleted.&#x27;);
+      await refresh();
+    } catch (error) {
+      setNotice(error.message);
+    }
+  }
+
+  return &lt;div className=&quot;ledger&quot;&gt;
+    &lt;header&gt;&lt;p className=&quot;eyebrow&quot;&gt;Your personal budget&lt;/p&gt;&lt;h1&gt;PocketLedger&lt;/h1&gt;
+      &lt;p&gt;Track small expenses and understand where your money goes.&lt;/p&gt;&lt;/header&gt;
+    &lt;section className=&quot;summary&quot;&gt;
+      &lt;h2&gt;Overview&lt;/h2&gt;
+      &lt;p className=&quot;total&quot;&gt;{(summary.total_cents / 100).toFixed(2)}&lt;/p&gt;
+      &lt;p&gt;{summary.count} expenses recorded&lt;/p&gt;
+      &lt;ul&gt;{Object.entries(summary.by_category).map(([name, cents]) =&gt;
+        &lt;li key={name}&gt;{name}: {(cents / 100).toFixed(2)}&lt;/li&gt;)}&lt;/ul&gt;
+    &lt;/section&gt;
+    &lt;section&gt;&lt;h2&gt;Add an expense&lt;/h2&gt;
+      &lt;form onSubmit={addExpense}&gt;
+        &lt;label&gt;Description&lt;input aria-label=&quot;Description&quot; value={description}
+          onChange={event =&gt; setDescription(event.target.value)} /&gt;&lt;/label&gt;
+        &lt;label&gt;Amount in cents&lt;input aria-label=&quot;Amount in cents&quot; type=&quot;number&quot; min=&quot;1&quot;
+          value={amount} onChange={event =&gt; setAmount(event.target.value)} /&gt;&lt;/label&gt;
+        &lt;label&gt;Category&lt;select value={category} onChange={event =&gt; setCategory(event.target.value)}&gt;
+          &lt;option value=&quot;other&quot;&gt;Other&lt;/option&gt;&lt;option value=&quot;food&quot;&gt;Food&lt;/option&gt;
+          &lt;option value=&quot;travel&quot;&gt;Travel&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+        &lt;button type=&quot;submit&quot;&gt;Add Expense&lt;/button&gt;
+      &lt;/form&gt;
+      &lt;p aria-live=&quot;polite&quot;&gt;{notice}&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section&gt;&lt;h2&gt;Recent expenses&lt;/h2&gt;
+      {expenses.length === 0 ? &lt;p&gt;No expenses yet.&lt;/p&gt; : &lt;ul&gt;{expenses.map(expense =&gt;
+        &lt;li key={expense.id}&gt;&lt;span&gt;{expense.description} · {expense.category}
+          · {(expense.amount_cents / 100).toFixed(2)}&lt;/span&gt;
+          &lt;button type=&quot;button&quot; onClick={() =&gt; deleteExpense(expense.id)}&gt;Delete&lt;/button&gt;
+        &lt;/li&gt;)}&lt;/ul&gt;}
+    &lt;/section&gt;
+  &lt;/div&gt;;
+}
+module.exports = {App};
+</pre></details><details><summary>client/style.css — Qwen-only, unchanged</summary><pre>/* Build PocketLedger: a small personal expense tracker. This is a NEW */
+/* application, not FocusBoard. Users can add expenses, browse and remove them, */
+/* and see category totals. Use React, Express and Python 3.11, plus an on-disk */
+/* JSON store in Node.js. Implement the actual application code in five modules. */
+/* There is no task-completion or status-toggle feature. */
+/*  */
+/* Expense fields: id (string), description (nonempty string), */
+/* amount_cents (positive integer), category (food, travel or other). */
+/*  */
+/* API: */
+/*   GET /api/expenses           -&gt; HTTP 200 {expenses:[...]} */
+/*   POST /api/expenses          -&gt; HTTP 201 {expense:{id,description,amount_cents,category}} */
+/*   DELETE /api/expenses/:id    -&gt; HTTP 200 {deleted:boolean} */
+/*   GET /api/summary            -&gt; HTTP 200 {count:int,total_cents:int,by_category:object} */
+/*  */
+/* Server/store.js exposes createStore(filePath). Its returned object implements */
+/* list(), create(body), delete(id). It MUST persist across a fresh createStore() */
+/* call with the same filePath. Store writes to the provided filePath only; */
+/* use require(&#x27;node:fs&#x27;) and no other dependencies. On invalid description or */
+/* amount_cents reject with Error. */
+/*  */
+/* Server/routes.js exposes createApp(store, processor), returning an Express app. */
+/* processor({expenses:store.list()}) returns the Python summary object. Use */
+/* require(&#x27;express&#x27;) only, express.json() and the exact response envelopes above. */
+/*  */
+/* Backend/logic.py defines transform(payload). It returns {count,total_cents, */
+/* by_category}, where by_category sums integer amount_cents by category, and */
+/* count is the expense count. Empty input returns count=0, total_cents=0 and */
+/* by_category={}. No external Python modules. */
+/*  */
+/* Client/App.jsx defines React function App, uses fetch for GET/POST/DELETE, */
+/* and displays a heading with PocketLedger, description and amount inputs, */
+/* Add expense button, expenses list, delete controls and a category summary. */
+/* No external UI libraries. CSS is responsive, valid and self-contained. */
+/* client/style.css; no imports, fonts or external URLs */
+body {
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+}
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background-color: #333;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.5em;
+  border-bottom: 1px solid #333;
+}
+header span {
+  font-weight: bold;
+}
+header a {
+  color: #333;
+}
+header a:hover {
+  text-decoration: underline;
+}
+header a:visited {
+  color: #666;
+}
+header a:active {
+  color: #999;
+}
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+}
+main h1 {
+  font-size: 1.5em;
+  margin: 0;
+}
+main h2 {
+  font-size: 1.2em;
+  margin: 0;
+}
+main p {
+  font-size: 1em;
+  margin: 0;
+}
+main p:last-child {
+  margin-bottom</pre></details><p>To interact with the live app, start the separate packaged app in an
+environment you control after reviewing its generated and corrected files.
+This website is not a running backend.</p></main></body></html>

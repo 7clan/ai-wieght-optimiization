@@ -1,0 +1,15 @@
+{
+  "name": "pocketledger-qwen-mentored",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "esbuild client/main.jsx --bundle --platform=browser --format=iife --outfile=public/app.js",
+    "start": "npm run build && node server/main.cjs"
+  },
+  "dependencies": {
+    "esbuild": "0.25.9",
+    "express": "5.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  }
+}
