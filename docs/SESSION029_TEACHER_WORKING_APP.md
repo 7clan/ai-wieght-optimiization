@@ -13,6 +13,7 @@ Session028 analogous-teaching experiment stalled on JavaScript architecture.
 | server/routes.js | Teacher rewrite after observing out-of-function routes |
 | client/App.jsx | Teacher rewrite after observing a static, interaction-free UI |
 | bridge/build/startup | Trusted harness (not Qwen) |
+| public/overrides.css | Teacher responsive CSS override; original Qwen CSS retained |
 
 The final working result, if verified, is **not** independent Qwen authorship.
 There are no training steps or weight modifications.

@@ -21,6 +21,7 @@ async function main(){
  };
  const app=createApp(store,processor);
  assert.equal(fs.existsSync(APP+'/public/app.js'),true,'missing React bundle');
+ assert.equal(fs.existsSync(APP+'/public/overrides.css'),true,'missing teacher responsive styling');
  assert.ok(fs.statSync(APP+'/public/app.js').size>10000,'suspiciously empty bundle');
  assert.deepEqual((await request(app).get('/api/expenses')).body,{expenses:[]});
  let r=await request(app).post('/api/expenses')

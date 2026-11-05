@@ -45,13 +45,56 @@ print(json.dumps(transform(request)))
 
 HTML="""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PocketLedger</title><link rel="stylesheet" href="/style.css"></head>
+<title>PocketLedger</title><link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/overrides.css"></head>
 <body><div id="root"></div><script src="/app.js" defer></script></body></html>
 """
 ENTRY="""const React=require('react');
 const {createRoot}=require('react-dom/client');
 const {App}=require('./App.jsx');
 createRoot(document.getElementById('root')).render(React.createElement(App));
+"""
+
+# Intentionally independent TEACHER styling that overrides the frozen,
+# model-generated CSS. The original model stylesheet remains byte-identical.
+OVERRIDE_CSS="""html,body,#root{min-height:100%;height:auto;overflow:auto}
+body{margin:0;display:block;width:auto;align-items:initial;justify-content:initial;
+  font:16px/1.5 system-ui,-apple-system,sans-serif;color:#1b2944;
+  background:linear-gradient(130deg,#f3f6ff,#eff8fb);padding:0}
+#root{display:block;width:100%}
+.ledger{max-width:1030px;margin:0 auto;padding:32px 18px 70px;display:grid;gap:24px}
+.ledger header{display:block;position:static;border:0;border-radius:18px;
+  padding:32px 38px;background:#172442;color:#fff;box-shadow:0 12px 30px #111e3b20}
+.ledger h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:6px 0 12px;color:inherit}
+.ledger header p{margin:0;color:#bdc8e6;font-size:1rem;font-weight:400}
+.ledger .eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:.72rem}
+.ledger section{min-width:0;padding:28px 32px;border-radius:18px;
+  background:#fff;border:1px solid #e0e7f5;box-shadow:0 8px 25px #27385b0b}
+.ledger h2{font-size:1.35rem;font-weight:750;margin:0 0 18px;color:#1c2b4c}
+.ledger .summary{display:grid;gap:6px}
+.ledger .total{font-size:2.8rem;font-weight:800;color:#566bed;margin:0}
+.ledger section p{margin:8px 0;color:#53637b}
+.ledger form{display:grid;grid-template-columns:2fr 1fr 1fr auto;
+  gap:14px;align-items:end;width:100%}
+.ledger label{display:grid;gap:7px;font-size:.86rem;color:#465572;font-weight:650}
+.ledger input,.ledger select{font:inherit;border:1px solid #cdd6e5;
+  padding:12px 13px;min-width:0;width:100%;border-radius:9px;background:#fff;color:#1c2b45}
+.ledger button{font:inherit;font-weight:750;border:0;border-radius:10px;
+  padding:12px 18px;background:#6074ee;color:#fff;cursor:pointer}
+.ledger button:hover{background:#425cdd}
+.ledger ul{list-style:none;padding:0;margin:10px 0;display:grid;gap:8px}
+.ledger li{display:flex;align-items:center;justify-content:space-between;gap:15px;
+  padding:12px 10px;border-bottom:1px solid #ecf0f8}
+.ledger li button{padding:8px 12px;background:#fae9ee;color:#a42c51}
+.ledger li button:hover{background:#f6d4e0}
+@media(max-width:780px){.ledger{padding:16px 12px 50px}
+ .ledger header{padding:25px}.ledger section{padding:22px}
+ .ledger form{grid-template-columns:1fr 1fr}
+ .ledger form label:first-child{grid-column:1/-1}
+ .ledger form button{grid-column:1/-1}}
+@media(max-width:480px){.ledger form{grid-template-columns:1fr}
+ .ledger form label:first-child,.ledger form button{grid-column:auto}
+ .ledger li{align-items:flex-start;flex-direction:column}}
 """
 PKG={"name":"pocketledger-qwen-mentored","version":"0.1.0","private":True,
      "scripts":{"build":"esbuild client/main.jsx --bundle --platform=browser --format=iife --outfile=public/app.js",
@@ -107,6 +150,7 @@ def package_app(source:dict,root:Path):
       "client/main.jsx":ENTRY,
       "public/index.html":HTML,
       "public/style.css":source["css"],
+      "public/overrides.css":OVERRIDE_CSS,
       "package.json":json.dumps(PKG,indent=2)+"\n",
       "README.md":README
     }
