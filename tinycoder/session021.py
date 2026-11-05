@@ -43,6 +43,7 @@ def test_in_docker(modules, cases, phase, *, timeout=45):
         src.mkdir(mode=0o755)
         dst.mkdir(mode=0o777)
         os.chmod(root, 0o755)
+        os.chmod(dst, 0o777)
         request = src / "input.json"
         request.write_text(json.dumps({"modules": modules, "cases": cases,
                                        "phase": phase}), encoding="utf-8")
