@@ -1,0 +1,202 @@
+{
+  "session": "028",
+  "status": "completed",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "weight_edits": 0,
+  "contract_sha256": "0ea2d8674f4bcd4abd13c5ad5ddb343eb0f9fe888b2f54719d6e246c722b92ca",
+  "app": "PocketLedger",
+  "teaching": "analogous worked examples + observed errors; student-only target source",
+  "first_model_run": "027",
+  "first_model_source_sha256": {
+    "logic": "af7fc93d39d0fafd93a6adb0119622667d9ed0aca4144d9f036744fd3a8cffd7",
+    "store": "6e6df26f1c99a6a1ed1c3a7a14da82309e4c9b3c552b956bdb8711342db375fd",
+    "api": "86b30c23532854244463633a182dc2c4ae7d7e6dce22bcb22278018dfa278f9d",
+    "ui": "271f0bbe3fb0249a35958b20ceadad6a2b33e9cac7c701457d948cacb250421d",
+    "css": "704342f5b56b718dd02791801b1455578e4ad21bb7e1cd89fdf9f79727cd8d0d"
+  },
+  "teacher_authored_target_app_modules": 0,
+  "model_authored_module_bodies": [
+    "logic",
+    "store",
+    "api",
+    "ui",
+    "css"
+  ],
+  "greedy_replayed_from_session027": true,
+  "baseline": {
+    "public": {
+      "phase": "public",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "TypeError: string indices must be integers, not 'str'"
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-BlJbJW/expenses.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "ReferenceError: app is not defined"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks state hook"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "api: ReferenceError: app is not defined",
+        "logic: TypeError: string indices must be integers, not 'str'",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-BlJbJW/expenses.json'",
+        "ui: Error: UI lacks state hook"
+      ],
+      "completed_checks": 1
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "TypeError: string indices must be integers, not 'str'"
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-hPqRQW/expenses.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "ReferenceError: app is not defined"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks state hook"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "api: ReferenceError: app is not defined",
+        "logic: TypeError: string indices must be integers, not 'str'",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-hPqRQW/expenses.json'",
+        "ui: Error: UI lacks state hook"
+      ],
+      "completed_checks": 1
+    }
+  },
+  "selected": {
+    "public": {
+      "phase": "public",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-uVnfEY/expenses.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "ReferenceError: app is not defined"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks state hook"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "api: ReferenceError: app is not defined",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-uVnfEY/expenses.json'",
+        "ui: Error: UI lacks state hook"
+      ],
+      "completed_checks": 2
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-NtQIQ6/expenses.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "ReferenceError: app is not defined"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks state hook"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "api: ReferenceError: app is not defined",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-NtQIQ6/expenses.json'",
+        "ui: Error: UI lacks state hook"
+      ],
+      "completed_checks": 2
+    }
+  },
+  "search": {
+    "candidate_count": 10,
+    "output_tokens": 6286,
+    "wall_seconds": 615.49,
+    "private_holdout_seen_during_selection": false,
+    "selection_public_only": true,
+    "max_teacher_guided_trials_per_failing_role": 3
+  },
+  "ui_check_stronger_than_session027": true,
+  "browser_clicks_verified": false,
+  "production_ready": false,
+  "model_weights_learned_permanently": false
+}

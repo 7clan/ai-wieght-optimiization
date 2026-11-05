@@ -1,0 +1,347 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Qwen0.5B independently completed PocketLedger modules</title>
+<style>*{box-sizing:border-box}body{background:#0d1527;color:#e3ecf8;font:15px system-ui;margin:0}
+main{max-width:1100px;margin:55px auto;padding:20px}h1{font-size:42px;letter-spacing:-.04em}
+p{color:#a5b8d2;line-height:1.6}.badges{display:flex;flex-wrap:wrap;gap:9px;margin:25px 0}
+.badge{padding:8px 12px;border-radius:18px;background:#3b475b;font-weight:800;font-size:12px}
+.pass{background:#16493b;color:#a7f4dc}.fail{background:#5b293b;color:#ffc9d3}
+.panel,details{border:1px solid #31445d;background:#162238;border-radius:15px;padding:22px;margin:18px 0}
+.render{background:#f8fafc;color:#172341;border-radius:10px;padding:30px;overflow:auto;min-height:150px}
+.render input,.render button{margin:8px;padding:7px}summary{cursor:pointer;font-weight:800}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}a{color:#8fe3f3}</style></head>
+<body><main><h1>PocketLedger, actually written by Qwen?</h1>
+<p>These are the real five model-completed modules from a fresh expense-tracker task.
+The supervising agent supplied only required signatures, testing and execution tools,
+not application logic. This safe source viewer is static and script-free; it is not
+a deployed Express application or proof of production readiness.</p>
+<div class="badges"><span class="badge pass">LOGIC: PASS</span><span class="badge fail">STORE: FAIL</span><span class="badge fail">API: FAIL</span><span class="badge fail">UI: FAIL</span><span class="badge pass">CSS: PASS</span></div>
+<section class="panel"><h2>Actual React server-rendered markup</h2><div class="render"><div><h1>PocketLedger</h1><div><label>Description</label><input type="text"><label>Amount (cents)</label><input type="number"><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div></div></section><section class="panel"><h2>Independent holdout</h2><p>Integrated FAIL</p><ul><li>api: ReferenceError: app is not defined</li><li>store: Error: ENOENT: no such file or directory, open &#x27;/tmp/pocket027-NtQIQ6/expenses.json&#x27;</li><li>ui: Error: UI lacks state hook</li></ul></section><details><summary>backend/logic.py</summary><pre>def transform(payload):
+    expenses = payload.get(&#x27;expenses&#x27;, [])
+    by_category = {}
+    for expense in expenses:
+        category = expense[&#x27;category&#x27;]
+        by_category[category] = by_category.get(category, 0) + expense[&#x27;amount_cents&#x27;]
+    return {&#x27;count&#x27;: len(expenses), &#x27;total_cents&#x27;: sum(expense[&#x27;amount_cents&#x27;] for expense in expenses),
+            &#x27;by_category&#x27;: by_category}</pre></details><details><summary>server/store.js</summary><pre>// Build PocketLedger: a small personal expense tracker. This is a NEW
+// application, not FocusBoard. Users can add expenses, browse and remove them,
+// and see category totals. Use React, Express and Python 3.11, plus an on-disk
+// JSON store in Node.js. Implement the actual application code in five modules.
+// There is no task-completion or status-toggle feature.
+// 
+// Expense fields: id (string), description (nonempty string),
+// amount_cents (positive integer), category (food, travel or other).
+// 
+// API:
+//   GET /api/expenses           -&gt; HTTP 200 {expenses:[...]}
+//   POST /api/expenses          -&gt; HTTP 201 {expense:{id,description,amount_cents,category}}
+//   DELETE /api/expenses/:id    -&gt; HTTP 200 {deleted:boolean}
+//   GET /api/summary            -&gt; HTTP 200 {count:int,total_cents:int,by_category:object}
+// 
+// Server/store.js exposes createStore(filePath). Its returned object implements
+// list(), create(body), delete(id). It MUST persist across a fresh createStore()
+// call with the same filePath. Store writes to the provided filePath only;
+// use require(&#x27;node:fs&#x27;) and no other dependencies. On invalid description or
+// amount_cents reject with Error.
+// 
+// Server/routes.js exposes createApp(store, processor), returning an Express app.
+// processor({expenses:store.list()}) returns the Python summary object. Use
+// require(&#x27;express&#x27;) only, express.json() and the exact response envelopes above.
+// 
+// Backend/logic.py defines transform(payload). It returns {count,total_cents,
+// by_category}, where by_category sums integer amount_cents by category, and
+// count is the expense count. Empty input returns count=0, total_cents=0 and
+// by_category={}. No external Python modules.
+// 
+// Client/App.jsx defines React function App, uses fetch for GET/POST/DELETE,
+// and displays a heading with PocketLedger, description and amount inputs,
+// Add expense button, expenses list, delete controls and a category summary.
+// No external UI libraries. CSS is responsive, valid and self-contained.
+// server/store.js; code below implements durable storage.
+const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+  let contents = fs.readFileSync(filePath).toString();
+  const store = {
+    list: () =&gt; JSON.parse(contents),
+    create: (body) =&gt; {
+      const { id, description, amount_cents, category } = body;
+      contents = contents + `${id},${description},${amount_cents},${category
+      }` + &#x27;\n&#x27;;
+      return contents;
+    },
+    delete: (id) =&gt; {
+      const body = { id };
+      contents = contents.replace(`${id},`, &#x27;&#x27;);
+      return contents;
+    }
+  };
+  fs.writeFileSync(filePath, contents);
+  return store;
+}
+// Build PocketLedger: a small personal expense tracker. This is a NEW
+// application, not FocusBoard. Users can add expenses, browse and remove them,
+// and see category totals. Use React, Express and Python 3.11, plus an on-disk
+// JSON store in Node.js. Implement the actual application code in five modules.
+// There is no task-completion or status-toggle feature.
+// 
+// Expense fields: id (string), description (nonempty string),
+// amount_cents (positive integer), category (food, travel or other).
+// 
+// API:
+//   GET /api/expenses           -&gt; HTTP 200 {expenses:[...]}
+//   POST /api/expenses          -&gt; HTTP 201 {expense:{id,description,amount_cents,category}}
+//   DELETE /api/expenses/:id    -&gt; HTTP 200 {deleted:boolean}
+//   GET /api/summary            -&gt; HTTP 200 {count:int,total_cents:int,by_category:object}
+// 
+// Server/store.js exposes createStore(filePath). Its returned object implements
+// list(), create(body), delete(id). It MUST persist across a fresh createStore()
+// call with the same filePath. Store writes to the provided filePath only;
+// use require(&#x27;node:fs&#x27;) and no other dependencies. On invalid description or
+// amount_cents reject with Error.
+// 
+// Server/store.js exposes createStore(filePath). Its returned object implements
+// list(), create(body), delete(id). It MUST persist across a fresh createStore()
+// call with the same filePath. Store writes to the provided filePath only;
+// use require(&#x27;node:fs&#x27;) and no other dependencies. On invalid description or
+// amount_cents reject with Error.
+// 
+// Server/store.js exposes createStore(filePath). Its returned object implements
+// list(), create(body), delete(id). It MUST persist across a fresh createStore()
+// call with the same filePath. Store writes to the provided filePath only;
+// use require(&#x27;node:fs&#x27;) and no other dependencies. On invalid description or
+// amount_cents reject with Error.
+// 
+// Server/store.js exposes createStore(filePath). Its returned object implements
+// list(), create(body), delete(id). It MUST persist across a fresh createStore()
+// call with the same filePath. Store writes to the provided filePath only;
+// use require(&#x27;node:fs&#x27;) and no other dependencies. On invalid description or
+// amount_cents reject with Error.
+// 
+// Server/store.js exposes createStore(filePath). Its returned object implements</pre></details><details><summary>server/routes.js</summary><pre>// Build PocketLedger: a small personal expense tracker. This is a NEW
+// application, not FocusBoard. Users can add expenses, browse and remove them,
+// and see category totals. Use React, Express and Python 3.11, plus an on-disk
+// JSON store in Node.js. Implement the actual application code in five modules.
+// There is no task-completion or status-toggle feature.
+// 
+// Expense fields: id (string), description (nonempty string),
+// amount_cents (positive integer), category (food, travel or other).
+// 
+// API:
+//   GET /api/expenses           -&gt; HTTP 200 {expenses:[...]}
+//   POST /api/expenses          -&gt; HTTP 201 {expense:{id,description,amount_cents,category}}
+//   DELETE /api/expenses/:id    -&gt; HTTP 200 {deleted:boolean}
+//   GET /api/summary            -&gt; HTTP 200 {count:int,total_cents:int,by_category:object}
+// 
+// Server/store.js exposes createStore(filePath). Its returned object implements
+// list(), create(body), delete(id). It MUST persist across a fresh createStore()
+// call with the same filePath. Store writes to the provided filePath only;
+// use require(&#x27;node:fs&#x27;) and no other dependencies. On invalid description or
+// amount_cents reject with Error.
+// 
+// Server/routes.js exposes createApp(store, processor), returning an Express app.
+// processor({expenses:store.list()}) returns the Python summary object. Use
+// require(&#x27;express&#x27;) only, express.json() and the exact response envelopes above.
+// 
+// Backend/logic.py defines transform(payload). It returns {count,total_cents,
+// by_category}, where by_category sums integer amount_cents by category, and
+// count is the expense count. Empty input returns count=0, total_cents=0 and
+// by_category={}. No external Python modules.
+// 
+// Client/App.jsx defines React function App, uses fetch for GET/POST/DELETE,
+// and displays a heading with PocketLedger, description and amount inputs,
+// Add expense button, expenses list, delete controls and a category summary.
+// No external UI libraries. CSS is responsive, valid and self-contained.
+// server/routes.js; implement ALL four endpoints.
+const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+    const app = express();
+    const id = req.params.id;
+    if (store.delete(id)) {
+        res.status(200).json({ deleted: true });
+    }
+    else {
+        res.status(404).json({ error: &#x27;Expense not found&#x27; });
+    }
+}
+app.get(&#x27;/api/expenses&#x27;, (req, res) =&gt; {
+    const expenses = processor(store.list());
+    res.json(expenses);
+});
+app.post(&#x27;/api/expenses&#x27;, (req, res) =&gt; {
+    const { id, description, amount_cents, category } = req.body;
+    if (store.create({ id, description, amount_cents, category })) {
+        res.status(201).json({ expense: { id, description, amount_cents, category } });
+    }
+    else {
+        res.status(400).json({ error: &#x27;Expense creation failed&#x27; });
+    }
+});
+app.delete(&#x27;/api/expenses/:id&#x27;, (req, res) =&gt; {
+    const id = req.params.id;
+    const deleted = store.delete(id);
+    if (deleted) {
+        res.status(200).json({ deleted: true });
+    }
+    else {
+        res.status(404).json({ error: &#x27;Expense not found&#x27; });
+    }
+});
+app.get(&#x27;/api/summary&#x27;, (req, res) =&gt; {
+    const summary = processor(store.list());
+    res.json(summary);
+});
+app.listen(3000, () =&gt; console.log(&#x27;Server running on port 3000&#x27;));</pre></details><details><summary>client/App.jsx</summary><pre>// Build PocketLedger: a small personal expense tracker. This is a NEW
+// application, not FocusBoard. Users can add expenses, browse and remove them,
+// and see category totals. Use React, Express and Python 3.11, plus an on-disk
+// JSON store in Node.js. Implement the actual application code in five modules.
+// There is no task-completion or status-toggle feature.
+// 
+// Expense fields: id (string), description (nonempty string),
+// amount_cents (positive integer), category (food, travel or other).
+// 
+// API:
+//   GET /api/expenses           -&gt; HTTP 200 {expenses:[...]}
+//   POST /api/expenses          -&gt; HTTP 201 {expense:{id,description,amount_cents,category}}
+//   DELETE /api/expenses/:id    -&gt; HTTP 200 {deleted:boolean}
+//   GET /api/summary            -&gt; HTTP 200 {count:int,total_cents:int,by_category:object}
+// 
+// Server/store.js exposes createStore(filePath). Its returned object implements
+// list(), create(body), delete(id). It MUST persist across a fresh createStore()
+// call with the same filePath. Store writes to the provided filePath only;
+// use require(&#x27;node:fs&#x27;) and no other dependencies. On invalid description or
+// amount_cents reject with Error.
+// 
+// Server/routes.js exposes createApp(store, processor), returning an Express app.
+// processor({expenses:store.list()}) returns the Python summary object. Use
+// require(&#x27;express&#x27;) only, express.json() and the exact response envelopes above.
+// 
+// Backend/logic.py defines transform(payload). It returns {count,total_cents,
+// by_category}, where by_category sums integer amount_cents by category, and
+// count is the expense count. Empty input returns count=0, total_cents=0 and
+// by_category={}. No external Python modules.
+// 
+// Client/App.jsx defines React function App, uses fetch for GET/POST/DELETE,
+// and displays a heading with PocketLedger, description and amount inputs,
+// Add expense button, expenses list, delete controls and a category summary.
+// No external UI libraries. CSS is responsive, valid and self-contained.
+// client/App.jsx; implement state, input form and fetch logic.
+const React = require(&#x27;react&#x27;);
+function App() {
+  return &lt;div&gt;
+    &lt;h1&gt;PocketLedger&lt;/h1&gt;
+    &lt;div&gt;
+      &lt;label&gt;Description&lt;/label&gt;
+      &lt;input type=&quot;text&quot; /&gt;
+      &lt;label&gt;Amount (cents)&lt;/label&gt;
+      &lt;input type=&quot;number&quot; /&gt;
+      &lt;button&gt;Add Expense&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;label&gt;Expenses&lt;/label&gt;
+      &lt;ul&gt;
+        &lt;li&gt;...&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;;
+}
+module.exports = {App};</pre></details><details><summary>client/style.css</summary><pre>/* Build PocketLedger: a small personal expense tracker. This is a NEW */
+/* application, not FocusBoard. Users can add expenses, browse and remove them, */
+/* and see category totals. Use React, Express and Python 3.11, plus an on-disk */
+/* JSON store in Node.js. Implement the actual application code in five modules. */
+/* There is no task-completion or status-toggle feature. */
+/*  */
+/* Expense fields: id (string), description (nonempty string), */
+/* amount_cents (positive integer), category (food, travel or other). */
+/*  */
+/* API: */
+/*   GET /api/expenses           -&gt; HTTP 200 {expenses:[...]} */
+/*   POST /api/expenses          -&gt; HTTP 201 {expense:{id,description,amount_cents,category}} */
+/*   DELETE /api/expenses/:id    -&gt; HTTP 200 {deleted:boolean} */
+/*   GET /api/summary            -&gt; HTTP 200 {count:int,total_cents:int,by_category:object} */
+/*  */
+/* Server/store.js exposes createStore(filePath). Its returned object implements */
+/* list(), create(body), delete(id). It MUST persist across a fresh createStore() */
+/* call with the same filePath. Store writes to the provided filePath only; */
+/* use require(&#x27;node:fs&#x27;) and no other dependencies. On invalid description or */
+/* amount_cents reject with Error. */
+/*  */
+/* Server/routes.js exposes createApp(store, processor), returning an Express app. */
+/* processor({expenses:store.list()}) returns the Python summary object. Use */
+/* require(&#x27;express&#x27;) only, express.json() and the exact response envelopes above. */
+/*  */
+/* Backend/logic.py defines transform(payload). It returns {count,total_cents, */
+/* by_category}, where by_category sums integer amount_cents by category, and */
+/* count is the expense count. Empty input returns count=0, total_cents=0 and */
+/* by_category={}. No external Python modules. */
+/*  */
+/* Client/App.jsx defines React function App, uses fetch for GET/POST/DELETE, */
+/* and displays a heading with PocketLedger, description and amount inputs, */
+/* Add expense button, expenses list, delete controls and a category summary. */
+/* No external UI libraries. CSS is responsive, valid and self-contained. */
+/* client/style.css; no imports, fonts or external URLs */
+body {
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+}
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background-color: #333;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.5em;
+  border-bottom: 1px solid #333;
+}
+header span {
+  font-weight: bold;
+}
+header a {
+  color: #333;
+}
+header a:hover {
+  text-decoration: underline;
+}
+header a:visited {
+  color: #666;
+}
+header a:active {
+  color: #999;
+}
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+}
+main h1 {
+  font-size: 1.5em;
+  margin: 0;
+}
+main h2 {
+  font-size: 1.2em;
+  margin: 0;
+}
+main p {
+  font-size: 1em;
+  margin: 0;
+}
+main p:last-child {
+  margin-bottom</pre></details><p>No model-generated JavaScript runs in your browser. All execution occurred
+inside short-lived, network-disabled, unprivileged Docker containers.</p></main></body></html>
