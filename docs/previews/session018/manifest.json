@@ -1,0 +1,128 @@
+{
+  "session": "018",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "track": "search8_repair2",
+  "holdout_passes": 7,
+  "apps": [
+    {
+      "task_id": "Fullstack/00",
+      "slug": "invoice",
+      "page": "invoice.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": true,
+      "module_passed": {
+        "logic": true,
+        "api": true,
+        "ui": true
+      }
+    },
+    {
+      "task_id": "Fullstack/01",
+      "slug": "slug",
+      "page": "slug.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": false,
+      "module_passed": {
+        "logic": false,
+        "api": true,
+        "ui": true
+      }
+    },
+    {
+      "task_id": "Fullstack/02",
+      "slug": "discount",
+      "page": "discount.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": true,
+      "module_passed": {
+        "logic": true,
+        "api": true,
+        "ui": true
+      }
+    },
+    {
+      "task_id": "Fullstack/03",
+      "slug": "filter",
+      "page": "filter.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": true,
+      "module_passed": {
+        "logic": true,
+        "api": true,
+        "ui": true
+      }
+    },
+    {
+      "task_id": "Fullstack/04",
+      "slug": "progress",
+      "page": "progress.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": true,
+      "module_passed": {
+        "logic": true,
+        "api": true,
+        "ui": true
+      }
+    },
+    {
+      "task_id": "Fullstack/05",
+      "slug": "vowels",
+      "page": "vowels.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": true,
+      "module_passed": {
+        "logic": true,
+        "api": true,
+        "ui": true
+      }
+    },
+    {
+      "task_id": "Fullstack/06",
+      "slug": "fahrenheit",
+      "page": "fahrenheit.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": true,
+      "module_passed": {
+        "logic": true,
+        "api": true,
+        "ui": true
+      }
+    },
+    {
+      "task_id": "Fullstack/07",
+      "slug": "unique",
+      "page": "unique.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": false,
+      "module_passed": {
+        "logic": false,
+        "api": true,
+        "ui": true
+      }
+    },
+    {
+      "task_id": "Fullstack/08",
+      "slug": "maximum",
+      "page": "maximum.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": true,
+      "module_passed": {
+        "logic": true,
+        "api": true,
+        "ui": true
+      }
+    },
+    {
+      "task_id": "Fullstack/09",
+      "slug": "words",
+      "page": "words.html",
+      "react_rendered": true,
+      "integrated_holdout_passed": false,
+      "module_passed": {
+        "logic": true,
+        "api": false,
+        "ui": true
+      }
+    }
+  ]
+}
