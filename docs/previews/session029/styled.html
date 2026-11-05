@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; form-action 'none'; base-uri 'none'">
+<title>PocketLedger — Verified app visual snapshot</title>
+<style>html,body,#root{min-height:100%;height:auto;overflow:auto}
+body{margin:0;display:block;width:auto;align-items:initial;justify-content:initial;
+  font:16px/1.5 system-ui,-apple-system,sans-serif;color:#1b2944;
+  background:linear-gradient(130deg,#f3f6ff,#eff8fb);padding:0}
+#root{display:block;width:100%}
+.ledger{max-width:1030px;margin:0 auto;padding:32px 18px 70px;display:grid;gap:24px}
+.ledger header{display:block;position:static;border:0;border-radius:18px;
+  padding:32px 38px;background:#172442;color:#fff;box-shadow:0 12px 30px #111e3b20}
+.ledger h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:6px 0 12px;color:inherit}
+.ledger header p{margin:0;color:#bdc8e6;font-size:1rem;font-weight:400}
+.ledger .eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:.72rem}
+.ledger section{min-width:0;padding:28px 32px;border-radius:18px;
+  background:#fff;border:1px solid #e0e7f5;box-shadow:0 8px 25px #27385b0b}
+.ledger h2{font-size:1.35rem;font-weight:750;margin:0 0 18px;color:#1c2b4c}
+.ledger .summary{display:grid;gap:6px}
+.ledger .total{font-size:2.8rem;font-weight:800;color:#566bed;margin:0}
+.ledger section p{margin:8px 0;color:#53637b}
+.ledger form{display:grid;grid-template-columns:2fr 1fr 1fr auto;
+  gap:14px;align-items:end;width:100%}
+.ledger label{display:grid;gap:7px;font-size:.86rem;color:#465572;font-weight:650}
+.ledger input,.ledger select{font:inherit;border:1px solid #cdd6e5;
+  padding:12px 13px;min-width:0;width:100%;border-radius:9px;background:#fff;color:#1c2b45}
+.ledger button{font:inherit;font-weight:750;border:0;border-radius:10px;
+  padding:12px 18px;background:#6074ee;color:#fff;cursor:pointer}
+.ledger button:hover{background:#425cdd}
+.ledger ul{list-style:none;padding:0;margin:10px 0;display:grid;gap:8px}
+.ledger li{display:flex;align-items:center;justify-content:space-between;gap:15px;
+  padding:12px 10px;border-bottom:1px solid #ecf0f8}
+.ledger li button{padding:8px 12px;background:#fae9ee;color:#a42c51}
+.ledger li button:hover{background:#f6d4e0}
+@media(max-width:780px){.ledger{padding:16px 12px 50px}
+ .ledger header{padding:25px}.ledger section{padding:22px}
+ .ledger form{grid-template-columns:1fr 1fr}
+ .ledger form label:first-child{grid-column:1/-1}
+ .ledger form button{grid-column:1/-1}}
+@media(max-width:480px){.ledger form{grid-template-columns:1fr}
+ .ledger form label:first-child,.ledger form button{grid-column:auto}
+ .ledger li{align-items:flex-start;flex-direction:column}}
+</style>
+<style>.snapshot-banner{max-width:1030px;margin:18px auto 0;padding:14px 19px;
+ background:#dfe9ff;border:1px solid #a6bbe9;border-radius:13px;color:#213759;
+ font:14px/1.5 system-ui}.snapshot-banner a{color:#2b50b3;font-weight:700}
+.snapshot-banner strong{color:#172b52}</style></head>
+<body><div class="snapshot-banner"><strong>Verified PocketLedger — visual snapshot</strong>
+<p>This is the real React markup produced in the isolated test, with the teacher's responsive CSS. The controls are disabled here. For an interactive app, start the <a href="https://github.com/7clan/ai-wieght-optimiization/tree/exp/27-teacher-corrected-pocketledger/apps/pocketledger-qwen-mentored">runnable project</a> privately in Codespaces. <a href="index.html">See exact source and authorship</a>.</p></div>
+<div class="ledger"><header><p class="eyebrow">Your personal budget</p><h1>PocketLedger</h1><p>Track small expenses and understand where your money goes.</p></header><section class="summary"><h2>Overview</h2><p class="total">0.00</p><p>0 expenses recorded</p><ul></ul></section><section><h2>Add an expense</h2><form><label>Description<input disabled aria-label="Description" value=""/></label><label>Amount in cents<input disabled aria-label="Amount in cents" type="number" min="1" value=""/></label><label>Category<select disabled><option value="other" selected="">Other</option><option value="food">Food</option><option value="travel">Travel</option></select></label><button disabled type="submit">Add Expense</button></form><p aria-live="polite"></p></section><section><h2>Recent expenses</h2><p>No expenses yet.</p></section></div></body></html>
