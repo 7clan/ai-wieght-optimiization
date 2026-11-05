@@ -1,0 +1,19 @@
+services:
+  focusboard:
+    build:
+      context: ../..
+      dockerfile: apps/qwen-focusboard-mentored/Dockerfile
+    ports:
+      - "127.0.0.1:3000:3000"
+    user: "65534:65534"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,size=64m
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 128
+    mem_limit: 1024m
+    volumes:
+      - focusboard_data:/data
+volumes:
+  focusboard_data:

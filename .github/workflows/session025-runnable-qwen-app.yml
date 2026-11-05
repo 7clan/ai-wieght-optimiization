@@ -1,0 +1,47 @@
+name: Session 025 runnable Qwen-assisted FocusBoard app
+
+on:
+  push:
+    branches: [exp/23-live-focusboard]
+    paths:
+      - .github/workflows/session025-runnable-qwen-app.yml
+      - apps/qwen-focusboard-mentored/**
+      - tinycoder/session025_runtime_check.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  actual-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify model-vs-scaffold attribution and prior holdout
+        run: |
+          python -m compileall -q tinycoder/session025_runtime_check.py apps/qwen-focusboard-mentored/server/sqlite_store.py
+          node --check apps/qwen-focusboard-mentored/server/runtime.js
+          node --check apps/qwen-focusboard-mentored/server/smoke.js
+          python -m json.tool apps/qwen-focusboard-mentored/package.json > /dev/null
+      - name: Build and package measured model source inside Docker
+        run: docker build -f apps/qwen-focusboard-mentored/Dockerfile -t qwen-focusboard-mentored .
+      - name: Test real HTTP CRUD, Python transformation, SQLite and frontend bundle
+        run: |
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --pids-limit 128 --memory 1024m \
+            --user 65534:65534 --tmpfs /tmp:rw,nosuid,size=64m \
+            --tmpfs /data:rw,nosuid,size=64m \
+            qwen-focusboard-mentored node server/smoke.js
+      - name: Write verifiable runnable-app source manifest
+        run: python -m tinycoder.session025_runtime_check
+      - name: Commit measured runtime result
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/session025_runtime_smoke_report.json
+          git commit -m 'Confirm Qwen assisted FocusBoard passes actual Docker runtime smoke'
+          git push origin HEAD:exp/23-live-focusboard

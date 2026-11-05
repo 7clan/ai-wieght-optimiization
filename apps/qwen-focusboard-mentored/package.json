@@ -1,0 +1,17 @@
+{
+  "name": "qwen-focusboard-mentored",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "mkdir -p public/assets && esbuild client/main.jsx --bundle --platform=browser --jsx=transform --outfile=public/assets/app.js --define:process.env.NODE_ENV='\"production\"' && cp generated/client/style.css public/style.css && cp client/index.html public/index.html",
+    "start": "node server/runtime.js",
+    "smoke": "node server/smoke.js"
+  },
+  "dependencies": {
+    "esbuild": "0.25.9",
+    "express": "5.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "supertest": "7.1.4"
+  }
+}
