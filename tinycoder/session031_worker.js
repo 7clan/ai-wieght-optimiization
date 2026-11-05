@@ -109,6 +109,23 @@ async function mountOffline(uiSource){
   };
   for(const k of Object.keys(patches))install(k,patches[k]);
   let root=null;
+  async function settle(renderFn){
+    // Development React exposes act(); the production build in this image does
+    // not, so fall back to timed polling until the required offline mode shows.
+    if(typeof React.act==='function'){
+      await React.act(async()=>{renderFn();});
+      for(let i=0;i<8;i++){
+        await React.act(async()=>{await new Promise(r=>setTimeout(r,120));});
+        if(/offline/i.test(w.document.body.innerHTML))return;
+      }
+    }else{
+      renderFn();
+      for(let i=0;i<12;i++){
+        await new Promise(r=>setTimeout(r,150));
+        if(/offline/i.test(w.document.body.innerHTML))return;
+      }
+    }
+  }
   try{
     const compiled=esbuild.transformSync(uiSource+'\nmodule.exports=App;',{
       loader:'jsx',format:'cjs',target:'es2022'}).code;
@@ -126,8 +143,7 @@ async function mountOffline(uiSource){
     const view=module.exports;
     if(typeof view!=='function')throw Error('App not exported');
     root=createRoot(w.document.getElementById('root'));
-    await React.act(async()=>{root.render(React.createElement(view));});
-    await React.act(async()=>{await new Promise(r=>setTimeout(r,200));});
+    await settle(()=>{root.render(React.createElement(view));});
     return w.document.body.innerHTML;
   } finally {
     try{if(root)root.unmount();}catch{}
