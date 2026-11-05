@@ -1,0 +1,62 @@
+name: Generated applications visual preview gallery
+
+on:
+  push:
+    branches: [exp/17-generated-app-previews]
+    paths:
+      - .github/workflows/session019-preview-gallery.yml
+      - tinycoder/session019_previews.py
+      - tinycoder/session019_preview_worker.js
+      - tinycoder/session019_publish_links.py
+      - tests/test_session019_previews.py
+      - docker/session019-preview.Dockerfile
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify safety and gallery generation tests
+        run: |
+          python -m compileall -q tinycoder/session019_previews.py tinycoder/session019_publish_links.py
+          node --check tinycoder/session019_preview_worker.js
+          python -m unittest discover -s tests -p 'test_session019_previews.py' -v
+      - name: Build network-disabled React renderer
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+          docker build -f docker/session019-preview.Dockerfile -t tinycoder-session019-preview:1 .
+      - name: Create sanitized static visual pages for all ten generated apps
+        run: |
+          python -m tinycoder.session019_previews \
+            --predictions experiments/session018_extreme_predictions.json \
+            --report experiments/session018_extreme_report.json \
+            --track search8_repair2 \
+            --output-dir docs/previews/session018
+      - name: Archive independently inspectable HTML and source previews
+        uses: actions/upload-artifact@v4
+        with:
+          name: session018-ten-clickable-app-previews
+          path: docs/previews/session018/
+          retention-days: 30
+      - name: Commit immutable gallery, then publish direct preview links
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/previews/session018
+          git commit -m 'Archive sandbox-rendered UI previews for all ten Session018 apps'
+          SNAPSHOT_SHA="$(git rev-parse HEAD)"
+          python -m tinycoder.session019_publish_links \
+            --revision "$SNAPSHOT_SHA" \
+            --manifest docs/previews/session018/manifest.json \
+            --directory docs/previews/session018
+          git add README.md
+          git commit -m 'Link every generated app to its immutable visual preview'
+          git push origin HEAD:exp/17-generated-app-previews

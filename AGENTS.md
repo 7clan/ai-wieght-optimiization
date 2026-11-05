@@ -134,6 +134,13 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Execute all generated code exclusively inside network-disabled, read-only, unprivileged Docker. Preserve public candidate diagnostics, selected source, extra inference and wall time.
 - The collector must reproduce all task-level holdout metrics and the frozen 5/10 Session017b control; reject any React/Express changes. These are ten custom mini-apps, not independent production benchmarks.
 
+## Session 019 — published visual previews for generated applications
+
+- Reuse the complete measured Session018 source, scores and frozen holdout, with zero new inference or changes to model weights.
+- Render each actual generated React `ResultView` exclusively inside disposable read-only, unprivileged, network-disabled Docker using only PUBLIC fixture outputs; all published HTML is sanitized against executable markup, styles, external fetches and events.
+- Provide a static visual gallery plus an individual preview link per app, including failed apps, showing API/Python/React scores and exact source. Previews are not live deployed Express backends.
+- Pin external CDN previews to an immutable public Git commit SHA. Preserve safe generated snapshots and offer GitHub Pages as an alternative if enabled.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
