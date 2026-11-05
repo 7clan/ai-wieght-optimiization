@@ -622,3 +622,34 @@ The new results will be exploratory and scored only in isolated Docker container
 <!-- ATTENTION-STEERING-START -->
 *Session 009 causal head tracing and execution evaluation pending; no scores claimed yet.*
 <!-- ATTENTION-STEERING-END -->
+
+## Session 031 — autonomous self-repair architect, deployed live (exp/29-selfrepair-deployment)
+
+The newest track pushes the frozen 0.5B model further with **zero teacher
+bytes**: Qwen2.5-Coder-0.5B must write a harder five-module full-stack app —
+**DevMetrics**, a developer time-tracking dashboard with Python analytics,
+a validated JSON store, a six-route Express API (including 400 invalid-input
+handling), and a React UI with a project filter and a *required offline demo
+mode* — and then repair its own failing modules using nothing but public
+execution feedback from the isolated Docker evaluator, round after round.
+
+Every scored round is **deployed as a live site** built exactly from the
+model's own bytes (React runtime and loader are disclosed, pinned
+infrastructure): one interactive page and one static report card per round,
+plus a mission dashboard, under GitHub Pages of this repository. Teacher
+corrections and human fixes are never shown as model achievements — the
+collector refuses any module that is not a recorded raw model output.
+
+- Live mission gallery: <https://7clan.github.io/ai-wieght-optimiization/>
+- Session gallery: <https://7clan.github.io/ai-wieght-optimiization/gallery/session031/>
+- Protocol and rules: [AGENTS.md](AGENTS.md) (Session 031 section)
+- Harness: `tinycoder/session031.py`, contract `tinycoder/session031_contract.py`,
+  evaluator `tinycoder/session031_worker.js` (jsdom behavioral offline check),
+  collector `tinycoder/collect_session031.py`, CI
+  [session031-selfrepair-live.yml](.github/workflows/session031-selfrepair-live.yml)
+
+<!-- SESSION031-RESULTS-START -->
+**Pending first measured run.** The baseline/self-repair scores, holdout
+outcome and deployed round links will be published here by the collector after
+the GitHub Actions run completes. No speculative numbers.
+<!-- SESSION031-RESULTS-END -->

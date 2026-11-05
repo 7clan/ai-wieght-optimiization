@@ -212,3 +212,45 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Do not commit model checkpoints, private prompts, credentials, or experiment artifacts with sensitive data.
 - Keep original model files unmodified; save only reversible edit factors.
 
+
+## Session 031 — autonomous self-repair architect with live deployment gallery
+
+- All new work lives on `exp/29-selfrepair-deployment` (based on the completed
+  Session030 tip). `main` and every earlier `exp/` branch stay untouched.
+- The frozen base `Qwen/Qwen2.5-Coder-0.5B` (exactly 494,032,768 parameters)
+  writes ALL five DevMetrics modules: Python summary, Node store, Express API
+  with six routes plus HTTP 400 invalid-input handling, React dashboard with a
+  required offline demo mode, and CSS. No gradients, training, LoRA, adapters,
+  weight edits or model scaling.
+- **Zero teacher bytes.** Generation prompts may contain only the public
+  contract, the model's own previous attempt and public execution errors.
+  `session031.py` must never import teacher modules; `tests/test_session031.py`
+  enforces this. Human corrections of model code are forbidden.
+- Self-repair loop: greedy baseline (round 0), then up to N rounds where each
+  still-failing module may be regenerated from feedback-repair and resample
+  prompts; a candidate is accepted only when its public role metric strictly
+  improves. The independent holdout opens only after every public choice is
+  frozen. Wall-clock budget 6600s is enforced and reported.
+- Every model generation executes only in network-disabled, read-only,
+  unprivileged, resource-capped Docker (`docker/session031-selfrepair.Dockerfile`).
+  The trusted reference positive control must pass all public and holdout
+  checks inside that image before the model is measured.
+- The UI check is behavioral: the generated App must render its offline demo
+  mode in a jsdom realm with failing `fetch`, showing the fixed three-entry
+  dataset, the offline badge and the plain-number total 295. This is a DOM
+  behavioral check, not a real browser click test.
+- The collector re-verifies authorship (every selected module equals the prefix
+  plus one recorded raw model attempt), then publishes
+  `experiments/session031_selfrepair_{report,predictions,state}.json`, the app
+  archive under `apps/devmetrics-qwen-selfrepair/`, and a live gallery under
+  `docs/gallery/session031/` — one interactive deployed page plus one static
+  report card per scored round, regenerated idempotently on every collection.
+- The deployed gallery runs the model's exact App/style bytes with vendored
+  pinned React 18.3.1 UMD (`docs/vendor/`, sha-256 pinned; React 19 publishes
+  no UMD builds) while the Docker evaluator uses React 19.1.1. The loader/mount
+  shim and error banner are disclosed infrastructure. Static hosting cannot run
+  Express/Python; the full stack is Docker-verified in CI and the static page
+  runs the model's own required offline demo mode.
+- Resume protocol: `--resume` reloads the published state file and continues
+  later rounds with fresh deterministic seeds. Never reuse holdout results to
+  choose candidates, and never publish a score without its deployed round page.
