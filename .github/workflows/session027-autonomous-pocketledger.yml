@@ -1,0 +1,70 @@
+name: Session 027 Qwen0.5B independent PocketLedger application
+
+on:
+  push:
+    branches: [exp/25-autonomous-pocketledger]
+    paths:
+      - .github/workflows/session027-autonomous-pocketledger.yml
+      - tinycoder/session027.py
+      - tinycoder/session027_contract.py
+      - tinycoder/session027_worker.js
+      - tinycoder/session027_reference_smoke.py
+      - tinycoder/collect_session027.py
+      - tests/test_session027.py
+      - docker/session027-autonomous-app.Dockerfile
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  new-app-from-qwen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install frozen 0.5B CPU inference dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch>=2.3,<3'
+          python -m pip install -r requirements.txt 'evalplus==0.3.1'
+      - name: Verify authorship and prompt-memory protocol
+        run: |
+          python -m compileall -q tinycoder/session027.py tinycoder/session027_contract.py tinycoder/collect_session027.py
+          python -m unittest tests.test_session027 tests.test_mentor_patterns -v
+          node --check tinycoder/session027_worker.js
+      - name: Build restricted execution sandbox
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+          docker build -f docker/session027-autonomous-app.Dockerfile -t tinycoder-session027-autonomous:1 .
+      - name: Prove evaluator can pass trusted test-only modules
+        run: python -m tinycoder.session027_reference_smoke
+      - name: Let Qwen generate all five application modules and attempt fixes
+        run: python -m tinycoder.session027 --output-dir outputs/session027
+      - name: Preserve model attempts even if a later stage fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session027-qwen-autonomous-pocketledger-source
+          path: outputs/session027/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Verify and publish Qwen-only code plus safe preview
+        run: |
+          python -m tinycoder.collect_session027 --output-dir outputs/session027
+          python -m json.tool experiments/session027_autonomous_app_report.json > /dev/null
+      - name: Commit raw predictions, source and honest metrics
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/session027_autonomous_app_report.json experiments/session027_autonomous_app_predictions.json docs/previews/session027
+          git commit -m 'Publish independently generated Qwen PocketLedger modules and Docker results'
+          git push origin HEAD:exp/25-autonomous-pocketledger
