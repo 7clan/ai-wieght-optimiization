@@ -19,7 +19,7 @@
         "store": {
           "syntax_valid": true,
           "passed": false,
-          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-icfv5x/expenses.json'"
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-c9PBIr/expenses.json'"
         },
         "api": {
           "syntax_valid": true,
@@ -41,7 +41,7 @@
       "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
       "failure_reasons": [
         "api: ReferenceError: app is not defined",
-        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-icfv5x/expenses.json'",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-c9PBIr/expenses.json'",
         "ui: Error: UI lacks state hook"
       ],
       "completed_checks": 2
@@ -58,7 +58,7 @@
         "store": {
           "syntax_valid": true,
           "passed": false,
-          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-JwJoCF/expenses.json'"
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-BxCvAo/expenses.json'"
         },
         "api": {
           "syntax_valid": true,
@@ -80,7 +80,7 @@
       "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
       "failure_reasons": [
         "api: ReferenceError: app is not defined",
-        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-JwJoCF/expenses.json'",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-BxCvAo/expenses.json'",
         "ui: Error: UI lacks state hook"
       ],
       "completed_checks": 2
@@ -195,5 +195,5 @@
   "model_full_app_success_claim": false,
   "ui_browser_clicks_verified": false,
   "holdout_disclosure": "2 novel nonempty cases plus 1 repeated public empty-list control",
-  "wall_seconds": 1.73
+  "wall_seconds": 5.09
 }
