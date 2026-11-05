@@ -1,0 +1,72 @@
+name: Session 023 teacher-guided Qwen0.5B live debugging
+
+on:
+  push:
+    branches: [exp/21-live-mentor]
+    paths:
+      - .github/workflows/session023-live-mentor-cpu.yml
+      - tinycoder/session023*.py
+      - tinycoder/collect_session023.py
+      - tinycoder/publish_session023_links.py
+      - tests/test_session023.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  live-teacher-student:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install model and verifier prerequisites
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch>=2.3,<3'
+          python -m pip install -r requirements.txt 'evalplus==0.3.1'
+      - name: Verify independent teacher-student prompts
+        run: |
+          python -m compileall -q tinycoder/session023.py tinycoder/session023_contract.py tinycoder/session023_reference_smoke.py tinycoder/collect_session023.py tinycoder/publish_session023_links.py
+          python -m unittest discover -s tests -p 'test_session023.py' -v
+      - name: Build CPU sandbox with no network access for model code
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+          docker build -f docker/session022-generated-app.Dockerfile -t tinycoder-session022-generated:1 .
+      - name: Prove teacher's corrected scaffold passes independently
+        run: python -m tinycoder.session023_reference_smoke
+      - name: Livestream teacher lessons and Qwen independent code repairs
+        run: python -m tinycoder.session023 --output-dir outputs/session023
+      - name: Preserve mentor trace and all student attempts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen0p5b-live-mentor-complete-trace
+          path: outputs/session023/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Validate attribution and publish teacher diary
+        run: |
+          python -m tinycoder.collect_session023 --output-dir outputs/session023
+          python -m json.tool experiments/session023_live_mentor_report.json > /dev/null
+      - name: Commit exact model source and measured report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session023_live_mentor_report.json experiments/session023_live_mentor_predictions.json docs/previews/session023
+          git commit -m 'Publish teacher-guided Qwen0.5B code, tests and mentor diary'
+          git push origin HEAD:exp/21-live-mentor
+      - name: Link mentor diary to immutable commit
+        run: |
+          python -m tinycoder.publish_session023_links --revision "$(git rev-parse HEAD)"
+          git add README.md
+          git commit -m 'Pin live mentor diary and model source preview URLs'
+          git push origin HEAD:exp/21-live-mentor

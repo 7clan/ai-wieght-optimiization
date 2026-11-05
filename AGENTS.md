@@ -182,6 +182,28 @@ Explore reversible, directly computed edits to local open-model tensor weights.
   server deployment is independently verified; never call static HTML an
   operational full-stack application.
 
+## Session 023 — observable teacher–student correction loop
+
+- Work on `exp/21-live-mentor`. Begin from the archived **actual** Session022
+  model completions and failure report. Keep Qwen2.5-Coder-0.5B's 494,032,768
+  parameters frozen. There must be no gradients, optimizer, LoRA or fine-tuning.
+- The teacher may rewrite the *trusted* route response-envelope scaffold and
+  provide analogous, non-target Express code examples. Log every observed
+  error, teacher correction, generalized explanation and student attempt.
+- The student must independently generate each targeted API expression.
+  It never receives the exact target corrected expression. Unit tests may
+  insert separate trusted positive-control expressions for OTHER slots so an
+  upstream failing route cannot mask a downstream candidate's correctness.
+  Positive controls and holdout examples must not enter generation prompts.
+- Reuse the original three *verified Qwen-written* logic/UI/CSS slots from
+  Session022, not the authored positive-control versions. The public and
+  private integration checks execute all assembled code only inside restricted
+  unprivileged Docker. Collect all generated raw token candidates.
+- Publish the full immutable teacher diary and source. Distinguish successful
+  adaptation in the prompt context from permanent learning in the model
+  weights, and explicitly disclose how much of the app remained scaffolding.
+- Never describe a sanitized static preview as an interactive live application.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
