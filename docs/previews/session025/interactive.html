@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>FocusBoard · Qwen 0.5B interactive browser preview</title>
+  <style>
+    /* Qwen's Session024 colors, card language, and TaskItem structure, with
+       trusted standalone-browser scaffolding for this preview. */
+    * { box-sizing: border-box }
+    :root { font-family: ui-sans-serif,system-ui,Arial,sans-serif; color:#172341;background:#f4f6fc }
+    body { margin:0 }
+    button,input,select { font:inherit }
+    .topbar { background:#fff;border-bottom:1px solid #e0e6f1;padding:16px 26px;display:flex;justify-content:space-between;gap:14px;align-items:center }
+    .wordmark { font-weight:900;letter-spacing:-.04em;font-size:22px }
+    .wordmark i { color:#6076e9;font-style:normal }
+    .meta { font-size:12px;color:#64748b;text-align:right }
+    .mode { display:inline-block;background:#ebf8ef;color:#197248;padding:6px 10px;border-radius:999px;font-weight:800 }
+    .board { max-width:1050px;margin:0 auto;padding:58px 24px }
+    header { margin-bottom:30px }
+    .brand { font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd }
+    h1 { font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0 }
+    p { color:#7080a2 }
+    h2 { margin-top:35px }
+    .stats { display:grid;grid-template-columns:repeat(3,1fr);gap:16px }
+    .stats article { background:white;padding:25px;border:1px solid #e0e6f1;border-radius:18px;display:grid;box-shadow:0 10px 35px #17234108 }
+    .stats b { font-size:36px }
+    .stats span { color:#7a89a7;font-size:13px }
+    form { display:flex;gap:12px;margin-top:30px }
+    input,select,button { padding:14px;border:1px solid #d4ddef;border-radius:11px }
+    input { flex:1;min-width:0;background:#fff }
+    button { background:#6076e9;color:#fff;cursor:pointer;font-weight:700 }
+    button:hover { background:#4e62d2 }
+    button:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #a8b4fb;outline-offset:2px }
+    .tasks { list-style:none;padding:0 }
+    .task-row { margin:10px 0;background:white;border:1px solid #e0e6f1;padding:18px;border-radius:12px;display:flex;align-items:center;gap:12px;box-shadow:0 6px 20px #17234108 }
+    .task-row button { padding:8px 12px }
+    .task-title { flex:1;min-width:0;overflow-wrap:anywhere }
+    .task-row.done .task-title { color:#8793a9;text-decoration:line-through }
+    .priority { font-size:11px;font-weight:800;letter-spacing:.04em;border-radius:7px;padding:5px 7px;background:#edf1ff;color:#6578c9;text-transform:uppercase }
+    .priority.high { background:#fff0ef;color:#cc6159 }
+    .priority.low { background:#edf8ef;color:#3b9461 }
+    .secondary { background:#f0f2fa;color:#334367 }
+    .secondary:hover { background:#e4e9f5 }
+    .empty { background:white;padding:60px;text-align:center;border:1px dashed #c8d3eb;border-radius:15px;color:#7f8ba6 }
+    .controls { display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap }
+    .controls h2 { margin:30px 0 12px }
+    .controls input { flex:none;width:220px;padding:10px }
+    .notice { margin-top:30px;padding:16px;border-left:4px solid #6076e9;background:#e9effd;border-radius:8px;font-size:13px;color:#3e507c;line-height:1.5 }
+    .note-link { color:#4b5fcc;text-decoration:underline }
+    .footer { font-size:12px;color:#8490a6;margin-top:20px }
+    @media(max-width:650px) { .stats{grid-template-columns:1fr} form{flex-wrap:wrap}form input{flex-basis:100%}.task-row{flex-wrap:wrap}.task-title{flex-basis:100%}.meta{max-width:160px}.board{padding-top:38px} }
+  </style>
+</head>
+<body>
+  <div class="topbar"><span class="wordmark">◆ focusboard<i>.</i></span><div class="meta"><span class="mode">Interactive preview</span><div>Local browser storage · no server required</div></div></div>
+  <main class="board">
+    <header>
+      <div class="brand">◆ FOCUSBOARD / QWEN 0.5B</div>
+      <h1>Your tasks, in focus.</h1>
+      <p>Plan, prioritize, and finish what matters.</p>
+    </header>
+    <section class="stats" aria-label="Task statistics">
+      <article><b id="total">0</b><span>Total tasks</span></article>
+      <article><b id="completed">0</b><span>Completed</span></article>
+      <article><b id="remaining">0</b><span>Remaining</span></article>
+    </section>
+    <form id="create-form">
+      <input id="new-title" aria-label="New task title" placeholder="What needs to be done?" autocomplete="off" maxlength="180" required>
+      <select id="new-priority" aria-label="Priority"><option value="low">Low priority</option><option value="medium" selected>Medium priority</option><option value="high">High priority</option></select>
+      <button id="create" type="submit">+ Add task</button>
+    </form>
+    <div class="controls"><h2>Task board <small id="count" style="color:#8c9bb5;font-weight:500"></small></h2><input id="search" type="search" aria-label="Search tasks" placeholder="Search tasks…"></div>
+    <ul class="tasks" id="task-list" aria-live="polite"></ul>
+    <div id="empty" class="empty">Your next big idea starts here. Add your first task above.</div>
+    <div class="notice"><strong>What you're testing:</strong> This is a fully interactive, browser-only preview of the Qwen-assisted FocusBoard interface. It uses the model's TaskItem structure and visual theme, while a trusted script saves tasks only in your browser. For the actual React + Express + Python + SQLite app, <a class="note-link" href="https://github.com/7clan/ai-wieght-optimiization/tree/exp/23-live-focusboard/apps/qwen-focusboard-mentored">open the runnable project</a> and launch it in a private Codespace. This preview does not connect to that server.</div>
+    <div class="footer">Qwen2.5-Coder-0.5B · 494,032,768 parameters · Session 025 · Model-assisted, not independently model-authored.</div>
+  </main>
+  <script>
+    'use strict';
+    const storageKey='qwen-focusboard-session025-demo';
+    let tasks=[];
+    try { const saved=JSON.parse(localStorage.getItem(storageKey)||'[]'); if(Array.isArray(saved)) tasks=saved.filter(t=>t&&typeof t.title==='string'&&typeof t.id==='string').slice(0,500); } catch { tasks=[]; }
+    const $=id=>document.getElementById(id);
+    const save=()=>{ try { localStorage.setItem(storageKey,JSON.stringify(tasks)); } catch {} };
+    function render() {
+      $('total').textContent=tasks.length;
+      const completed=tasks.reduce((count,task)=>count+(task.done?1:0),0);
+      $('completed').textContent=completed;
+      $('remaining').textContent=tasks.length-completed;
+      $('count').textContent=tasks.length?'('+tasks.length+')':'';
+      const query=$('search').value.trim().toLowerCase();
+      const visible=tasks.filter(task=>task.title.toLowerCase().includes(query));
+      const list=$('task-list');
+      list.replaceChildren();
+      $('empty').hidden=visible.length>0;
+      $('empty').textContent=query?'No tasks match your search.':'Your next big idea starts here. Add your first task above.';
+      for(const task of visible) {
+        const row=document.createElement('li');
+        row.className='task-row'+(task.done?' done':'');
+        const name=document.createElement('span');name.className='task-title';name.textContent=task.title;
+        const priority=document.createElement('span');priority.className='priority '+task.priority;priority.textContent=task.priority;
+        const toggle=document.createElement('button');toggle.className='secondary';toggle.type='button';toggle.textContent=task.done?'Undo':'Done';toggle.setAttribute('aria-label',(task.done?'Mark incomplete: ':'Mark complete: ')+task.title);
+        toggle.addEventListener('click',()=>{task.done=!task.done;save();render();});
+        const del=document.createElement('button');del.className='secondary';del.type='button';del.textContent='Delete';del.setAttribute('aria-label','Delete '+task.title);
+        del.addEventListener('click',()=>{tasks=tasks.filter(t=>t.id!==task.id);save();render();});
+        row.append(name,priority,toggle,del);list.append(row);
+      }
+    }
+    $('create-form').addEventListener('submit',event=>{
+      event.preventDefault();
+      const title=$('new-title').value.trim();
+      if(!title)return;
+      tasks.unshift({id:crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random(),title,priority:$('new-priority').value,done:false});
+      $('new-title').value='';$('new-title').focus();save();render();
+    });
+    $('search').addEventListener('input',render);
+    render();
+  </script>
+</body>
+</html>
