@@ -1,0 +1,74 @@
+name: Session 022 Qwen0.5B native FIM full-stack assembly
+
+on:
+  push:
+    branches: [exp/20-execution-guided-app]
+    paths:
+      - .github/workflows/session022-fim-fullstack-cpu.yml
+      - tinycoder/session022*.py
+      - tinycoder/collect_session022.py
+      - tinycoder/publish_session022_links.py
+      - docker/session022-generated-app.Dockerfile
+      - tests/test_session022.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 210
+    env:
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU Qwen0.5B dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch>=2.3,<3'
+          python -m pip install -r requirements.txt 'evalplus==0.3.1'
+      - name: Verify frozen slot protocol
+        run: |
+          python -m compileall -q tinycoder/session022.py tinycoder/session022_contract.py tinycoder/collect_session022.py tinycoder/publish_session022_links.py
+          python -m unittest discover -s tests -p 'test_session022.py' -v
+          node --check tinycoder/session022_worker.js
+      - name: Build unprivileged isolated Docker evaluator
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+          docker build -f docker/session022-generated-app.Dockerfile -t tinycoder-session022-generated:1 .
+      - name: Validate a separate human-authored positive control
+        run: python -m tinycoder.session022_reference_smoke
+      - name: Generate eight genuine Qwen FIM slots and verify public plus holdout
+        run: python -m tinycoder.session022 --output-dir outputs/session022
+      - name: Preserve all attempts including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen0p5b-session022-unmodified-fim-completions
+          path: outputs/session022/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Verify provenance and publish exact generated source
+        run: |
+          python -m tinycoder.collect_session022 --output-dir outputs/session022
+          python -m json.tool experiments/session022_fim_app_report.json > /dev/null
+      - name: Commit report and safe static source preview
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session022_fim_app_report.json experiments/session022_fim_app_predictions.json docs/previews/session022
+          git commit -m 'Publish measured Qwen0.5B native FIM app slots and outcome'
+          git push origin HEAD:exp/20-execution-guided-app
+      - name: Add immutable published preview link
+        run: |
+          python -m tinycoder.publish_session022_links --revision "$(git rev-parse HEAD)"
+          git add README.md
+          git commit -m 'Pin Qwen0.5B FIM app source preview URL'
+          git push origin HEAD:exp/20-execution-guided-app

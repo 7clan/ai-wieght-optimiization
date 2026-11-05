@@ -160,6 +160,28 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - The static preview is script-free and cannot be described as an interactive application or evidence of browser E2E functionality. Publish a live interaction link only after a separately verified, contained deployment; do not invent a URL.
 - Treat failed or timed-out runs as pending and do not manufacture scores, model attributions or frontier-model parity claims.
 
+## Session 022 — native FIM model-assisted assembly
+
+- Work on `exp/20-execution-guided-app`; keep the 494,032,768-parameter base
+  model frozen. No gradient updates, weights edits, adapters, or fine-tuning.
+- Model generation uses Qwen2.5-Coder-0.5B native fill-in-middle, eight
+  narrowly specified Python/Express/React/CSS slots. Preserve exact raw
+  token completions, generic normalized insertions, and the full trusted
+  source template hashes so model attribution is always auditable.
+- The authored surrounding Python function structure, Express route wiring,
+  React state/actions, and CSS base layout are trusted scaffolding. NEVER
+  describe assembled passing code as a full application written independently
+  by Qwen. This branch measures a model-assisted integration milestone.
+- Select each slot using public checks only. Invoke independent holdout only
+  after all model selections have finished. Both public and holdout execution
+  must use read-only, network-disabled, nonroot Docker with resource caps.
+- Before publishing, a separate authored positive control must pass inside
+  Docker, and a collector must verify model count, candidate identity, exact
+  assembled source, and every passing claim. Publish failures truthfully.
+- Browser links are static sanitized model-source previews unless a live
+  server deployment is independently verified; never call static HTML an
+  operational full-stack application.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.
