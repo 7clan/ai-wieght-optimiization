@@ -1,0 +1,63 @@
+name: Session 029 teacher-corrected working PocketLedger
+
+on:
+  push:
+    branches: [exp/27-teacher-corrected-pocketledger]
+    paths:
+      - .github/workflows/session029-teacher-working-app.yml
+      - tinycoder/session029.py
+      - tinycoder/session029_teacher.py
+      - tinycoder/collect_session029.py
+      - tests/test_session029.py
+      - tests/session029_runtime_smoke.cjs
+      - docker/session029-packaged-smoke.Dockerfile
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  teacher-repair-and-prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check teacher-owned source attribution and syntax
+        run: |
+          python -m compileall -q tinycoder/session029.py tinycoder/session029_teacher.py tinycoder/collect_session029.py
+          python -m unittest discover -s tests -p 'test_session029.py' -v
+          node --check tests/session029_runtime_smoke.cjs
+      - name: Build sandbox
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+          docker build -f docker/session028-mentored-app.Dockerfile -t tinycoder-session028-mentored:1 .
+      - name: Run Qwen-only and teacher-corrected comparison
+        run: python -m tinycoder.session029 --output-dir outputs/session029
+      - name: Preserve report in case any subsequent stage fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session029-teacher-corrected-source
+          path: outputs/session029/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Publish only after complete isolated verification
+        run: python -m tinycoder.collect_session029 --output-dir outputs/session029
+      - name: Compile the app and smoke-test its real bundled API integration
+        run: |
+          docker build -f docker/session029-packaged-smoke.Dockerfile -t tinycoder-session029-smoke:1 .
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --pids-limit 128 --memory 1536m \
+            --cpus 2 --user 65534:65534 \
+            --tmpfs /tmp:rw,exec,nosuid,size=256m \
+            tinycoder-session029-smoke:1
+      - name: Commit truthfully attributed working application
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/session029_teacher_report.json experiments/session029_correction_pairs.json docs/previews/session029 apps/pocketledger-qwen-mentored
+          git commit -m 'Publish mentor-corrected PocketLedger with isolated API and bundle tests'
+          git push origin HEAD:exp/27-teacher-corrected-pocketledger
