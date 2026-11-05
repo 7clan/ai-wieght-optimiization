@@ -11,6 +11,7 @@ from tinycoder.session017_contracts import (MODULES, contract_sha256, contracts,
                                             expected_display, holdout_cases,
                                             module_prompt)
 from tinycoder.session017_scaffold import export_project
+from tinycoder.session017_ui_templates import contract_ui
 
 
 class ContractTests(unittest.TestCase):
@@ -35,6 +36,16 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(expected_display(None), "none")
         self.assertEqual(expected_display(["a", "b"]), "a, b")
         self.assertEqual(expected_display(42), "42")
+
+    def test_template_ui_derived_only_from_contract(self):
+        for task in contracts():
+            source=contract_ui(task)
+            self.assertIn("function ResultView({data})",source)
+            self.assertIn("<section data-testid=",source)
+            self.assertIn("<output>{shown}</output>",source)
+            self.assertIn(json.dumps(task["contract"]["heading"]),source)
+            for holdout in holdout_cases()[task["task_id"]]:
+                self.assertNotIn(json.dumps(holdout["payload"]),source)
 
     def test_role_selection_only_failed_components(self):
         tasks = contracts()[:2]

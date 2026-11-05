@@ -112,6 +112,20 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Publish measured report to `experiments/session017_fullstack_report.json`
   only after collector checks every task identity and reported score.
 
+## Session 017b — no-inference UI scaffold ablation
+
+- Reuse exact published Session017 base/guided completions from the completed
+  benchmark. No additional model inference, training or weight edits.
+- Select a deterministic `ResultView` from the public application contract
+  only if the original generated React module fails PUBLIC checks; preserve
+  original Python and Express source bytes exactly.
+- Freeze all fallback decisions before `holdout_cases()` is loaded. Evaluate
+  both original source sets and scaffold-assisted sets on the same independent
+  holdout values with all execution inside restricted Docker. Verify the
+  original published Session017 holdout metrics before publishing the ablation.
+- Explicitly distinguish model-generated-only from scaffold-assisted app
+  results. The latter must never be called a 0.5B model-only pass@1 gain.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.

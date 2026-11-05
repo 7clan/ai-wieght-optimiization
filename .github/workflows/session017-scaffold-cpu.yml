@@ -1,0 +1,60 @@
+name: Session 017b deterministic React scaffold ablation (no model inference)
+
+on:
+  push:
+    branches: [exp/15-contract-first-fullstack]
+    paths:
+      - .github/workflows/session017-scaffold-cpu.yml
+      - tinycoder/session017_scaffold_eval.py
+      - tinycoder/collect_session017_scaffold.py
+      - tinycoder/session017_ui_templates.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scaffold-ablation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Static tests (no code execution outside Docker)
+        run: |
+          python -m compileall -q tinycoder/session017_scaffold_eval.py tinycoder/collect_session017_scaffold.py tinycoder/session017_ui_templates.py
+          python -m unittest discover -s tests -p 'test_session017.py' -v
+      - name: Build network-disabled full-stack evaluation image
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+      - name: Reuse frozen generated code and test contract-derived React UI
+        run: |
+          python -m tinycoder.session017_scaffold_eval --output-dir outputs/session017b
+      - name: Keep all candidate projects and evaluation records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session017b-scaffold-execution
+          path: outputs/session017b/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Verify final task identities and preserve original frozen results
+        run: |
+          python -m tinycoder.collect_session017_scaffold --output-dir outputs/session017b
+          python -m json.tool experiments/session017_scaffold_report.json > /dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: session017b-verified-report
+          path: |
+            experiments/session017_scaffold_report.json
+            experiments/session017_scaffold_predictions.json
+            README.md
+      - name: Commit measured scaffold ablation
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add README.md experiments/session017_scaffold_report.json experiments/session017_scaffold_predictions.json
+          git commit -m 'Publish Session017b no-inference contract UI scaffold ablation'
+          git push origin HEAD:exp/15-contract-first-fullstack

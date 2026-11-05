@@ -1,5 +1,16 @@
 # TinyCoder Weight Lab
 
+<!-- SESSION017B-PENDING-START -->
+## Session 017b — deterministic React scaffold (pending)
+
+This fast follow-up reuses Session017's frozen Qwen0.5B completions without
+another inference pass. For React components that fail their public contract
+checks, the system substitutes a deterministic JSX component from the shared
+app specification. Python and Express source and all holdout cases are
+unchanged. The run measures system-level integration improvement separately
+from model-only performance; results remain pending until Docker verification.
+<!-- SESSION017B-PENDING-END -->
+
 ## Session 017 — contract-first full-stack vertical slices (measured)
 
 **Frozen model:** `Qwen/Qwen2.5-Coder-0.5B`, 494,032,768 parameters; no
