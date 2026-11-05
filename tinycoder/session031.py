@@ -311,8 +311,8 @@ def main():
                         help="Prompt with the model's own verified prior-session bytes")
     parser.add_argument("--state", default="experiments/session031_selfrepair_state.json")
     args = parser.parse_args()
-    if args.rounds < 0 or args.rounds > 8:
-        raise ValueError("rounds must be within 0..8")
+    if args.rounds < 0 or args.rounds > 16:
+        raise ValueError("rounds must be within 0..16")
     run(args)
 
 
