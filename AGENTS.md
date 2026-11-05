@@ -90,6 +90,28 @@ Explore reversible, directly computed edits to local open-model tensor weights.
   manifest and metric reproduction tests. The reported final selected
   solve@1 uses extra compute and is NOT a single-sample model pass@1.
 
+## Session 017 — contract-first full-stack vertical slices
+
+- Work on `exp/15-contract-first-fullstack`; keep original base
+  `Qwen/Qwen2.5-Coder-0.5B` exactly 494,032,768 parameters. No gradients,
+  fine-tuning, LoRA, scaling, or changing model weights.
+- Freeze ten authored mini-app contracts before evaluating. Each requires a
+  generated Python transformation, Express API, and React UI. The shared
+  contract and inter-language adapters are trusted deterministic scaffolds.
+- Public contract checks may select one sampled alternative and one repaired
+  continuation only for failing modules. Do not load `holdout_cases()` until
+  all generation/selection is complete; never leak hidden values in prompts.
+- Generated code is untrusted. Execute Python and JavaScript only in the
+  network-disabled, read-only, resource-restricted, unprivileged Docker image,
+  one bounded container per candidate. Saved project directories are archives,
+  NOT permission to run them outside Docker.
+- Score both untouched greedy and guided variants on identical frozen holdout
+  cases. Report module pass counts, *integrated* end-to-end passes, syntax,
+  generated output tokens and elapsed wall time. The tasks are custom
+  vertical slices, NOT external production-grade web app benchmarks.
+- Publish measured report to `experiments/session017_fullstack_report.json`
+  only after collector checks every task identity and reported score.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.

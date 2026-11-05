@@ -1,5 +1,20 @@
 # TinyCoder Weight Lab
 
+<!-- SESSION017-PENDING-START -->
+## Session 017 — contract-first full-stack architecture (pending)
+
+New branch `exp/15-contract-first-fullstack` tests the same untouched
+Qwen2.5-Coder-0.5B base model on ten newly authored vertical slices. Each
+application has a shared API contract plus generated Python logic, Express
+endpoint and React result view. Modules are checked independently and then
+integrated through a Docker-restricted request-to-React rendering test.
+
+Greedy and adaptive one-sample/one-repair systems share the same tasks and
+final hidden inputs. Hidden inputs are not used for candidate selection.
+The numbers are **pending** until the measured GitHub CPU run finishes.
+The custom test set is not an independent third-party app benchmark.
+<!-- SESSION017-PENDING-END -->
+
 ## Session 016 — adaptive execution-guided search (measured)
 
 Same **Qwen2.5-Coder-0.5B base**, no trained/editable parameters. The
