@@ -1,0 +1,197 @@
+{
+  "session": "027",
+  "status": "completed",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "weight_edits": 0,
+  "app": "PocketLedger",
+  "contract_sha256": "ecc547ab0193b6b8904fb7cda8a4464dd40f2a172942af63a25befe761fa7980",
+  "model_completed_roles": [
+    "logic",
+    "store",
+    "api",
+    "ui",
+    "css"
+  ],
+  "trusted_authored_code": [
+    "minimal source signatures/imports in prefixes",
+    "Docker evaluator",
+    "dependency harness",
+    "test-only positive controls",
+    "React server-side renderer",
+    "static preview generator"
+  ],
+  "baseline": {
+    "public": {
+      "phase": "public",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "invalid syntax (<unknown>, line 49)"
+        },
+        "store": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:126:6: ERROR: Expected \"}\" but found \".\""
+        },
+        "api": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:68:6: ERROR: The symbol \"createApp\" has already been declared"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "store: Error: Transform failed with 1 error:\n<stdin>:126:6: ERROR: Expected \"}\" but found \".\"",
+        "api: Error: Transform failed with 1 error:\n<stdin>:68:6: ERROR: The symbol \"createApp\" has already been declared",
+        "logic: invalid syntax (<unknown>, line 49)"
+      ],
+      "completed_checks": 2
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "invalid syntax (<unknown>, line 49)"
+        },
+        "store": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:126:6: ERROR: Expected \"}\" but found \".\""
+        },
+        "api": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:68:6: ERROR: The symbol \"createApp\" has already been declared"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "store: Error: Transform failed with 1 error:\n<stdin>:126:6: ERROR: Expected \"}\" but found \".\"",
+        "api: Error: Transform failed with 1 error:\n<stdin>:68:6: ERROR: The symbol \"createApp\" has already been declared",
+        "logic: invalid syntax (<unknown>, line 49)"
+      ],
+      "completed_checks": 2
+    }
+  },
+  "selected": {
+    "public": {
+      "phase": "public",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "TypeError: string indices must be integers, not 'str'"
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-kpVHAM/expenses.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "ReferenceError: app is not defined"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "api: ReferenceError: app is not defined",
+        "logic: TypeError: string indices must be integers, not 'str'",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-kpVHAM/expenses.json'"
+      ],
+      "completed_checks": 2
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "TypeError: string indices must be integers, not 'str'"
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/pocket027-4ey0Gj/expenses.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "ReferenceError: app is not defined"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {},
+      "ui_markup": "<div><h1>PocketLedger</h1><div><label>Description</label><input type=\"text\"/><label>Amount (cents)</label><input type=\"number\"/><button>Add Expense</button></div><div><label>Expenses</label><ul><li>...</li></ul></div></div>",
+      "failure_reasons": [
+        "api: ReferenceError: app is not defined",
+        "logic: TypeError: string indices must be integers, not 'str'",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/pocket027-4ey0Gj/expenses.json'"
+      ],
+      "completed_checks": 2
+    }
+  },
+  "search": {
+    "candidate_count": 14,
+    "output_tokens": 4926,
+    "wall_seconds": 726.28,
+    "max_guided_attempts_per_role": 3,
+    "private_holdout_seen_during_selection": false
+  },
+  "attribution": "Qwen completed all five file bodies; evaluator authored signatures and imports. No application module was replaced with a teacher-authored solution.",
+  "new_app_not_seen_in_prior_sessions": true,
+  "independent_model_authorship_of_build_infrastructure": false,
+  "browser_clicks_verified": false,
+  "production_ready": false
+}
