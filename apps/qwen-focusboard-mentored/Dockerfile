@@ -5,7 +5,7 @@ COPY apps/qwen-focusboard-mentored/package.json ./package.json
 RUN npm install --no-audit --no-fund
 COPY apps/qwen-focusboard-mentored/client/ ./client/
 COPY apps/qwen-focusboard-mentored/server/ ./server/
-COPY docs/previews/session023/generated/ ./generated/
+COPY docs/previews/session024/generated/ ./generated/
 RUN npm run build && mkdir -p /data && chown 65534:65534 /data
 USER 65534:65534
 ENV NODE_ENV=production PORT=3000

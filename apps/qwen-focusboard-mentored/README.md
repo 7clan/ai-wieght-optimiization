@@ -1,8 +1,8 @@
 # FocusBoard: Qwen0.5B model-assisted full-stack app
 
-This app hosts the **exact** Session023 measured Qwen-generated slots inside a
+This app hosts the **exact** Session024 measured Qwen-generated slots inside a
 separately authored functional React/Express/Python/SQLite framework. It is NOT
-a fully independent 0.5B model-authored app. Only use it once Session023
+a fully independent 0.5B model-authored app. Session024
 reports an integrated holdout pass and the runtime Docker smoke test passes.
 
 From the repository root in Codespaces:
