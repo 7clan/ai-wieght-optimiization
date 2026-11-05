@@ -1,5 +1,35 @@
 # TinyCoder Weight Lab
 
+<!-- APP-PREVIEW-GALLERY-START -->
+## Visual application previews — Session 018
+
+Every generated application now has an actual React UI render you can open
+in a browser, even if it failed the execution tests. These are **static,
+sandbox-rendered visual snapshots** with public example data, not live
+Express/Python deployments. No generated JavaScript runs in your browser.
+
+**[Open all ten applications in the visual gallery](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/index.html)**
+
+| Application | Preview | Full-stack holdout |
+| --- | --- | --- |
+| `invoice` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/invoice.html) | Passed |
+| `slug` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/slug.html) | Failed |
+| `discount` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/discount.html) | Passed |
+| `filter` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/filter.html) | Passed |
+| `progress` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/progress.html) | Passed |
+| `vowels` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/vowels.html) | Passed |
+| `fahrenheit` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/fahrenheit.html) | Passed |
+| `unique` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/unique.html) | Failed |
+| `maximum` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/maximum.html) | Passed |
+| `words` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/words.html) | Failed |
+
+Static pages are hosted via a third-party raw-file preview CDN
+from a public GitHub commit; use GitHub Pages if you prefer first-party
+hosting. Each page includes the generated Python, Express and React
+source and the verified test outcomes.
+
+<!-- APP-PREVIEW-GALLERY-END -->
+
 ## Session 018 — extreme, bounded Python search (measured)
 
 The **unchanged Qwen2.5-Coder-0.5B** base model and frozen Session017b
