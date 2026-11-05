@@ -1,0 +1,98 @@
+{
+  "session": "024",
+  "status": "completed",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "weight_edits": 0,
+  "student_slot": "api_delete",
+  "student_success": true,
+  "generated_candidate_count": 6,
+  "generated_output_tokens": 273,
+  "wall_seconds": 25.81,
+  "selected": {
+    "public": {
+      "phase": "public",
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": true,
+      "checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "delete": true,
+        "ui_item": true,
+        "integrated_api": true
+      },
+      "ui_markup": "<main class=\"board\"><header><div class=\"brand\">◆ FOCUSBOARD</div><h1>Your tasks, in focus.</h1><p>Plan, prioritize, and finish what matters.</p></header><section class=\"stats\" aria-label=\"Task statistics\"><article><b>0</b><span>Total tasks</span></article><article><b>0</b><span>Completed</span></article><article><b>0</b><span>Remaining</span></article></section><form><input aria-label=\"New task title\" placeholder=\"What needs to be done?\" required=\"\" value=\"\"/><select aria-label=\"Priority\"><option value=\"low\">Low</option><option value=\"medium\" selected=\"\">Medium</option><option value=\"high\">High</option></select><button type=\"submit\">Add task</button></form><h2>Task board</h2><div class=\"empty\">Your next big idea starts here. Add your first task above.</div></main>",
+      "failure_reasons": [],
+      "completed_checks": 10
+    },
+    "holdout": {
+      "phase": "holdout",
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": true,
+      "checks": {
+        "get": true,
+        "post": true,
+        "patch": true,
+        "summary": true,
+        "delete": true,
+        "ui_item": true,
+        "integrated_api": true
+      },
+      "ui_markup": "<main class=\"board\"><header><div class=\"brand\">◆ FOCUSBOARD</div><h1>Your tasks, in focus.</h1><p>Plan, prioritize, and finish what matters.</p></header><section class=\"stats\" aria-label=\"Task statistics\"><article><b>0</b><span>Total tasks</span></article><article><b>0</b><span>Completed</span></article><article><b>0</b><span>Remaining</span></article></section><form><input aria-label=\"New task title\" placeholder=\"What needs to be done?\" required=\"\" value=\"\"/><select aria-label=\"Priority\"><option value=\"low\">Low</option><option value=\"medium\" selected=\"\">Medium</option><option value=\"high\">High</option></select><button type=\"submit\">Add task</button></form><h2>Task board</h2><div class=\"empty\">Your next big idea starts here. Add your first task above.</div></main>",
+      "failure_reasons": [],
+      "completed_checks": 10
+    }
+  },
+  "integrated_model_assisted_app_pass": true,
+  "teacher_lessons": "Session023 failed on remove() method; Session024 teacher explicitly showed delete(id) method and analogous notes route.",
+  "attribution": "Qwen wrote eight verified functional expressions/JSX/CSS segments across Sessions022-024; API envelope, route wiring, React app logic, Python function wrapper and storage adapter were trusted authored scaffolds.",
+  "holdout_consulted_during_selection": false,
+  "permanent_weight_learning_proven": false,
+  "independent_transfer_proven": false,
+  "previous_predictions_sha256": "8502b114d0f320c81eca4dec5354b3f2883adc9c9b6664f341f2a54f48c64518"
+}

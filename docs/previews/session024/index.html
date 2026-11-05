@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;; style-src &#39;unsafe-inline&#39;; base-uri &#39;none&#39;; form-action &#39;none&#39;"><title>Actual Qwen0.5B app: FocusBoard</title><style>
+:root{font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#e4ecfa;background:#0b1220}
+*{box-sizing:border-box}body{margin:0}.wrap{max-width:1120px;margin:auto;padding:54px 23px}
+h1{font-size:clamp(35px,5vw,55px);letter-spacing:-.045em;margin:24px 0 12px}
+p{line-height:1.6;color:#afc0d6}.lead{max-width:740px}.logo{font-size:12px;color:#8ed7e9;font-weight:800;letter-spacing:.18em}
+a{color:#9be4ec}.label{font-size:12px;color:#9fb2d0}.status{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0}
+.badge{border-radius:99px;padding:7px 11px;background:#2c3851;font-size:12px;font-weight:750}
+.good{background:#15493d;color:#a4f1d6}.bad{background:#552b37;color:#ffb2b8}
+.panel{background:#162238;border:1px solid #31435e;padding:26px;border-radius:18px;margin:25px 0}
+.canvas{background:#f8fafc;border-radius:14px;color:#233245;min-height:240px;padding:25px;overflow:auto}
+.canvas input,.canvas button{padding:9px;border:1px solid #bac6d4;border-radius:7px;margin:6px}
+.canvas button{background:#dfe8fa;color:#182d48}.canvas h1,.canvas h2{color:#172a47;font-size:25px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#0b1424;border:1px solid #263d57;border-radius:12px;padding:18px;color:#dbe9f7;font-size:12px}
+details{margin:12px 0;background:#152034;border:1px solid #30405b;border-radius:12px;padding:17px}
+summary{cursor:pointer;font-weight:800}footer{margin-top:50px;border-top:1px solid #29435d;padding-top:22px;color:#94a6c0}
+</style></head><body><main class="wrap"><div class="logo">TINY CODER · SESSION 021</div><h1>What did the 0.5B model actually make?</h1><p class="lead">This page contains the real model-generated code and the React markup it rendered inside restricted Docker. The screenshot is static and script-free, not a live server. The SQLite adapter, build tools and verification tests were provided externally.</p><div class="status"><span class="badge good">LOGIC: PASS</span><span class="badge good">API: PASS</span><span class="badge good">UI: PASS</span><span class="badge good">CSS: PASS</span></div><div class="panel"><span class="label">MODEL-RENDERED UI SNAPSHOT</span><div class="canvas"><main class="board"><header><div class="brand">◆ FOCUSBOARD</div><h1>Your tasks, in focus.</h1><p>Plan, prioritize, and finish what matters.</p></header><section class="stats" aria-label="Task statistics"><article>0<span>Total tasks</span></article><article>0<span>Completed</span></article><article>0<span>Remaining</span></article></section><h2>Task board</h2><div class="empty">Your next big idea starts here. Add your first task above.</div></main></div></div><div class="panel"><strong>Holdout outcome</strong><p>Integrated contract passed.</p><ul></ul></div><details><summary>Actual generated LOGIC source</summary><pre>def transform(payload):
+    tasks = payload.get(&#x27;tasks&#x27;, [])
+    total = len(tasks)
+    # Count tasks where done is true.
+    completed = sum(1 for task in tasks if task.get(&#x27;done&#x27;, False))
+    return {&#x27;total&#x27;: total, &#x27;completed&#x27;: completed, &#x27;remaining&#x27;: total - completed}
+</pre></details><details><summary>Actual generated API source</summary><pre>const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+  const app = express();
+  app.use(express.json());
+  // GET all tasks, response {tasks:[...]}
+  app.get(&#x27;/api/tasks&#x27;, (req, res) =&gt; res.json({tasks:store.list()}));
+  // POST a new task, response {task:{...}}
+  app.post(&#x27;/api/tasks&#x27;, (req, res) =&gt; res.status(201).json({task:store.create(req.body)}));
+  // PATCH /api/tasks/:id, response {task:{...}}
+  app.patch(&#x27;/api/tasks/:id&#x27;, (req, res) =&gt; res.json({task:store.update(req.params.id,req.body)}));
+  // DELETE /api/tasks/:id, response {deleted:boolean}
+  app.delete(&#x27;/api/tasks/:id&#x27;, (req, res) =&gt; res.json({deleted:store.delete(req.params.id)}));
+  // GET /api/summary, call processor({tasks:store.list()})
+  app.get(&#x27;/api/summary&#x27;, (req, res) =&gt; res.json(processor({tasks:store.list()})));
+  return app;
+}
+</pre></details><details><summary>Actual generated UI source</summary><pre>const React = require(&#x27;react&#x27;);
+const {useEffect, useState} = React;
+// Model-generated TaskItem JSX below. Parent App and its event wiring are trusted.
+function TaskItem({task,onToggle,onDelete}) {
+  return (&lt;li className=&quot;task-row&quot;&gt;{task.title}{&#x27; &#x27;}
+    &lt;button onClick={()=&gt;onToggle(task.id)}&gt;{task.done?&#x27;Un&#x27;:&#x27;Done&#x27;}&lt;/button&gt;
+    &lt;button onClick={()=&gt;onDelete(task.id)}&gt;Delete&lt;/button&gt;&lt;/li&gt;);
+}
+function App() {
+  const [tasks, setTasks] = useState([]);
+  const [title, setTitle] = useState(&#x27;&#x27;);
+  const [priority, setPriority] = useState(&#x27;medium&#x27;);
+  const [summary, setSummary] = useState({total:0,completed:0,remaining:0});
+  const [error, setError] = useState(&#x27;&#x27;);
+  async function refresh() {
+    try {
+      const [items, stats] = await Promise.all([fetch(&#x27;/api/tasks&#x27;),fetch(&#x27;/api/summary&#x27;)]);
+      if (!items.ok || !stats.ok) throw Error(&#x27;Cannot load task data&#x27;);
+      setTasks((await items.json()).tasks);
+      setSummary(await stats.json());
+      setError(&#x27;&#x27;);
+    } catch (e) { setError(String(e.message||e)); }
+  }
+  useEffect(()=&gt;{refresh();},[]);
+  async function mutate(url, method, body) {
+    try {
+      const response=await fetch(url,{method,headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;},
+        ...(body?{body:JSON.stringify(body)}:{})});
+      if(!response.ok) throw Error(&#x27;Action failed: &#x27;+response.status);
+      await refresh();
+    } catch(e){setError(String(e.message||e));}
+  }
+  async function create(e) {
+    e.preventDefault();
+    if(!title.trim())return;
+    await mutate(&#x27;/api/tasks&#x27;,&#x27;POST&#x27;,{title:title.trim(),priority});
+    setTitle(&#x27;&#x27;);
+  }
+  return &lt;main className=&quot;board&quot;&gt;&lt;header&gt;&lt;div className=&quot;brand&quot;&gt;◆ FOCUSBOARD&lt;/div&gt;
+    &lt;h1&gt;Your tasks, in focus.&lt;/h1&gt;&lt;p&gt;Plan, prioritize, and finish what matters.&lt;/p&gt;&lt;/header&gt;
+    &lt;section className=&quot;stats&quot; aria-label=&quot;Task statistics&quot;&gt;
+      &lt;article&gt;&lt;b&gt;{summary.total}&lt;/b&gt;&lt;span&gt;Total tasks&lt;/span&gt;&lt;/article&gt;
+      &lt;article&gt;&lt;b&gt;{summary.completed}&lt;/b&gt;&lt;span&gt;Completed&lt;/span&gt;&lt;/article&gt;
+      &lt;article&gt;&lt;b&gt;{summary.remaining}&lt;/b&gt;&lt;span&gt;Remaining&lt;/span&gt;&lt;/article&gt;
+    &lt;/section&gt;
+    &lt;form onSubmit={create}&gt;&lt;input aria-label=&quot;New task title&quot; value={title}
+      onChange={e=&gt;setTitle(e.target.value)} placeholder=&quot;What needs to be done?&quot; required /&gt;
+      &lt;select aria-label=&quot;Priority&quot; value={priority} onChange={e=&gt;setPriority(e.target.value)}&gt;
+        &lt;option value=&quot;low&quot;&gt;Low&lt;/option&gt;&lt;option value=&quot;medium&quot;&gt;Medium&lt;/option&gt;
+        &lt;option value=&quot;high&quot;&gt;High&lt;/option&gt;&lt;/select&gt;&lt;button type=&quot;submit&quot;&gt;Add task&lt;/button&gt;&lt;/form&gt;
+    {error?&lt;p role=&quot;alert&quot;&gt;{error}&lt;/p&gt;:null}
+    &lt;h2&gt;Task board&lt;/h2&gt;
+    {tasks.length?&lt;ul className=&quot;tasks&quot;&gt;{tasks.map(t=&gt;&lt;TaskItem key={t.id} task={t}
+      onToggle={()=&gt;mutate(&#x27;/api/tasks/&#x27;+t.id,&#x27;PATCH&#x27;,{done:!t.done})}
+      onDelete={()=&gt;mutate(&#x27;/api/tasks/&#x27;+t.id,&#x27;DELETE&#x27;)} /&gt;)}&lt;/ul&gt;:
+      &lt;div className=&quot;empty&quot;&gt;Your next big idea starts here. Add your first task above.&lt;/div&gt;}
+    &lt;/main&gt;;
+}
+module.exports = App;
+</pre></details><details><summary>Actual generated CSS source</summary><pre>/* FocusBoard: trusted layout defaults plus Qwen generated theme rules. */
+*{box-sizing:border-box}body{margin:0;background:#f4f6fc;color:#172341;
+font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}
+header{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}
+h1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}
+p{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stats article{background:white;padding:25px;border:1px solid #e0e6f1;border-radius:18px;display:grid}
+.stats b{font-size:36px}.stats span{color:#7a89a7;font-size:13px}
+form{display:flex;gap:12px;margin-top:30px}input,select,button{padding:14px;border:1px solid #d4ddef;border-radius:11px}
+input{flex:1;min-width:0}button{background:#6076e9;color:white;cursor:pointer;font-weight:700}
+.tasks{list-style:none;padding:0}.task-row{margin:10px 0;background:white;border:1px solid #e0e6f1;
+padding:18px;border-radius:12px;display:flex;align-items:center;gap:12px}
+.task-row button{padding:8px 12px}.empty{background:white;padding:60px;text-align:center;border-radius:15px;color:#7f8ba6}
+@media(max-width:650px){.stats{grid-template-columns:1fr}form{flex-wrap:wrap}input{flex-basis:100%}}
+/* Begin model-generated CSS theme. */
+body{background:#f4f6fc;color:#172341;font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}
+header{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}
+h1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}
+p{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stats article{background:white;padding:2
+</pre></details><footer>Untrusted generated JavaScript is never served for execution in your browser. All model code was evaluated in unprivileged, network-disabled containers.</footer></main></body></html>

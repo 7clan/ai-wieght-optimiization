@@ -1,0 +1,20 @@
+/* FocusBoard: trusted layout defaults plus Qwen generated theme rules. */
+*{box-sizing:border-box}body{margin:0;background:#f4f6fc;color:#172341;
+font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}
+header{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}
+h1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}
+p{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stats article{background:white;padding:25px;border:1px solid #e0e6f1;border-radius:18px;display:grid}
+.stats b{font-size:36px}.stats span{color:#7a89a7;font-size:13px}
+form{display:flex;gap:12px;margin-top:30px}input,select,button{padding:14px;border:1px solid #d4ddef;border-radius:11px}
+input{flex:1;min-width:0}button{background:#6076e9;color:white;cursor:pointer;font-weight:700}
+.tasks{list-style:none;padding:0}.task-row{margin:10px 0;background:white;border:1px solid #e0e6f1;
+padding:18px;border-radius:12px;display:flex;align-items:center;gap:12px}
+.task-row button{padding:8px 12px}.empty{background:white;padding:60px;text-align:center;border-radius:15px;color:#7f8ba6}
+@media(max-width:650px){.stats{grid-template-columns:1fr}form{flex-wrap:wrap}input{flex-basis:100%}}
+/* Begin model-generated CSS theme. */
+body{background:#f4f6fc;color:#172341;font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}
+header{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}
+h1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}
+p{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stats article{background:white;padding:2

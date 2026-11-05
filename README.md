@@ -1,5 +1,24 @@
 # TinyCoder Weight Lab
 
+## Session 024 — mentor-assisted final Express DELETE repair
+
+**Full integrated holdout contract: PASS.** Qwen2.5-Coder-0.5B saw a
+teacher-authored *analogy* for `store.delete(id)` and attempted the previously
+unsolved DELETE expression. All eight completed slots in the final application
+must come from the genuine model outputs archived in Sessions022–024.
+The surrounding scaffold, API envelope, persistence and React state remain
+teacher/agent-written infrastructure. This is *in-context adaptation*, not
+permanent weight learning, independent generalization or an unassisted full
+application created by the 0.5B model.
+
+[View exact corrected student code and static snapshot](docs/previews/session024/index.html) ·
+[Inspect teacher/student steps](docs/previews/session024/mentor.html) ·
+[Measured results](experiments/session024_student_repair_report.json) ·
+[Every generated attempt](experiments/session024_student_repair_predictions.json).
+
+The preview is static and cannot be used as a deployed full-stack application.
+
+
 ## Session 023 — teacher–student coding apprenticeship
 
 **Integrated holdout: FAIL.** Starting with the
