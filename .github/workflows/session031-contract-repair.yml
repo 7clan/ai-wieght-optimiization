@@ -1,0 +1,62 @@
+name: Session 031 Qwen structural contract repair
+
+on:
+  push:
+    branches: [exp/29-js-structure]
+    paths:
+      - .github/workflows/session031-contract-repair.yml
+      - tinycoder/session031.py
+      - tinycoder/collect_session031.py
+      - tests/test_session031.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  structural-repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate curriculum and provenance
+        run: |
+          python -m compileall -q tinycoder/session031.py tinycoder/collect_session031.py
+          python -m unittest discover -s tests -p 'test_session031.py' -v
+      - name: Install frozen model dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch>=2.3,<3'
+          python -m pip install -r requirements.txt 'evalplus==0.3.1'
+      - name: Build isolated evaluator
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+          docker build -f docker/session030-transfer.Dockerfile -t tinycoder-session030-transfer:1 .
+          python -m tinycoder.session030_reference_smoke
+      - name: Generate Qwen contract-first corrections
+        run: python -m tinycoder.session031 --output-dir outputs/session031
+      - name: Preserve attempts even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session031-qwen-structural-repair
+          path: outputs/session031/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Verify model authorship and publish measured results
+        run: python -m tinycoder.collect_session031 --output-dir outputs/session031
+      - name: Commit diagnostic experiment results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/session031_contract_report.json experiments/session031_contract_predictions.json docs/previews/session031
+          git commit -m 'Publish measured Qwen structural repair experiment'
+          git push origin HEAD:exp/29-js-structure
