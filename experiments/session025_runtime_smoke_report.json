@@ -1,0 +1,30 @@
+{
+  "status": "completed",
+  "session": "025",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "model_parameter_count": 494032768,
+  "no_training": true,
+  "source_session024_integrated_holdout": true,
+  "docker_runtime_smoke": "passed_before_export",
+  "runtime_modules_sha256": {
+    "backend/logic.py": "7fbefc4f044382077d506ed1b4f5538a0d9aa92d53d87c1abbbb4044187c4708",
+    "server/routes.js": "c7dc72362893f74e5e3e7497ee32f946c48b5d2d33cab8540f5bc1a806e0737e",
+    "client/App.jsx": "fd5f30726fc8dc66ce05e45cff6c11d8657b35598404c01d843b0e549c9690a9",
+    "client/style.css": "15d16f535b09f2262a67c2acfb16aec4d969b19ef12d1090451df06a37b09dd4"
+  },
+  "runtime_checks": [
+    "GET /api/tasks",
+    "POST /api/tasks",
+    "PATCH /api/tasks/:id",
+    "GET /api/summary",
+    "DELETE /api/tasks/:id",
+    "SQLite file persistence",
+    "HTML response",
+    "JS browser bundle",
+    "CSS response"
+  ],
+  "browser_click_through_verified": false,
+  "deployment_status": "not_deployed_private_codespaces_launch_required",
+  "attribution": "Eight small model-generated slots, hand-authored functional application framework and Docker runtime.",
+  "production_security_audit": false
+}
