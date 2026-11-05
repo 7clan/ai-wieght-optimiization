@@ -33,6 +33,12 @@ class DevMetricsContractTests(unittest.TestCase):
             self.assertIn(project, GOALS["ui"])
         self.assertIn("295", GOALS["ui"])
         self.assertIn("offline", GOALS["ui"].lower())
+        # Public worked examples restate PUBLIC behavior only; the frozen
+        # contract fingerprint covers SPEC/PUBLIC/GOALS and stays unchanged.
+        for role in ROLES:
+            self.assertIn("PUBLIC EXAMPLE", prompt(role))
+        self.assertIn("/api/entries", prompt("api"))
+        self.assertNotIn("/api/items,", prompt("api"))
 
     def test_prompts_contain_no_teacher_material(self):
         source = Path("tinycoder/session031.py").read_text(encoding="utf8")
@@ -44,7 +50,7 @@ class DevMetricsContractTests(unittest.TestCase):
         self.assertIn("PUBLIC CHECK FEEDBACK:", guided)
         self.assertIn("YOUR PREVIOUS ATTEMPT", guided)
         self.assertTrue(guided.endswith(PREFIX["store"]))
-        own = prompt("api", own_example="app.get('/api/items', (req, res) => {});")
+        own = prompt("store", own_example="function createStore(p) {}")
         self.assertIn("YOUR OWN PREVIOUSLY VERIFIED WORKING CODE", own)
         self.assertIn("never its old names", own)
         # Self-memory examples must be model bytes, never teacher constants.

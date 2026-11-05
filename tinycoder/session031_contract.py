@@ -142,6 +142,43 @@ friendly single-column layout. No external assets, imports, fonts or URLs;
 close all braces.""",
 }
 
+# Public worked examples: contract-level documentation shown in generation
+# prompts. They restate PUBLIC behavior only; SPEC/PUBLIC/GOALS (and therefore
+# fingerprint()) are unchanged.
+EXAMPLES = {
+ "logic": """PUBLIC EXAMPLE (exact shapes):
+summarize({"entries":[{"project":"api-server","minutes":95,"date":"2026-11-03"},
+{"project":"docs","minutes":60,"date":"2026-11-03"}]})
+returns
+{"total_minutes":155,"by_project":{"api-server":95,"docs":60},
+"by_day":{"2026-11-03":155},"active_projects":2,"busiest_day":"2026-11-03"}
+Return ONE dict, never a tuple or separate values.""",
+ "store": """PUBLIC EXAMPLE (exact behavior):
+const s = createStore('entries.json');
+s.create({project:'api-server',minutes:95,date:'2026-11-03',note:'routes'})
+returns {id:'1',project:'api-server',minutes:95,date:'2026-11-03',note:'routes'}
+s.list() returns an array containing that entry.
+A NEW createStore('entries.json') still lists it (file persistence).
+s.create({project:'',minutes:5,date:'2026-11-03'}) throws Error('Invalid entry').""",
+ "api": """PUBLIC EXAMPLE (exact routes and envelopes):
+GET /api/entries -> 200 {"entries":[]}
+POST /api/entries with JSON body {"project":"api-server","minutes":95,
+"date":"2026-11-03","note":"routes"} -> 201
+{"item":{"id":"1","project":"api-server","minutes":95,"date":"2026-11-03",
+"note":"routes"}}
+POST /api/entries with body {"project":"","minutes":5,"date":"2026-11-03"}
+-> 400 {"error":"Invalid entry"}
+DELETE /api/entries/1 -> 200 {"deleted":true}
+GET /api/projects -> 200 {"projects":["api-server"]}
+GET /api/summary -> 200 and the body is exactly processor({entries:store.list()})""",
+ "ui": """PUBLIC EXAMPLE (offline demo mode rendering):
+badge with the word offline, then entry rows
+api-server 95 min 2026-11-03, mobile-ui 140 min 2026-11-04,
+docs 60 min 2026-11-04, then a summary with total minutes 295.""",
+ "css": """PUBLIC EXAMPLE: style .badge, .cards, .card, .entries and form
+controls; keep it responsive under 640px.""",
+}
+
 PREFIX = {
     "logic": "def summarize(payload):\n",
     "store": "const fs = require('node:fs');\nfunction createStore(filePath) {\n",
@@ -177,6 +214,7 @@ def prompt(role, error: str = "", previous: str = "",
 
     text = line("NEW DEVMETRICS TASK. Generate only the completion under the final signature.")
     text += "".join(line(x) for x in GOALS[role].splitlines())
+    text += "".join(line(x) for x in EXAMPLES[role].splitlines())
     text += line("FIELD NAMES (use exactly): " + ", ".join(FIELDS) + ".")
     if role in ("api", "ui"):
         text += line("ENDPOINTS (use exactly): " + "; ".join(ENDPOINTS) + ".")

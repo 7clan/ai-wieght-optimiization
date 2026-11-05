@@ -279,3 +279,27 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - The live gallery deploys rounds whose UI does not compile as-is: the model's
   raw bytes are embedded and the page shows the runtime failure via the
   disclosed error banner. Broken rounds are never hidden or repaired by hand.
+
+## Session 031 second amendment (after rounds 5-8)
+
+- The resumed rounds 5-8 (68 generations, 42,969 tokens, 6,110 s) are measured
+  and published. Own-bytes self-memory for the api role caused old-name
+  contamination across 8 rounds (`/api/items` instead of `/api/entries`
+  despite the explicit renaming warning); the api example is therefore
+  EXCLUDED from self-memory and the `--self-memory` flag is no longer passed
+  by the workflow. The mechanism remains for future roles where measured
+  contamination is absent.
+- Generation prompts now include PUBLIC worked examples (`EXAMPLES` in the
+  contract module): exact input/output shapes per role, restating PUBLIC
+  behavior only. `fingerprint()` (SPEC/PUBLIC/GOALS) is unchanged, so the
+  frozen contract identity is preserved; the examples are disclosed
+  prompt-harness documentation.
+- `logic_structured` now requires a returned dict, not any structured value;
+  tuple-shaped returns no longer satisfy it.
+- Failing modules get three candidates per round (feedback-repair + two
+  resamples) and the wall budget rose to 14,400 s. All budget changes are
+  search parameters, disclosed in every report.
+- Live deployment runs as a dedicated job in the same workflow run
+  (`deploy-live-gallery`), because pushes made with GITHUB_TOKEN cannot
+  trigger other workflows. It deploys `docs/` after the measured commit
+  lands, using `configure-pages` enablement with the repository's own token.

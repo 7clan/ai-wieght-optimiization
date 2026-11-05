@@ -65,7 +65,7 @@ jobs:
           ROUNDS="${{ github.event.inputs.rounds || '4' }}"
           RESUME="${{ github.event.inputs.resume }}"
           if [ "$RESUME" = "true" ] && [ -f experiments/session031_selfrepair_state.json ]; then
-            python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS" --resume --self-memory
+            python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS" --resume
           else
             python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS"
           fi
@@ -92,3 +92,34 @@ jobs:
           git commit -m 'Publish measured Qwen0.5B self-repair round and live gallery' || echo 'Nothing to commit'
           git pull --rebase origin exp/29-selfrepair-deployment || true
           git push origin HEAD:exp/29-selfrepair-deployment
+
+  deploy-live-gallery:
+    needs: selfrepair-architect
+    if: needs.selfrepair-architect.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/29-selfrepair-deployment
+      - name: Enable Pages (first time only) and configure
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload the docs/ gallery artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - name: Deploy the live mission gallery
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Report the live URL
+        run: |
+          echo "Live mission gallery: ${{ steps.deployment.outputs.page_url }}"
+          echo "Session 031 gallery:  ${{ steps.deployment.outputs.page_url }}gallery/session031/"

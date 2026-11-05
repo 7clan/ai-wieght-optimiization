@@ -385,6 +385,64 @@ def prior_session_entries():
     return entries
 
 
+def update_readme_results(report, pred):
+    """Refresh the measured Session031 results block in README.md in place."""
+    readme = Path("README.md")
+    if not readme.is_file():
+        return
+    text = readme.read_text(encoding="utf8")
+    mstart = "<!-- SESSION031-RESULTS-START -->"
+    mend = "<!-- SESSION031-RESULTS-END -->"
+    if mstart not in text or mend not in text:
+        return
+    base = report["baseline"]["holdout"]
+    final = report["final"]["holdout"]
+    base_pass = sum(1 for v in base["modules"].values() if v["passed"])
+    final_pass = sum(1 for v in final["modules"].values() if v["passed"])
+    passes = ", ".join("%s: %s" % (r, "PASS" if final["modules"][r]["passed"] else "FAIL")
+                       for r in ROLES)
+    rounds_rows = []
+    for snap in pred["rounds"]:
+        passed = sum(1 for v in snap["public"]["passed"].values() if v)
+        rounds_rows.append("| %d | %d/5 | %d | %s | [live](https://7clan.github.io/"
+                           "ai-wieght-optimiization/gallery/session031/rounds/%02d/"
+                           "index.html) · [report](https://7clan.github.io/"
+                           "ai-wieght-optimiization/gallery/session031/rounds/%02d/"
+                           "report.html) |" % (
+                               snap["round"], passed,
+                               snap["public"]["completed_checks"],
+                               "yes" if snap["public"]["integrated"] else "no",
+                               snap["round"], snap["round"]))
+    block = ("""%s
+**Measured run — %s (branch exp/29-selfrepair-deployment).** Frozen
+Qwen2.5-Coder-0.5B, zero teacher bytes, zero human corrections. All five
+DevMetrics modules are the model's own output; it repaired itself from public
+Docker execution feedback across %d self-repair round(s) (%d generations,
+%s output tokens, %s s wall time). Independent holdout — untouched greedy
+baseline: **%d/5** modules, integrated: %s. Final: **%d/5** modules,
+integrated: **%s**. Final module results: %s.
+
+| round | public passes | checks | integrated | deployed round |
+| ---: | ---: | ---: | --- | --- |
+%s
+
+Live mission gallery: <https://7clan.github.io/ai-wieght-optimiization/> ·
+Session gallery: <https://7clan.github.io/ai-wieght-optimiization/gallery/session031/>
+
+The static gallery runs the model's required offline demo mode with vendored
+React 18.3.1 UMD; the Express/Python halves are Docker-verified in CI. The
+jsdom check is a behavioral DOM check, not a real browser click test. No
+production-readiness or frontier-model parity claim.
+%s""" % (mstart, report["new_application"], report["self_repair_rounds"],
+         report["search"]["candidate_count"], report["search"]["output_tokens"],
+         report["search"]["wall_seconds"], base_pass,
+         "yes" if base["integrated"] else "no", final_pass,
+         "yes" if final["integrated"] else "no", passes,
+         "\n".join(rounds_rows), mend))
+    text = text[:text.index(mstart)] + block + text[text.index(mend) + len(mend):]
+    readme.write_text(text, encoding="utf8")
+
+
 def verify_vendored_runtime():
     for key, rel in VENDOR_FILES.items():
         path = Path("docs") / rel
@@ -497,6 +555,8 @@ def collect(root: Path):
         "| module | sha-256 |\n| --- | --- |\n"
         + "".join("| %s | `%s` |\n" % (ROLE_PATHS[r], pred["source_sha256"][r])
                    for r in ROLES), encoding="utf8")
+
+    update_readme_results(report, pred)
 
     save_json(Path("experiments/session031_selfrepair_report.json"), report)
     save_json(Path("experiments/session031_selfrepair_predictions.json"), pred)

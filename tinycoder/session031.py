@@ -33,7 +33,11 @@ IMAGE = "tinycoder-session031-selfrepair:1"
 # search-budget change; the contract itself stays frozen).
 LIMITS = {"logic": 320, "store": 1200, "api": 850, "ui": 1900, "css": 420}
 BASE_SEED = 2026113100
-WALL_BUDGET_SECONDS = 6600
+WALL_BUDGET_SECONDS = 14400
+# Measured finding: including the model's own Session030 api bytes in repair
+# prompts caused old-name contamination (/api/items instead of /api/entries)
+# across 8 rounds, so own-bytes memory excludes role "api".
+SELF_MEMORY_EXCLUDE = ("api",)
 ROLE_CHECKS = {"logic": ("logic_structured",),
                "store": ("persistence", "store_delete", "store_validation"),
                "api": ("health", "get", "post", "post_invalid", "delete",
@@ -124,7 +128,7 @@ def load_self_memory(path: str):
         passed = {r: v.get("passed") for r, v in
                   report.get("guided", {}).get("holdout", {}).get("modules", {}).items()}
         for role, source in (prior.get("selected") or {}).items():
-            if passed.get(role) and role in ROLES:
+            if passed.get(role) and role in ROLES and role not in SELF_MEMORY_EXCLUDE:
                 memory[role] = source
     except (OSError, ValueError):
         return {}
@@ -211,6 +215,8 @@ def run(args):
                  BASE_SEED + 1000 + round_ * 100 + i),
                 ("resample", prompt(role),
                  BASE_SEED + 2000 + round_ * 100 + i),
+                ("resample", prompt(role),
+                 BASE_SEED + 3000 + round_ * 100 + i),
             )
             for stage, head, seed in candidates:
                 raw, n = generate_one(model, tokenizer, head, max_tokens=LIMITS[role],
