@@ -19,8 +19,8 @@ in-context transfer and verified external debugging memory.
 | api_delete | FAIL |
 | api_summary | PASS |
 
-[Inspect teacher corrections and each student attempt](docs/previews/session023/mentor.html) ·
-[View the actual Qwen-generated code and safe preview](docs/previews/session023/index.html) ·
+[Inspect teacher corrections and each student attempt](https://raw.githack.com/7clan/ai-wieght-optimiization/b2bd390eb14098e8c37fdd853da511c681ae1bbf/docs/previews/session023/mentor.html) ·
+[View the actual Qwen-generated code and safe preview](https://raw.githack.com/7clan/ai-wieght-optimiization/b2bd390eb14098e8c37fdd853da511c681ae1bbf/docs/previews/session023/index.html) ·
 [Read the report](experiments/session023_live_mentor_report.json) ·
 [Read every token completion](experiments/session023_live_mentor_predictions.json).
 
