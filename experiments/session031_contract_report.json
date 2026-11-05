@@ -1,0 +1,148 @@
+{
+  "session": "031",
+  "status": "completed",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "weight_edits": 0,
+  "independent_generalization": false,
+  "evaluation_note": "ShelfStock was consumed in Session030; repeated exploratory holdout",
+  "teacher_target_code_used": false,
+  "before": {
+    "phase": "holdout",
+    "integrated": false,
+    "modules": {
+      "logic": {
+        "syntax_valid": true,
+        "passed": false,
+        "error": "KeyError: 'amount_cents'"
+      },
+      "store": {
+        "syntax_valid": true,
+        "passed": false,
+        "error": "TypeError: s.list is not a function"
+      },
+      "api": {
+        "syntax_valid": true,
+        "passed": true,
+        "error": null
+      },
+      "ui": {
+        "syntax_valid": true,
+        "passed": false,
+        "error": "Error: UI needs item heading, input and button"
+      },
+      "css": {
+        "syntax_valid": true,
+        "passed": true,
+        "error": null
+      }
+    },
+    "checks": {
+      "get": true,
+      "post": true,
+      "summary": true,
+      "delete": true
+    },
+    "ui_markup": "<div class=\"ledger\"><header><p class=\"eyebrow\">Your personal budget</p><h1>PocketLedger</h1><p>Track small expenses and understand where your money goes.</p></header><section class=\"summary\"><h2>Overview</h2><p class=\"total\">0.00</p><p>0 expenses recorded</p><ul></ul></section><section><h2>Add an expense</h2><form><label>Description<input aria-label=\"Description\" value=\"\"/></label><label>Amount in cents<input aria-label=\"Amount in cents\" type=\"number\" min=\"1\" value=\"\"/></label><label>Category<select><option value=\"other\" selected=\"\">Other</option><option value=\"food\">Food</option><option value=\"travel\">Travel</option></select></label><button type=\"submit\">Add Expense</button></form><p aria-live=\"polite\"></p></section><section><h2>Recent expenses</h2><p>No expenses yet.</p></section></div>",
+    "failure_reasons": [
+      "logic: KeyError: 'amount_cents'",
+      "store: TypeError: s.list is not a function",
+      "ui: Error: UI needs item heading, input and button"
+    ],
+    "completed_checks": 6
+  },
+  "after": {
+    "phase": "holdout",
+    "integrated": false,
+    "modules": {
+      "logic": {
+        "syntax_valid": true,
+        "passed": false,
+        "error": "KeyError: 'amount_cents'"
+      },
+      "store": {
+        "syntax_valid": true,
+        "passed": false,
+        "error": "TypeError: s.list is not a function"
+      },
+      "api": {
+        "syntax_valid": true,
+        "passed": true,
+        "error": null
+      },
+      "ui": {
+        "syntax_valid": true,
+        "passed": false,
+        "error": "Error: UI needs item heading, input and button"
+      },
+      "css": {
+        "syntax_valid": true,
+        "passed": true,
+        "error": null
+      }
+    },
+    "checks": {
+      "get": true,
+      "post": true,
+      "summary": true,
+      "delete": true
+    },
+    "ui_markup": "<div class=\"ledger\"><header><p class=\"eyebrow\">Your personal budget</p><h1>PocketLedger</h1><p>Track small expenses and understand where your money goes.</p></header><section class=\"summary\"><h2>Overview</h2><p class=\"total\">0.00</p><p>0 expenses recorded</p><ul></ul></section><section><h2>Add an expense</h2><form><label>Description<input aria-label=\"Description\" value=\"\"/></label><label>Amount in cents<input aria-label=\"Amount in cents\" type=\"number\" min=\"1\" value=\"\"/></label><label>Category<select><option value=\"other\" selected=\"\">Other</option><option value=\"food\">Food</option><option value=\"travel\">Travel</option></select></label><button type=\"submit\">Add Expense</button></form><p aria-live=\"polite\"></p></section><section><h2>Recent expenses</h2><p>No expenses yet.</p></section></div>",
+    "failure_reasons": [
+      "logic: KeyError: 'amount_cents'",
+      "store: TypeError: s.list is not a function",
+      "ui: Error: UI needs item heading, input and button"
+    ],
+    "completed_checks": 6
+  },
+  "public_after": {
+    "phase": "public",
+    "integrated": false,
+    "modules": {
+      "logic": {
+        "syntax_valid": true,
+        "passed": false,
+        "error": "Expected {\"count\":0,\"total_units\":0,\"by_section\":{}}, received {\"count\":0,\"total_cents\":0,\"by_section\":{}}"
+      },
+      "store": {
+        "syntax_valid": true,
+        "passed": false,
+        "error": "TypeError: s.list is not a function"
+      },
+      "api": {
+        "syntax_valid": true,
+        "passed": true,
+        "error": null
+      },
+      "ui": {
+        "syntax_valid": true,
+        "passed": false,
+        "error": "Error: UI needs item heading, input and button"
+      },
+      "css": {
+        "syntax_valid": true,
+        "passed": true,
+        "error": null
+      }
+    },
+    "checks": {
+      "get": true,
+      "post": true,
+      "summary": true,
+      "delete": true
+    },
+    "ui_markup": "<div class=\"ledger\"><header><p class=\"eyebrow\">Your personal budget</p><h1>PocketLedger</h1><p>Track small expenses and understand where your money goes.</p></header><section class=\"summary\"><h2>Overview</h2><p class=\"total\">0.00</p><p>0 expenses recorded</p><ul></ul></section><section><h2>Add an expense</h2><form><label>Description<input aria-label=\"Description\" value=\"\"/></label><label>Amount in cents<input aria-label=\"Amount in cents\" type=\"number\" min=\"1\" value=\"\"/></label><label>Category<select><option value=\"other\" selected=\"\">Other</option><option value=\"food\">Food</option><option value=\"travel\">Travel</option></select></label><button type=\"submit\">Add Expense</button></form><p aria-live=\"polite\"></p></section><section><h2>Recent expenses</h2><p>No expenses yet.</p></section></div>",
+    "failure_reasons": [
+      "logic: Expected {\"count\":0,\"total_units\":0,\"by_section\":{}}, received {\"count\":0,\"total_cents\":0,\"by_section\":{}}",
+      "store: TypeError: s.list is not a function",
+      "ui: Error: UI needs item heading, input and button"
+    ],
+    "completed_checks": 6
+  },
+  "search": {
+    "candidates": 3,
+    "tokens": 1806,
+    "seconds": 309.99
+  }
+}
