@@ -22,7 +22,7 @@ docker build -f apps/qwen-focusboard-mentored/Dockerfile -t qwen-focusboard-ment
 docker run --rm --network none --read-only --cap-drop ALL \
   --security-opt no-new-privileges --pids-limit 128 --memory 1024m \
   --user 65534:65534 --tmpfs /tmp:rw,nosuid,size=64m \
-  --tmpfs /data:rw,nosuid,size=64m \
+  --tmpfs /data:rw,nosuid,size=64m,uid=65534,gid=65534,mode=0755 \
   qwen-focusboard-mentored node server/smoke.js
 ```
 
