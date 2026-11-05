@@ -1,0 +1,27 @@
+name: Session 025 Qwen-assisted interactive preview smoke
+
+on:
+  push:
+    branches: [exp/24-transfer-pattern-memory]
+    paths:
+      - .github/workflows/session025-interactive-preview-ci.yml
+      - docs/previews/session025/interactive.html
+      - tests/session025_browser_demo.cjs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-dom-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated DOM verifier
+        run: npm install --prefix /tmp/qwen-focusboard-dom-check --no-audit --no-fund --ignore-scripts jsdom@26.1.0
+      - name: Exercise rendered browser task events and local persistence
+        run: NODE_PATH=/tmp/qwen-focusboard-dom-check/node_modules node tests/session025_browser_demo.cjs
