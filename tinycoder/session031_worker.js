@@ -171,7 +171,10 @@ async function main(){
       if(role==='ui')view=fn;
     } catch(e) {
       try{esbuild.transformSync(modules[role],{loader:'jsx'});output.modules[role].syntax_valid=true;}catch{}
-      result(role,false,String(e));
+      // Include the first stack frame so 'Assignment to constant variable'
+      // style errors carry a line:column location back into repair prompts.
+      const frame=(e&&e.stack||'').split('\n')[1]||'';
+      result(role,false,String(e)+(frame?' @ '+frame.trim().slice(0,90):''));
     }
   }
   try {
@@ -227,61 +230,69 @@ async function main(){
     finally{fs.rmSync(tmp,{recursive:true,force:true});}
   }
   if(factory){
+    // Report EVERY failing route so repair prompts carry complete feedback.
+    const apiFailures=[];
+    const chk=async(name,fn)=>{try{await fn();output.checks[name]=true;}
+      catch(e){apiFailures.push(name+' -> '+String(e&&e.message?e.message:e).slice(0,140));}};
     try {
       const s=trustedStore();
       const summaryFixture={total_minutes:0,by_project:{},by_day:{},
         active_projects:0,busiest_day:null};
-      const app=await Promise.resolve(factory(s,()=>summaryFixture));
-      if(!app||typeof app.handle!=='function')throw Error('createApp must return Express app');
-      let res=await request(app).get('/api/health').timeout(1200);
-      if(res.status!==200||!equal(res.body,{ok:true}))throw Error('GET /api/health envelope');
-      output.checks.health=true;
-      res=await request(app).get('/api/entries').timeout(1200);
-      if(res.status!==200||!equal(res.body,{entries:[]}))throw Error('GET /api/entries envelope');
-      output.checks.get=true;
-      res=await request(app).post('/api/entries')
-        .send({project:'api-server',minutes:6,date:'2026-11-04',note:'x'}).timeout(1200);
-      if(res.status!==201||res.body.item?.project!=='api-server')throw Error('POST envelope/status');
-      output.checks.post=true;
-      const id=res.body.item.id;
-      res=await request(app).post('/api/entries').send({project:'',minutes:5,date:'2026-11-04'}).timeout(1200);
-      if(res.status!==400||typeof res.body.error!=='string'||!res.body.error)
-        throw Error('POST must answer 400 {error} for invalid input');
-      output.checks.post_invalid=true;
-      res=await request(app).delete('/api/entries/'+id).timeout(1200);
-      if(res.status!==200||res.body.deleted!==true)throw Error('DELETE response or store method');
-      output.checks.delete=true;
-      s.create({project:'beta',minutes:3,date:'2026-11-04'});
-      s.create({project:'alpha',minutes:4,date:'2026-11-04'});
-      res=await request(app).get('/api/projects').timeout(1200);
-      if(res.status!==200||!equal(res.body,{projects:['alpha','beta']}))
-        throw Error('GET /api/projects distinct sorted names');
-      output.checks.projects=true;
-      res=await request(app).get('/api/summary').timeout(1200);
-      if(res.status!==200||!equal(res.body,summaryFixture))throw Error('GET summary processor contract');
-      output.checks.summary=true;
-      result('api',true);
+      let app=null,id=null;
+      await chk('app',()=>{app=factory(s,()=>summaryFixture);
+        if(!app||typeof app.handle!=='function')throw Error('createApp must return Express app');});
+      if(app){
+        await chk('health',async()=>{const res=await request(app).get('/api/health').timeout(1200);
+          if(res.status!==200||!equal(res.body,{ok:true}))throw Error('GET /api/health must return 200 {ok:true}');});
+        await chk('get',async()=>{const res=await request(app).get('/api/entries').timeout(1200);
+          if(res.status!==200||!equal(res.body,{entries:[]}))throw Error('GET /api/entries must return 200 {entries:store.list()}');});
+        await chk('post',async()=>{const res=await request(app).post('/api/entries')
+          .send({project:'api-server',minutes:6,date:'2026-11-04',note:'x'}).timeout(1200);
+          if(res.status!==201||res.body.item?.project!=='api-server')
+            throw Error('POST /api/entries must return 201 {item:store.create(req.body)}');
+          id=res.body.item.id;});
+        await chk('post_invalid',async()=>{const res=await request(app).post('/api/entries')
+          .send({project:'',minutes:5,date:'2026-11-04'}).timeout(1200);
+          if(res.status!==400||typeof res.body.error!=='string'||!res.body.error)
+            throw Error('invalid POST must catch store.create throw and return 400 {error:string}');});
+        await chk('delete',async()=>{const res=await request(app).delete('/api/entries/'+(id||'1')).timeout(1200);
+          if(res.status!==200||res.body.deleted!==true)
+            throw Error('DELETE /api/entries/:id must return 200 {deleted:store.delete(id)}');});
+        await chk('projects',async()=>{s.create({project:'beta',minutes:3,date:'2026-11-04'});
+          s.create({project:'alpha',minutes:4,date:'2026-11-04'});
+          const res=await request(app).get('/api/projects').timeout(1200);
+          if(res.status!==200||!equal(res.body,{projects:['alpha','beta']}))
+            throw Error('GET /api/projects must return 200 {projects:sorted distinct project names}');});
+        await chk('summary',async()=>{const res=await request(app).get('/api/summary').timeout(1200);
+          if(res.status!==200||!equal(res.body,summaryFixture))
+            throw Error('GET /api/summary body must be exactly processor({entries:store.list()})');});
+      }
+      result('api',apiFailures.length===0,apiFailures.join(' | ')||undefined);
     } catch(e){result('api',false,String(e));}
   }
   if(view){
     try {
       const code=modules.ui;
+      // Report EVERY missing wiring pattern so repair prompts carry
+      // complete feedback in one round.
+      const missing=[];
       for(const [pattern,name] of [
-        [/React\.useState|\buseState\s*\(/,'state hook'],
-        [/React\.useEffect|\buseEffect\s*\(/,'load effect'],
+        [/React\.useState|\buseState\s*\(/,'state hook (React.useState)'],
+        [/React\.useEffect|\buseEffect\s*\(/,'load effect (React.useEffect)'],
         [/\bfetch\s*\(/,'API fetch'],
-        [/\/api\/entries/,'entries endpoint'],
-        [/\/api\/summary/,'summary endpoint'],
-        [/onChange\s*=/,'controlled input'],
-        [/onSubmit\s*=|onClick\s*=/,'working form or click handler'],
+        [/\/api\/entries/,'entries endpoint /api/entries'],
+        [/\/api\/summary/,'summary endpoint /api/summary'],
+        [/onChange\s*=/,'controlled input onChange='],
+        [/onSubmit\s*=|onClick\s*=/,'working form onSubmit= or button onClick='],
         [/\bDELETE\b/,'DELETE request'],
         [/\bPOST\b/,'POST request'],
-        [/offline/i,'offline badge'],
+        [/offline/i,'offline badge word'],
         [/api-server/,'demo dataset entry api-server'],
         [/mobile-ui/,'demo dataset entry mobile-ui'],
         [/docs/,'demo dataset entry docs'],
         [/\bfilter\s*\(/,'project filter']
-      ])if(!pattern.test(code))throw Error('UI lacks '+name);
+      ])if(!pattern.test(code))missing.push(name);
+      if(missing.length)throw Error('UI lacks: '+missing.join(', '));
       output.checks.ui_wiring=true;
       // Behavioral proof in a disposable jsdom realm (not a real browser click test).
       const markup=await mountOffline(modules.ui);

@@ -303,3 +303,17 @@ Explore reversible, directly computed edits to local open-model tensor weights.
   (`deploy-live-gallery`), because pushes made with GITHUB_TOKEN cannot
   trigger other workflows. It deploys `docs/` after the measured commit
   lands, using `configure-pages` enablement with the repository's own token.
+
+## Session 031 third amendment (evaluator feedback granularity)
+
+- After 12 measured rounds (110 generations, 69,672 tokens, 10,590 s) the api
+  and ui repair prompts still received only the FIRST failing check per role.
+  The evaluator now reports EVERY failing route check for api (name plus the
+  exact expected envelope/status), EVERY missing ui wiring pattern in one
+  message, and the first stack frame (line:column) for module-load errors
+  such as 'Assignment to constant variable'. This is execution feedback
+  only — no teacher or human code enters prompts; the contract stays frozen.
+- Measured intermediate state after round 12: holdout logic and css PASS
+  (logic newly passing after the worked-examples amendment), public checks
+  include health/get/post; api, store and ui still fail. All published round
+  pages remain deployed exactly as the model wrote them.
