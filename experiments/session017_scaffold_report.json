@@ -1,0 +1,720 @@
+{
+  "status": "completed",
+  "session": "017b",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "manifest_sha256": "514fd8d12582368136ca0364e8ede68d9eb1defd602ef7549e29a5835eec77f2",
+  "task_ids": [
+    "Fullstack/00",
+    "Fullstack/01",
+    "Fullstack/02",
+    "Fullstack/03",
+    "Fullstack/04",
+    "Fullstack/05",
+    "Fullstack/06",
+    "Fullstack/07",
+    "Fullstack/08",
+    "Fullstack/09"
+  ],
+  "baseline": {
+    "tasks": 10,
+    "full_app_passes": 0,
+    "full_app_execution_rate": 0.0,
+    "all_three_syntax_valid": 7,
+    "module_passes": {
+      "logic": 4,
+      "api": 9,
+      "ui": 1
+    },
+    "failure_bins": {
+      "unhandled_exception": 1,
+      "assertion_error": 6,
+      "syntax_invalid": 3
+    },
+    "passed_ids": []
+  },
+  "guided": {
+    "tasks": 10,
+    "full_app_passes": 0,
+    "full_app_execution_rate": 0.0,
+    "all_three_syntax_valid": 8,
+    "module_passes": {
+      "logic": 5,
+      "api": 9,
+      "ui": 1
+    },
+    "failure_bins": {
+      "unhandled_exception": 1,
+      "assertion_error": 7,
+      "syntax_invalid": 2
+    },
+    "passed_ids": []
+  },
+  "baseline_scaffold": {
+    "tasks": 10,
+    "full_app_passes": 4,
+    "full_app_execution_rate": 0.4,
+    "all_three_syntax_valid": 8,
+    "module_passes": {
+      "logic": 4,
+      "api": 9,
+      "ui": 10
+    },
+    "failure_bins": {
+      "unhandled_exception": 1,
+      "assertion_error": 3,
+      "passed": 4,
+      "syntax_invalid": 2
+    },
+    "passed_ids": [
+      "Fullstack/02",
+      "Fullstack/03",
+      "Fullstack/04",
+      "Fullstack/06"
+    ]
+  },
+  "guided_scaffold": {
+    "tasks": 10,
+    "full_app_passes": 5,
+    "full_app_execution_rate": 0.5,
+    "all_three_syntax_valid": 9,
+    "module_passes": {
+      "logic": 5,
+      "api": 9,
+      "ui": 10
+    },
+    "failure_bins": {
+      "unhandled_exception": 1,
+      "assertion_error": 3,
+      "passed": 5,
+      "syntax_invalid": 1
+    },
+    "passed_ids": [
+      "Fullstack/02",
+      "Fullstack/03",
+      "Fullstack/04",
+      "Fullstack/05",
+      "Fullstack/06"
+    ]
+  },
+  "public_scores": {
+    "baseline": {
+      "original": {
+        "tasks": 10,
+        "full_app_passes": 0,
+        "full_app_execution_rate": 0.0,
+        "all_three_syntax_valid": 7,
+        "module_passes": {
+          "logic": 3,
+          "api": 9,
+          "ui": 1
+        },
+        "failure_bins": {
+          "unhandled_exception": 1,
+          "assertion_error": 6,
+          "syntax_invalid": 3
+        },
+        "passed_ids": []
+      },
+      "scaffold": {
+        "tasks": 10,
+        "full_app_passes": 3,
+        "full_app_execution_rate": 0.3,
+        "all_three_syntax_valid": 8,
+        "module_passes": {
+          "logic": 3,
+          "api": 9,
+          "ui": 10
+        },
+        "failure_bins": {
+          "unhandled_exception": 1,
+          "assertion_error": 4,
+          "passed": 3,
+          "syntax_invalid": 2
+        },
+        "passed_ids": [
+          "Fullstack/02",
+          "Fullstack/03",
+          "Fullstack/06"
+        ]
+      }
+    },
+    "guided": {
+      "original": {
+        "tasks": 10,
+        "full_app_passes": 0,
+        "full_app_execution_rate": 0.0,
+        "all_three_syntax_valid": 8,
+        "module_passes": {
+          "logic": 4,
+          "api": 9,
+          "ui": 1
+        },
+        "failure_bins": {
+          "unhandled_exception": 1,
+          "assertion_error": 7,
+          "syntax_invalid": 2
+        },
+        "passed_ids": []
+      },
+      "scaffold": {
+        "tasks": 10,
+        "full_app_passes": 4,
+        "full_app_execution_rate": 0.4,
+        "all_three_syntax_valid": 9,
+        "module_passes": {
+          "logic": 4,
+          "api": 9,
+          "ui": 10
+        },
+        "failure_bins": {
+          "unhandled_exception": 1,
+          "assertion_error": 4,
+          "passed": 4,
+          "syntax_invalid": 1
+        },
+        "passed_ids": [
+          "Fullstack/02",
+          "Fullstack/03",
+          "Fullstack/05",
+          "Fullstack/06"
+        ]
+      }
+    }
+  },
+  "selection": {
+    "mode": "replace_UI_if_and_only_if_public_UI_checks_fail",
+    "public_fallback_ids": {
+      "baseline": [
+        "Fullstack/00",
+        "Fullstack/02",
+        "Fullstack/03",
+        "Fullstack/04",
+        "Fullstack/05",
+        "Fullstack/06",
+        "Fullstack/07",
+        "Fullstack/08",
+        "Fullstack/09"
+      ],
+      "guided": [
+        "Fullstack/00",
+        "Fullstack/02",
+        "Fullstack/03",
+        "Fullstack/04",
+        "Fullstack/05",
+        "Fullstack/06",
+        "Fullstack/07",
+        "Fullstack/08",
+        "Fullstack/09"
+      ]
+    },
+    "number_of_generated_modules_reused": 60,
+    "number_of_new_model_inference_calls": 0,
+    "holdout_used_for_selection": false
+  },
+  "compute": {
+    "additional_generated_output_tokens": 0,
+    "wall_seconds": 19.2
+  },
+  "caveats": "A system-level ablation, NOT a model-only pass@1 improvement. Fallback UIs are generated deterministically from explicit authored contracts; the model does not independently author those replacement components. Ten small authored examples, not independent production-grade application tasks. Docker restrictions are defense-in-depth, not a guarantee of safety.",
+  "task_results": {
+    "baseline": [
+      {
+        "task_id": "Fullstack/00",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "TypeError: 'builtin_function_or_method' object is not iterable"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "unhandled_exception"
+      },
+      {
+        "task_id": "Fullstack/01",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Python expected {\"value\":\"multiple-spaces\"} but got {\"text\":\"Multiple\\tSpaces\",\"value\":\"multiple\\tspaces\"}"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/02",
+        "syntax_valid": true,
+        "passed": true,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": true,
+          "error": null
+        },
+        "failure_bin": "passed"
+      },
+      {
+        "task_id": "Fullstack/03",
+        "syntax_valid": true,
+        "passed": true,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": true,
+          "error": null
+        },
+        "failure_bin": "passed"
+      },
+      {
+        "task_id": "Fullstack/04",
+        "syntax_valid": true,
+        "passed": true,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": true,
+          "error": null
+        },
+        "failure_bin": "passed"
+      },
+      {
+        "task_id": "Fullstack/05",
+        "syntax_valid": false,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 16)"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "syntax_invalid"
+      },
+      {
+        "task_id": "Fullstack/06",
+        "syntax_valid": true,
+        "passed": true,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": true,
+          "error": null
+        },
+        "failure_bin": "passed"
+      },
+      {
+        "task_id": "Fullstack/07",
+        "syntax_valid": false,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "syntax_invalid"
+      },
+      {
+        "task_id": "Fullstack/08",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Python expected {\"value\":-2} but got {\"value\":[-7,-2,-10]}"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/09",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: API expected {\"data\":{\"value\":2}}; got HTTP 200 {\"data\":{\"text\":\" two\\n\\t words \"}}"
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      }
+    ],
+    "guided": [
+      {
+        "task_id": "Fullstack/00",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "TypeError: 'builtin_function_or_method' object is not iterable"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "unhandled_exception"
+      },
+      {
+        "task_id": "Fullstack/01",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Python expected {\"value\":\"multiple-spaces\"} but got {\"text\":\"Multiple\\tSpaces\",\"value\":\"multiple\\tspaces\"}"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/02",
+        "syntax_valid": true,
+        "passed": true,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": true,
+          "error": null
+        },
+        "failure_bin": "passed"
+      },
+      {
+        "task_id": "Fullstack/03",
+        "syntax_valid": true,
+        "passed": true,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": true,
+          "error": null
+        },
+        "failure_bin": "passed"
+      },
+      {
+        "task_id": "Fullstack/04",
+        "syntax_valid": true,
+        "passed": true,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": true,
+          "error": null
+        },
+        "failure_bin": "passed"
+      },
+      {
+        "task_id": "Fullstack/05",
+        "syntax_valid": true,
+        "passed": true,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": true,
+          "error": null
+        },
+        "failure_bin": "passed"
+      },
+      {
+        "task_id": "Fullstack/06",
+        "syntax_valid": true,
+        "passed": true,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": true,
+          "error": null
+        },
+        "failure_bin": "passed"
+      },
+      {
+        "task_id": "Fullstack/07",
+        "syntax_valid": false,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "syntax_invalid"
+      },
+      {
+        "task_id": "Fullstack/08",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Python expected {\"value\":-2} but got {\"value\":[-7,-2,-10]}"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/09",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: API expected {\"data\":{\"value\":2}}; got HTTP 200 {\"data\":{\"text\":\" two\\n\\t words \"}}"
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      }
+    ]
+  }
+}
