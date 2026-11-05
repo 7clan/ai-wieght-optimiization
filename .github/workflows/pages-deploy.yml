@@ -1,0 +1,44 @@
+name: Deploy live mission gallery to GitHub Pages
+
+on:
+  push:
+    branches: [exp/29-selfrepair-deployment]
+    paths:
+      - 'docs/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy-gallery:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable Pages (first time only) and configure
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload the docs/ gallery artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Report the live URL
+        run: |
+          echo "Live mission gallery: ${{ steps.deployment.outputs.page_url }}"
+          echo "Session 031 gallery:  ${{ steps.deployment.outputs.page_url }}gallery/session031/"
