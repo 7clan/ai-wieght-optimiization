@@ -142,6 +142,13 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Pin external CDN previews to an immutable public Git commit SHA. Preserve safe generated snapshots and offer GitHub Pages as an alternative if enabled.
 - Every subsequent experiment that emits application sources MUST run the preview stage after candidate selection: `python -m tinycoder.session019_previews --predictions <file> --report <file> --track <name> --output-dir docs/previews/<session>`. Publish one preview link for every app and surface links alongside pass/fail scores; treat missing previews as incomplete reporting.
 
+## Session 020 — real interactive full-stack reference application
+
+- Branch `exp/18-real-project-manager` carries a **trusted, hand-authored reference**, not a generated benchmark sample. Do not attribute its code or passing tests to Qwen2.5-Coder-0.5B.
+- The reference app in `apps/real-project-manager` includes a React UI, Express API, Python SQLite bridge, Docker Compose, Codespaces configuration, and a unit/integration workflow. Keep persistence tests and HTTP CRUD tests enabled.
+- Running trusted reference infrastructure outside the model-generated-code Docker sandbox does not authorize executing any new model output on the host. Future model-generated candidate code must stay in an isolated, network-disabled, unprivileged, resource-restricted Docker environment.
+- Never state that a Codespaces link is a permanent hosted app. Codespaces starts a server inside a user-created environment; port visibility should remain private. No public SaaS deployment or front-end/backend parity claim is made.
+
 ## Boundaries
 
 - We cannot inspect or copy ChatGPT's underlying proprietary weights.

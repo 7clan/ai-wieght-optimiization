@@ -1,0 +1,19 @@
+{
+  "name": "tinycoder-real-project-manager",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Full-stack project manager reference app for Qwen0.5B reconstruction challenge",
+  "scripts": {
+    "build": "vite build --config client/vite.config.js",
+    "start": "node server/index.js",
+    "test:python": "python3 -m unittest discover -s tests -p 'test_*.py' -v"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "vite": "6.3.5"
+  }
+}

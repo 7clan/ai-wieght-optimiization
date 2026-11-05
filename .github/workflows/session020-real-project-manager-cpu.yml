@@ -1,0 +1,57 @@
+name: Full-stack project-manager real execution check
+
+on:
+  push:
+    branches: [exp/18-real-project-manager]
+    paths:
+      - .github/workflows/session020-real-project-manager-cpu.yml
+      - apps/real-project-manager/**
+      - .devcontainer/devcontainer.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-real-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run SQLite persistence and validation unit tests
+        run: |
+          python -m unittest discover -s apps/real-project-manager/tests -p 'test_*.py' -v
+          node --check apps/real-project-manager/server/index.js
+      - name: Build actual React frontend
+        working-directory: apps/real-project-manager
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+      - name: Build real Dockerized React+Express+Python app
+        run: |
+          docker build -t tinycoder-orbit:0.1 apps/real-project-manager
+      - name: Test HTTP CRUD, restart persistence, and React route
+        run: |
+          mkdir -p "$RUNNER_TEMP/orbit-db"
+          docker run -d --name orbit-app-ci -p 3000:3000 \
+            -v "$RUNNER_TEMP/orbit-db:/data" tinycoder-orbit:0.1
+          python apps/real-project-manager/scripts/smoke.py \
+            --state "$RUNNER_TEMP/orbit-state.json"
+          docker stop orbit-app-ci
+          docker rm orbit-app-ci
+          docker run -d --name orbit-app-ci -p 3000:3000 \
+            -v "$RUNNER_TEMP/orbit-db:/data" tinycoder-orbit:0.1
+          python apps/real-project-manager/scripts/smoke.py \
+            --state "$RUNNER_TEMP/orbit-state.json" --check-persistence
+      - name: Collect diagnostic logs on failure
+        if: failure()
+        run: docker logs orbit-app-ci || true
+      - name: Stop temporary CI container
+        if: always()
+        run: docker rm -f orbit-app-ci || true

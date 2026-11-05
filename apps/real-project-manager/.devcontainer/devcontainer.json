@@ -1,0 +1,13 @@
+{
+  "name": "Orbit Project Manager",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {"version": "3.11"}
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/apps/real-project-manager",
+  "postCreateCommand": "npm install --no-audit --no-fund && npm run build",
+  "postStartCommand": "nohup npm start > /tmp/orbit-project-manager.log 2>&1 &",
+  "forwardPorts": [3000],
+  "portsAttributes": {"3000": {"label": "Orbit full-stack app", "onAutoForward": "openBrowser"}},
+  "customizations": {"vscode": {"extensions": ["esbenp.prettier-vscode"]}}
+}
