@@ -140,6 +140,7 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Render each actual generated React `ResultView` exclusively inside disposable read-only, unprivileged, network-disabled Docker using only PUBLIC fixture outputs; all published HTML is sanitized against executable markup, styles, external fetches and events.
 - Provide a static visual gallery plus an individual preview link per app, including failed apps, showing API/Python/React scores and exact source. Previews are not live deployed Express backends.
 - Pin external CDN previews to an immutable public Git commit SHA. Preserve safe generated snapshots and offer GitHub Pages as an alternative if enabled.
+- Every subsequent experiment that emits application sources MUST run the preview stage after candidate selection: `python -m tinycoder.session019_previews --predictions <file> --report <file> --track <name> --output-dir docs/previews/<session>`. Publish one preview link for every app and surface links alongside pass/fail scores; treat missing previews as incomplete reporting.
 
 ## Boundaries
 
