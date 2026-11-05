@@ -1,19 +1,37 @@
 # TinyCoder Weight Lab
 
-<!-- SESSION017-PENDING-START -->
-## Session 017 — contract-first full-stack architecture (pending)
+## Session 017 — contract-first full-stack vertical slices (measured)
 
-New branch `exp/15-contract-first-fullstack` tests the same untouched
-Qwen2.5-Coder-0.5B base model on ten newly authored vertical slices. Each
-application has a shared API contract plus generated Python logic, Express
-endpoint and React result view. Modules are checked independently and then
-integrated through a Docker-restricted request-to-React rendering test.
+**Frozen model:** `Qwen/Qwen2.5-Coder-0.5B`, 494,032,768 parameters; no
+fine-tuning, gradients, static weight modification, or parameter scaling.
+Ten **newly authored mini-app specifications** require Python transformation,
+an Express POST endpoint, React JSX rendering, and the integrated request-to-UI
+path. Public cases steer up to one sampled continuation and one localized
+repair for failed modules; **two separate holdout inputs per app** are evaluated
+only after final candidates have been frozen. All code executes in restricted,
+network-disabled Docker.
 
-Greedy and adaptive one-sample/one-repair systems share the same tasks and
-final hidden inputs. Hidden inputs are not used for candidate selection.
-The numbers are **pending** until the measured GitHub CPU run finishes.
-The custom test set is not an independent third-party app benchmark.
-<!-- SESSION017-PENDING-END -->
+| System | Fully integrated apps on holdout | Python modules | Express modules | React modules | Valid three-module syntax |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Untouched greedy | 0/10 | 4/10 | 9/10 | 1/10 | 7/10 |
+| Contract-guided search | 0/10 | 5/10 | 9/10 | 1/10 | 8/10 |
+
+**Compute:** 5466 generated output tokens in all,
+including 2118 sampled alternatives and
+1464 repair tokens; 477.89s
+wall-time. The guided score is a **system-level** result after extra inference.
+
+This is a **controlled proof of concept, not evidence of production-ready
+autonomous development or parity with frontier models**. The ten specifications
+are authored, not an independently curated third-party benchmark; test cases
+may be similar to public examples even though holdout values were withheld from
+candidate selection. Browser-level accessibility, security, deployment and
+multi-page workflows are outside this session's scope. Archived candidate
+project files are untrusted; do not run them outside a sandbox.
+
+[Full verified report](experiments/session017_fullstack_report.json) ·
+[Generated modules and acceptances](experiments/session017_fullstack_predictions.json).
+The workflow also retains the ten candidate app directories as artifacts.
 
 ## Session 016 — adaptive execution-guided search (measured)
 

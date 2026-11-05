@@ -1,0 +1,640 @@
+{
+  "status": "completed",
+  "session": "017",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "dataset": {
+    "type": "authored_fullstack_vertical_slices_not_independent_benchmark",
+    "count": 10,
+    "manifest_sha256": "514fd8d12582368136ca0364e8ede68d9eb1defd602ef7549e29a5835eec77f2",
+    "task_ids": [
+      "Fullstack/00",
+      "Fullstack/01",
+      "Fullstack/02",
+      "Fullstack/03",
+      "Fullstack/04",
+      "Fullstack/05",
+      "Fullstack/06",
+      "Fullstack/07",
+      "Fullstack/08",
+      "Fullstack/09"
+    ],
+    "modules_per_app": [
+      "logic",
+      "api",
+      "ui"
+    ],
+    "public_cases_per_app": 2,
+    "holdout_cases_per_app": 2
+  },
+  "baseline": {
+    "holdout": {
+      "tasks": 10,
+      "full_app_passes": 0,
+      "full_app_execution_rate": 0.0,
+      "all_three_syntax_valid": 7,
+      "module_passes": {
+        "logic": 4,
+        "api": 9,
+        "ui": 1
+      },
+      "failure_bins": {
+        "unhandled_exception": 1,
+        "assertion_error": 6,
+        "syntax_invalid": 3
+      },
+      "passed_ids": []
+    },
+    "public": {
+      "tasks": 10,
+      "full_app_passes": 0,
+      "full_app_execution_rate": 0.0,
+      "all_three_syntax_valid": 7,
+      "module_passes": {
+        "logic": 3,
+        "api": 9,
+        "ui": 1
+      },
+      "failure_bins": {
+        "unhandled_exception": 1,
+        "assertion_error": 6,
+        "syntax_invalid": 3
+      },
+      "passed_ids": []
+    },
+    "task_results": [
+      {
+        "task_id": "Fullstack/00",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "TypeError: 'builtin_function_or_method' object is not iterable"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Invoice total</h3>, data-testid=\"app-invoice\" or output '24'; got <p>24</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "unhandled_exception"
+      },
+      {
+        "task_id": "Fullstack/01",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Python expected {\"value\":\"multiple-spaces\"} but got {\"text\":\"Multiple\\tSpaces\",\"value\":\"multiple\\tspaces\"}"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/02",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Discounted price</h3>, data-testid=\"app-discount\" or output '100'; got <p>100</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/03",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Matching values</h3>, data-testid=\"app-filter\" or output '0, 3, -1'; got <section data-testid=\"app-filter\"><h3>Matching values</h3><output>03-1</output></section>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/04",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Progress percent</h3>, data-testid=\"app-progress\" or output '66'; got <p>66</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/05",
+        "syntax_valid": false,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 16)"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Vowel count</h3>, data-testid=\"app-vowels\" or output '5'; got <p>5</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "syntax_invalid"
+      },
+      {
+        "task_id": "Fullstack/06",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Fahrenheit</h3>, data-testid=\"app-fahrenheit\" or output '-40'; got <p>-40</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/07",
+        "syntax_valid": false,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Unique tags</h3>, data-testid=\"app-unique\" or output 'x, y, z'; got <p>x, y, z</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "syntax_invalid"
+      },
+      {
+        "task_id": "Fullstack/08",
+        "syntax_valid": false,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Python expected {\"value\":-2} but got {\"value\":[-7,-2,-10]}"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:27:25: ERROR: Expected \"}\" but found \";\""
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "syntax_invalid"
+      },
+      {
+        "task_id": "Fullstack/09",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: API expected {\"data\":{\"value\":2}}; got HTTP 200 {\"data\":{\"text\":\" two\\n\\t words \"}}"
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Word count</h3>, data-testid=\"app-words\" or output '2'; got <p>2</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      }
+    ]
+  },
+  "guided": {
+    "holdout": {
+      "tasks": 10,
+      "full_app_passes": 0,
+      "full_app_execution_rate": 0.0,
+      "all_three_syntax_valid": 8,
+      "module_passes": {
+        "logic": 5,
+        "api": 9,
+        "ui": 1
+      },
+      "failure_bins": {
+        "unhandled_exception": 1,
+        "assertion_error": 7,
+        "syntax_invalid": 2
+      },
+      "passed_ids": []
+    },
+    "public": {
+      "tasks": 10,
+      "full_app_passes": 0,
+      "full_app_execution_rate": 0.0,
+      "all_three_syntax_valid": 8,
+      "module_passes": {
+        "logic": 4,
+        "api": 9,
+        "ui": 1
+      },
+      "failure_bins": {
+        "unhandled_exception": 1,
+        "assertion_error": 7,
+        "syntax_invalid": 2
+      },
+      "passed_ids": []
+    },
+    "task_results": [
+      {
+        "task_id": "Fullstack/00",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "TypeError: 'builtin_function_or_method' object is not iterable"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Invoice total</h3>, data-testid=\"app-invoice\" or output '24'; got <p>24</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "unhandled_exception"
+      },
+      {
+        "task_id": "Fullstack/01",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Python expected {\"value\":\"multiple-spaces\"} but got {\"text\":\"Multiple\\tSpaces\",\"value\":\"multiple\\tspaces\"}"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": true
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/02",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Discounted price</h3>, data-testid=\"app-discount\" or output '100'; got <p>100</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/03",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Matching values</h3>, data-testid=\"app-filter\" or output '0, 3, -1'; got <section data-testid=\"app-filter\"><h3>Matching values</h3><output>03-1</output></section>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/04",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Progress percent</h3>, data-testid=\"app-progress\" or output '66'; got <p>66</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/05",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Vowel count</h3>, data-testid=\"app-vowels\" or output '5'; got <p>5</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/06",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Fahrenheit</h3>, data-testid=\"app-fahrenheit\" or output '-40'; got <p>-40</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      },
+      {
+        "task_id": "Fullstack/07",
+        "syntax_valid": false,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "SyntaxError: expected an indented block after function definition on line 5 (<unknown>, line 17)"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Unique tags</h3>, data-testid=\"app-unique\" or output 'x, y, z'; got <p>x, y, z</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "syntax_invalid"
+      },
+      {
+        "task_id": "Fullstack/08",
+        "syntax_valid": false,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Python expected {\"value\":-2} but got {\"value\":[-7,-2,-10]}"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": true
+          },
+          "ui": {
+            "syntax_valid": false,
+            "passed": false,
+            "error": "Error: Transform failed with 1 error:\n<stdin>:27:25: ERROR: Expected \"}\" but found \";\""
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "syntax_invalid"
+      },
+      {
+        "task_id": "Fullstack/09",
+        "syntax_valid": true,
+        "passed": false,
+        "modules": {
+          "logic": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "AttributeError: 'dict' object has no attribute 'text'"
+          },
+          "api": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: API expected {\"data\":{\"value\":2}}; got HTTP 200 {\"data\":{\"text\":\" two\\n\\t words \"}}"
+          },
+          "ui": {
+            "syntax_valid": true,
+            "passed": false,
+            "error": "Error: UI missing markup <h3>Word count</h3>, data-testid=\"app-words\" or output '2'; got <p>2</p>"
+          }
+        },
+        "integration": {
+          "passed": false,
+          "error": "Module checks incomplete"
+        },
+        "failure_bin": "assertion_error"
+      }
+    ]
+  },
+  "compute": {
+    "baseline_output_tokens": 1884,
+    "extra_sample_output_tokens": 2118,
+    "extra_repair_output_tokens": 1464,
+    "total_output_tokens": 5466,
+    "wall_seconds": 477.89,
+    "sampled_modules": 17,
+    "repaired_modules": 17
+  },
+  "selection": {
+    "accepted_module_edits": [
+      {
+        "task_id": "Fullstack/05",
+        "role": "logic",
+        "stage": "repair"
+      }
+    ],
+    "holdout_used_during_search": false,
+    "public_cases_are_test_spec_examples": true
+  },
+  "caveats": "Ten custom vertical-slice contracts, NOT full production applications or an independent third-party benchmark. Two held-out inputs per task; the logic contracts are publicly documented. Additional sampling and test execution increase compute. Generated code is untrusted and was executed only in restricted Docker.",
+  "predictions": "experiments/session017_fullstack_predictions.json"
+}
