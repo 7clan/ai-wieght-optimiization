@@ -11,8 +11,8 @@ teacher/agent-written infrastructure. This is *in-context adaptation*, not
 permanent weight learning, independent generalization or an unassisted full
 application created by the 0.5B model.
 
-[View exact corrected student code and static snapshot](docs/previews/session024/index.html) ·
-[Inspect teacher/student steps](docs/previews/session024/mentor.html) ·
+[View exact corrected student code and static snapshot](https://raw.githack.com/7clan/ai-wieght-optimiization/4e097c31688852d7fa2ed7a7b576b68eab2a8e24/docs/previews/session024/index.html) ·
+[Inspect teacher/student steps](https://raw.githack.com/7clan/ai-wieght-optimiization/4e097c31688852d7fa2ed7a7b576b68eab2a8e24/docs/previews/session024/mentor.html) ·
 [Measured results](experiments/session024_student_repair_report.json) ·
 [Every generated attempt](experiments/session024_student_repair_predictions.json).
 
