@@ -19,7 +19,7 @@ autonomous senior-developer-level model.
 | ui_card | PASS |
 | css_theme | PASS |
 
-[View actual model code and static UI snapshot](docs/previews/session022/index.html)
+[View actual model code and static UI snapshot](https://raw.githack.com/7clan/ai-wieght-optimiization/e957a75c2602272c4b861fe1becb9532f3ba1ed4/docs/previews/session022/index.html)
 · [Exact prompt completions](experiments/session022_fim_app_predictions.json)
 · [Verified report](experiments/session022_fim_app_report.json).
 
