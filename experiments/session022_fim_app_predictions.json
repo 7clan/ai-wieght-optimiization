@@ -1,0 +1,732 @@
+{
+  "slots": {
+    "logic_completed": "sum(1 for task in tasks if task.get('done', False))",
+    "api_get": "undefined",
+    "api_post": "undefined",
+    "api_patch": "undefined",
+    "api_delete": "undefined",
+    "api_summary": "undefined",
+    "ui_card": "{task.title}{' '}\n    <button onClick={()=>onToggle(task.id)}>{task.done?'Un':'Done'}</button>\n    <button onClick={()=>onDelete(task.id)}>Delete</button>",
+    "css_theme": "body{background:#f4f6fc;color:#172341;font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}\nheader{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}\nh1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}\np{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}\n.stats article{background:white;padding:2"
+  },
+  "records": [
+    {
+      "slot": "logic_completed",
+      "attempt": 0,
+      "raw": "sum(1 for task in tasks if task.get('done', False))<|endoftext|>",
+      "normalized": "sum(1 for task in tasks if task.get('done', False))",
+      "tokens": 16,
+      "accepted": true,
+      "public": {
+        "checks": {},
+        "module_passed": true,
+        "error": null
+      }
+    },
+    {
+      "slot": "api_get",
+      "attempt": 0,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_get",
+      "attempt": 1,
+      "raw": "store.list()<|endoftext|>",
+      "normalized": "store.list()",
+      "tokens": 4,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_get",
+      "attempt": 2,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_get",
+      "attempt": 3,
+      "raw": "store.list()<|endoftext|>",
+      "normalized": "store.list()",
+      "tokens": 4,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_get",
+      "attempt": 4,
+      "raw": "undefined));\n  // GET /api/tasks/:id, response {task:{...}}\n  app.get('/api/tasks/:id', (req, res) => res.json(undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 36,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_get",
+      "attempt": 5,
+      "raw": "store.list(<|endoftext|>",
+      "normalized": "store.list(",
+      "tokens": 4,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:6:60: ERROR: Expected \")\" but found \";\""
+      }
+    },
+    {
+      "slot": "api_get",
+      "attempt": 6,
+      "raw": "undefined));\n  // GET /api/tasks/:id, response {task:{...}}\n  app.get('/api/tasks/:id', (req, res) => res.json(undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 36,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_get",
+      "attempt": 7,
+      "raw": "store.list(<|endoftext|>",
+      "normalized": "store.list(",
+      "tokens": 4,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:6:60: ERROR: Expected \")\" but found \";\""
+      }
+    },
+    {
+      "slot": "api_get",
+      "attempt": 8,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_post",
+      "attempt": 0,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_post",
+      "attempt": 1,
+      "raw": "undefined<|file_sep|><|fim_prefix|>/backend/app.js\nimport express from 'express';\nimport * as store from './store.js';\nimport * as processor from './processor.js';\nimport { createApp } from './app.js';\nconst app = createApp(store, processor);\n\nconst port = 8080;\napp.listen(port, () => {\n  console.log(`App listening on port",
+      "normalized": "undefined<|file_sep|><|fim_prefix|>/backend/app.js",
+      "tokens": 74,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:8:70: ERROR: Unexpected \"|\""
+      }
+    },
+    {
+      "slot": "api_post",
+      "attempt": 2,
+      "raw": "undefined<|file_sep|><|fim_prefix|>/src/routes/taskRoutes.js\n# RESTful Web API\n\n## Requirements\n\n- Node.js\n- Express\n- MongoDB\n\n## Getting started\n\n#### Installation\n\nClone the repo\n\n```sh\ngit clone git@github.com:2008-19-21-21-10-21-21-10",
+      "normalized": "undefined<|file_sep|><|fim_prefix|>/src/routes/taskRoutes.js",
+      "tokens": 74,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:8:70: ERROR: Unexpected \"|\""
+      }
+    },
+    {
+      "slot": "api_post",
+      "attempt": 3,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_post",
+      "attempt": 4,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_post",
+      "attempt": 5,
+      "raw": "undefined<|file_sep|>/server/index.js\nconst { readFile, writeFile, existsSync } = require('fs');\nconst { createReadStream } = require('fs');\n\n// Create a new file\nconst writeStream = createReadStream('./README.md');\nwriteStream.end();\n\n// Read a file\nconst readStream = createReadStream('./README.md');\nreadStream.on('data',",
+      "normalized": "undefined<|file_sep|>/server/index.js",
+      "tokens": 74,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:8:70: ERROR: Unexpected \"|\""
+      }
+    },
+    {
+      "slot": "api_post",
+      "attempt": 6,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_post",
+      "attempt": 7,
+      "raw": "undefined));\n  // PATCH /api/tasks/:id, response {task:{...}}\n  app.patch('/api/tasks/:id', (req, res) => res.json(undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 36,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_post",
+      "attempt": 8,
+      "raw": "undefined));\n  // GET /api/tasks/:id, response {task:{...}}\n  app.get('/api/tasks/:id', (req, res) => res.json(undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 36,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 0,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 1,
+      "raw": "undefined));\n  // DELETE /api/tasks/:id, response {deleted:boolean}\n  app.delete('/api/tasks/:id', (req, res) => res.json(undefined));\n  // GET /api/stats, call processor({tasks:store.summarize()})\n  app.get('/api/stats', (req, res) => res.json(undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 69,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 2,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 3,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 4,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 5,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 6,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 7,
+      "raw": "undefined));\n  // DELETE /api/tasks/:id, response {deleted:boolean}\n  app.delete('/api/tasks/:id', (req, res) => res.json(undefined));\n\n  // GET /api/summary, call processor({tasks:store.list()})\n  app.get('/api/summary', (req, res) => res.json(undefined));\n\n  // GET /api",
+      "normalized": "undefined",
+      "tokens": 74,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_patch",
+      "attempt": 8,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 0,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 1,
+      "raw": "{deleted:true}<|endoftext|>",
+      "normalized": "{deleted:true}",
+      "tokens": 5,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 2,
+      "raw": "{deleted: true}<|endoftext|>",
+      "normalized": "{deleted: true}",
+      "tokens": 6,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 3,
+      "raw": "undefined)<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 3,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 4,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 5,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 6,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 7,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_delete",
+      "attempt": 8,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 0,
+      "raw": "processor({ tasks: store.list() }<|endoftext|>",
+      "normalized": "processor({ tasks: store.list() }",
+      "tokens": 9,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:14:84: ERROR: Expected \")\" but found \";\""
+      }
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 1,
+      "raw": "{ summary: processor(store) <|endoftext|>",
+      "normalized": "{ summary: processor(store)",
+      "tokens": 8,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:14:76: ERROR: Expected \"}\" but found \")\""
+      }
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 2,
+      "raw": "processor(store<|endoftext|>",
+      "normalized": "processor(store",
+      "tokens": 3,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:14:66: ERROR: Expected \")\" but found \";\""
+      }
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 3,
+      "raw": "processor(store<|endoftext|>",
+      "normalized": "processor(store",
+      "tokens": 3,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:14:66: ERROR: Expected \")\" but found \";\""
+      }
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 4,
+      "raw": "processor({ tasks: store.list() })<|endoftext|>",
+      "normalized": "processor({ tasks: store.list() })",
+      "tokens": 9,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 5,
+      "raw": "{summary:processor(store)<|endoftext|>",
+      "normalized": "{summary:processor(store)",
+      "tokens": 7,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:14:74: ERROR: Expected \"}\" but found \")\""
+      }
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 6,
+      "raw": "undefined));\n  // POST /api/summary, call processor({tasks:store.list()})\n  app.post('/api/summary', (req, res) => res.json(undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 36,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 7,
+      "raw": "processor({tasks:store.list()}<|endoftext|>",
+      "normalized": "processor({tasks:store.list()}",
+      "tokens": 8,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Transform failed with 1 error:\n<stdin>:14:81: ERROR: Expected \")\" but found \";\""
+      }
+    },
+    {
+      "slot": "api_summary",
+      "attempt": 8,
+      "raw": "undefined<|endoftext|>",
+      "normalized": "undefined",
+      "tokens": 2,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: GET /api/tasks contract"
+      }
+    },
+    {
+      "slot": "ui_card",
+      "attempt": 0,
+      "raw": "\n    <input type=\"checkbox\" checked={task.done} onChange={e=>onToggle(e.target.checked)} />\n    <span>{task.title}</span>\n    <button onClick={onDelete}>Delete</button>\n  <|endoftext|>",
+      "normalized": "<input type=\"checkbox\" checked={task.done} onChange={e=>onToggle(e.target.checked)} />\n    <span>{task.title}</span>\n    <button onClick={onDelete}>Delete</button>",
+      "tokens": 46,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Model-generated TaskItem must show task title and two buttons"
+      }
+    },
+    {
+      "slot": "ui_card",
+      "attempt": 1,
+      "raw": "\n    <input type=\"checkbox\" checked={task.done} onChange={e=>onToggle(task,id)} />\n    <label>{task.title}</label>\n    <button className=\"task-delete\" onClick={onDelete(task.id)}>❌</button><|endoftext|>",
+      "normalized": "<input type=\"checkbox\" checked={task.done} onChange={e=>onToggle(task,id)} />\n    <label>{task.title}</label>\n    <button className=\"task-delete\" onClick={onDelete(task.id)}>❌</button>",
+      "tokens": 51,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Model-generated TaskItem must show task title and two buttons"
+      }
+    },
+    {
+      "slot": "ui_card",
+      "attempt": 2,
+      "raw": "\n    <div><input aria-label=\"Toggle\" value={task.done?1:-1} onChange={e=>onToggle(Number(e.target.value))} /></div>\n    <div className=\"name\">{task.title}</div>\n    <div className=\"done\">{task.done?\"✔\":\"✘\"}</div>\n    <button aria-label=\"Delete task\" className=\"delete\" onClick={onDelete.bind(this,task.id)} />\n  <|endoftext|>",
+      "normalized": "<div><input aria-label=\"Toggle\" value={task.done?1:-1} onChange={e=>onToggle(Number(e.target.value))} /></div>\n    <div className=\"name\">{task.title}</div>\n    <div className=\"done\">{task.done?\"✔\":\"✘\"}</div>\n    <button aria-label=\"Delete task\" className=\"delete\" onClick={onDelete.bind(this,task.id)} />",
+      "tokens": 89,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Model-generated TaskItem must show task title and two buttons"
+      }
+    },
+    {
+      "slot": "ui_card",
+      "attempt": 3,
+      "raw": "\n    <input type=\"checkbox\" checked={task.done} onChange={e=>onToggle(task.id)} />\n    <span>{task.title}</span>\n    <button onClick={e=>onDelete(task.id)}>Remove</button><|endoftext|>",
+      "normalized": "<input type=\"checkbox\" checked={task.done} onChange={e=>onToggle(task.id)} />\n    <span>{task.title}</span>\n    <button onClick={e=>onDelete(task.id)}>Remove</button>",
+      "tokens": 48,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Model-generated TaskItem must show task title and two buttons"
+      }
+    },
+    {
+      "slot": "ui_card",
+      "attempt": 4,
+      "raw": "\n    <input type=\"checkbox\" checked={task.done} onChange={e=>onToggle(e.target.checked)} />\n    {task.title} {task.priority}\n    <button onClick={onDelete} aria-label=\"Delete task\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  <|endoftext|>",
+      "normalized": "<input type=\"checkbox\" checked={task.done} onChange={e=>onToggle(e.target.checked)} />\n    {task.title} {task.priority}\n    <button onClick={onDelete} aria-label=\"Delete task\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>",
+      "tokens": 64,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Model-generated TaskItem must show task title and two buttons"
+      }
+    },
+    {
+      "slot": "ui_card",
+      "attempt": 5,
+      "raw": "\n      <div className=\"task-header\">\n        <input type=\"checkbox\" name=\"done\" checked={task.done}\n          onClick={(e)=>onToggle(task.id,e.currentTarget.checked)} />\n        <label htmlFor=\"done\">{task.title}</label>\n      </div>\n      <button className=\"trash\" type=\"button\" onClick={()=>onDelete(task.id)}>Delete</button>\n    <|endoftext|>",
+      "normalized": "<div className=\"task-header\">\n        <input type=\"checkbox\" name=\"done\" checked={task.done}\n          onClick={(e)=>onToggle(task.id,e.currentTarget.checked)} />\n        <label htmlFor=\"done\">{task.title}</label>\n      </div>\n      <button className=\"trash\" type=\"button\" onClick={()=>onDelete(task.id)}>Delete</button>",
+      "tokens": 78,
+      "accepted": false,
+      "public": {
+        "checks": {},
+        "module_passed": false,
+        "error": "Error: Model-generated TaskItem must show task title and two buttons"
+      }
+    },
+    {
+      "slot": "ui_card",
+      "attempt": 6,
+      "raw": "{task.title}{' '}\n    <button onClick={()=>onToggle(task.id)}>{task.done?'Un':'Done'}</button>\n    <button onClick={()=>onDelete(task.id)}>Delete</button>\n  <|endoftext|>",
+      "normalized": "{task.title}{' '}\n    <button onClick={()=>onToggle(task.id)}>{task.done?'Un':'Done'}</button>\n    <button onClick={()=>onDelete(task.id)}>Delete</button>",
+      "tokens": 42,
+      "accepted": true,
+      "public": {
+        "checks": {
+          "ui_item": true
+        },
+        "module_passed": true,
+        "error": null
+      }
+    },
+    {
+      "slot": "css_theme",
+      "attempt": 0,
+      "raw": "body{background:#f4f6fc;color:#172341;font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}\nheader{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}\nh1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}\np{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}\n.stats article{background:white;padding:2",
+      "normalized": "body{background:#f4f6fc;color:#172341;font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}\nheader{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}\nh1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}\np{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}\n.stats article{background:white;padding:2",
+      "tokens": 180,
+      "accepted": true,
+      "public": {
+        "checks": {
+          "ui_item": true
+        },
+        "module_passed": true,
+        "error": null
+      }
+    }
+  ],
+  "source": {
+    "logic": "def transform(payload):\n    tasks = payload.get('tasks', [])\n    total = len(tasks)\n    # Count tasks where done is true.\n    completed = sum(1 for task in tasks if task.get('done', False))\n    return {'total': total, 'completed': completed, 'remaining': total - completed}\n",
+    "api": "const express = require('express');\nfunction createApp(store, processor) {\n  const app = express();\n  app.use(express.json());\n  // GET all tasks, response {tasks:[...]}\n  app.get('/api/tasks', (req, res) => res.json(undefined));\n  // POST a new task, response {task:{...}}\n  app.post('/api/tasks', (req, res) => res.status(201).json(undefined));\n  // PATCH /api/tasks/:id, response {task:{...}}\n  app.patch('/api/tasks/:id', (req, res) => res.json(undefined));\n  // DELETE /api/tasks/:id, response {deleted:boolean}\n  app.delete('/api/tasks/:id', (req, res) => res.json(undefined));\n  // GET /api/summary, call processor({tasks:store.list()})\n  app.get('/api/summary', (req, res) => res.json(undefined));\n  return app;\n}\n",
+    "ui": "const React = require('react');\nconst {useEffect, useState} = React;\n// Model-generated TaskItem JSX below. Parent App and its event wiring are trusted.\nfunction TaskItem({task,onToggle,onDelete}) {\n  return (<li className=\"task-row\">{task.title}{' '}\n    <button onClick={()=>onToggle(task.id)}>{task.done?'Un':'Done'}</button>\n    <button onClick={()=>onDelete(task.id)}>Delete</button></li>);\n}\nfunction App() {\n  const [tasks, setTasks] = useState([]);\n  const [title, setTitle] = useState('');\n  const [priority, setPriority] = useState('medium');\n  const [summary, setSummary] = useState({total:0,completed:0,remaining:0});\n  const [error, setError] = useState('');\n  async function refresh() {\n    try {\n      const [items, stats] = await Promise.all([fetch('/api/tasks'),fetch('/api/summary')]);\n      if (!items.ok || !stats.ok) throw Error('Cannot load task data');\n      setTasks((await items.json()).tasks);\n      setSummary(await stats.json());\n      setError('');\n    } catch (e) { setError(String(e.message||e)); }\n  }\n  useEffect(()=>{refresh();},[]);\n  async function mutate(url, method, body) {\n    try {\n      const response=await fetch(url,{method,headers:{'Content-Type':'application/json'},\n        ...(body?{body:JSON.stringify(body)}:{})});\n      if(!response.ok) throw Error('Action failed: '+response.status);\n      await refresh();\n    } catch(e){setError(String(e.message||e));}\n  }\n  async function create(e) {\n    e.preventDefault();\n    if(!title.trim())return;\n    await mutate('/api/tasks','POST',{title:title.trim(),priority});\n    setTitle('');\n  }\n  return <main className=\"board\"><header><div className=\"brand\">◆ FOCUSBOARD</div>\n    <h1>Your tasks, in focus.</h1><p>Plan, prioritize, and finish what matters.</p></header>\n    <section className=\"stats\" aria-label=\"Task statistics\">\n      <article><b>{summary.total}</b><span>Total tasks</span></article>\n      <article><b>{summary.completed}</b><span>Completed</span></article>\n      <article><b>{summary.remaining}</b><span>Remaining</span></article>\n    </section>\n    <form onSubmit={create}><input aria-label=\"New task title\" value={title}\n      onChange={e=>setTitle(e.target.value)} placeholder=\"What needs to be done?\" required />\n      <select aria-label=\"Priority\" value={priority} onChange={e=>setPriority(e.target.value)}>\n        <option value=\"low\">Low</option><option value=\"medium\">Medium</option>\n        <option value=\"high\">High</option></select><button type=\"submit\">Add task</button></form>\n    {error?<p role=\"alert\">{error}</p>:null}\n    <h2>Task board</h2>\n    {tasks.length?<ul className=\"tasks\">{tasks.map(t=><TaskItem key={t.id} task={t}\n      onToggle={()=>mutate('/api/tasks/'+t.id,'PATCH',{done:!t.done})}\n      onDelete={()=>mutate('/api/tasks/'+t.id,'DELETE')} />)}</ul>:\n      <div className=\"empty\">Your next big idea starts here. Add your first task above.</div>}\n    </main>;\n}\nmodule.exports = App;\n",
+    "css": "/* FocusBoard: trusted layout defaults plus Qwen generated theme rules. */\n*{box-sizing:border-box}body{margin:0;background:#f4f6fc;color:#172341;\nfont-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}\nheader{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}\nh1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}\np{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}\n.stats article{background:white;padding:25px;border:1px solid #e0e6f1;border-radius:18px;display:grid}\n.stats b{font-size:36px}.stats span{color:#7a89a7;font-size:13px}\nform{display:flex;gap:12px;margin-top:30px}input,select,button{padding:14px;border:1px solid #d4ddef;border-radius:11px}\ninput{flex:1;min-width:0}button{background:#6076e9;color:white;cursor:pointer;font-weight:700}\n.tasks{list-style:none;padding:0}.task-row{margin:10px 0;background:white;border:1px solid #e0e6f1;\npadding:18px;border-radius:12px;display:flex;align-items:center;gap:12px}\n.task-row button{padding:8px 12px}.empty{background:white;padding:60px;text-align:center;border-radius:15px;color:#7f8ba6}\n@media(max-width:650px){.stats{grid-template-columns:1fr}form{flex-wrap:wrap}input{flex-basis:100%}}\n/* Begin model-generated CSS theme. */\nbody{background:#f4f6fc;color:#172341;font-family:ui-sans-serif,system-ui,Arial,sans-serif}.board{max-width:1050px;margin:0 auto;padding:58px 24px}\nheader{margin-bottom:30px}.brand{font-size:12px;font-weight:800;letter-spacing:.2em;color:#6178dd}\nh1{font-size:clamp(35px,5vw,56px);letter-spacing:-.04em;margin:13px 0}\np{color:#7080a2}h2{margin-top:35px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}\n.stats article{background:white;padding:2\n"
+  },
+  "scaffold_sha256": {
+    "logic": "1bf81b49302075b8b21f2da088f2109b34419ae435f9950d7db021ae9ea7564a",
+    "api": "c026433dc6cbb07887bb0bf37a315c44545ab5d61a387d8b7842bd1bebb9d6af",
+    "ui": "fa9646853f0aacce0a7dbfcc0edb93de9625ca06a502f942a874986eb3101db8",
+    "css": "e7146300d14d48953b1cb5badeb7ee542a9a0bd1391e1ddbd09ea50d183cbeee"
+  }
+}

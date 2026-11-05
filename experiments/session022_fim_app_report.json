@@ -1,0 +1,108 @@
+{
+  "session": "022",
+  "status": "completed",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "weight_edits": 0,
+  "method": "native-FIM-code-slots-with-trusted-scaffold",
+  "model_owned_slots": [
+    "logic_completed",
+    "api_get",
+    "api_post",
+    "api_patch",
+    "api_delete",
+    "api_summary",
+    "ui_card",
+    "css_theme"
+  ],
+  "slot_success": {
+    "logic_completed": true,
+    "api_get": false,
+    "api_post": false,
+    "api_patch": false,
+    "api_delete": false,
+    "api_summary": false,
+    "ui_card": true,
+    "css_theme": true
+  },
+  "generated_candidate_count": 54,
+  "generated_output_tokens": 1278,
+  "wall_seconds": 288.42,
+  "selected": {
+    "public": {
+      "phase": "public",
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: GET /api/tasks contract"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": false,
+      "checks": {
+        "ui_item": true
+      },
+      "ui_markup": "<main class=\"board\"><header><div class=\"brand\">◆ FOCUSBOARD</div><h1>Your tasks, in focus.</h1><p>Plan, prioritize, and finish what matters.</p></header><section class=\"stats\" aria-label=\"Task statistics\"><article><b>0</b><span>Total tasks</span></article><article><b>0</b><span>Completed</span></article><article><b>0</b><span>Remaining</span></article></section><form><input aria-label=\"New task title\" placeholder=\"What needs to be done?\" required=\"\" value=\"\"/><select aria-label=\"Priority\"><option value=\"low\">Low</option><option value=\"medium\" selected=\"\">Medium</option><option value=\"high\">High</option></select><button type=\"submit\">Add task</button></form><h2>Task board</h2><div class=\"empty\">Your next big idea starts here. Add your first task above.</div></main>",
+      "failure_reasons": [
+        "api: Error: GET /api/tasks contract"
+      ],
+      "completed_checks": 4
+    },
+    "holdout": {
+      "phase": "holdout",
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: GET /api/tasks contract"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "integrated": false,
+      "checks": {
+        "ui_item": true
+      },
+      "ui_markup": "<main class=\"board\"><header><div class=\"brand\">◆ FOCUSBOARD</div><h1>Your tasks, in focus.</h1><p>Plan, prioritize, and finish what matters.</p></header><section class=\"stats\" aria-label=\"Task statistics\"><article><b>0</b><span>Total tasks</span></article><article><b>0</b><span>Completed</span></article><article><b>0</b><span>Remaining</span></article></section><form><input aria-label=\"New task title\" placeholder=\"What needs to be done?\" required=\"\" value=\"\"/><select aria-label=\"Priority\"><option value=\"low\">Low</option><option value=\"medium\" selected=\"\">Medium</option><option value=\"high\">High</option></select><button type=\"submit\">Add task</button></form><h2>Task board</h2><div class=\"empty\">Your next big idea starts here. Add your first task above.</div></main>",
+      "failure_reasons": [
+        "api: Error: GET /api/tasks contract"
+      ],
+      "completed_checks": 4
+    }
+  },
+  "all_model_slots_verified": false,
+  "integrated_model_assisted_app_pass": false,
+  "holdout_consulted_during_selection": false,
+  "attribution": "Model wrote only eight insertion slots; task wiring, API routes, state and UI shell are authored trusted scaffolding. This is NOT a model-authored full app.",
+  "preview_kind": "static-sanitized-only; no live deployment",
+  "test_scope": "Three public and three held-out Python statistics inputs, HTTP CRUD and React SSR/TaskItem."
+}
