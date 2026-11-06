@@ -222,19 +222,23 @@ def run(args):
                 previous_src = selected[role]
                 previous_err = public["modules"][role]["error"] or "Public contract failed"
             own_example = self_memory.get(role, "")
-            # Sixth amendment: every candidate now carries the full feedback
-            # prompt (previous attempt, evaluator errors, failing-position
-            # quote). Blind resamples are retired after 0 accepts in 48
-            # post-round-16 tries; different seeds still give stochastic
-            # variety across the three feedback candidates.
-            head_fb = prompt(role, error=previous_err, previous=previous_src,
+            # Seventh amendment: rotate feedback modes to break the measured
+            # copy-rut — in rounds 25-30 every feedback candidate reproduced
+            # its own previous broken tail verbatim (const app = createApp(...)
+            # usage lines, 300-line hook bloat). Candidate 1 repairs with the
+            # previous attempt; candidates 2-3 see the error and the
+            # failing-position quote ONLY (no full previous module) and
+            # regenerate from the contract.
+            head_rp = prompt(role, error=previous_err, previous=previous_src,
                              own_example=own_example)
+            head_eo = prompt(role, error=previous_err, previous=previous_src,
+                             own_example=own_example, show_previous=False)
             candidates = (
-                ("feedback-repair", head_fb,
+                ("feedback-repair", head_rp,
                  BASE_SEED + 1000 + round_ * 100 + i),
-                ("feedback-repair-2", head_fb,
+                ("error-only", head_eo,
                  BASE_SEED + 2000 + round_ * 100 + i),
-                ("feedback-repair-3", head_fb,
+                ("error-only-2", head_eo,
                  BASE_SEED + 3000 + round_ * 100 + i),
             )
             for stage, head, seed in candidates:
@@ -336,8 +340,8 @@ def main():
     parser.add_argument("--wall-budget", type=float, default=WALL_BUDGET_SECONDS,
                         help="Cumulative wall-clock budget in seconds")
     args = parser.parse_args()
-    if args.rounds < 0 or args.rounds > 32:
-        raise ValueError("rounds must be within 0..32")
+    if args.rounds < 0 or args.rounds > 40:
+        raise ValueError("rounds must be within 0..40")
     run(args)
 
 

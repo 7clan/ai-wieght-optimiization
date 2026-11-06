@@ -155,12 +155,14 @@ returns
 "by_day":{"2026-11-03":155},"active_projects":2,"busiest_day":"2026-11-03"}
 Return ONE dict, never a tuple or separate values.""",
  "store": """PUBLIC EXAMPLE (exact behavior):
-const s = createStore('entries.json');
+const s = createStore('store-data.json');
 s.create({project:'api-server',minutes:95,date:'2026-11-03',note:'routes'})
 returns {id:'1',project:'api-server',minutes:95,date:'2026-11-03',note:'routes'}
 s.list() returns an array containing that entry.
-A NEW createStore('entries.json') still lists it (file persistence).
+A NEW createStore('store-data.json') still lists it (file persistence).
 s.create({project:'',minutes:5,date:'2026-11-03'}) throws Error('Invalid entry').
+create must return id as a STRING like '1', never the number 1.
+Write ONLY to the filePath parameter; never hardcode any filename.
 Use ONLY fs.readFileSync and fs.writeFileSync (never callback fs.writeFile).
 Values you reassign later must be declared with let, never const.""",
  "api": """PUBLIC EXAMPLE (exact routes and envelopes):
@@ -174,8 +176,12 @@ POST /api/entries with body {"project":"","minutes":5,"date":"2026-11-03"}
 DELETE /api/entries/1 -> 200 {"deleted":true}
 GET /api/projects -> 200 {"projects":["api-server"]}
 GET /api/summary -> 200 and the body is exactly processor({entries:store.list()})
+called directly inside the route; never redeclare processor.
 Register handlers for ALL SIX endpoint paths above; never skip GET /api/entries.
-Sorted distinct project names in JavaScript: Array.from(new Set(list)).sort().""",
+Sorted distinct project names in JavaScript: Array.from(new Set(list)).sort().
+End the module immediately after createApp's closing }.
+NEVER write usage lines after the function: no const app = createApp(...),
+no app.listen(...), no console.log after the function.""",
  "ui": """PUBLIC EXAMPLE (offline demo mode rendering):
 badge with the word offline, then entry rows
 api-server 95 min 2026-11-03, mobile-ui 140 min 2026-11-04,
@@ -185,10 +191,10 @@ const [entries, setEntries] = React.useState([]);
 const [form, setForm] = React.useState({ project: '', minutes: '', date: '', note: '' });
 React.useEffect(() => { load(); }, []);
 Every opening bracket needs its closing bracket on the same hook line.
-Keep the component SHORT: at most 90 lines total, nothing after module.exports.
-Use ONLY these five hooks: entries, form, filter, summary, offline.
-NEVER invent extra hooks like filterByDay, filterByActive or current.
-Every JSX opening tag needs its matching closing tag before function App ends.""",
+Write EXACTLY five React.useState lines: entries, form, filter, summary, offline.
+NEVER add any other hook: no loading, error, refreshing, entryId, current, no sixth hook.
+Keep the whole module under 100 lines and end it with module.exports = App;
+Every JSX opening tag needs its matching closing tag before module.exports.""",
  "css": """PUBLIC EXAMPLE: style .badge, .cards, .card, .entries and form
 controls; keep it responsive under 640px.""",
 }
@@ -208,12 +214,15 @@ DEMO_PROJECTS = ("api-server", "mobile-ui", "docs")
 
 
 def prompt(role, error: str = "", previous: str = "",
-            own_example: str = "") -> str:
+            own_example: str = "", show_previous: bool = True) -> str:
     """Build a generation prompt.
 
     Allowed inputs ONLY: the public contract, the model's own previous attempt,
     public execution feedback, and (optionally) the model's OWN verified bytes
     from an earlier session — self-memory, never teacher- or human-written code.
+    show_previous=False (seventh amendment) hides the full previous module
+    while still quoting its failing lines, so the model regenerates from the
+    contract instead of copying its own previous structure verbatim.
     """
     if role not in ROLES:
         raise ValueError(role)
@@ -239,7 +248,7 @@ def prompt(role, error: str = "", previous: str = "",
         text += block(own_example)
     if error:
         text += line("PUBLIC CHECK FEEDBACK: " + " ".join(str(error).split())[:300])
-    if previous:
+    if previous and show_previous:
         # Show the head (where early syntax bugs live) AND the tail of the
         # model's own previous attempt so no failure location is hidden.
         all_lines = previous.splitlines()

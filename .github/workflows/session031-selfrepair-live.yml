@@ -1,22 +1,15 @@
 name: Session 031 Qwen0.5B self-repair architect with live deployment
 
+# Seventh amendment: workflow_dispatch ONLY. A push-triggered run used the
+# default inputs (rounds=4, resume=false) which would run a FRESH baseline
+# generation and the collector would clobber the published cumulative state
+# with worse fresh-run scores. Measured runs are always dispatched
+# explicitly with rounds/wall_budget/resume inputs.
 on:
-  push:
-    branches: [exp/29-selfrepair-deployment]
-    paths:
-      - .github/workflows/session031-selfrepair-live.yml
-      - tinycoder/session031.py
-      - tinycoder/session031_contract.py
-      - tinycoder/session031_worker.js
-      - tinycoder/session031_py_worker.py
-      - tinycoder/session031_reference_smoke.py
-      - tinycoder/collect_session031.py
-      - tests/test_session031.py
-      - docker/session031-selfrepair.Dockerfile
   workflow_dispatch:
     inputs:
       rounds:
-        description: 'Total self-repair rounds (0-24)'
+        description: 'Total self-repair rounds (0-40)'
         default: '4'
         type: string
       wall_budget:

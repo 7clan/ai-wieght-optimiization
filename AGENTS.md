@@ -377,3 +377,42 @@ feedback-only candidates)
   enable in repo Settings -> Pages (Source: GitHub Actions); the workflow
   token cannot create the site. Measured rounds are committed regardless.
 
+## Session 031 seventh amendment (anti-copy-rut candidate rotation)
+
+- After 30 measured rounds (268 generations, 203,835 tokens, 29,160 s) the
+  sixth amendment shifted but did not break the failures, and exposed a
+  self-contamination cascade: with every candidate carrying the previous
+  attempt, the model copied its own broken tails verbatim — api modules
+  ending with `const app = createApp(store, processor); app.listen(3000...)`
+  (ReferenceError at load, 12 of 18 api candidates in rounds 25-30), ui
+  modules starting with the five anchored hooks correctly and then adding
+  seven MORE invented hooks (loading, error, refreshing, entryId,
+  loadingEntries, ...) reaching 300+ lines and truncating at the ceiling,
+  and store modules hardcoding the example filename 'entries.json' instead
+  of the filePath parameter (EROFS). The store was otherwise close: its
+  remaining measured miss was returning a numeric id where the contract
+  requires a string.
+- Candidate rotation (disclosed search change; contract and fingerprint()
+  frozen): per failing role each round now runs one feedback-repair
+  candidate WITH the previous attempt, then two error-only candidates —
+  error, failing-position quote and contract WITHOUT the full previous
+  module (new prompt(show_previous=False)), so the model regenerates from
+  the contract instead of copying its previous structure.
+- PUBLIC EXAMPLE anchors refined to be countable and to target the measured
+  modes (JavaScript/Node/React API documentation; never target app code):
+  store — id must be a STRING like '1', write only to the filePath
+  parameter, never hardcode a filename (the example literal changed to
+  'store-data.json' so no example filename collides with real writes);
+  api — end the module immediately after createApp's closing }, never write
+  usage lines (no const app = ..., no app.listen, no console.log), call
+  processor({entries:store.list()}) directly, never redeclare processor;
+  ui — write EXACTLY five React.useState lines (entries, form, filter,
+  summary, offline), never a sixth hook of any name, keep the module under
+  100 lines, end with module.exports = App.
+- Round cap 32 -> 40. The workflow trigger is now workflow_dispatch ONLY:
+  a push-triggered run used default inputs (rounds=4, resume=false), which
+  would run a fresh baseline generation whose collector publication would
+  clobber the published cumulative state with fresh-run scores. Measured
+  runs are dispatched explicitly with rounds/wall_budget/resume.
+
+
