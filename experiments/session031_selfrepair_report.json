@@ -17,7 +17,7 @@
   "teacher_bytes": 0,
   "teacher_supplied_anything": false,
   "self_repair_only": true,
-  "self_repair_rounds": 12,
+  "self_repair_rounds": 16,
   "own_prior_session_bytes_in_prompts": [],
   "permanent_weight_learning": false,
   "trusted_scaffold": [
@@ -81,17 +81,17 @@
         "store": {
           "syntax_valid": false,
           "passed": false,
-          "error": "Error: Transform failed with 1 error:\n<stdin>:67:68: ERROR: Unterminated string literal"
+          "error": "Error: Transform failed with 1 error:\n<stdin>:67:68: ERROR: Unterminated string literal @ <stdin>:67:68: ERROR: Unterminated string literal"
         },
         "api": {
           "syntax_valid": true,
           "passed": false,
-          "error": "Error: GET /api/entries envelope"
+          "error": "get -> GET /api/entries must return 200 {entries:store.list()} | post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}"
         },
         "ui": {
           "syntax_valid": false,
           "passed": false,
-          "error": "Error: Transform failed with 1 error:\n<stdin>:114:19: ERROR: Unexpected end of file"
+          "error": "Error: Transform failed with 1 error:\n<stdin>:114:19: ERROR: Unexpected end of file @ <stdin>:114:19: ERROR: Unexpected end of file"
         },
         "css": {
           "syntax_valid": true,
@@ -100,16 +100,20 @@
         }
       },
       "checks": {
-        "health": true
+        "app": true,
+        "health": true,
+        "post_invalid": true,
+        "delete": true,
+        "summary": true
       },
       "ui_markup": null,
       "failure_reasons": [
-        "store: Error: Transform failed with 1 error:\n<stdin>:67:68: ERROR: Unterminated string literal",
-        "ui: Error: Transform failed with 1 error:\n<stdin>:114:19: ERROR: Unexpected end of file",
+        "store: Error: Transform failed with 1 error:\n<stdin>:67:68: ERROR: Unterminated string literal @ <stdin>:67:68: ERROR: Unterminated string literal",
+        "ui: Error: Transform failed with 1 error:\n<stdin>:114:19: ERROR: Unexpected end of file @ <stdin>:114:19: ERROR: Unexpected end of file",
         "logic: Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received null",
-        "api: Error: GET /api/entries envelope"
+        "api: get -> GET /api/entries must return 200 {entries:store.list()} | post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}"
       ],
-      "completed_checks": 2
+      "completed_checks": 6
     }
   },
   "final": {
@@ -130,12 +134,12 @@
         "api": {
           "syntax_valid": true,
           "passed": false,
-          "error": "Error: POST must answer 400 {error} for invalid input"
+          "error": "get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})"
         },
         "ui": {
           "syntax_valid": true,
           "passed": false,
-          "error": "Error: UI lacks state hook"
+          "error": "Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b"
         },
         "css": {
           "syntax_valid": true,
@@ -145,18 +149,20 @@
       },
       "checks": {
         "logic_structured": true,
+        "app": true,
         "health": true,
-        "get": true,
-        "post": true
+        "post": true,
+        "post_invalid": true,
+        "delete": true
       },
       "ui_markup": null,
       "failure_reasons": [
         "store: TypeError: Assignment to constant variable.",
-        "api: Error: POST must answer 400 {error} for invalid input",
-        "ui: Error: UI lacks state hook",
+        "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+        "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
         "integration: TypeError: Assignment to constant variable."
       ],
-      "completed_checks": 6
+      "completed_checks": 8
     },
     "holdout": {
       "phase": "holdout",
@@ -175,12 +181,12 @@
         "api": {
           "syntax_valid": true,
           "passed": false,
-          "error": "Error: POST must answer 400 {error} for invalid input"
+          "error": "get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})"
         },
         "ui": {
           "syntax_valid": true,
           "passed": false,
-          "error": "Error: UI lacks state hook"
+          "error": "Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b"
         },
         "css": {
           "syntax_valid": true,
@@ -190,18 +196,20 @@
       },
       "checks": {
         "logic_structured": true,
+        "app": true,
         "health": true,
-        "get": true,
-        "post": true
+        "post": true,
+        "post_invalid": true,
+        "delete": true
       },
       "ui_markup": null,
       "failure_reasons": [
         "store: TypeError: Assignment to constant variable.",
-        "api: Error: POST must answer 400 {error} for invalid input",
-        "ui: Error: UI lacks state hook",
+        "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+        "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
         "integration: TypeError: Assignment to constant variable."
       ],
-      "completed_checks": 6
+      "completed_checks": 8
     }
   },
   "rounds": [
@@ -610,13 +618,161 @@
       },
       "elapsed_seconds": 10588.2,
       "output_tokens": 69672
+    },
+    {
+      "round": 13,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "f7cc7f947b587c8806a7b076e31dbbdba0a14cac995c02b63099b3e85d4690d3",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "post": true,
+          "post_invalid": true,
+          "delete": true
+        },
+        "completed_checks": 8,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 11531.7,
+      "output_tokens": 75426
+    },
+    {
+      "round": 14,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "f7cc7f947b587c8806a7b076e31dbbdba0a14cac995c02b63099b3e85d4690d3",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "post": true,
+          "post_invalid": true,
+          "delete": true
+        },
+        "completed_checks": 8,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 12544.1,
+      "output_tokens": 81778
+    },
+    {
+      "round": 15,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "f7cc7f947b587c8806a7b076e31dbbdba0a14cac995c02b63099b3e85d4690d3",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "post": true,
+          "post_invalid": true,
+          "delete": true
+        },
+        "completed_checks": 8,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 13778.2,
+      "output_tokens": 89565
+    },
+    {
+      "round": 16,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "f7cc7f947b587c8806a7b076e31dbbdba0a14cac995c02b63099b3e85d4690d3",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "post": true,
+          "post_invalid": true,
+          "delete": true
+        },
+        "completed_checks": 8,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 14833.9,
+      "output_tokens": 96160
     }
   ],
   "search": {
-    "candidate_count": 110,
-    "output_tokens": 69672,
-    "wall_seconds": 10590.68,
-    "max_rounds": 12,
+    "candidate_count": 144,
+    "output_tokens": 96160,
+    "wall_seconds": 14836.3,
+    "max_rounds": 16,
     "wall_budget_seconds": 14400,
     "private_holdout_seen_during_selection": false
   },
