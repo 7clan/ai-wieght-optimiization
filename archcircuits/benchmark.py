@@ -304,7 +304,7 @@ JSR_DEV = [
        critical="const { a, ...rest }"),
     _t("JSR-003", "JSR", "values", 2, "dev",
        "```javascript\nconst items = [{ p: 3 }, { p: 1 }, { p: 2 }];\nitems.sort((x, y) => x.p - y.p);\n```\nWhat is items[0].p?", "1",
-       cf={"question": "```javascript\nconst items = [{ p: 9 }, { p: 1 }, { p: 2 }];\nitems.sort((x, y) => x.p - y.p);\n```\nWhat is items[0].p?", "gold": "1", "critical": "(x, y) => y.p - x.p"},
+       cf={"question": "```javascript\nconst items = [{ p: 3 }, { p: 1 }, { p: 2 }];\nitems.sort((x, y) => y.p - x.p);\n```\nWhat is items[0].p?", "gold": "3", "critical": "(x, y) => y.p - x.p"},
        critical="(x, y) => x.p - y.p"),
     _t("JSR-004", "JSR", "values", 2, "dev",
        "```javascript\nconst out = [];\nfor (const v of [1, 2, 3]) {\n  out.unshift(v);\n}\n```\nWhat is the value of out?", "[3, 2, 1]",
@@ -422,7 +422,6 @@ XCOM_DEV = [
        critical="from math_utils import clamp"),
     _t("XCOM-010", "XCOM", "binding", 3, "dev",
        "```javascript\n// api.js\nexport async function loadConfig() {\n  const r = await fetch(\"/config\");\n  return r.json();\n}\n\n// app.js\nimport { loadConfig } from \"./api.js\";\n\nasync function start() {\n  const config = ______ loadConfig();\n  console.log(config.mode);\n}\n```\nWhich keyword fills the blank?", "await",
-       cf={"question": "```javascript\n// api.js\nexport async function loadSettings() {\n  const r = await fetch(\"/config\");\n  return r.json();\n}\n\n// app.js\nimport { loadSettings } from \"./api.js\";\n\nasync function start() {\n  const config = ______ loadSettings();\n  console.log(config.mode);\n}\n```\nWhich keyword fills the blank?", "gold": "await", "critical": "export async function loadSettings"},
        critical="export async function loadConfig"),
     _t("XCOM-011", "XCOM", "rename", 3, "dev",
        "```javascript\n// storage.js (UPDATED): getUser now returns { profile: { name } } instead of { name }.\n\n// route.js must send the profile's name:\napp.get(\"/users/:id\", (req, res) => {\n  const user = getUser(req.params.id);\n  res.json({ name: user.______.name });\n});\n```\nWhich property fills the blank?", "profile",
@@ -475,6 +474,10 @@ TASKS = VAR_DEV + VAR_VAL + VAR_HOLD + CON_DEV + CON_VAL + CON_HOLD \
 
 PARTITIONS = ("dev", "val", "holdout")
 
+# Dev tasks without a usable counterfactual (answer unchanged under the
+# available counterfactual edit); excluded from causal patching, still scored.
+NON_PATCHABLE = {"XCOM-010"}
+
 
 def tasks_for(partition: str | None = None, category: str | None = None) -> list[dict]:
     out = TASKS
@@ -503,7 +506,7 @@ def sanity_check() -> None:
             raise ValueError(f"bad partition in {t['id']}")
         if not t["gold"] or not t["question"]:
             raise ValueError(f"empty gold/question in {t['id']}")
-        if t["partition"] == "dev" and t.get("cf") is None:
+        if t["partition"] == "dev" and t.get("cf") is None and t["id"] not in NON_PATCHABLE:
             raise ValueError(f"dev task {t['id']} lacks a counterfactual variant")
     for cat in CATEGORIES:
         patchable = [t for t in tasks_for("dev", cat) if t.get("cf")]

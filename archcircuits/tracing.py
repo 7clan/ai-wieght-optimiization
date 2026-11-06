@@ -95,14 +95,17 @@ def patched_logits(model, tokenizer, ids, patches: list[dict]) -> torch.Tensor:
     """
     handles = []
 
+    def make_pre_hook(patch):
+        def hook(_m, args):
+            inp = args[0]
+            for j, pos in enumerate(patch["positions"]):
+                s, e = patch["head"] * 64, (patch["head"] + 1) * 64
+                inp[0, pos, s:e] = patch["values"][j].to(inp.dtype)
+            return None
+        return hook
+
     def make_hook(patch):
         def hook(_m, _inp, out):
-            if "head" in patch:
-                inp = _inp[0]
-                for j, pos in enumerate(patch["positions"]):
-                    s, e = patch["head"] * 64, (patch["head"] + 1) * 64
-                    inp[0, pos, s:e] = patch["values"][j].to(inp.dtype)
-                return out
             target = out[0] if isinstance(out, tuple) else out
             for j, pos in enumerate(patch["positions"]):
                 target[0, pos, :] = patch["values"][j].to(target.dtype)
@@ -112,7 +115,7 @@ def patched_logits(model, tokenizer, ids, patches: list[dict]) -> torch.Tensor:
     for patch in patches:
         block = model.model.layers[patch["layer"]]
         if "head" in patch:
-            handles.append(block.self_attn.o_proj.register_forward_pre_hook(make_hook(patch)))
+            handles.append(block.self_attn.o_proj.register_forward_pre_hook(make_pre_hook(patch)))
         else:
             target = block.self_attn if patch["component"] == "attn" else block.mlp
             handles.append(target.register_forward_hook(make_hook(patch)))
@@ -176,7 +179,7 @@ def mediation_scan(model, tokenizer, task: dict, layers: list[int],
 
     ids_orig = tokenize(tokenizer, prompt_orig)          # prompt only
     prefix_len = ids_orig.input_ids.shape[1]
-    ids_commit = torch.cat([ids_orig.input_ids[0], torch.tensor(shared)], 0).unsqueeze(0)
+    ids_commit = torch.cat([ids_orig.input_ids[0], torch.tensor(shared, dtype=torch.long)], 0).unsqueeze(0)
     pos_answer = prefix_len + j - 1                      # predicts token j
 
     with torch.inference_mode():
@@ -185,7 +188,7 @@ def mediation_scan(model, tokenizer, task: dict, layers: list[int],
 
     # counterfactual run for patch source values (question side differs)
     ids_cf = tokenize(tokenizer, prompt_cf)
-    ids_cf_commit = torch.cat([ids_cf.input_ids[0], torch.tensor(shared)], 0).unsqueeze(0)
+    ids_cf_commit = torch.cat([ids_cf.input_ids[0], torch.tensor(shared, dtype=torch.long)], 0).unsqueeze(0)
 
     pos_crit = [p for p in span_positions(tokenizer, prompt_orig, task["critical"]) if p < prefix_len]
     if not pos_crit:
@@ -256,7 +259,7 @@ def head_scan(model, tokenizer, task: dict, layer: int, n_heads: int = 14) -> di
 
     ids_orig = tokenize(tokenizer, prompt_orig)
     prefix_len = ids_orig.input_ids.shape[1]
-    ids_commit = torch.cat([ids_orig.input_ids[0], torch.tensor(shared)], 0).unsqueeze(0)
+    ids_commit = torch.cat([ids_orig.input_ids[0], torch.tensor(shared, dtype=torch.long)], 0).unsqueeze(0)
     pos_answer = prefix_len + j - 1
 
     handle = model.model.layers[layer].self_attn.o_proj.register_forward_hook(capture_hook)
@@ -268,7 +271,7 @@ def head_scan(model, tokenizer, task: dict, layer: int, n_heads: int = 14) -> di
         head_inputs["cf"] = inp[0].detach().clone()
 
     ids_cf = tokenize(tokenizer, prompt_cf)
-    ids_cf_commit = torch.cat([ids_cf.input_ids[0], torch.tensor(shared)], 0).unsqueeze(0)
+    ids_cf_commit = torch.cat([ids_cf.input_ids[0], torch.tensor(shared, dtype=torch.long)], 0).unsqueeze(0)
     handle = model.model.layers[layer].self_attn.o_proj.register_forward_hook(capture_cf)
     with torch.inference_mode():
         model(ids_cf_commit.clone(), attention_mask=torch.ones_like(ids_cf_commit))
