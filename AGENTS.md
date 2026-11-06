@@ -342,3 +342,38 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Measured state after round 20: holdout logic+css PASS; public checks
   app/delete/health/post/post_invalid/summary pass; get, projects, store,
   ui still fail. All round pages stay deployed exactly as written.
+
+## Session 031 sixth amendment (truncation ceiling, failing-line quotes,
+feedback-only candidates)
+
+- After 24 measured rounds (214 generations, 148,432 tokens, 21,888 s) three
+  measured failure modes remained: (1) full-length ui candidates truncated
+  EXACTLY at the 1900-token ceiling, producing "Unexpected end of file before
+  a closing h1 tag" — the model bloats components with redundant invented
+  hooks (filterByDay, filterByActive, ...) and runs out of budget; (2) the
+  store failed at load with "Assignment to constant variable" at a line in
+  the omitted MIDDLE of the module, invisible in the head-18/tail-10 view;
+  (3) the api kept dropping the GET /api/entries route and mis-sorting
+  /api/projects while its other five checks passed. Blind resample candidates
+  produced 0 accepts in 48 post-round-16 tries.
+- Search-budget change (disclosed; the contract and `fingerprint()` stay
+  frozen): ui token ceiling 1900 -> 2400.
+- PUBLIC EXAMPLE anchors added (JavaScript/React/Node API documentation, the
+  same category as the fifth-amendment hook anchor; never target app code):
+  ui — keep the component at most 90 lines, use ONLY the five needed hooks,
+  never invent extra filter hooks, close every JSX tag; store — use only
+  synchronous fs.readFileSync/fs.writeFileSync, declare reassigned values
+  with `let`; api — register handlers for ALL SIX endpoint paths, sorted
+  distinct values via `Array.from(new Set(list)).sort()`.
+- Repair prompts now QUOTE the model's own lines (±3, marked `>>`) at any
+  evaluator-reported line:column position, so the failing spot is never
+  hidden in the omitted middle. Own bytes plus public execution feedback
+  only; no teacher or human code enters prompts.
+- All three per-role candidates now carry the full feedback prompt (three
+  seeded variants); blind resamples are retired. Round cap 24 -> 32.
+- The deploy job no longer fails the run while the Pages site is missing
+  (`continue-on-error`) and always prints direct raw.githack live links for
+  every scored round. Restoring the Pages gallery needs a one-time manual
+  enable in repo Settings -> Pages (Source: GitHub Actions); the workflow
+  token cannot create the site. Measured rounds are committed regardless.
+

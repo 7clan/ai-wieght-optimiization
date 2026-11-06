@@ -30,8 +30,12 @@ from .session031_contract import (NAME, ROLES, PUBLIC, PREFIX, fingerprint,
 
 IMAGE = "tinycoder-session031-selfrepair:1"
 # Token ceilings raised after round 4 for truncation-prone roles (disclosed
-# search-budget change; the contract itself stays frozen).
-LIMITS = {"logic": 320, "store": 1200, "api": 850, "ui": 1900, "css": 420}
+# search-budget change; the contract itself stays frozen). Sixth amendment:
+# ui 1900 -> 2400 after rounds 21-24 measured full-length ui candidates
+# truncating exactly at the ceiling mid-JSX ("Unexpected end of file before a
+# closing h1 tag"); anti-bloat anchors were added to the ui PUBLIC EXAMPLE
+# so shorter components need less headroom.
+LIMITS = {"logic": 320, "store": 1200, "api": 850, "ui": 2400, "css": 420}
 BASE_SEED = 2026113100
 WALL_BUDGET_SECONDS = 14400
 # Measured finding: including the model's own Session030 api bytes in repair
@@ -218,14 +222,19 @@ def run(args):
                 previous_src = selected[role]
                 previous_err = public["modules"][role]["error"] or "Public contract failed"
             own_example = self_memory.get(role, "")
+            # Sixth amendment: every candidate now carries the full feedback
+            # prompt (previous attempt, evaluator errors, failing-position
+            # quote). Blind resamples are retired after 0 accepts in 48
+            # post-round-16 tries; different seeds still give stochastic
+            # variety across the three feedback candidates.
+            head_fb = prompt(role, error=previous_err, previous=previous_src,
+                             own_example=own_example)
             candidates = (
-                ("feedback-repair",
-                 prompt(role, error=previous_err, previous=previous_src,
-                        own_example=own_example),
+                ("feedback-repair", head_fb,
                  BASE_SEED + 1000 + round_ * 100 + i),
-                ("resample", prompt(role),
+                ("feedback-repair-2", head_fb,
                  BASE_SEED + 2000 + round_ * 100 + i),
-                ("resample", prompt(role),
+                ("feedback-repair-3", head_fb,
                  BASE_SEED + 3000 + round_ * 100 + i),
             )
             for stage, head, seed in candidates:
@@ -327,8 +336,8 @@ def main():
     parser.add_argument("--wall-budget", type=float, default=WALL_BUDGET_SECONDS,
                         help="Cumulative wall-clock budget in seconds")
     args = parser.parse_args()
-    if args.rounds < 0 or args.rounds > 24:
-        raise ValueError("rounds must be within 0..24")
+    if args.rounds < 0 or args.rounds > 32:
+        raise ValueError("rounds must be within 0..32")
     run(args)
 
 

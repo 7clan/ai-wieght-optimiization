@@ -101,6 +101,12 @@ jobs:
   deploy-live-gallery:
     needs: selfrepair-architect
     if: needs.selfrepair-architect.result == 'success'
+    # Sixth amendment: the Pages site may be missing (creating one needs a
+    # one-time manual enable in repo Settings -> Pages -> Source: GitHub
+    # Actions; the workflow token cannot create it). Measured rounds are
+    # committed regardless, and direct raw.githack live links are printed
+    # below for every scored round, so this job never fails the measured run.
+    continue-on-error: true
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -128,3 +134,13 @@ jobs:
         run: |
           echo "Live mission gallery: ${{ steps.deployment.outputs.page_url }}"
           echo "Session 031 gallery:  ${{ steps.deployment.outputs.page_url }}gallery/session031/"
+      - name: Print direct live links for every scored round
+        if: always()
+        run: |
+          SHA=$(git rev-parse HEAD)
+          echo "Pages mission gallery: https://7clan.github.io/ai-wieght-optimiization/"
+          echo "Direct live links for every scored round (always available):"
+          for R in $(ls -d docs/gallery/session031/rounds/*/ 2>/dev/null | sort); do
+            N=$(basename "$R")
+            echo "round $N: https://raw.githack.com/7clan/ai-wieght-optimiization/$SHA/docs/gallery/session031/rounds/$N/index.html"
+          done

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 
 NAME = "DevMetrics"
 ROLES = ("logic", "store", "api", "ui", "css")
@@ -159,7 +160,9 @@ s.create({project:'api-server',minutes:95,date:'2026-11-03',note:'routes'})
 returns {id:'1',project:'api-server',minutes:95,date:'2026-11-03',note:'routes'}
 s.list() returns an array containing that entry.
 A NEW createStore('entries.json') still lists it (file persistence).
-s.create({project:'',minutes:5,date:'2026-11-03'}) throws Error('Invalid entry').""",
+s.create({project:'',minutes:5,date:'2026-11-03'}) throws Error('Invalid entry').
+Use ONLY fs.readFileSync and fs.writeFileSync (never callback fs.writeFile).
+Values you reassign later must be declared with let, never const.""",
  "api": """PUBLIC EXAMPLE (exact routes and envelopes):
 GET /api/entries -> 200 {"entries":[]}
 POST /api/entries with JSON body {"project":"api-server","minutes":95,
@@ -170,7 +173,9 @@ POST /api/entries with body {"project":"","minutes":5,"date":"2026-11-03"}
 -> 400 {"error":"Invalid entry"}
 DELETE /api/entries/1 -> 200 {"deleted":true}
 GET /api/projects -> 200 {"projects":["api-server"]}
-GET /api/summary -> 200 and the body is exactly processor({entries:store.list()})""",
+GET /api/summary -> 200 and the body is exactly processor({entries:store.list()})
+Register handlers for ALL SIX endpoint paths above; never skip GET /api/entries.
+Sorted distinct project names in JavaScript: Array.from(new Set(list)).sort().""",
  "ui": """PUBLIC EXAMPLE (offline demo mode rendering):
 badge with the word offline, then entry rows
 api-server 95 min 2026-11-03, mobile-ui 140 min 2026-11-04,
@@ -179,7 +184,11 @@ React hook lines look EXACTLY like this (note the full brackets):
 const [entries, setEntries] = React.useState([]);
 const [form, setForm] = React.useState({ project: '', minutes: '', date: '', note: '' });
 React.useEffect(() => { load(); }, []);
-Every opening bracket needs its closing bracket on the same hook line.""",
+Every opening bracket needs its closing bracket on the same hook line.
+Keep the component SHORT: at most 90 lines total, nothing after module.exports.
+Use ONLY these five hooks: entries, form, filter, summary, offline.
+NEVER invent extra hooks like filterByDay, filterByActive or current.
+Every JSX opening tag needs its matching closing tag before function App ends.""",
  "css": """PUBLIC EXAMPLE: style .badge, .cards, .card, .entries and form
 controls; keep it responsive under 640px.""",
 }
@@ -248,6 +257,24 @@ def prompt(role, error: str = "", previous: str = "",
             text += "".join(line(x.replace("*/", "* /")) for x in shown)
         if gap:
             text += line("... (middle lines omitted) ...")
+    if previous and error:
+        # Sixth amendment: when execution feedback reports a line:column
+        # position, quote the model's OWN lines around that exact position
+        # so the failing spot is never hidden in the omitted middle of a
+        # long module. Own bytes plus public execution feedback only.
+        m = re.search(r":(\d+):(\d+)", str(error))
+        if m:
+            ln = int(m.group(1))
+            own_lines = previous.splitlines()
+            if 1 <= ln <= len(own_lines):
+                lo, hi = max(1, ln - 3), min(len(own_lines), ln + 3)
+                text += line("YOUR FAILING POSITION is line %d of your previous" % ln)
+                text += line("attempt (reported by the evaluator). Your own lines")
+                text += line("%d to %d around that position are:" % (lo, hi))
+                for no in range(lo, hi + 1):
+                    mark = ">>" if no == ln else "  "
+                    text += line("%s%d: %s" % (mark, no,
+                                  own_lines[no - 1].replace("*/", "* /")[:100]))
     return text + PREFIX[role]
 
 
