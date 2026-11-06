@@ -1,0 +1,1145 @@
+{
+  "name": "ArchBench",
+  "version": "1.0",
+  "purpose": "Architectural-reasoning benchmark for direct weight-space programming research",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "total_tasks": 112,
+  "partitions": {
+    "dev": 48,
+    "val": 32,
+    "holdout": 32
+  },
+  "categories": [
+    "VAR",
+    "CON",
+    "JSR",
+    "XCOM"
+  ],
+  "deduplication": "zero HumanEval IDs used (HumanEval 0-163 fully consumed by prior sessions); all tasks authored fresh on this branch",
+  "holdout_policy": "holdout authored with different identifier names, domains and structures; consumed once in Phase E (5 conditions); a later exploratory v2 run was NOT executed on it",
+  "non_patchable_dev_tasks": [
+    "XCOM-010"
+  ],
+  "tasks": [
+    {
+      "id": "VAR-001",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "16",
+      "prompt_sha256": "6c4f36a3ad2b317d",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-002",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "7",
+      "prompt_sha256": "dee0a18b1ee9e9a4",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-003",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "18",
+      "prompt_sha256": "3037593bc485d00d",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-004",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "\"bcd\"",
+      "prompt_sha256": "056ee69c593940c0",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-005",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "14",
+      "prompt_sha256": "215e3dec95537bd9",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-006",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "[1, 2, 3]",
+      "prompt_sha256": "bff22b0875251886",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-007",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "[1, 2]",
+      "prompt_sha256": "d483de25b202650f",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-008",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "[1, 2]",
+      "prompt_sha256": "850801002c5fae53",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-009",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "{\"db\": \"old\"}",
+      "prompt_sha256": "0a31c9a725485ba0",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-010",
+      "category": "VAR",
+      "subcategory": "state",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "3",
+      "prompt_sha256": "933be481f680649c",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-011",
+      "category": "VAR",
+      "subcategory": "state",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "\"Hello, Ann\"",
+      "prompt_sha256": "daa97f13c5b37a03",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-012",
+      "category": "VAR",
+      "subcategory": "state",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "5",
+      "prompt_sha256": "bf42aea1b1a093c9",
+      "has_counterfactual": true
+    },
+    {
+      "id": "VAR-101",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 1,
+      "partition": "val",
+      "gold": "15",
+      "prompt_sha256": "1d67786e813f3237",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-102",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "8",
+      "prompt_sha256": "02238086725ebe1b",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-103",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 3,
+      "partition": "val",
+      "gold": "7",
+      "prompt_sha256": "7e975817cb7255e1",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-104",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 1,
+      "partition": "val",
+      "gold": "[0, 7]",
+      "prompt_sha256": "accf34d7c6be83ff",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-105",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "[3, 4]",
+      "prompt_sha256": "f12e57fb6a115f16",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-106",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 3,
+      "partition": "val",
+      "gold": "{\"a\": 1, \"b\": 2}",
+      "prompt_sha256": "910edb79fddb95dd",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-107",
+      "category": "VAR",
+      "subcategory": "state",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "20",
+      "prompt_sha256": "0b1d6272d6cd5e25",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-108",
+      "category": "VAR",
+      "subcategory": "state",
+      "difficulty": 3,
+      "partition": "val",
+      "gold": "12",
+      "prompt_sha256": "866fe5130402ae05",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-201",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "9",
+      "prompt_sha256": "5a1569e17821bdb2",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-202",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "\"yz\"",
+      "prompt_sha256": "7989bc13707829e7",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-203",
+      "category": "VAR",
+      "subcategory": "reassign",
+      "difficulty": 3,
+      "partition": "holdout",
+      "gold": "16",
+      "prompt_sha256": "538084b4d7544586",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-204",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "[\"a\", \"b\"]",
+      "prompt_sha256": "c857be565868a61f",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-205",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "[1, 2]",
+      "prompt_sha256": "d17bb7e8e3bfef4b",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-206",
+      "category": "VAR",
+      "subcategory": "alias",
+      "difficulty": 3,
+      "partition": "holdout",
+      "gold": "443",
+      "prompt_sha256": "e20a634c460968c7",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-207",
+      "category": "VAR",
+      "subcategory": "state",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "3",
+      "prompt_sha256": "b2d071cee4d150b4",
+      "has_counterfactual": false
+    },
+    {
+      "id": "VAR-208",
+      "category": "VAR",
+      "subcategory": "state",
+      "difficulty": 3,
+      "partition": "holdout",
+      "gold": "12",
+      "prompt_sha256": "7278d8105dc9c1ba",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-001",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "get_user",
+      "prompt_sha256": "865ae77cfdfc619c",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-002",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "add_item",
+      "prompt_sha256": "3f744f86b1cd71c4",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-003",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "getUser",
+      "prompt_sha256": "6336de68b16ec068",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-004",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "return {\"id\": 42, \"name\": \"Bo\"}",
+      "prompt_sha256": "9b29d070096f2d9e",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-005",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "{\"ok\": True, \"value\": \"1\"}",
+      "prompt_sha256": "12a8d4375e175c9a",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-006",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "res.json({ status: \"ok\", data: data });",
+      "prompt_sha256": "fa62e87f60188190",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-007",
+      "category": "CON",
+      "subcategory": "signature",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "def add_item(cart: dict, item: str) -> dict:",
+      "prompt_sha256": "eaca6e8b4ace7a35",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-008",
+      "category": "CON",
+      "subcategory": "signature",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "function formatPrice(cents) {",
+      "prompt_sha256": "8324869e613ed2f1",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-009",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "delete",
+      "prompt_sha256": "8ca6875300e7eddc",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-010",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "fetch_user",
+      "prompt_sha256": "0c30d021bd8ee23e",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-011",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "raises ValueError",
+      "prompt_sha256": "78e508c077b0dfe0",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-012",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "res.status(400).json({ error: \"invalid\" });",
+      "prompt_sha256": "1d68ddfb8efb2947",
+      "has_counterfactual": true
+    },
+    {
+      "id": "CON-101",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 1,
+      "partition": "val",
+      "gold": "get_key",
+      "prompt_sha256": "810c2db1e2f57ac8",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-102",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "update",
+      "prompt_sha256": "be77081b23caeb62",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-103",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 1,
+      "partition": "val",
+      "gold": "return {\"tid\": 7, \"title\": \"fix\"}",
+      "prompt_sha256": "24f091c55f42f285",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-104",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "{\"ok\": True, \"lo\": 2}",
+      "prompt_sha256": "a297633e165109ea",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-105",
+      "category": "CON",
+      "subcategory": "signature",
+      "difficulty": 1,
+      "partition": "val",
+      "gold": "def remove_item(cart: dict, item_id: int) -> dict:",
+      "prompt_sha256": "c7ff57c1a91def5c",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-106",
+      "category": "CON",
+      "subcategory": "signature",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "function buildQuery(params) {",
+      "prompt_sha256": "6874bc7ad6ff890b",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-107",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "val",
+      "gold": "refreshToken",
+      "prompt_sha256": "a71dbeba4f05190a",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-108",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "res.status(201).json({ created: body });",
+      "prompt_sha256": "bec8f1cc89152b60",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-201",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "fetch_member",
+      "prompt_sha256": "d7015d3db63becff",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-202",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "amend",
+      "prompt_sha256": "93bb9225716f50a9",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-203",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "return {\"ref\": 12, \"amount\": 90}",
+      "prompt_sha256": "c219ff9e5e3c2c9c",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-204",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "{\"ok\": True, \"start\": 9}",
+      "prompt_sha256": "e7f840ce6677f671",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-205",
+      "category": "CON",
+      "subcategory": "signature",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "def assign_crew(rota: dict, shift_id: int) -> dict:",
+      "prompt_sha256": "27f8d3d15a3f3cf2",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-206",
+      "category": "CON",
+      "subcategory": "signature",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "function renderBadge(count) {",
+      "prompt_sha256": "0585808da62bf43e",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-207",
+      "category": "CON",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "holdout",
+      "gold": "sendMail",
+      "prompt_sha256": "071fd6743477fe22",
+      "has_counterfactual": false
+    },
+    {
+      "id": "CON-208",
+      "category": "CON",
+      "subcategory": "shape",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "res.status(410).json({ reason: \"expired\" });",
+      "prompt_sha256": "312cb7c2a4ac8f50",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-001",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "[2, 4, 6]",
+      "prompt_sha256": "689b34ea0a4b9d53",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-002",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "{ b: 2, c: 3 }",
+      "prompt_sha256": "9540c88924ee77d7",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-003",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "1",
+      "prompt_sha256": "bf1b6b21a13dd9c4",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-004",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "[3, 2, 1]",
+      "prompt_sha256": "dad64f73673bc0a6",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-005",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "{ count: 2, tag: \"x\" }",
+      "prompt_sha256": "c5bce2496ee6a44a",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-006",
+      "category": "JSR",
+      "subcategory": "async",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "A C B",
+      "prompt_sha256": "87d9e2a0a515847a",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-007",
+      "category": "JSR",
+      "subcategory": "async",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "3 1 4 2",
+      "prompt_sha256": "a0a988da6f7a08d7",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-008",
+      "category": "JSR",
+      "subcategory": "async",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "21",
+      "prompt_sha256": "f927d3781e1f3dc5",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-009",
+      "category": "JSR",
+      "subcategory": "web",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "GET",
+      "prompt_sha256": "96cd186b26af231d",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-010",
+      "category": "JSR",
+      "subcategory": "web",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "201",
+      "prompt_sha256": "38d933f8a136c733",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-011",
+      "category": "JSR",
+      "subcategory": "web",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "[1, 2]",
+      "prompt_sha256": "03a40b31a0886e99",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-012",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "\"abc\"",
+      "prompt_sha256": "411135875481746e",
+      "has_counterfactual": true
+    },
+    {
+      "id": "JSR-101",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 1,
+      "partition": "val",
+      "gold": "[6, 9]",
+      "prompt_sha256": "b1af9736491c776a",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-102",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "{ role: \"dev\", team: \"core\" }",
+      "prompt_sha256": "b756df420df1c509",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-103",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "16",
+      "prompt_sha256": "def3748681b574d7",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-104",
+      "category": "JSR",
+      "subcategory": "async",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "sync micro late",
+      "prompt_sha256": "82b1899933791f57",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-105",
+      "category": "JSR",
+      "subcategory": "async",
+      "difficulty": 3,
+      "partition": "val",
+      "gold": "8",
+      "prompt_sha256": "969939ed6de413f4",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-106",
+      "category": "JSR",
+      "subcategory": "web",
+      "difficulty": 1,
+      "partition": "val",
+      "gold": "DELETE",
+      "prompt_sha256": "9698fe2fcbafc341",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-107",
+      "category": "JSR",
+      "subcategory": "web",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "204",
+      "prompt_sha256": "c768b0a18f8e666e",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-108",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 3,
+      "partition": "val",
+      "gold": "2",
+      "prompt_sha256": "e89ef8e2514bf5a8",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-201",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "[\"ANN\", \"BO\"]",
+      "prompt_sha256": "97965b9c63b3118b",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-202",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "{ zone: 3, night: true }",
+      "prompt_sha256": "1b91013335fbc5d6",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-203",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "18",
+      "prompt_sha256": "a6f139f663dd3579",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-204",
+      "category": "JSR",
+      "subcategory": "async",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "s1 s2 m1 t1",
+      "prompt_sha256": "763e79fc9cc9ac52",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-205",
+      "category": "JSR",
+      "subcategory": "async",
+      "difficulty": 3,
+      "partition": "holdout",
+      "gold": "6",
+      "prompt_sha256": "bfa1faa7c6c19fca",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-206",
+      "category": "JSR",
+      "subcategory": "web",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "PATCH",
+      "prompt_sha256": "db29e5f3d2778904",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-207",
+      "category": "JSR",
+      "subcategory": "web",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "202",
+      "prompt_sha256": "28383fba6059421c",
+      "has_counterfactual": false
+    },
+    {
+      "id": "JSR-208",
+      "category": "JSR",
+      "subcategory": "values",
+      "difficulty": 3,
+      "partition": "holdout",
+      "gold": "20",
+      "prompt_sha256": "9cef1893bc521bf6",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-001",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "\"name\"",
+      "prompt_sha256": "771ee98185e0e9b3",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-002",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "items",
+      "prompt_sha256": "92b1328947e32955",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-003",
+      "category": "XCOM",
+      "subcategory": "rename",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "\"user_id\"",
+      "prompt_sha256": "d5998961c564ca56",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-004",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "saveUser",
+      "prompt_sha256": "23ed6a9f7f191ac9",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-005",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "\"error\"",
+      "prompt_sha256": "d4eb7f8c1fe91ba8",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-006",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "set",
+      "prompt_sha256": "a867deaaf97ccc7a",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-007",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "user",
+      "prompt_sha256": "ca34ee9a6b8cec80",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-008",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 2,
+      "partition": "dev",
+      "gold": "DEFAULTS",
+      "prompt_sha256": "fc617d1db13a16e1",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-009",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 1,
+      "partition": "dev",
+      "gold": "clamp",
+      "prompt_sha256": "8b561a41f5dc94fd",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-010",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "await",
+      "prompt_sha256": "2dbd92fbc0bd11ec",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-011",
+      "category": "XCOM",
+      "subcategory": "rename",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "profile",
+      "prompt_sha256": "d5c6c7ad56165c13",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-012",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "dev",
+      "gold": "ValueError",
+      "prompt_sha256": "ae668f4855ad8a56",
+      "has_counterfactual": true
+    },
+    {
+      "id": "XCOM-101",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 1,
+      "partition": "val",
+      "gold": "\"qty\"",
+      "prompt_sha256": "5035b7bc0227bb51",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-102",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 1,
+      "partition": "val",
+      "gold": "rows",
+      "prompt_sha256": "1bdebf147c9eeb69",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-103",
+      "category": "XCOM",
+      "subcategory": "rename",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "\"ttl\"",
+      "prompt_sha256": "2983bc0cc4fd8c5a",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-104",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "dropSession",
+      "prompt_sha256": "2e24bf314b75db83",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-105",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 3,
+      "partition": "val",
+      "gold": "\"reason\"",
+      "prompt_sha256": "12453d280aaabd61",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-106",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "val",
+      "gold": "fill",
+      "prompt_sha256": "09c0ee0d740092d2",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-107",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 2,
+      "partition": "val",
+      "gold": "doc",
+      "prompt_sha256": "0303838e4d00dce6",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-108",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "val",
+      "gold": "TimeoutError",
+      "prompt_sha256": "872a34a78c208aab",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-201",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "\"wage\"",
+      "prompt_sha256": "2c6757433997f3bf",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-202",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 1,
+      "partition": "holdout",
+      "gold": "shifts",
+      "prompt_sha256": "035265afdb754010",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-203",
+      "category": "XCOM",
+      "subcategory": "rename",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "\"crew_id\"",
+      "prompt_sha256": "96d53aa16f0ebc9f",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-204",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "bookShift",
+      "prompt_sha256": "e883f6dc17807cc1",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-205",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 3,
+      "partition": "holdout",
+      "gold": "\"code\"",
+      "prompt_sha256": "33ff6006c0038ca3",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-206",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "holdout",
+      "gold": "dispense",
+      "prompt_sha256": "4678d46aaead5521",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-207",
+      "category": "XCOM",
+      "subcategory": "field",
+      "difficulty": 2,
+      "partition": "holdout",
+      "gold": "shift",
+      "prompt_sha256": "f6760cef5f10008e",
+      "has_counterfactual": false
+    },
+    {
+      "id": "XCOM-208",
+      "category": "XCOM",
+      "subcategory": "binding",
+      "difficulty": 3,
+      "partition": "holdout",
+      "gold": "RuntimeError",
+      "prompt_sha256": "7141f11eb30c2143",
+      "has_counterfactual": false
+    }
+  ]
+}

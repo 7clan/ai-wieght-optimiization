@@ -1,0 +1,33 @@
+{
+  "method": "multi-key-unitnorm-bothside",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "layer_idx": 16,
+  "matrix_name": "mlp.down_proj",
+  "left_shape": [
+    896,
+    48
+  ],
+  "right_shape": [
+    48,
+    4864
+  ],
+  "category": "CONTRACT_V2",
+  "construction": {
+    "n_tasks": 24,
+    "n_keys": 48,
+    "direction_scale": 2.0,
+    "ridge": 0.0026924358680844307,
+    "rank": 48,
+    "residual_fraction": 1.0
+  },
+  "norm_limit": 0.015,
+  "applied": {
+    "proposed_delta_frob": 0.3080088496208191,
+    "applied_scale": 1.0,
+    "relative_delta_frob": 0.008198,
+    "norm_before": 37.5699,
+    "norm_after": 37.5671,
+    "norm_change_ratio": 7.5e-05
+  },
+  "note": "v2: unit-normalized per-task contrast, magnitude-matched, both-side keys"
+}

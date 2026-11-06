@@ -1,0 +1,34 @@
+{
+  "method": "multi-key",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "layer_idx": 16,
+  "matrix_name": "mlp.down_proj",
+  "left_shape": [
+    896,
+    12
+  ],
+  "right_shape": [
+    12,
+    4864
+  ],
+  "category": "XCOM",
+  "alpha": 1.0,
+  "construction": {
+    "d_norm": 3.818875551223755,
+    "cos_gold_wrong": 0.4506800174713135,
+    "n_pairs": 12,
+    "ridge": 0.002563119307160378,
+    "rank": 12,
+    "residual_fraction": 1.0
+  },
+  "norm_limit": 0.015,
+  "note": "contrastive steering edit; behavioral effect must be measured",
+  "applied": {
+    "proposed_delta_frob": 0.3704478442668915,
+    "applied_scale": 1.0,
+    "relative_delta_frob": 0.00986,
+    "norm_before": 37.5699,
+    "norm_after": 37.5662,
+    "norm_change_ratio": 9.8e-05
+  }
+}

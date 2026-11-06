@@ -1,0 +1,42 @@
+{
+  "method": "joint-multi-key",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "layer_idx": 16,
+  "matrix_name": "mlp.down_proj",
+  "left_shape": [
+    896,
+    24
+  ],
+  "right_shape": [
+    24,
+    4864
+  ],
+  "category": "JOINT_CON_XCOM",
+  "alpha": 1.0,
+  "construction": {
+    "ridge": 0.0025566292926669123,
+    "rank": 24,
+    "groups": [
+      12,
+      12
+    ],
+    "categories": [
+      "CON",
+      "XCOM"
+    ],
+    "d_norms": [
+      4.123,
+      3.819
+    ]
+  },
+  "norm_limit": 0.015,
+  "note": "multi-category joint subspace edit at L16; interference must be measured",
+  "applied": {
+    "proposed_delta_frob": 0.8107523918151855,
+    "applied_scale": 0.6943985003096566,
+    "relative_delta_frob": 0.014985,
+    "norm_before": 37.5699,
+    "norm_after": 37.5667,
+    "norm_change_ratio": 8.5e-05
+  }
+}

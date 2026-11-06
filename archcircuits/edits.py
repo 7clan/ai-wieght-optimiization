@@ -189,7 +189,10 @@ def joint_factors(weight: torch.Tensor, key_groups: list[torch.Tensor],
                   ) -> tuple[torch.Tensor, torch.Tensor, dict]:
     """Multi-category joint edit: per-key targets W k + α_cat · d_cat."""
     keys = torch.cat(key_groups, dim=0)                     # [n, d_in] rows
-    targets = torch.cat([a * d for a, d in zip(alphas, dir_groups)], dim=0)  # [n, d_out]
+    blocks = []
+    for a, d, k in zip(alphas, dir_groups, key_groups):
+        blocks.append((a * d).unsqueeze(0).expand(k.shape[0], -1))
+    targets = torch.cat(blocks, dim=0)                      # [n, d_out]
     K = keys.T.contiguous()                                 # [d, n]
     n = K.shape[1]
     inv_keys, ridge = ridge_inverse_keys(K, K)              # [d, n]
