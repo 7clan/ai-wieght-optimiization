@@ -17,7 +17,7 @@
   "teacher_bytes": 0,
   "teacher_supplied_anything": false,
   "self_repair_only": true,
-  "self_repair_rounds": 20,
+  "self_repair_rounds": 24,
   "own_prior_session_bytes_in_prompts": [],
   "permanent_weight_learning": false,
   "trusted_scaffold": [
@@ -917,14 +917,166 @@
       },
       "elapsed_seconds": 18482.2,
       "output_tokens": 123470
+    },
+    {
+      "round": 21,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "1d1332b4ac808e2dfb726dd19c53d28235f5de047ed5714c712ec13455588e23",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "post": true,
+          "post_invalid": true,
+          "delete": true,
+          "summary": true
+        },
+        "completed_checks": 9,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+          "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 19349.5,
+      "output_tokens": 130099
+    },
+    {
+      "round": 22,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "1d1332b4ac808e2dfb726dd19c53d28235f5de047ed5714c712ec13455588e23",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "post": true,
+          "post_invalid": true,
+          "delete": true,
+          "summary": true
+        },
+        "completed_checks": 9,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+          "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 20463.0,
+      "output_tokens": 138014
+    },
+    {
+      "round": 23,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "1d1332b4ac808e2dfb726dd19c53d28235f5de047ed5714c712ec13455588e23",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "post": true,
+          "post_invalid": true,
+          "delete": true,
+          "summary": true
+        },
+        "completed_checks": 9,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+          "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 21054.7,
+      "output_tokens": 142275
+    },
+    {
+      "round": 24,
+      "modules_sha256": {
+        "logic": "757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592",
+        "store": "e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864",
+        "api": "1d1332b4ac808e2dfb726dd19c53d28235f5de047ed5714c712ec13455588e23",
+        "ui": "dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370",
+        "css": "839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": true,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "post": true,
+          "post_invalid": true,
+          "delete": true,
+          "summary": true
+        },
+        "completed_checks": 9,
+        "failure_reasons": [
+          "store: TypeError: Assignment to constant variable.",
+          "api: get -> GET /api/entries must return 200 {entries:store.list()} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+          "ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b",
+          "integration: TypeError: Assignment to constant variable."
+        ]
+      },
+      "elapsed_seconds": 21877.7,
+      "output_tokens": 148432
     }
   ],
   "search": {
-    "candidate_count": 178,
-    "output_tokens": 123470,
-    "wall_seconds": 18484.33,
-    "max_rounds": 20,
-    "wall_budget_seconds": 32400.0,
+    "candidate_count": 214,
+    "output_tokens": 148432,
+    "wall_seconds": 21879.57,
+    "max_rounds": 24,
+    "wall_budget_seconds": 28000.0,
     "private_holdout_seen_during_selection": false
   },
   "ui_behavior_verified_in_jsdom": false,
