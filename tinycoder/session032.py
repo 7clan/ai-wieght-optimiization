@@ -918,14 +918,22 @@ def rebuild(attempts, index, role):
     if origin["type"] == "whole":
         return PREFIX[role] + entry["raw"]
     base = rebuild(attempts, origin["base"], role)
-    if hashlib.sha256(base.encode()).hexdigest() != origin["base_sha256"]:
-        raise ValueError("FIM base hash mismatch in lineage: " + role)
     if "ops" in origin:
+        # Compound origin (v2): per-op hashes chain from the base module, so
+        # the first op's hash pins the base the same way the legacy origin
+        # did; no top-level base_sha256 is recorded for these entries.
         ops, fills = origin["ops"], entry["fills"]
-    else:  # legacy single-splice attempt recorded before compound jobs
+        expected_base = ops[0]["base_sha256"]
+    elif "base_sha256" in origin:
+        # legacy single-splice attempt recorded before compound jobs
         ops = [{"lo": origin["lo"], "hi": origin["hi"],
                 "base_sha256": origin["base_sha256"]}]
         fills = [entry["raw"]]
+        expected_base = origin["base_sha256"]
+    else:
+        raise ValueError("Unrecorded FIM lineage: " + role)
+    if hashlib.sha256(base.encode()).hexdigest() != expected_base:
+        raise ValueError("FIM base hash mismatch in lineage: " + role)
     module = base
     for op, fill in zip(ops, fills):
         if hashlib.sha256(module.encode()).hexdigest() != op["base_sha256"]:
