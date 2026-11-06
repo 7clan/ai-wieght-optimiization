@@ -157,8 +157,12 @@ def cmd_edit(args):
         "norm_limit": 0.015,
         "note": "contrastive steering edit; behavioral effect must be measured",
     }
-    stats = edits.cap_and_apply(model, args.layer, matrix, left, right)
+    stats, left, right = edits.cap_and_apply(model, args.layer, matrix, left, right)
     meta["applied"] = stats
+    # Session 011 audit fix: persist the SCALED factors so reload == applied.
+    edits.save_factors(str(out_dir), args.layer, matrix, left, right, meta)
+    verification = edits.verify_factor_set(model, str(out_dir))
+    meta["verification"] = verification
     edits.save_factors(str(out_dir), args.layer, matrix, left, right, meta)
     print("saved", out_dir, "stats:", stats)
 

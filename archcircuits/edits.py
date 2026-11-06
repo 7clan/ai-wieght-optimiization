@@ -203,24 +203,53 @@ def joint_factors(weight: torch.Tensor, key_groups: list[torch.Tensor],
                          "groups": [int(k.shape[0]) for k in key_groups]}
 
 
-def cap_and_apply(model, layer: int, matrix: str, left: torch.Tensor, right: torch.Tensor,
-                  max_relative_change: float = MAX_REL_CHANGE) -> dict:
-    """Apply ΔW = left @ right in RAM after verifying the exact norm bound."""
+def capped_factors(model, layer: int, matrix: str, left: torch.Tensor, right: torch.Tensor,
+                   max_relative_change: float = MAX_REL_CHANGE) -> tuple[torch.Tensor, torch.Tensor, dict]:
+    """Return (scaled_left, right, stats) with ||scaled_left @ right|| <= cap.
+
+    Session 011 audit fix: callers MUST save the *scaled* factors so that a
+    reload reproduces exactly the applied matrix update.  The scale lives on
+    `left` so the update stays exactly reversible via W -= left @ right.
+    """
     module = _resolve(model, layer, matrix)
     w = module.weight
-    delta = (left @ right).to(dtype=w.dtype)
-    proposal = float(delta.float().norm().item())
+    proposal = float((left.float() @ right.float()).norm().item())
     wnorm = float(w.detach().float().norm().item())
     if proposal <= 0 or not math.isfinite(proposal):
         raise ValueError("degenerate edit")
     scale = min(1.0, max_relative_change * wnorm * 0.999 / proposal)
-    delta = delta * scale
+    scaled_left = left.float() * scale
+    exact = float((scaled_left @ right.float()).norm().item()) / wnorm
+    if exact > max_relative_change + 1e-6:
+        raise RuntimeError(f"capped edit still exceeds cap ({exact:.4f})")
+    stats = {
+        "proposed_delta_frob": proposal,
+        "applied_scale": scale,
+        "relative_delta_frob": round(exact, 6),
+        "norm_before": round(wnorm, 4),
+        "norm_limit": max_relative_change,
+    }
+    return scaled_left, right, stats
+
+
+def cap_and_apply(model, layer: int, matrix: str, left: torch.Tensor, right: torch.Tensor,
+                  max_relative_change: float = MAX_REL_CHANGE) -> tuple[dict, torch.Tensor, torch.Tensor]:
+    """Apply ΔW = (scaled_left) @ right in RAM after verifying the exact norm bound.
+
+    Returns (stats, scaled_left, right); the returned factors are the ones to
+    persist so that reload == applied update (Session 011 audit fix).
+    """
+    scaled_left, right, stats = capped_factors(model, layer, matrix, left, right,
+                                               max_relative_change)
+    module = _resolve(model, layer, matrix)
+    w = module.weight
+    delta = (scaled_left @ right).to(dtype=w.dtype)
     with torch.no_grad():
         old_norm = float(w.detach().float().norm().item())
         w.add_(delta)
         observed = float(w.detach().float().norm().item())
     relative = abs(observed - old_norm) / old_norm  # norm change
-    exact = float(delta.float().norm().item()) / wnorm
+    exact = float(delta.float().norm().item()) / old_norm
     if exact > max_relative_change + 1e-6:
         with torch.no_grad():
             w.sub_(delta)
@@ -229,14 +258,10 @@ def cap_and_apply(model, layer: int, matrix: str, left: torch.Tensor, right: tor
         with torch.no_grad():
             w.sub_(delta)
         raise RuntimeError("non-finite weights after edit; reverted")
-    return {
-        "proposed_delta_frob": proposal,
-        "applied_scale": scale,
-        "relative_delta_frob": round(exact, 6),
-        "norm_before": round(old_norm, 4),
-        "norm_after": round(observed, 4),
-        "norm_change_ratio": round(relative, 6),
-    }
+    stats = {**stats,
+             "norm_after": round(observed, 4),
+             "norm_change_ratio": round(relative, 6)}
+    return stats, scaled_left, right
 
 
 # ---------------------------------------------------------------------------
@@ -263,11 +288,17 @@ def save_factors(directory: str, layer: int, matrix: str, left: torch.Tensor,
     return full
 
 
-def load_factor_set(model, directory: str, remove: bool = False) -> dict:
-    """Apply (or revert) a saved factor set: W ±= left @ right."""
+def load_factor_set(model, directory: str, remove: bool = False,
+                    verify: bool = True, max_relative_change: float = MAX_REL_CHANGE) -> dict:
+    """Apply (or revert) a saved factor set: W += left @ right (or -=).
+
+    Session 011 audit fix: when applying (not removing), verify that the
+    loaded delta actually respects the norm cap and reject legacy unscaled
+    factor sets loudly instead of silently applying an over-cap edit.
+    """
     from safetensors.torch import load_file
     out = Path(directory)
-    meta = json.loads((out / "meta.json").read_text(encoding="utf-8"))
+    meta = json.loads((out / "meta.json").read_text(encoding="utf8"))
     if meta.get("base_model") != "Qwen/Qwen2.5-Coder-0.5B":
         raise ValueError("factor set is for a different base model")
     factors = load_file(str(out / "factors.safetensors"))
@@ -277,11 +308,95 @@ def load_factor_set(model, directory: str, remove: bool = False) -> dict:
     if left.shape[0] != w.shape[0] or right.shape[1] != w.shape[1]:
         raise ValueError("factor shapes do not match the target matrix")
     delta = (left @ right).to(dtype=w.dtype)
+    if verify and not remove:
+        wnorm = float(w.detach().float().norm().item())
+        rel = float(delta.float().norm().item()) / wnorm
+        if rel > max_relative_change + 1e-4:
+            raise ValueError(
+                f"factor set {directory} exceeds the norm cap after loading "
+                f"(relative delta {rel:.4f} > {max_relative_change}); it was "
+                "probably saved before the Session 011 scaling fix")
     with torch.no_grad():
         w.add_(delta if not remove else -delta)
     if not torch.isfinite(w).all():
         raise RuntimeError("non-finite weights after factor application")
     return meta
+
+
+def verify_factor_set(model, directory: str, max_relative_change: float = MAX_REL_CHANGE) -> dict:
+    """Standalone verification: apply, check bound + reversibility, revert.
+
+    Returns a report dict; raises on any violation.  Never leaves the model
+    modified (applies then removes the delta)."""
+    from safetensors.torch import load_file
+    out = Path(directory)
+    meta = json.loads((out / "meta.json").read_text(encoding="utf8"))
+    factors = load_file(str(out / "factors.safetensors"))
+    left, right = factors["left"].float(), factors["right"].float()
+    module = _resolve(model, meta["layer_idx"], meta["matrix_name"])
+    w = module.weight
+    if left.shape[0] != w.shape[0] or right.shape[1] != w.shape[1]:
+        raise ValueError("factor shapes do not match the target matrix")
+    w_before = w.detach().clone()
+    wnorm = float(w_before.float().norm().item())
+    delta = (left @ right).to(dtype=w.dtype)
+    with torch.no_grad():
+        w.add_(delta)
+        w_after = w.detach().clone()
+        w.sub_(delta)
+    # float32 (W+d)-d is not bit-exact; reversibility is verified within a
+    # tight tolerance tied to the delta magnitude and float32 epsilon, and
+    # the measured drift is always reported (never claimed as exact).
+    max_abs_drift = float((w.detach().float() - w_before.float()).abs().max().item())
+    rel_drift = float((w.detach().float() - w_before.float()).norm().item()) / wnorm
+    reversible = rel_drift <= 1e-5
+    rel = float(delta.float().norm().item()) / wnorm
+    report = {
+        "directory": str(out),
+        "layer_idx": meta["layer_idx"],
+        "matrix_name": meta["matrix_name"],
+        "relative_delta_frob": round(rel, 6),
+        "norm_limit": max_relative_change,
+        "within_limit": rel <= max_relative_change + 1e-4,
+        "reversible_within_tolerance": reversible,
+        "relative_drift_after_revert": float(f"{rel_drift:.3e}"),
+        "max_abs_drift_after_revert": max_abs_drift,
+        "saved_applied_scale": (meta.get("applied") or {}).get("applied_scale"),
+        "norm_after_apply": round(float(w_after.float().norm().item()), 4),
+    }
+    if not report["within_limit"]:
+        raise ValueError(f"factor set exceeds cap: {report}")
+    if not reversible:
+        raise ValueError(f"factor set is not reversible within tolerance: {report}")
+    return report
+
+
+def verify_combined(model, directories: list[str],
+                    max_relative_change: float = MAX_REL_CHANGE) -> dict:
+    """Apply several factor sets sequentially, verifying each bound and the
+    combined Frobenius change of every touched matrix, then revert all."""
+    touched: dict[str, dict] = {}
+    metas = []
+    try:
+        for d in directories:
+            meta = load_factor_set(model, d, verify=True,
+                                   max_relative_change=max_relative_change)
+            metas.append(meta)
+            key = f"L{meta['layer_idx']}/{meta['matrix_name']}"
+            module = _resolve(model, meta["layer_idx"], meta["matrix_name"])
+            if key not in touched:
+                touched[key] = {"base_norm": float(module.weight.detach().float().norm().item())}
+            cur = float(module.weight.detach().float().norm().item())
+            touched[key]["current_norm"] = cur
+            touched[key]["combined_relative_change"] = round(
+                abs(cur - touched[key]["base_norm"]) / touched[key]["base_norm"], 6)
+    finally:
+        for d in reversed(directories):
+            try:
+                load_factor_set(model, d, remove=True)
+            except Exception:
+                pass
+    return {"n_edits": len(metas), "touched_matrices": touched}
 
 
 def principal_angles(A: torch.Tensor, B: torch.Tensor) -> list[float]:

@@ -43,6 +43,47 @@ def span_positions(tokenizer, prompt: str, span: str) -> list[int]:
     return out
 
 
+def aligned_span_positions(tokenizer, prompt: str, span: str,
+                           other_prompt: str | None = None,
+                           other_span: str | None = None) -> dict:
+    """Session 011 audit fix: character-anchored span positions with alignment
+    diagnostics.
+
+    Token indices are computed independently per prompt via char offsets, so
+    prompts with different tokenizations (different BPE merges, identifier
+    lengths, whitespace) never share numerical indices by assumption.  When
+    `other_prompt`/`other_span` are given, the returned dict also reports the
+    other prompt's positions and the index shift, plus a decoded-text check of
+    both position groups, so misalignment is observable instead of silent.
+    """
+    char_start = prompt.find(span)
+    if char_start < 0:
+        return {"positions": [], "error": "span not found in prompt"}
+    ids, offsets = _offsets(tokenizer, prompt)
+    positions = [i for i, (s, e) in enumerate(offsets)
+                 if e > char_start and s < char_start + len(span)]
+    out = {"positions": positions, "n_tokens": len(ids)}
+    if positions:
+        out["decoded"] = tokenizer.decode([ids[i] for i in positions])
+    if other_prompt is not None and other_span is not None:
+        other_char = other_prompt.find(other_span)
+        if other_char < 0:
+            out["other_error"] = "other span not found in other prompt"
+        else:
+            oids, ooffsets = _offsets(tokenizer, other_prompt)
+            opos = [i for i, (s, e) in enumerate(ooffsets)
+                    if e > other_char and s < other_char + len(other_span)]
+            out["other_positions"] = opos
+            out["other_n_tokens"] = len(oids)
+            if opos:
+                out["other_decoded"] = tokenizer.decode([oids[i] for i in opos])
+            if positions and opos:
+                out["index_shift"] = opos[0] - positions[0]
+                out["tokenization_matches"] = (len(oids) == len(ids)
+                                               and opos == positions)
+    return out
+
+
 def _block_output(out):
     """Normalize a block output to [T, H] (attn returns a tuple)."""
     v = out[0] if isinstance(out, tuple) else out
@@ -194,7 +235,20 @@ def mediation_scan(model, tokenizer, task: dict, layers: list[int],
     if not pos_crit:
         return {"task": task["id"], "error": "critical span not found", "scores": {}}
 
-    # capture cf activations at the critical positions (on the cf run)
+    # Session 011 audit fix: the counterfactual prompt can tokenize
+    # differently (different identifiers, BPE merges, length).  Critical
+    # positions for reading CF values are computed on the CF prompt itself
+    # via char offsets; identical numerical indices are never assumed.
+    cf_prefix_len = ids_cf.input_ids.shape[1]
+    align = aligned_span_positions(tokenizer, prompt_orig, task["critical"],
+                                   other_prompt=prompt_cf,
+                                   other_span=cf["critical"])
+    pos_crit_cf = [p for p in align.get("other_positions", []) if p < cf_prefix_len]
+    if not pos_crit_cf:
+        return {"task": task["id"], "error": "cf critical span not found",
+                "alignment": align, "scores": {}}
+
+    # capture cf activations at the cf critical positions (on the cf run)
     acts_cf = {}
     handles = []
     for L in layers:
@@ -214,7 +268,7 @@ def mediation_scan(model, tokenizer, task: dict, layers: list[int],
     results = {}
     for layer in layers:
         for comp in components:
-            values = acts_cf[(layer, comp)][pos_crit, :].clone()
+            values = acts_cf[(layer, comp)][pos_crit_cf, :].clone()
             patched = patched_logits(
                 model, tokenizer, ids_commit,
                 [{"layer": layer, "component": comp, "positions": pos_crit, "values": values}],
@@ -229,6 +283,9 @@ def mediation_scan(model, tokenizer, task: dict, layers: list[int],
         "commit_position": pos_answer,
         "scores": results,
         "critical_positions": pos_crit,
+        "cf_critical_positions": pos_crit_cf,
+        "alignment": {k: v for k, v in align.items() if k in
+                      ("index_shift", "tokenization_matches", "decoded", "other_decoded")},
     }
 
 
@@ -283,14 +340,28 @@ def head_scan(model, tokenizer, task: dict, layer: int, n_heads: int = 14) -> di
     if not pos_crit:
         return {"task": task["id"], "layer": layer, "error": "no critical positions", "scores": {}}
 
+    # Session 011 audit fix: read CF head inputs at the CF prompt's own
+    # critical positions (char-anchored), never at the original's indices.
+    cf_prefix_len = ids_cf.input_ids.shape[1]
+    align = aligned_span_positions(tokenizer, prompt_orig, task["critical"],
+                                   other_prompt=prompt_cf,
+                                   other_span=cf["critical"])
+    pos_crit_cf = [p for p in align.get("other_positions", []) if p < cf_prefix_len]
+    if not pos_crit_cf:
+        return {"task": task["id"], "layer": layer, "error": "cf critical span not found",
+                "alignment": align, "scores": {}}
+
     scores = {}
     for head in range(n_heads):
         s, e = head * 64, (head + 1) * 64
-        values = head_inputs["cf"][0][pos_crit, s:e].clone()
+        values = head_inputs["cf"][0][pos_crit_cf, s:e].clone()
         patched = patched_logits(
             model, tokenizer, ids_commit,
             [{"layer": layer, "head": head, "positions": pos_crit, "values": values}],
         )
         gap = token_logprob(patched, pos_answer, tok_cf) - token_logprob(patched, pos_answer, tok_orig)
         scores[f"H{head}"] = round(gap - orig_gap, 4)
-    return {"task": task["id"], "layer": layer, "orig_gap": round(orig_gap, 4), "scores": scores}
+    return {"task": task["id"], "layer": layer, "orig_gap": round(orig_gap, 4),
+            "scores": scores, "cf_critical_positions": pos_crit_cf,
+            "alignment": {k: v for k, v in align.items() if k in
+                          ("index_shift", "tokenization_matches")}}

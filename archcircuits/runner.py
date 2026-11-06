@@ -15,20 +15,92 @@ import torch
 from .benchmark import build_prompt, tasks_for
 from .scoring import extract_answer, score_answer
 
-MODEL_PATH = "/home/z/models/qwen25-coder-0.5b"
 BASE_MODEL_ID = "Qwen/Qwen2.5-Coder-0.5B"
 MAX_NEW_TOKENS = 24
+EXPECTED_PARAM_COUNT = 494_032_768
+EXPECTED_LAYERS = 24
+EXPECTED_HIDDEN = 896
+
+# Session 011 audit fix: no machine-specific default path.  The model
+# directory must be provided via ARCHCIRCUITS_MODEL_DIR (or the call site).
+def resolve_model_path() -> str:
+    import os
+    path = os.environ.get("ARCHCIRCUITS_MODEL_DIR", "")
+    if not path:
+        raise RuntimeError(
+            "ARCHCIRCUITS_MODEL_DIR is not set.  Point it at a local copy of "
+            f"'{BASE_MODEL_ID}' (safetensors checkpoint) and retry.  The "
+            "previous hardcoded machine-specific default was removed for "
+            "reproducibility.")
+    if not Path(path).is_dir():
+        raise RuntimeError(f"ARCHCIRCUITS_MODEL_DIR={path!r} is not a directory")
+    return path
 
 
-def load_model(edit_dirs: list[str] | None = None, device: str = "cpu"):
-    """Load the untouched base checkpoint, then apply reversible factor dirs."""
+def _sha256_file(path: str, chunk: int = 1 << 20) -> str:
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        while True:
+            block = f.read(chunk)
+            if not block:
+                break
+            h.update(block)
+    return h.hexdigest()
+
+
+def repro_info(model_path: str | None = None) -> dict:
+    """Reproducibility manifest: model identity, file hash, dependency
+    versions and decoding parameters (Session 011 audit fix)."""
+    import platform
+    path = model_path or resolve_model_path()
+    info = {
+        "base_model_id": BASE_MODEL_ID,
+        "model_path_env": "ARCHCIRCUITS_MODEL_DIR",
+        "model_safetensors_sha256": _sha256_file(str(Path(path) / "model.safetensors")),
+        "torch_version": torch.__version__,
+        "numpy_version": __import__("numpy").__version__,
+        "python_version": platform.python_version(),
+        "platform": platform.platform(),
+        "decoding": {"greedy": True, "max_new_tokens": MAX_NEW_TOKENS,
+                     "temperature": 0.0},
+    }
+    try:
+        import transformers
+        info["transformers_version"] = transformers.__version__
+    except ImportError:
+        info["transformers_version"] = None
+    try:
+        import safetensors
+        info["safetensors_version"] = safetensors.__version__
+    except ImportError:
+        info["safetensors_version"] = None
+    return info
+
+
+def load_model(edit_dirs: list[str] | None = None, device: str = "cpu",
+               model_path: str | None = None):
+    """Load the untouched base checkpoint, then apply reversible factor dirs.
+
+    Verifies the architecture is exactly the fixed Qwen2.5-Coder-0.5B shape
+    so a wrong local directory fails loudly instead of silently producing
+    non-comparable scores."""
     from transformers import AutoModelForCausalLM, AutoTokenizer
     from .edits import load_factor_set
 
+    path = model_path or resolve_model_path()
     torch.set_num_threads(2)
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
-    model = AutoModelForCausalLM.from_pretrained(MODEL_PATH, dtype=torch.float32)
+    tokenizer = AutoTokenizer.from_pretrained(path)
+    model = AutoModelForCausalLM.from_pretrained(path, dtype=torch.float32)
     model.eval()
+    n_params = sum(p.numel() for p in model.parameters())
+    if (n_params != EXPECTED_PARAM_COUNT
+            or len(model.model.layers) != EXPECTED_LAYERS
+            or model.config.hidden_size != EXPECTED_HIDDEN):
+        raise ValueError(
+            "Not the fixed Qwen2.5-Coder-0.5B architecture "
+            f"(params={n_params}, layers={len(model.model.layers)}, "
+            f"hidden={model.config.hidden_size})")
     applied = []
     if edit_dirs:
         for d in edit_dirs:
@@ -129,6 +201,7 @@ def syntax_validity(task: dict, extracted: str) -> bool:
 
 def evaluate_tasks(model, tokenizer, tasks: list[dict], tag: str,
                    compute_logprob: bool = True) -> dict:
+    import os
     records = []
     for i, task in enumerate(tasks):
         prompt = build_prompt(task["category"], task["question"])
@@ -160,7 +233,12 @@ def evaluate_tasks(model, tokenizer, tasks: list[dict], tag: str,
         if (i + 1) % 8 == 0:
             done = sum(r["correct"] for r in records)
             print(f"  [{tag}] {i+1}/{len(tasks)} correct so far {done}", flush=True)
-    return summarize(records, tag)
+    summary = summarize(records, tag)
+    try:
+        summary["repro"] = repro_info()
+    except RuntimeError:
+        summary["repro"] = {"error": "ARCHCIRCUITS_MODEL_DIR not set"}
+    return summary
 
 
 def summarize(records: list[dict], tag: str) -> dict:

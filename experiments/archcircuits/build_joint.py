@@ -64,11 +64,15 @@ def main() -> None:
         "norm_limit": 0.015,
         "note": "multi-category joint subspace edit at L16; interference must be measured",
     }
-    stats = edits.cap_and_apply(model, layer, matrix, left, right)
+    stats, left, right = edits.cap_and_apply(model, layer, matrix, left, right)
     meta["applied"] = stats
     out = FACTORS / "joint_L16"
+    # Session 011 audit fix: persist the SCALED factors so reload == applied.
     edits.save_factors(str(out), layer, matrix, left, right, meta)
-    print("saved", out, "stats:", stats)
+    verification = edits.verify_factor_set(model, str(out))
+    meta["verification"] = verification
+    edits.save_factors(str(out), layer, matrix, left, right, meta)
+    print("saved", out, "stats:", stats, "verification:", verification)
 
 
 if __name__ == "__main__":
