@@ -267,7 +267,7 @@ def _worker_available() -> bool:
 class TestContractFrozen(unittest.TestCase):
     def test_fingerprint_stable(self):
         self.assertEqual(contracts.fingerprint(),
-                         "bed6f9856223e28b26467d6b7e9e458a7a0630f473aeab65b6574afe9eec79d1")
+                         "c39769cd5e046b28ddf4ea329a2b8dd8168125924161e10e73e911cbc117ba9b")
 
     def test_holdout_disjoint_from_public(self):
         self.assertNotEqual(contracts.LOGIC_PUBLIC, contracts.LOGIC_HOLDOUT)
@@ -336,12 +336,29 @@ class TestEvaluatorRejectsBroken(unittest.TestCase):
 
 
 class TestPromptProcessing(unittest.TestCase):
-    def test_post_process_extracts_fenced(self):
-        raw = "Here is the module:\n```js\nfunction createStore(filePath) {\n  return {};\n}\nmodule.exports = createStore;\n```\nThanks!"
+    def test_post_process_anchored_completion(self):
+        # anchored semantics: input is the completion AFTER the signature
+        raw = "Here is the code:\n```js\n  let state = [];\n  return { list: () => state };\n}\nmodule.exports = createStore;\n```\nThanks!"
         out = _post_process("store", raw)
-        self.assertIn("module.exports = createStore", out)
+        self.assertTrue(out.startswith("const fs = require('node:fs');\nfunction createStore(filePath) {"))
+        self.assertIn("let state", out)
         self.assertNotIn("Thanks", out)
         self.assertNotIn("```", out)
+        # trailing prose after the last brace is cut
+        raw2 = "  let a = 1;\n  return {};\n}\n\nSome explanation prose."
+        out2 = _post_process("store", raw2)
+        self.assertNotIn("explanation", out2)
+        self.assertTrue(out2.rstrip().endswith("}"))
+
+    def test_post_process_css_closes_template(self):
+        out = _post_process("css", ".app { display:flex; }\n.app {")  # unclosed
+        self.assertTrue(out.startswith("const css = `"))
+        self.assertIn("module.exports = css;", out)
+
+    def test_post_process_logic_keeps_body(self):
+        out = _post_process("logic", '  total = len(payload["tasks"])\n  return {"total": total}\n\nProse after.')
+        self.assertTrue(out.startswith("def summarize_project(payload):"))
+        self.assertNotIn("Prose", out)
 
     def test_fim_window_and_splice(self):
         src = "\n".join(f"line{i}" for i in range(1, 21))

@@ -259,7 +259,8 @@ List the architecture as compact JSON with EXACTLY these keys:
   routes: array of "METHOD /path" strings
   state_transitions: array of "from -> to" strings for task status
   dependencies: array of library names
-Output ONLY the JSON object, no prose. Start with '{'."""
+Output ONLY the JSON object, no prose. The object has already started; continue it:
+{"""
 
 # ---------------------------------------------------------------------------
 # public test cases (guide candidate selection; never the holdout)

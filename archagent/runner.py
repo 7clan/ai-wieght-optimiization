@@ -231,13 +231,32 @@ class Harness:
             f.write(json.dumps(entry) + "\n")
 
     def develop(self, role: str, *, store_source=None, logic_source=None,
-                max_rounds=MAX_ROUNDS, wall=WALL_BUDGET_ROLE) -> dict:
+                max_rounds=MAX_ROUNDS, wall=WALL_BUDGET_ROLE,
+                resume_state: dict | None = None,
+                on_round_end=None) -> dict:
         t0 = time.time()
         best = {"source": None, "result": None, "score": (-1, -1),
                 "attempt_id": None}
         attempts = []
         round_i = 0
         stopped = None
+        if resume_state and resume_state.get("best", {}).get("source"):
+            best = {
+                "source": resume_state["best"]["source"],
+                "result": resume_state["best"].get("result"),
+                "score": tuple(resume_state["best"].get("score", (-1, -1))),
+                "attempt_id": resume_state["best"].get("attempt_id"),
+            }
+            round_i = int(resume_state.get("round", 0))
+            attempts = list(resume_state.get("attempts", []))
+            print(f"  [{role}] resuming from round {round_i} "
+                  f"(best {best['score']})", flush=True)
+            if best["result"] is None:
+                # re-evaluate the resumed best to rebuild failure feedback
+                best["result"] = evaluate_module(
+                    role, best["source"], store_source=store_source,
+                    logic_source=logic_source)
+                best["score"] = score_of(best["result"])
         while True:
             if round_i > max_rounds:
                 stopped = "rounds"; break
@@ -347,6 +366,8 @@ class Harness:
                     best["score"][0] == 0:
                 stopped = "plateau-zero"; break
             round_i += 1
+            if on_round_end is not None:
+                on_round_end(role, round_i, best, attempts)
         return {"role": role, "best": best, "attempts": attempts,
                 "stopped": stopped, "wall": round(time.time() - t0, 1),
                 "usage": self.model.usage()}
@@ -399,13 +420,57 @@ def _degenerate(text: str) -> bool:
 # stage A scoring
 # ---------------------------------------------------------------------------
 
-def score_stage_a(plan_text: str) -> dict:
-    m = re.search(r"\{.*\}", plan_text, re.S)
-    if not m:
-        return {"valid_json": False, "scores": {}, "raw": plan_text[:300]}
+def _balanced_braces(text: str) -> str | None:
+    depth, start = 0, None
+    in_str = None
+    for i, ch in enumerate(text):
+        if in_str:
+            if ch == in_str:
+                in_str = None
+            continue
+        if ch in "\"'":
+            in_str = ch
+        elif ch == "{":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == "}":
+            if depth:
+                depth -= 1
+                if depth == 0 and start is not None:
+                    return text[start:i + 1]
+    return None
+
+
+def _tolerant_load(block: str):
+    """Deterministic parse tolerance for near-JSON model output (single
+    quotes, trailing commas, unquoted keys).  Scaffold extraction only;
+    never alters the recorded raw bytes."""
     try:
-        plan = json.loads(m.group(0))
+        return json.loads(block)
     except json.JSONDecodeError:
+        pass
+    fixed = re.sub(r",\s*([}\]])", r"\1", block)
+    fixed = fixed.replace("'", '"')
+    try:
+        return json.loads(fixed)
+    except json.JSONDecodeError:
+        pass
+    # quote bare keys
+    fixed2 = re.sub(r"(\{|,\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:",
+                    r'\1"\2":', fixed)
+    try:
+        return json.loads(fixed2)
+    except json.JSONDecodeError:
+        return None
+
+
+def score_stage_a(plan_text: str) -> dict:
+    block = _balanced_braces(plan_text)
+    if block is None:
+        return {"valid_json": False, "scores": {}, "raw": plan_text[:300]}
+    plan = _tolerant_load(block)
+    if plan is None or not isinstance(plan, dict):
         return {"valid_json": False, "scores": {}, "raw": plan_text[:300]}
     ref = contracts.STAGE_A_REFERENCE
 
@@ -465,16 +530,28 @@ def main() -> None:
     if args.command == "stage-a":
         from archagent.model import FrozenModel
         model = FrozenModel()
-        out, usage = model.generate(contracts.prompt("stage_a"),
-                                    max_tokens=GEN_TOKENS["stage_a"], seed=1)
-        scored = score_stage_a(out)
-        report = {"stage": "A", "plan_raw": out, "usage": usage,
-                  **scored, "model_usage": model.usage()}
+        attempts = []
+        scored = None
+        # bounded candidate search: 1 greedy + 2 sampled (mission budget)
+        for seed, stoch in ((1, False), (11, True), (12, True)):
+            out, usage = model.generate(contracts.prompt("stage_a"),
+                                        max_tokens=GEN_TOKENS["stage_a"],
+                                        seed=seed, stochastic=stoch)
+            # the prompt ends with the opening '{' (anchor); the completion
+            # continues the object, so restore it before parsing
+            scored = score_stage_a("{" + out)
+            attempts.append({"seed": seed, "stochastic": stoch,
+                             "usage": usage,
+                             "valid_json": scored["valid_json"]})
+            if scored["valid_json"]:
+                break
+        report = {"stage": "A", "attempts": attempts,
+                  "model_usage": model.usage(), **scored}
         REPORTS.mkdir(parents=True, exist_ok=True)
         (REPORTS / "stage_a.json").write_text(
             json.dumps(report, indent=1) + "\n", encoding="utf8")
-        print(json.dumps({k: v for k, v in scored.items() if k != "plan"},
-                         indent=1))
+        print(json.dumps({k: v for k, v in scored.items()
+                          if k not in ("plan", "raw")}, indent=1))
         print("saved", REPORTS / "stage_a.json")
         return
 
@@ -520,8 +597,21 @@ def main() -> None:
             if "logic" in state.get("selected", {}):
                 deps["logic_source"] = state["selected"]["logic"]["source"]
         harness = Harness(model, docs=args.docs, memory=memory)
+        in_progress = state.get("in_progress", {}).get(args.role)
+
+        def checkpoint(role, round_i, best, attempts):
+            state.setdefault("in_progress", {})[role] = {
+                "best": {"source": best["source"],
+                         "score": list(best["score"]),
+                         "attempt_id": best["attempt_id"]},
+                "round": round_i, "attempts": attempts[-40:],
+            }
+            _save_state(args.state, state)
+
         result = harness.develop(args.role, max_rounds=args.max_rounds,
-                                 wall=args.wall, **deps)
+                                 wall=args.wall, resume_state=in_progress,
+                                 on_round_end=checkpoint, **deps)
+        state.setdefault("in_progress", {}).pop(args.role, None)
         report = {
             "role": args.role, "stopped": result["stopped"],
             "wall_seconds": result["wall"], "usage": result["usage"],

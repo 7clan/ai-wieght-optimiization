@@ -1,0 +1,57 @@
+{
+ "stage": "A",
+ "attempts": [
+  {
+   "seed": 1,
+   "stochastic": false,
+   "usage": {
+    "tokens": 420,
+    "seconds": 51.24,
+    "seed": 1,
+    "stochastic": false
+   },
+   "valid_json": false
+  },
+  {
+   "seed": 11,
+   "stochastic": true,
+   "usage": {
+    "tokens": 420,
+    "seconds": 57.6,
+    "seed": 11,
+    "stochastic": true
+   },
+   "valid_json": true
+  }
+ ],
+ "model_usage": {
+  "generations": 2,
+  "total_new_tokens": 840,
+  "total_seconds": 108.8
+ },
+ "valid_json": true,
+ "scores": {
+  "components": 0.0,
+  "entities": 0.0,
+  "routes": 0.0,
+  "state_transitions": 0.0,
+  "dependencies": 0.0
+ },
+ "plan": {
+  "components": [
+   "components"
+  ],
+  "entities": [
+   "entities"
+  ],
+  "routes": [
+   "routes"
+  ],
+  "state_transitions": [
+   "state_transitions"
+  ],
+  "dependencies": [
+   "dependencies"
+  ]
+ }
+}
