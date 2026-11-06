@@ -267,21 +267,24 @@ they were built from — a construction-set effect, not a transferable skill.
 
 ## 11. Publication status
 
-The provided GitHub PAT was accepted for the initial clone but was revoked
-before the final push (GitHub returns 401 Bad credentials; secret-scanning
-revocation of an exposed token is the likely cause). All work is committed
-locally on `exp/zai-architectural-circuits` (3 commits, clean tree) and
-archived as a complete-history bundle at
-`/home/z/architectural-circuits-branch.bundle`. To publish with a fresh
-token:
+**PUBLISHED.** The branch `exp/zai-architectural-circuits` is live at
+`https://github.com/7clan/ai-wieght-optimiization/tree/exp/zai-architectural-circuits`
+(remote head `ddb971b` + publication commit, verified via the GitHub API).
+
+Publication history: the original PAT was accepted for the initial clone but
+was revoked before the first push attempt (GitHub returned 401 Bad
+credentials; secret-scanning revocation of an exposed token is the likely
+cause). All work was committed locally and archived as a complete-history
+bundle at `/home/z/architectural-circuits-branch.bundle`. A replacement PAT
+was later supplied and the branch was pushed successfully with:
 
 ```bash
 cd /home/z/research-repo
-git remote set-url origin https://<USER>:<NEW_PAT>@github.com/7clan/ai-wieght-optimiization.git
-git push -u origin exp/zai-architectural-circuits
+git push https://<NEW_PAT>@github.com/7clan/ai-wieght-optimiization.git \
+  exp/zai-architectural-circuits:exp/zai-architectural-circuits
 ```
 
-or restore from the bundle:
+The bundle remains as an offline fallback:
 
 ```bash
 git clone /home/z/architectural-circuits-branch.bundle -b exp/zai-architectural-circuits
