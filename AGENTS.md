@@ -329,3 +329,16 @@ Explore reversible, directly computed edits to local open-model tensor weights.
 - Cumulative wall budget is now a CLI argument (`--wall-budget`, default
   14,400 s) and the workflow job timeout rose to 350 minutes; the resume
   dispatch sets the budget explicitly. Round cap 24. All disclosed in reports.
+
+## Session 031 fifth amendment (visible failure locations)
+
+- After 20 measured rounds (178 generations, 123,470 tokens, 18,484 s) the
+  ui failure was concentrated in dropped opening brackets on the third and
+  later `const [x, setX] = React.useState(...)` destructures, at the HEAD of
+  the module — but repair prompts showed only the code TAIL. `previous`
+  attempt context now shows the first 18 and last 10 lines, so no failure
+  location is hidden. The ui PUBLIC EXAMPLE additionally anchors the exact
+  hook destructure syntax (React API documentation; not target app code).
+- Measured state after round 20: holdout logic+css PASS; public checks
+  app/delete/health/post/post_invalid/summary pass; get, projects, store,
+  ui still fail. All round pages stay deployed exactly as written.

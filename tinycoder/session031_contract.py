@@ -174,7 +174,12 @@ GET /api/summary -> 200 and the body is exactly processor({entries:store.list()}
  "ui": """PUBLIC EXAMPLE (offline demo mode rendering):
 badge with the word offline, then entry rows
 api-server 95 min 2026-11-03, mobile-ui 140 min 2026-11-04,
-docs 60 min 2026-11-04, then a summary with total minutes 295.""",
+docs 60 min 2026-11-04, then a summary with total minutes 295.
+React hook lines look EXACTLY like this (note the full brackets):
+const [entries, setEntries] = React.useState([]);
+const [form, setForm] = React.useState({ project: '', minutes: '', date: '', note: '' });
+React.useEffect(() => { load(); }, []);
+Every opening bracket needs its closing bracket on the same hook line.""",
  "css": """PUBLIC EXAMPLE: style .badge, .cards, .card, .entries and form
 controls; keep it responsive under 640px.""",
 }
@@ -226,13 +231,23 @@ def prompt(role, error: str = "", previous: str = "",
     if error:
         text += line("PUBLIC CHECK FEEDBACK: " + " ".join(str(error).split())[:300])
     if previous:
-        lines = previous[-1200:].splitlines()[-16:]
-        if role == "logic":
-            text += line("your previous attempt (tail):")
-            text += "".join(line(x[:110]) for x in lines)
+        # Show the head (where early syntax bugs live) AND the tail of the
+        # model's own previous attempt so no failure location is hidden.
+        all_lines = previous.splitlines()
+        head = [x[:110] for x in all_lines[:18]]
+        tail = [x[:110] for x in all_lines[-10:]]
+        if len(all_lines) <= 28:
+            shown, gap = all_lines[:28], False
         else:
-            text += line("YOUR PREVIOUS ATTEMPT (tail) still fails; write a corrected full body:")
-            text += "".join(line(x.replace("*/", "* /")[:110]) for x in lines)
+            shown, gap = head + tail, True
+        if role == "logic":
+            text += line("your previous attempt (it failed; write the corrected full body):")
+            text += "".join(line(x) for x in shown)
+        else:
+            text += line("YOUR PREVIOUS ATTEMPT still fails; write a corrected full body:")
+            text += "".join(line(x.replace("*/", "* /")) for x in shown)
+        if gap:
+            text += line("... (middle lines omitted) ...")
     return text + PREFIX[role]
 
 
