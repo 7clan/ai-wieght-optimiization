@@ -1,0 +1,252 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>DevMetrics round 27 report — Qwen2.5-Coder-0.5B</title>
+<style>*{box-sizing:border-box}body{background:#0d1527;color:#e3ecf8;
+font:15px system-ui,sans-serif;margin:0}main{max-width:1080px;padding:34px 22px;
+margin:0 auto}h1{font-size:34px;letter-spacing:-.03em;margin:6px 0 10px}
+h2{font-size:20px;margin-top:34px}p{color:#b7c8e4;line-height:1.6}
+a{color:#9be4ec}table{border-collapse:collapse;width:100%;margin:14px 0}
+th,td{border:1px solid #33507a;padding:8px 11px;text-align:left;font-size:14px}
+th{background:#182a46}.pass,.fail{font-size:12px;font-weight:750;padding:6px 11px;
+border-radius:12px;display:inline-block;margin:3px}.pass{background:#165440;
+color:#b5ffdd}.fail{background:#67354b;color:#ffd6e1}
+section{background:#152442;border:1px solid #33507a;border-radius:12px;
+padding:20px;margin:18px 0}details{background:#152442;border:1px solid #33507a;
+border-radius:10px;padding:12px 16px;margin:10px 0}summary{cursor:pointer;
+font-weight:700}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;
+line-height:1.5;background:#0a1322;border-radius:8px;padding:14px}
+iframe{width:100%;height:640px;border:1px solid #33507a;border-radius:12px;
+background:white}.muted{color:#8fa3c4;font-size:13px}code{background:#0a1322;
+padding:2px 6px;border-radius:6px;font-size:13px}</style></head><body><main>
+<h1>DevMetrics — round 27 <span class="muted">(self-repair round)</span></h1>
+<p>Every module below is raw Qwen2.5-Coder-0.5B output from the Session031
+self-repair loop: public-contract prompt, its own previous attempt, public
+execution errors. Zero teacher bytes, zero human corrections.</p>
+<p><strong>Public score: 2/5 modules, 9 checks, integrated: no</strong></p>
+<div><span class="pass">logic: PASS</span> <span class="fail">store: FAIL</span><div class="muted">persistence✗ store_delete✗ store_validation✗</div> <span class="fail">api: FAIL</span><div class="muted">health✓ get✗ post✓ post_invalid✓ delete✓ projects✗ summary✓</div> <span class="fail">ui: FAIL</span><div class="muted">ui_wiring✗ ui_offline✗</div> <span class="pass">css: PASS</span></div>
+<h2>Execution checks</h2>
+<p><code>app✓</code> <code>delete✓</code> <code>health✓</code> <code>logic_structured✓</code> <code>post✓</code> <code>post_invalid✓</code> <code>summary✓</code></p>
+<h2>Public failure reasons</h2>
+<ul><li>store: TypeError: Assignment to constant variable.</li><li>api: get -&gt; GET /api/entries must return 200 {entries:store.list()} | projects -&gt; GET /api/projects must return 200 {projects:sorted distinct project names}</li><li>ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b</li><li>integration: TypeError: Assignment to constant variable.</li></ul>
+<h2>Model source (exact bytes)</h2>
+<details><summary>backend/logic.py</summary><pre>def summarize(payload):
+    entries = payload.get(&#x27;entries&#x27;)
+    if entries is None:
+        return 0, {}, {}, 0, None
+    # YOUR CODE HERE
+    entries = sorted(entries, key=lambda entry: entry[&#x27;minutes&#x27;], reverse=True)
+    by_project = {}
+    by_day = {}
+    for entry in entries:
+        project = entry[&#x27;project&#x27;]
+        if project not in by_project:
+            by_project[project] = entry[&#x27;minutes&#x27;]
+        else:
+            by_project[project] += entry[&#x27;minutes&#x27;]
+        date = entry[&#x27;date&#x27;]
+        if date not in by_day:
+            by_day[date] = entry[&#x27;minutes&#x27;]
+        else:
+            by_day[date] += entry[&#x27;minutes&#x27;]
+    active_projects = len(by_project)
+    busiest_day = None
+    if active_projects &gt; 0:
+        busiest_day = max(by_day, key=lambda date: by_day[date])
+    return {
+        &#x27;total_minutes&#x27;: sum(by_project.values()),
+        &#x27;by_project&#x27;: by_project,
+        &#x27;by_day&#x27;: by_day,
+        &#x27;active_projects&#x27;: active_projects,
+        &#x27;busiest_day&#x27;: busiest_day
+    }
+
+# NEW DEVMETRICS TASK. Return the project with the highest minutes, or
+# None if no project has any minutes.
+# PUBLIC EXAMPLE:
+# highest_project({&quot;entries&quot;:[{&quot;project&quot;:&quot;api-server&quot;,&quot;minutes&quot;:95,&quot;date&quot;:&quot;2026-11-03&quot;},
+# {&quot;project&quot;:&quot;docs&quot;,&quot;minutes&quot;:60,&quot;date&quot;:&quot;2026-11-03&quot;}]})
+</pre></details><details><summary>server/store.js</summary><pre>const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+    const entry = {};
+    if (fs.existsSync(filePath)) {
+        const json = fs.readFileSync(filePath).toString();
+        entry = JSON.parse(json);
+    }
+    else {
+        entry = [];
+    }
+    return {
+        list: () =&gt; entry,
+        create(body) {
+            const newEntry = {
+                id: &#x27;&#x27;,
+                project: body.project,
+                minutes: body.minutes,
+                date: body.date,
+                note: body.note,
+            };
+            if (newEntry.project === &#x27;&#x27; || newEntry.minutes === 0) {
+                throw new Error(&#x27;Invalid entry&#x27;);
+            }
+            newEntry.id = `${newEntry.project}-${newEntry.minutes}-${newEntry.date}`;
+            entry.push(newEntry);
+            fs.writeFileSync(filePath, JSON.stringify(entry));
+            return true;
+        },
+        delete(id) {
+            const index = entry.findIndex((entry) =&gt; entry.id === id);
+            if (index !== -1) {
+                entry.splice(index, 1);
+                fs.writeFileSync(filePath, JSON.stringify(entry));
+                return true;
+            }
+            return false;
+        },
+    };
+}
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
+// console.log(store.create({ project: &#x27;foo&#x27;, minutes</pre></details><details><summary>server/routes.js</summary><pre>const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+    const app = express();
+    app.use(express.json());
+    app.get(&#x27;/api/health&#x27;, (req, res) =&gt; {
+        res.json({ ok: true });
+    });
+    app.post(&#x27;/api/entries&#x27;, (req, res) =&gt; {
+        const entry = req.body;
+        if (!entry.project || !entry.minutes || !entry.date) {
+            return res.status(400).json({ error: &#x27;Invalid entry&#x27; });
+        }
+        const project = store.create(entry);
+        res.status(201).json({ item: project });
+    });
+    app.delete(&#x27;/api/entries/:id&#x27;, (req, res) =&gt; {
+        store.delete(req.params.id);
+        res.json({ deleted: true });
+    });
+    app.get(&#x27;/api/projects&#x27;, (req, res) =&gt; {
+        const projects = store.list().map((project) =&gt; {
+            return { id: project.id, name: project.project };
+        });
+        res.json({ projects });
+    });
+    app.get(&#x27;/api/summary&#x27;, (req, res) =&gt; {
+        res.json(processor({ entries: store.list() }));
+    });
+    return app;
+}</pre></details><details><summary>client/App.jsx</summary><pre>const React = require(&#x27;react&#x27;);
+function App() {
+  // TODO: Implement function App.
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;React App&lt;/h1&gt;
+      &lt;hr&gt;&lt;/hr&gt;
+      &lt;hr&gt;&lt;/hr&gt;
+      &lt;div&gt;
+        &lt;div&gt;
+          &lt;p&gt;DEVMETRICS&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;hr&gt;&lt;/hr&gt;
+        &lt;div&gt;
+          &lt;div&gt;
+            &lt;div&gt;
+              &lt;p&gt;Health&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;hr&gt;&lt;/hr&gt;
+            &lt;div&gt;
+              &lt;p&gt;Entries&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;hr&gt;&lt;/hr&gt;
+            &lt;div&gt;
+              &lt;p&gt;Projects&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;hr&gt;&lt;/hr&gt;
+            &lt;div&gt;
+              &lt;p&gt;Summary&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+module.exports = App;</pre></details><details><summary>client/style.css</summary><pre>body {
+  background-color: #222;
+  color: #fff;
+  font-family: &#x27;Roboto&#x27;, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* BODY CONTENT */
+body &gt; div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* BODY CONTENT HEADER */
+body &gt; div &gt; div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition</pre></details>
+<p><a href="./index.html">Open this round&rsquo;s live app →</a> ·
+<a href="../index.html">Back to the session gallery</a></p>
+<p class="muted">Elapsed 25638.6s · 176505 output tokens so far ·
+SHA-256 of every module is published in the session gallery ledger.</p>
+</main></body></html>
