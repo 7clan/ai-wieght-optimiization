@@ -289,3 +289,76 @@ The bundle remains as an offline fallback:
 ```bash
 git clone /home/z/architectural-circuits-branch.bundle -b exp/zai-architectural-circuits
 ```
+
+## 12. Corrections (Session 033 audit of this research)
+
+An independent audit identified issues that are now corrected on
+`exp/zai-autonomous-fullstack`.  Historical files are untouched; corrected
+results are published separately under
+`experiments/archcircuits/reports/corrected/`.
+
+### 12.1 Weight-factor scaling (material)
+
+`build_joint.py` applied the joint edit in RAM at the capped scale
+(0.6944) but saved the *uncapped* proposal, so every reload-based
+evaluation of `joint_L16` measured a ~2.16% relative Frobenius edit —
+44% above the 1.5% repository limit.  Corrected re-evaluation at the
+intended bound (factors rescaled by the recorded scale, verified
+norm + reversibility, `factors/joint_L16_corrected/`):
+
+| Partition | Baseline | Historical (uncapped) | Corrected (<=1.5%) |
+|---|---|---|---|
+| dev (48) | 0.5208 | 0.5625 | **0.5208** (0 gained, 0 lost, McNemar p=1.0) |
+| val (32) | 0.5938 | 0.6250 | **0.5938** (0 gained, 0 lost, p=1.0) |
+| holdout (32) | 0.5625 | 0.5625 | **0.5625** (0 gained, 0 lost, p=1.0) |
+
+**Corrected conclusion:** at the intended bound the joint edit is
+behaviorally inert.  The dev/val gains reported in Section 8 were an
+artifact of the cap violation, not a property of the bounded method.
+The holdout-generalization failure stands and is strengthened: even the
+over-cap edit produced zero holdout movement.  The single-edit (CON, VAR,
+XCOM, JSR) results used applied_scale 1.0 and are unaffected; the
+interference *geometry* (principal angles) is scale-invariant and is
+unaffected; the joint behavioral interference numbers are re-derived in
+the corrected reports.
+
+Code fixes: `edits.cap_and_apply` now returns the scaled factors and all
+callers persist those; `load_factor_set` verifies the cap on load and
+rejects legacy unscaled sets; `verify_factor_set` /
+`verify_combined` check bounds and float32-tolerance reversibility
+(reversibility is *within tolerance* — `(W+Δ)-Δ` is not bit-exact in
+float32; measured drift ~3e-9 relative).
+
+### 12.2 Causal-tracing token alignment (fixed)
+
+Counterfactual patch values were read at the *original* prompt's token
+indices.  When the counterfactual question tokenizes differently, those
+indices can address a different semantic span.  Fixed: positions are now
+computed per prompt via char-offset anchoring (`aligned_span_positions`)
+with index-shift diagnostics; the ArchBench counterfactuals happened to
+tokenize near-identically (shift 0 for the verified pairs), so the
+recorded localization rankings are unchanged, but the guarantee is now
+enforced rather than assumed.
+
+### 12.3 Reproducibility (fixed)
+
+The machine-specific default model path was removed
+(`ARCHCIRCUITS_MODEL_DIR`, required); the architecture is verified on
+load (494,032,768 params / 24 layers / 896 hidden); every report now
+carries a repro block (model file SHA-256, torch/transformers/numpy
+versions, decoding parameters).
+
+### 12.4 Epistemic status of the claims
+
+- *Recorded observations (unreproduced numbers):* the historical joint
+  dev/val scores — superseded by the corrected re-evaluation above.
+- *Reproduced results:* single-edit factor sets (scale 1.0) and their
+  dev/holdout scores; corrected joint re-evaluation; factor geometry.
+- *Preliminary hypotheses:* L16-MLP / head-10 / L14-MLP localization is
+  causal-meditation evidence *on ArchBench dev tasks only*; it is NOT
+  established that these sites implement general "contract reading" or
+  "variable tracking" skills, and no intervention derived from them
+  generalized.  Do not cite this session as evidence that weight editing
+  improves architectural reasoning.
+- *Failed experiments:* all holdout transfers (single edits and joint);
+  the bounded joint edit is behaviorally inert.

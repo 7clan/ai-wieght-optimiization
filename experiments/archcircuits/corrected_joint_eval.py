@@ -77,6 +77,11 @@ def build_corrected_factors() -> dict:
 
 
 def main() -> None:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--partition", choices=["dev", "val", "holdout", "all"],
+                    default="all")
+    args = ap.parse_args()
     model_path = resolve_model_path()
     meta = build_corrected_factors()
 
@@ -100,7 +105,13 @@ def main() -> None:
         "repro": repro_info(model_path),
         "partitions": {},
     }
-    for partition in ("dev", "val", "holdout"):
+    partitions = (["dev", "val", "holdout"] if args.partition == "all"
+                  else [args.partition])
+    for partition in partitions:
+        out_file = out_dir / f"eval_joint_L16_corrected_{partition}.json"
+        if out_file.is_file():
+            print(f"[{partition}] already evaluated; skipping")
+            continue
         tasks = tasks_for(partition)
         t0 = time.time()
         rep = evaluate_tasks(model, tok, tasks, tag=f"joint_L16_corrected_{partition}")

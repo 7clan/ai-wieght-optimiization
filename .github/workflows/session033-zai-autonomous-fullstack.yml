@@ -1,0 +1,132 @@
+name: session033-zai-autonomous-fullstack
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: which stage to run
+        required: true
+        default: protocol-tests
+        type: choice
+        options:
+          - protocol-tests
+          - corrections
+          - holdout
+      wall_budget:
+        description: wall budget seconds per role for corrections
+        required: false
+        default: "2700"
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  protocol:
+    if: ${{ inputs.stage == 'protocol-tests' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/zai-autonomous-fullstack
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install evaluator dependencies
+        run: |
+          mkdir -p evalenv && cd evalenv
+          npm init -y >/dev/null
+          npm install --no-save express@4.21.2 esbuild@0.24.2 react@18.3.1 \
+            react-dom@18.3.1 jsdom@24.1.3 supertest@7.0.0
+      - name: Python dependencies
+        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Protocol tests (no model, no execution of model code)
+        env:
+          ARCHAGENT_NODE_PATH: ${{ github.workspace }}/evalenv/node_modules
+        run: |
+          python -m pytest tests/test_archagent.py \
+            tests/test_archcircuits_corrections.py -q
+      - name: Worker reference self-test (Docker-grade isolation check)
+        env:
+          ARCHAGENT_NODE_PATH: ${{ github.workspace }}/evalenv/node_modules
+          ARCHAGENT_LOCAL_EVAL: "0"
+        run: |
+          # On CI there is no /.dockerenv either; the disclosed local mode
+          # is explicitly enabled for the reference self-test only.
+          ARCHAGENT_LOCAL_EVAL=1 python - <<'PY'
+          import sys; sys.path.insert(0, '.')
+          from archagent.runner import evaluate_module
+          from tests.test_archagent import REF_LOGIC
+          r = evaluate_module('logic', REF_LOGIC)
+          assert r['passed'], r
+          print('reference logic passes in CI-isolated worker')
+          PY
+
+  corrections:
+    if: ${{ inputs.stage == 'corrections' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/zai-autonomous-fullstack
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install CPU torch + transformers
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install "transformers==5.22.1" "safetensors>=0.5"
+      - name: Download base checkpoint
+        run: |
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          snapshot_download('Qwen/Qwen2.5-Coder-0.5B',
+                            local_dir='models/qwen25-coder-0.5b',
+                            allow_patterns=['*.json', '*.safetensors',
+                                            'merges.txt', 'vocab.json'])
+          PY
+      - name: Verify factor sets and run corrected joint re-evaluation
+        env:
+          ARCHCIRCUITS_MODEL_DIR: ${{ github.workspace }}/models/qwen25-coder-0.5b
+        run: |
+          python experiments/archcircuits/corrected_joint_eval.py
+      - name: Commit corrected reports (branch only)
+        run: |
+          git config user.name "session033-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add experiments/archcircuits/reports/corrected \
+            experiments/archcircuits/factors/joint_L16_corrected || true
+          git commit -m "[session033] corrected joint re-evaluation (CI)" || echo "nothing to commit"
+          git push origin HEAD:exp/zai-autonomous-fullstack
+
+  holdout:
+    if: ${{ inputs.stage == 'holdout' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/zai-autonomous-fullstack
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install evaluator dependencies
+        run: |
+          mkdir -p evalenv && cd evalenv
+          npm init -y >/dev/null
+          npm install --no-save express@4.21.2 esbuild@0.24.2 react@18.3.1 \
+            react-dom@18.3.1 jsdom@24.1.3 supertest@7.0.0
+      - name: Frozen holdout evaluation (no model load; recorded modules only)
+        env:
+          ARCHAGENT_NODE_PATH: ${{ github.workspace }}/evalenv/node_modules
+          ARCHAGENT_LOCAL_EVAL: "1"
+        run: |
+          python -m archagent.runner holdout \
+            --state experiments/zai-taskflow/state.json

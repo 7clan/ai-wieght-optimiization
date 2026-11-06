@@ -437,3 +437,33 @@ feedback-only candidates)
   (0 gained tasks; `var_L14` lost 2). Do not cite Session 010 as evidence that
   weight editing improves architectural reasoning; cite it as evidence of
   localization plus a generalization failure.
+
+## Session 033 — ZAI autonomous full-stack TaskFlow (exp/zai-autonomous-fullstack)
+
+- Branch `exp/zai-autonomous-fullstack` (based on the Session032 tip plus a
+  merge of the Session 010 architectural-circuits branch).  No writes to
+  `main` or any other agent branch.
+- First: the Session 011 audit corrections were applied to the
+  architectural-circuits tooling (scaled-factor persistence with load-time
+  cap verification, char-anchored counterfactual token alignment,
+  `ARCHCIRCUITS_MODEL_DIR` env with no machine default, corrected joint
+  re-evaluation published under `experiments/archcircuits/reports/corrected/`
+  — historical files untouched).
+- TaskFlow benchmark: 10-feature project/task manager; five roles
+  (logic Python, store, api, ui, css); frozen contract fingerprint in
+  `archagent/contracts.py`; public cases guide selection, holdout cases
+  (digest-recorded) are evaluated only after candidates are frozen.
+- Authorship discipline: QWEN-ORIGINAL / QWEN-REPAIRED / TEACHER-CORRECTED
+  / TRUSTED-SCAFFOLD recorded per file in `apps/taskflow-qwen/ORIGIN.json`;
+  lineage verification replays every selected byte from recorded model
+  completions; prompts contain only the public contract, the model's own
+  previous bytes, public execution feedback, programming-concept
+  explanations and pinned library reference docs.  No teacher target code.
+- Model-generated code executes only inside the disclosed isolated
+  evaluator (Node vm realms with module allowlists and timeouts, and
+  `python3 -I -B` subprocesses); the local non-Docker mode is labeled
+  `ARCHAGENT_LOCAL_EVAL=1` exactly like Session031/032.  The real browser
+  test runs Playwright against a 127.0.0.1-bound server; no public
+  exposure, synthetic data only.
+- Budgets are explicit per role (rounds, wall-clock, candidates); no
+  unbounded search loops.
