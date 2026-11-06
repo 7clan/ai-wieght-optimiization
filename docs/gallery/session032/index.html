@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>DevMetrics — Qwen2.5-Coder-0.5B FIM-anchored self-repair gallery</title>
+<style>*{box-sizing:border-box}body{background:#0d1527;color:#e3ecf8;
+font:15px system-ui,sans-serif;margin:0}main{max-width:1080px;padding:34px 22px;
+margin:0 auto}h1{font-size:34px;letter-spacing:-.03em;margin:6px 0 10px}
+h2{font-size:20px;margin-top:34px}p{color:#b7c8e4;line-height:1.6}
+a{color:#9be4ec}table{border-collapse:collapse;width:100%;margin:14px 0}
+th,td{border:1px solid #33507a;padding:8px 11px;text-align:left;font-size:14px}
+th{background:#182a46}.pass,.fail{font-size:12px;font-weight:750;padding:6px 11px;
+border-radius:12px;display:inline-block;margin:3px}.pass{background:#165440;
+color:#b5ffdd}.fail{background:#67354b;color:#ffd6e1}
+section{background:#152442;border:1px solid #33507a;border-radius:12px;
+padding:20px;margin:18px 0}details{background:#152442;border:1px solid #33507a;
+border-radius:10px;padding:12px 16px;margin:10px 0}summary{cursor:pointer;
+font-weight:700}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;
+line-height:1.5;background:#0a1322;border-radius:8px;padding:14px}
+iframe{width:100%;height:640px;border:1px solid #33507a;border-radius:12px;
+background:white}.muted{color:#8fa3c4;font-size:13px}code{background:#0a1322;
+padding:2px 6px;border-radius:6px;font-size:13px}</style></head><body><main>
+<h1>DevMetrics — the 0.5B model surgically repairs its own code</h1>
+<p>Frozen <strong>Qwen2.5-Coder-0.5B</strong> (494,032,768 parameters, no training,
+no weight edits) wrote every application byte of a React + Express + Python
+developer-analytics dashboard, then repaired its own failing modules using only
+public execution feedback. Session032 (branch
+<code>exp/32-fim-selfrepair</code>) keeps every Session031 rule and adds native
+fill-in-the-middle splices: the model&rsquo;s own prior bytes around the
+evaluator-reported failing line, with the model completing the gap itself.
+Every FIM prefix, suffix and fill is a model completion. Teacher bytes:
+<strong>0</strong>. Human corrections: <strong>none</strong>. Every scored sweep
+below is deployed exactly as the model wrote it.</p>
+<h2>Score progression (public contract)</h2>
+<table><tr><th>sweep</th><th>modules</th><th>passes</th><th>checks</th>
+<th>FIM acc/att</th><th>integrated</th><th>links</th></tr><tr><td>sweep 0</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>6</td><td>0/0</td><td>no</td><td><a href="rounds/00/index.html">live app</a> · <a href="rounds/00/report.html">report</a></td></tr><tr><td>sweep 1</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>0/6</td><td>no</td><td><a href="rounds/01/index.html">live app</a> · <a href="rounds/01/report.html">report</a></td></tr><tr><td>sweep 2</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>0/9</td><td>no</td><td><a href="rounds/02/index.html">live app</a> · <a href="rounds/02/report.html">report</a></td></tr><tr><td>sweep 4</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>0/15</td><td>no</td><td><a href="rounds/04/index.html">live app</a> · <a href="rounds/04/report.html">report</a></td></tr><tr><td>sweep 5</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>0/20</td><td>no</td><td><a href="rounds/05/index.html">live app</a> · <a href="rounds/05/report.html">report</a></td></tr><tr><td>sweep 6</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>0/34</td><td>no</td><td><a href="rounds/06/index.html">live app</a> · <a href="rounds/06/report.html">report</a></td></tr><tr><td>sweep 8</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>0/62</td><td>no</td><td><a href="rounds/08/index.html">live app</a> · <a href="rounds/08/report.html">report</a></td></tr><tr><td>sweep 9</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>1/82</td><td>no</td><td><a href="rounds/09/index.html">live app</a> · <a href="rounds/09/report.html">report</a></td></tr><tr><td>sweep 10</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>1/102</td><td>no</td><td><a href="rounds/10/index.html">live app</a> · <a href="rounds/10/report.html">report</a></td></tr><tr><td>sweep 11</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>1/122</td><td>no</td><td><a href="rounds/11/index.html">live app</a> · <a href="rounds/11/report.html">report</a></td></tr><tr><td>sweep 12</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>7</td><td>1/142</td><td>no</td><td><a href="rounds/12/index.html">live app</a> · <a href="rounds/12/report.html">report</a></td></tr><tr><td>sweep 13</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>8</td><td>2/162</td><td>no</td><td><a href="rounds/13/index.html">live app</a> · <a href="rounds/13/report.html">report</a></td></tr><tr><td>sweep 14</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>8</td><td>2/180</td><td>no</td><td><a href="rounds/14/index.html">live app</a> · <a href="rounds/14/report.html">report</a></td></tr><tr><td>sweep 15</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>8</td><td>2/198</td><td>no</td><td><a href="rounds/15/index.html">live app</a> · <a href="rounds/15/report.html">report</a></td></tr><tr><td>sweep 16</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>8</td><td>2/216</td><td>no</td><td><a href="rounds/16/index.html">live app</a> · <a href="rounds/16/report.html">report</a></td></tr><tr><td>sweep 17</td><td><span class="fail">Logic</span> <span class="fail">Store</span> <span class="fail">Api</span> <span class="fail">Ui</span> <span class="pass">Css</span> </td><td>1/5</td><td>8</td><td>2/234</td><td>no</td><td><a href="rounds/17/index.html">live app</a> · <a href="rounds/17/report.html">report</a></td></tr></table>
+<h2>Independent holdout (first opened after selection froze)</h2>
+<p>Untouched greedy baseline: <strong>1/5</strong> modules,
+integrated no. After 17 self-repair sweep(s):
+<strong>1/5</strong> modules, integrated no.</p>
+<div><span class="fail">logic: FAIL</span> <span class="fail">store: FAIL</span><div class="muted">persistence✗ store_delete✗ store_validation✗</div> <span class="fail">api: FAIL</span><div class="muted">health✓ get✓ post✗ post_invalid✓ delete✓ projects✗ summary✓</div> <span class="fail">ui: FAIL</span><div class="muted">ui_wiring✗ ui_offline✗</div> <span class="pass">css: PASS</span></div>
+<h2>FIM repair statistics</h2>
+<p><strong>2</strong> of <strong>234</strong> native
+fill-in-the-middle completions were accepted; an accepted splice must strictly
+improve the role&rsquo;s public metric under the byte-identical evaluator.
+The remaining candidates were whole-module regenerations of the unchanged
+Session031 prompts.</p>
+<h2>Final deployed app (runs the model&rsquo;s required offline demo mode)</h2>
+<iframe src="rounds/17/index.html" sandbox="allow-scripts allow-forms" loading="lazy" title="Qwen-generated DevMetrics UI"></iframe>
+<p><a href="rounds/17/index.html">Open the live app standalone →</a></p>
+<h2>Authorship ledger</h2>
+<table><tr><th>module</th><th>origin</th><th>sha-256</th><th>size</th></tr><tr><td>backend/logic.py</td><td>Qwen whole-module attempt #5 (focus-error-only, sweep 1)</td><td><code>b3e4c9d0a5b4d99d…</code></td><td>160 bytes</td></tr><tr><td>server/store.js</td><td>Qwen whole-module attempt #7 (focus-error-only, sweep 1)</td><td><code>9d81188fd390bf25…</code></td><td>1402 bytes</td></tr><tr><td>server/routes.js</td><td>Qwen whole-module attempt #209 (focus-error-only-2, sweep 13)</td><td><code>0420f9e15aeea8ea…</code></td><td>1646 bytes</td></tr><tr><td>client/App.jsx</td><td>Qwen FIM splice attempt #211 (fim-compound, sweep 13, own lines 58–86)</td><td><code>7f2512768ee8cc18… (raw) / c114c0c6070a1acf… (esbuild-compiled artifact deployed)</code></td><td>8098 bytes</td></tr><tr><td>client/style.css</td><td>Qwen whole-module attempt #4 (baseline, sweep 0)</td><td><code>1149ef92ae597349…</code></td><td>1282 bytes</td></tr></table>
+<h2>Verification and disclosure</h2>
+<p>Model code executed only in restricted, network-disabled evaluator realms
+with module allowlists and timeouts (Express routes via supertest, Python via
+a restricted subprocess, React behavior in a jsdom realm with failing fetch).
+The recycled sandbox has no Docker daemon, so this session runs the evaluator
+as local node/python subprocesses whose worker logic is byte-identical to the
+Session031 Docker image; the parity check against the Docker-verified
+Session031 record is re-validated live before this gallery is published. The
+static gallery serves the same model bytes with vendored React 18.3.1 UMD
+(<code>docs/vendor/</code>, sha-256 pinned); the evaluator itself runs React
+19.1.1. The jsdom mount is a behavioral DOM check, not a real browser click
+test. The Express/Python half cannot run on static hosting; CI verifies it
+end-to-end and publishes the report JSON below.</p>
+<p><a href="../../../../experiments/session032_selfrepair_report.json">report JSON</a> ·
+<a href="../../../../experiments/session032_selfrepair_predictions.json">predictions JSON</a> ·
+<a href="../../../index.html">mission dashboard</a></p>
+<p class="muted">276 model generations · 96734 output tokens ·
+14642.9s wall time · production_ready=false · no frontier-model parity claim.</p>
+</main></body></html>

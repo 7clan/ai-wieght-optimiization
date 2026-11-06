@@ -1,0 +1,382 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>DevMetrics sweep 16 report — Qwen2.5-Coder-0.5B</title>
+<style>*{box-sizing:border-box}body{background:#0d1527;color:#e3ecf8;
+font:15px system-ui,sans-serif;margin:0}main{max-width:1080px;padding:34px 22px;
+margin:0 auto}h1{font-size:34px;letter-spacing:-.03em;margin:6px 0 10px}
+h2{font-size:20px;margin-top:34px}p{color:#b7c8e4;line-height:1.6}
+a{color:#9be4ec}table{border-collapse:collapse;width:100%;margin:14px 0}
+th,td{border:1px solid #33507a;padding:8px 11px;text-align:left;font-size:14px}
+th{background:#182a46}.pass,.fail{font-size:12px;font-weight:750;padding:6px 11px;
+border-radius:12px;display:inline-block;margin:3px}.pass{background:#165440;
+color:#b5ffdd}.fail{background:#67354b;color:#ffd6e1}
+section{background:#152442;border:1px solid #33507a;border-radius:12px;
+padding:20px;margin:18px 0}details{background:#152442;border:1px solid #33507a;
+border-radius:10px;padding:12px 16px;margin:10px 0}summary{cursor:pointer;
+font-weight:700}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;
+line-height:1.5;background:#0a1322;border-radius:8px;padding:14px}
+iframe{width:100%;height:640px;border:1px solid #33507a;border-radius:12px;
+background:white}.muted{color:#8fa3c4;font-size:13px}code{background:#0a1322;
+padding:2px 6px;border-radius:6px;font-size:13px}</style></head><body><main>
+<h1>DevMetrics — sweep 16 <span class="muted">(FIM self-repair sweep)</span></h1>
+<p>Every module below is raw Qwen2.5-Coder-0.5B output from the Session032
+FIM-anchored self-repair loop on branch <code>exp/32-fim-selfrepair</code>:
+whole-module regenerations plus native fill-in-the-middle splices of the
+model&rsquo;s own bytes anchored at the evaluator-reported failing line.
+Zero teacher bytes, zero human corrections.</p>
+<p><strong>Public score: 1/5 modules, 8 checks, integrated: no</strong></p>
+<div><span class="fail">logic: FAIL</span> <span class="fail">store: FAIL</span><div class="muted">persistence✗ store_delete✗ store_validation✗</div> <span class="fail">api: FAIL</span><div class="muted">health✓ get✓ post✗ post_invalid✓ delete✓ projects✗ summary✓</div> <span class="fail">ui: FAIL</span><div class="muted">ui_wiring✗ ui_offline✗</div> <span class="pass">css: PASS</span></div>
+<h2>Execution checks</h2>
+<p><code>app✓</code> <code>delete✓</code> <code>get✓</code> <code>health✓</code> <code>logic_structured✓</code> <code>post_invalid✓</code> <code>summary✓</code></p>
+<h2>Public failure reasons</h2>
+<ul><li>logic: Expected {&quot;total_minutes&quot;:295,&quot;by_project&quot;:{&quot;api-server&quot;:95,&quot;mobile-ui&quot;:140,&quot;docs&quot;:60},&quot;by_day&quot;:{&quot;2026-11-03&quot;:95,&quot;2026-11-04&quot;:200},&quot;active_projects&quot;:3,&quot;busiest_day&quot;:&quot;2026-11-04&quot;}, received {&quot;total_minutes&quot;:0,&quot;by_project&quot;:{},&quot;by_day&quot;:{},&quot;active_projects&quot;:0,&quot;bus</li><li>store: Error: ENOENT: no such file or directory, open &#x27;/tmp/devm031-ZCZ6gy/entries.json&#x27;</li><li>api: post -&gt; POST /api/entries must return 201 {item:store.create(req.body)} | projects -&gt; GET /api/projects must return 200 {projects:sorted distinct project names}</li><li>ui: Error: UI lacks: DELETE request</li></ul>
+<h2>Model source (exact bytes)</h2>
+<details><summary>backend/logic.py</summary><pre>def summarize(payload):
+    # YOUR CODE HERE
+    pass
+    return {&quot;total_minutes&quot;: 0, &quot;by_project&quot;: {}, &quot;by_day&quot;: {}, &quot;active_projects&quot;: 0, &quot;busiest_day&quot;: None}</pre></details><details><summary>server/store.js</summary><pre>const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+  let data = fs.readFileSync(filePath).toString();
+  let entries = JSON.parse(data);
+  return {
+    list: function () {
+      return entries;
+    },
+    create: function (body) {
+      if (body.project.length === 0 || body.minutes === 0 || body.date.length === 0) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      if (body.project.length &lt; 1 || body.minutes &lt; 1 || body.date.length &lt; 1) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      if (body.project === &#x27;&#x27; &amp;&amp; body.minutes === 0 &amp;&amp; body.date === &#x27;&#x27;) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      let id = entries.length.toString();
+      if (entries[id] !== undefined) {
+        throw new Error(&#x27;Duplicate entry&#x27;);
+      }
+      body.id = id;
+      entries.push(body);
+      data = JSON.stringify(entries);
+      fs.writeFileSync(filePath, data);
+      return body;
+    },
+    delete: function (id) {
+      if (id.length &lt; 1) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      if (id.length &gt; 1) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      if (id === &#x27;&#x27;) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      if (entries[id] === undefined) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      entries.splice(id, 1);
+      data = JSON.stringify(entries);
+      fs.writeFileSync(filePath, data);
+      return true;
+    },
+  };
+}</pre></details><details><summary>server/routes.js</summary><pre>const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+    const app = express();
+    app.use(express.json());
+    app.get(&#x27;/api/health&#x27;, function(req, res) {
+        res.json({ok: true});
+    });
+    app.get(&#x27;/api/entries&#x27;, function(req, res) {
+        return res.json({entries: store.list()});
+    });
+    app.post(&#x27;/api/entries&#x27;, function(req, res) {
+        try {
+            const entry = req.body;
+            if (!entry.project) {
+                throw new Error(&#x27;Project is missing&#x27;);
+            }
+            if (!entry.minutes) {
+                throw new Error(&#x27;Minutes is missing&#x27;);
+            }
+            if (!entry.date) {
+                throw new Error(&#x27;Date is missing&#x27;);
+            }
+            if (!entry.note) {
+                throw new Error(&#x27;Note is missing&#x27;);
+            }
+            const project = store.create(entry);
+            return res.json({item: project});
+        } catch (e) {
+            return res.status(400).json({error: e.message});
+        }
+    });
+    app.delete(&#x27;/api/entries/:id&#x27;, function(req, res) {
+        const id = req.params.id;
+        const project = store.delete(id);
+        if (!project) {
+            return res.status(400).json({error: &#x27;Invalid entry&#x27;});
+        }
+        return res.json({deleted: true});
+    });
+    app.get(&#x27;/api/projects&#x27;, function(req, res) {
+        const projects = Array.from(new Set(store.list()));
+        projects.sort();
+        return res.json({projects});
+    });
+    app.get(&#x27;/api/summary&#x27;, function(req, res) {
+        return res.json(processor({entries: store.list()}));
+    });
+    return app;
+}
+module.exports = createApp;</pre></details><details><summary>client/App.jsx</summary><pre>const React = require(&#x27;react&#x27;);
+function App() {
+    const [entries, setEntries] = React.useState([]);
+    const [form, setForm] = React.useState({ project: &#x27;&#x27;, minutes: &#x27;&#x27;, date: &#x27;&#x27;, note: &#x27;&#x27; });
+    const [filter, setFilter] = React.useState([]);
+    const [summary, setSummary] = React.useState({});
+    const [offline, setOffline] = React.useState(false);
+function load() {
+    fetch(&#x27;/api/entries&#x27;)
+        .then((response) =&gt; response.json())
+        .then((entries) =&gt; {
+            setEntries(entries);
+        });
+    fetch(&#x27;/api/summary&#x27;)
+        .then((response) =&gt; response.json())
+        .then((summary) =&gt; {
+            setSummary(summary);
+        });
+}
+    React.useEffect(() =&gt; {
+        load();
+    }, []);
+    const handleInputChange = ({ target }) =&gt; {
+        const { name, value } = target;
+        setForm((f) =&gt; ({
+            ...f,
+            [name]: value,
+        }));
+    };
+    const handleFormSubmit = ({ target }) =&gt; {
+        const { name, value } = target;
+        setForm((f) =&gt; ({
+            ...f,
+            [name]: value,
+        }));
+    };
+    const handleProjectChange = (project) =&gt; {
+        setFilter((f) =&gt; ({
+            ...f,
+            project: project,
+        }));
+    };
+    const handleSummaryChange = (value) =&gt; {
+        setSummary((s) =&gt; ({
+            ...s,
+            [value]: value,
+        }));
+    };
+    const handleOfflineChange = (offline) =&gt; {
+        setOffline(offline);
+    };
+    const handleFilterChange = (filter) =&gt; {
+        setFilter((f) =&gt; ({
+            ...f,
+            filter: filter,
+        }));
+    };
+const handleSubmit = async (e) =&gt; {
+    e.preventDefault();
+    try {
+        const response = await fetch(&#x27;/api/entries&#x27;, { method: &#x27;POST&#x27;, headers: {
+            &#x27;Content-Type&#x27;: &#x27;application/json&#x27; }, body: JSON.stringify(form) });
+        if (!response.ok) throw new Error(&#x27;offline&#x27;);
+        load();
+    } catch (error) {
+        console.error(&#x27;Error submitting form:&#x27;, error);
+    }
+};
+    const handleAdd = (e) =&gt; {
+        e.preventDefault();
+        const { id } = form;
+        const newEntry = {
+            id,
+            project: form.project,
+            minutes: form.minutes,
+            date: form.date,
+            note: form.note,
+        };
+        setEntries([...entries, newEntry]);
+        setForm({ project: &#x27;&#x27;, minutes: &#x27;&#x27;, date: &#x27;&#x27;, note: &#x27;&#x27; });
+        load();
+    };
+    const handleDelete = (id) =&gt; {
+        const newEntries = entries.filter((entry) =&gt; entry.id !== id);
+        setEntries(newEntries);
+    };
+    return (
+        &lt;div&gt;
+            {offline ?
+                &lt;h1&gt;Offline Demo Mode&lt;/h1&gt; :
+                &lt;div&gt;
+                    &lt;h1&gt;React Demo&lt;/h1&gt;
+                    &lt;div&gt;
+                        &lt;h2&gt;Entries&lt;/h2&gt;
+                        &lt;div&gt;
+                            &lt;ul&gt;
+                                {entries.map((entry) =&gt; (
+                                    &lt;li key={entry.id}&gt;
+                                        &lt;span&gt;
+                                            &lt;span&gt;{entry.project}&lt;/span&gt;
+                                            &lt;span&gt;{entry.minutes}&lt;/span&gt;
+                                            &lt;span&gt;{entry.date}&lt;/span&gt;
+                                            &lt;span&gt;{entry.note}&lt;/span&gt;
+                                        &lt;/span&gt;
+                                        &lt;span&gt;
+                                            &lt;button onClick={() =&gt; handleDelete(entry.id)}&gt;Delete&lt;/button&gt;
+                                        &lt;/span&gt;
+                                    &lt;/li&gt;
+                                ))}
+                            &lt;/ul&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;form onSubmit={handleSubmit}&gt;
+                                &lt;label&gt;
+                                    Project:
+                                    &lt;input type=&quot;text&quot; name=&quot;project&quot; value={form.project} onChange={handleInputChange} /&gt;
+                                &lt;/label&gt;
+                                &lt;label&gt;
+                                    Minutes:
+                                    &lt;input type=&quot;number&quot; name=&quot;minutes&quot; value={form.minutes} onChange={handleInputChange} /&gt;
+                                &lt;/label&gt;
+                                &lt;label&gt;
+                                    Date:
+                                    &lt;input type=&quot;date&quot; name=&quot;date&quot; value={form.date} onChange={handleInputChange} /&gt;
+                                &lt;/label&gt;
+                                &lt;label&gt;
+                                    Note:
+                                    &lt;input type=&quot;text&quot; name=&quot;note&quot; value={form.note} onChange={handleInputChange} /&gt;
+                                &lt;/label&gt;
+                                &lt;input type=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+                            &lt;/form&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;form onSubmit={handleAdd}&gt;
+                                &lt;label&gt;
+                                    Project:
+                                    &lt;input type=&quot;text&quot; name=&quot;project&quot; value={form.project} onChange={handleInputChange} /&gt;
+                                &lt;/label&gt;
+                                &lt;label&gt;
+                                    Minutes:
+                                    &lt;input type=&quot;number&quot; name=&quot;minutes&quot; value={form.minutes} onChange={handleInputChange} /&gt;
+                                &lt;/label&gt;
+                                &lt;label&gt;
+                                    Date:
+                                    &lt;input type=&quot;date&quot; name=&quot;date&quot; value={form.date} onChange={handleInputChange} /&gt;
+                                &lt;/label&gt;
+                                &lt;label&gt;
+                                    Note:
+                                    &lt;input type=&quot;text&quot; name=&quot;note&quot; value={form.note} onChange={handleInputChange} /&gt;
+                                &lt;/label&gt;
+                                &lt;input type=&quot;submit&quot; value=&quot;Add&quot; /&gt;
+                            &lt;/form&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;h2&gt;Summary&lt;/h2&gt;
+                            &lt;div&gt;
+                                {summary.map((value, index) =&gt; (
+                                    &lt;div key={index}&gt;
+                                        &lt;span&gt;{index}&lt;/span&gt;
+                                        &lt;span&gt;{value}&lt;/span&gt;
+                                    &lt;/div&gt;
+                                ))}
+                            &lt;/div&gt;
+                            &lt;div&gt;
+                                &lt;button onClick={handleOfflineChange.bind(this, !offline)}&gt;Toggle Offline Mode&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div&gt;
+                        &lt;h2&gt;Filter&lt;/h2&gt;
+                        &lt;div&gt;
+                            &lt;select value={filter.filter} onChange={handleFilterChange}&gt;
+                                &lt;option value=&quot;all&quot;&gt;All&lt;/option&gt;
+                                &lt;option value=&quot;api-server&quot;&gt;API Server&lt;/option&gt;
+                                &lt;option value=&quot;mobile-ui&quot;&gt;Mobile UI&lt;/option&gt;
+                                &lt;option value=&quot;docs&quot;&gt;Docs&lt;/option&gt;
+                            &lt;/select&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;input value={form.project} onChange={handleProjectChange} placeholder=&quot;Project&quot; /&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;input value={form.minutes} onChange={handleInputChange} placeholder=&quot;Minutes&quot; /&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;input value={form.date} onChange={handleInputChange} placeholder=&quot;Date&quot; /&gt;
+                        &lt;/div&gt;
+                        &lt;div&gt;
+                            &lt;input value={form.note} onChange={handleInputChange} placeholder=&quot;Note&quot; /&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            }
+        &lt;/div&gt;
+    );
+}
+module.exports = App;</pre></details><details><summary>client/style.css</summary><pre>body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen,
+    Ubuntu, Cantarell, &quot;Open Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-align: left;
+  text-decoration: none;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  -ms-user-drag: none;
+  user-drag: none;
+  -webkit-user-modify: read-write-locked;
+  -moz-user-modify: read-write-locked;
+  -ms-user-modify: read-write-locked;
+  user-modify: read-write-locked;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  -webkit-user-drag: text;
+  -moz-user-drag: text;
+  -ms-user-drag: text;
+  user-drag: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  -webkit-user-drag: text;
+  -moz-user-drag: text;
+  -ms-user-drag: text;
+  user-drag: text;
+  -webkit-user</pre></details>
+<p><a href="./index.html">Open this sweep&rsquo;s live app →</a> ·
+<a href="../index.html">Back to the session gallery</a></p>
+<p class="muted">Elapsed 13717.8s · 90196 output tokens so far ·
+FIM splices: 216 attempted, 2 accepted ·
+SHA-256 of every module is published in the session gallery ledger.</p>
+</main></body></html>

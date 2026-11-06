@@ -653,3 +653,42 @@ collector refuses any module that is not a recorded raw model output.
 outcome and deployed round links will be published here by the collector after
 the GitHub Actions run completes. No speculative numbers.
 <!-- SESSION031-RESULTS-END -->
+
+<!-- SESSION032-RESULTS-START -->
+**Measured run — DevMetrics (branch exp/32-fim-selfrepair).** Frozen
+Qwen2.5-Coder-0.5B, zero teacher bytes, zero human corrections. Same frozen
+DevMetrics contract as Session031; self-repair now also splices native
+fill-in-the-middle completions anchored at the evaluator-reported failing
+line (234 FIM attempts, 2 accepted). 17 sweep(s), 276 generations, 96734 output
+tokens, 14642.9 s wall time. Independent holdout — untouched greedy baseline:
+**1/5** modules, integrated: no. Final: **1/5** modules, integrated:
+**no**. Final module results: logic: FAIL, store: FAIL, api: FAIL, ui: FAIL, css: PASS.
+
+| sweep | public passes | checks | FIM acc/att | integrated | deployed sweep |
+| ---: | ---: | ---: | ---: | --- | --- |
+| 0 | 1/5 | 6 | 0/0 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/00/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/00/report.html) |
+| 1 | 1/5 | 7 | 0/6 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/01/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/01/report.html) |
+| 2 | 1/5 | 7 | 0/9 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/02/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/02/report.html) |
+| 4 | 1/5 | 7 | 0/15 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/04/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/04/report.html) |
+| 5 | 1/5 | 7 | 0/20 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/05/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/05/report.html) |
+| 6 | 1/5 | 7 | 0/34 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/06/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/06/report.html) |
+| 8 | 1/5 | 7 | 0/62 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/08/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/08/report.html) |
+| 9 | 1/5 | 7 | 1/82 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/09/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/09/report.html) |
+| 10 | 1/5 | 7 | 1/102 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/10/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/10/report.html) |
+| 11 | 1/5 | 7 | 1/122 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/11/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/11/report.html) |
+| 12 | 1/5 | 7 | 1/142 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/12/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/12/report.html) |
+| 13 | 1/5 | 8 | 2/162 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/13/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/13/report.html) |
+| 14 | 1/5 | 8 | 2/180 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/14/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/14/report.html) |
+| 15 | 1/5 | 8 | 2/198 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/15/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/15/report.html) |
+| 16 | 1/5 | 8 | 2/216 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/16/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/16/report.html) |
+| 17 | 1/5 | 8 | 2/234 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/17/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/17/report.html) |
+
+Live mission gallery: <https://7clan.github.io/ai-wieght-optimiization/> ·
+Session gallery: <https://7clan.github.io/ai-wieght-optimiization/gallery/session032/>
+
+The static gallery runs the model's required offline demo mode with vendored
+React 18.3.1 UMD; the Express/Python halves are verified by the restricted
+evaluator (byte-identical Session031 worker logic; Docker parity re-validated
+per report). The jsdom check is a behavioral DOM check, not a real browser
+click test. No production-readiness or frontier-model parity claim.
+<!-- SESSION032-RESULTS-END -->

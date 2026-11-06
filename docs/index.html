@@ -20,15 +20,17 @@ iframe{width:100%;height:640px;border:1px solid #33507a;border-radius:12px;
 background:white}.muted{color:#8fa3c4;font-size:13px}code{background:#0a1322;
 padding:2px 6px;border-radius:6px;font-size:13px}</style></head><body><main>
 <h1>TinyCoder Weight Lab — live mission gallery</h1>
-<p>This page deploys from the <code>exp/29-selfrepair-deployment</code> branch.
+<p>This page deploys from the <code>exp/32-fim-selfrepair</code> branch
+(Session032; per-branch action ledger: <code>BRANCH_ACTIONS.md</code>, commits
+prefixed <code>[exp/32-fim-selfrepair]</code>).
 It exists so that <strong>every measured score the frozen Qwen2.5-Coder-0.5B
 model achieves is visible as an actual deployed site</strong>, built exactly
 from the model&rsquo;s own bytes — never from human- or teacher-corrected code.</p>
 <h2>Measured full-stack application sessions</h2>
-<table><tr><th>session</th><th>app</th><th>holdout modules</th><th>integrated</th><th>visit</th></tr><tr><td>030 (exp/28)</td><td>ShelfStock — teacher-example transfer</td><td>2/5</td><td>no</td><td><a href="previews/session030/index.html">static preview</a></td></tr><tr><td>031 (this branch)</td><td>DevMetrics — autonomous self-repair</td><td>2/5</td><td>no</td><td><a href="gallery/session031/index.html">live gallery</a></td></tr></table>
+<table><tr><th>session</th><th>app</th><th>holdout modules</th><th>integrated</th><th>visit</th></tr><tr><td>030 (exp/28)</td><td>ShelfStock — teacher-example transfer</td><td>2/5</td><td>no</td><td><a href="previews/session030/index.html">static preview</a></td></tr><tr><td>031 (exp/29)</td><td>DevMetrics — autonomous self-repair</td><td>2/5</td><td>no</td><td><a href="gallery/session031/index.html">live gallery</a></td></tr><tr><td>032 (this branch)</td><td>DevMetrics — FIM-anchored self-repair</td><td>1/5</td><td>no</td><td><a href="gallery/session032/index.html">live gallery</a></td></tr></table>
 <h2>Historical sanitized previews</h2>
 <p><a href="previews/session018/index.html">session018</a> · <a href="previews/session021/index.html">session021</a> · <a href="previews/session022/index.html">session022</a> · <a href="previews/session023/index.html">session023</a> · <a href="previews/session024/index.html">session024</a> · <a href="previews/session027/index.html">session027</a> · <a href="previews/session028/index.html">session028</a> · <a href="previews/session029/index.html">session029</a> · <a href="previews/session030/index.html">session030</a> · <a href="previews/session031/index.html">session031</a></p>
 <p class="muted">Static hosting runs the model&rsquo;s required offline demo mode;
-Express/Python halves are Docker-verified in CI. No production-readiness or
-frontier-model parity claims.</p>
+the Express/Python halves are verified by the restricted evaluator. No
+production-readiness or frontier-model parity claims.</p>
 </main></body></html>

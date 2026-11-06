@@ -1,0 +1,874 @@
+{
+  "session": "032",
+  "status": "completed",
+  "model": "Qwen/Qwen2.5-Coder-0.5B",
+  "model_source": "local hf download, byte-identical to Qwen/Qwen2.5-Coder-0.5B",
+  "parameter_count": 494032768,
+  "training_steps": 0,
+  "weight_edits": 0,
+  "new_application": "DevMetrics",
+  "contract_sha256": "7a726a92f3ef99417e5871bfedf81a57854a8d40742c8d0132fa9ddb4c75c8a6",
+  "target_app_modules_from_qwen": [
+    "logic",
+    "store",
+    "api",
+    "ui",
+    "css"
+  ],
+  "teacher_bytes": 0,
+  "teacher_supplied_anything": false,
+  "self_repair_only": true,
+  "method": "fim-anchored-self-repair (Session031 whole-module regeneration plus native FIM splices of the model's own bytes anchored at evaluator-reported failing positions)",
+  "fim_repairs": {
+    "attempts": 234,
+    "accepted": 2
+  },
+  "sweeps": 17,
+  "own_prior_session_bytes_in_prompts": [],
+  "permanent_weight_learning": false,
+  "evaluator": "local node/python subprocesses, vm realms and checks byte-identical to the Session031 Docker worker; Docker daemon unavailable in the recycled sandbox (disclosed)",
+  "evaluator_parity_check": {
+    "validated": true,
+    "compared": "session031 final public record (Docker) vs local",
+    "mismatches": []
+  },
+  "trusted_scaffold": [
+    "file signatures/imports",
+    "evaluation runtime",
+    "React runtime",
+    "deployment gallery"
+  ],
+  "baseline": {
+    "public": {
+      "phase": "public",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received null"
+        },
+        "store": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:88:6: ERROR: Expected \"}\" but found \".\" @ <stdin>:88:6: ERROR: Expected \"}\" but found \".\""
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})"
+        },
+        "ui": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 49 errors:\n<stdin>:24:9: ERROR: The symbol \"currentProject\" has already been declared\n<stdin>:24:25: ERROR: The symbol \"setCurrentProject\" has already been declared\n<stdin>:25:9: ERROR: The symbol \"currentMinutes\" has already been "
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "app": true,
+        "health": true,
+        "get": true,
+        "post": true,
+        "post_invalid": true
+      },
+      "ui_markup": null,
+      "failure_reasons": [
+        "store: Error: Transform failed with 1 error:\n<stdin>:88:6: ERROR: Expected \"}\" but found \".\" @ <stdin>:88:6: ERROR: Expected \"}\" but found \".\"",
+        "ui: Error: Transform failed with 49 errors:\n<stdin>:24:9: ERROR: The symbol \"currentProject\" has already been declared\n<stdin>:24:25: ERROR: The symbol \"setCurrentProject\" has already been declared\n<stdin>:25:9: ERROR: The symbol \"currentMinutes\" has already been ",
+        "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received null",
+        "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})"
+      ],
+      "completed_checks": 6
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received null"
+        },
+        "store": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 1 error:\n<stdin>:88:6: ERROR: Expected \"}\" but found \".\" @ <stdin>:88:6: ERROR: Expected \"}\" but found \".\""
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})"
+        },
+        "ui": {
+          "syntax_valid": false,
+          "passed": false,
+          "error": "Error: Transform failed with 49 errors:\n<stdin>:24:9: ERROR: The symbol \"currentProject\" has already been declared\n<stdin>:24:25: ERROR: The symbol \"setCurrentProject\" has already been declared\n<stdin>:25:9: ERROR: The symbol \"currentMinutes\" has already been "
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "app": true,
+        "health": true,
+        "get": true,
+        "post": true,
+        "post_invalid": true
+      },
+      "ui_markup": null,
+      "failure_reasons": [
+        "store: Error: Transform failed with 1 error:\n<stdin>:88:6: ERROR: Expected \"}\" but found \".\" @ <stdin>:88:6: ERROR: Expected \"}\" but found \".\"",
+        "ui: Error: Transform failed with 49 errors:\n<stdin>:24:9: ERROR: The symbol \"currentProject\" has already been declared\n<stdin>:24:25: ERROR: The symbol \"setCurrentProject\" has already been declared\n<stdin>:25:9: ERROR: The symbol \"currentMinutes\" has already been ",
+        "logic: Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received null",
+        "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})"
+      ],
+      "completed_checks": 6
+    }
+  },
+  "final": {
+    "public": {
+      "phase": "public",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus"
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/devm031-R6eMXY/entries.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks: DELETE request"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "logic_structured": true,
+        "app": true,
+        "health": true,
+        "get": true,
+        "post_invalid": true,
+        "delete": true,
+        "summary": true
+      },
+      "ui_markup": null,
+      "failure_reasons": [
+        "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-R6eMXY/entries.json'",
+        "api: post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+        "ui: Error: UI lacks: DELETE request"
+      ],
+      "completed_checks": 8
+    },
+    "holdout": {
+      "phase": "holdout",
+      "integrated": false,
+      "modules": {
+        "logic": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}"
+        },
+        "store": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: ENOENT: no such file or directory, open '/tmp/devm031-XLuOjX/entries.json'"
+        },
+        "api": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}"
+        },
+        "ui": {
+          "syntax_valid": true,
+          "passed": false,
+          "error": "Error: UI lacks: DELETE request"
+        },
+        "css": {
+          "syntax_valid": true,
+          "passed": true,
+          "error": null
+        }
+      },
+      "checks": {
+        "logic_structured": true,
+        "app": true,
+        "health": true,
+        "get": true,
+        "post_invalid": true,
+        "delete": true,
+        "summary": true
+      },
+      "ui_markup": null,
+      "failure_reasons": [
+        "logic: Expected {\"total_minutes\":10,\"by_project\":{\"alpha\":10},\"by_day\":{\"2026-10-01\":10},\"active_projects\":1,\"busiest_day\":\"2026-10-01\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}",
+        "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-XLuOjX/entries.json'",
+        "api: post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+        "ui: Error: UI lacks: DELETE request"
+      ],
+      "completed_checks": 8
+    }
+  },
+  "rounds": [
+    {
+      "round": 0,
+      "modules_sha256": {
+        "logic": "de38e42067a4b62e452526835e7bbe357a1ccb71471b3622d0bfd9f2a1906467",
+        "store": "e4e403555a508e16491a0f02159e6d1a8249c5baced4e2ee1d16aad23f26d308",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "8db9b97324db74cc2d01c1a6433a99eb66b3cfee66db077026a4d87222267c92",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 6,
+        "failure_reasons": [
+          "store: Error: Transform failed with 1 error:\n<stdin>:88:6: ERROR: Expected \"}\" but found \".\" @ <stdin>:88:6: ERROR: Expected \"}\" but found \".\"",
+          "ui: Error: Transform failed with 49 errors:\n<stdin>:24:9: ERROR: The symbol \"currentProject\" has already been declared\n<stdin>:24:25: ERROR: The symbol \"setCurrentProject\" has already been declared\n<stdin>:25:9: ERROR: The symbol \"currentMinutes\" has already been ",
+          "logic: Expected {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"busiest_day\":null}, received null",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})"
+        ]
+      },
+      "elapsed_seconds": 564.1,
+      "output_tokens": 4433,
+      "fim_attempts": 0,
+      "fim_accepted": 0
+    },
+    {
+      "round": 1,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "a095cb2cbae7fb2161a57fda5413e5f8e8ba2b3a96754b8ae598464d40c09d1a",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-4Fc2wx/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: summary endpoint /api/summary, DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 1257.9,
+      "output_tokens": 9131,
+      "fim_attempts": 6,
+      "fim_accepted": 0
+    },
+    {
+      "round": 2,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "a095cb2cbae7fb2161a57fda5413e5f8e8ba2b3a96754b8ae598464d40c09d1a",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-4Fc2wx/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: summary endpoint /api/summary, DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 1706.6,
+      "output_tokens": 12408,
+      "fim_attempts": 9,
+      "fim_accepted": 0
+    },
+    {
+      "round": 4,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "a095cb2cbae7fb2161a57fda5413e5f8e8ba2b3a96754b8ae598464d40c09d1a",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-4Fc2wx/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: summary endpoint /api/summary, DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 2119.6,
+      "output_tokens": 15211,
+      "fim_attempts": 15,
+      "fim_accepted": 0
+    },
+    {
+      "round": 5,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "a095cb2cbae7fb2161a57fda5413e5f8e8ba2b3a96754b8ae598464d40c09d1a",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-4Fc2wx/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: summary endpoint /api/summary, DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 2984.8,
+      "output_tokens": 21451,
+      "fim_attempts": 20,
+      "fim_accepted": 0
+    },
+    {
+      "round": 6,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "a095cb2cbae7fb2161a57fda5413e5f8e8ba2b3a96754b8ae598464d40c09d1a",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-4Fc2wx/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: summary endpoint /api/summary, DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 4026.6,
+      "output_tokens": 28936,
+      "fim_attempts": 34,
+      "fim_accepted": 0
+    },
+    {
+      "round": 8,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "a095cb2cbae7fb2161a57fda5413e5f8e8ba2b3a96754b8ae598464d40c09d1a",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-4Fc2wx/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: summary endpoint /api/summary, DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 6085.3,
+      "output_tokens": 43665,
+      "fim_attempts": 62,
+      "fim_accepted": 0
+    },
+    {
+      "round": 9,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "3b3b6c8554e93439ebf64faeb073fd89f16485269721fc765085e2d66422a5f1",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-6NFPBO/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 7275.8,
+      "output_tokens": 50051,
+      "fim_attempts": 82,
+      "fim_accepted": 1
+    },
+    {
+      "round": 10,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "3b3b6c8554e93439ebf64faeb073fd89f16485269721fc765085e2d66422a5f1",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-6NFPBO/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 7895.1,
+      "output_tokens": 54080,
+      "fim_attempts": 102,
+      "fim_accepted": 1
+    },
+    {
+      "round": 11,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "3b3b6c8554e93439ebf64faeb073fd89f16485269721fc765085e2d66422a5f1",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-6NFPBO/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 8818.6,
+      "output_tokens": 60541,
+      "fim_attempts": 122,
+      "fim_accepted": 1
+    },
+    {
+      "round": 12,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "fb0d15d11bcfce4383e9b2a5cc771afa1cdaa22b7080ab711ab76251b01e9a53",
+        "ui": "3b3b6c8554e93439ebf64faeb073fd89f16485269721fc765085e2d66422a5f1",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post": true,
+          "post_invalid": true
+        },
+        "completed_checks": 7,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-6NFPBO/entries.json'",
+          "api: delete -> DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names} | summary -> GET /api/summary body must be exactly processor({entries:store.list()})",
+          "ui: Error: UI lacks: DELETE request, POST request"
+        ]
+      },
+      "elapsed_seconds": 9791.0,
+      "output_tokens": 66068,
+      "fim_attempts": 142,
+      "fim_accepted": 1
+    },
+    {
+      "round": 13,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "0420f9e15aeea8ea073dfed3941a4854c6374ea11b8009997d9df4e9fec02f7f",
+        "ui": "7f2512768ee8cc18f8d5513738331cbdbc03b7875a272802902762c68d4787cd",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post_invalid": true,
+          "delete": true,
+          "summary": true
+        },
+        "completed_checks": 8,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-ZCZ6gy/entries.json'",
+          "api: post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+          "ui: Error: UI lacks: DELETE request"
+        ]
+      },
+      "elapsed_seconds": 10900.2,
+      "output_tokens": 72753,
+      "fim_attempts": 162,
+      "fim_accepted": 2
+    },
+    {
+      "round": 14,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "0420f9e15aeea8ea073dfed3941a4854c6374ea11b8009997d9df4e9fec02f7f",
+        "ui": "7f2512768ee8cc18f8d5513738331cbdbc03b7875a272802902762c68d4787cd",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post_invalid": true,
+          "delete": true,
+          "summary": true
+        },
+        "completed_checks": 8,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-ZCZ6gy/entries.json'",
+          "api: post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+          "ui: Error: UI lacks: DELETE request"
+        ]
+      },
+      "elapsed_seconds": 11938.7,
+      "output_tokens": 79065,
+      "fim_attempts": 180,
+      "fim_accepted": 2
+    },
+    {
+      "round": 15,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "0420f9e15aeea8ea073dfed3941a4854c6374ea11b8009997d9df4e9fec02f7f",
+        "ui": "7f2512768ee8cc18f8d5513738331cbdbc03b7875a272802902762c68d4787cd",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post_invalid": true,
+          "delete": true,
+          "summary": true
+        },
+        "completed_checks": 8,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-ZCZ6gy/entries.json'",
+          "api: post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+          "ui: Error: UI lacks: DELETE request"
+        ]
+      },
+      "elapsed_seconds": 12750.1,
+      "output_tokens": 84581,
+      "fim_attempts": 198,
+      "fim_accepted": 2
+    },
+    {
+      "round": 16,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "0420f9e15aeea8ea073dfed3941a4854c6374ea11b8009997d9df4e9fec02f7f",
+        "ui": "7f2512768ee8cc18f8d5513738331cbdbc03b7875a272802902762c68d4787cd",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post_invalid": true,
+          "delete": true,
+          "summary": true
+        },
+        "completed_checks": 8,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-ZCZ6gy/entries.json'",
+          "api: post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+          "ui: Error: UI lacks: DELETE request"
+        ]
+      },
+      "elapsed_seconds": 13717.8,
+      "output_tokens": 90196,
+      "fim_attempts": 216,
+      "fim_accepted": 2
+    },
+    {
+      "round": 17,
+      "modules_sha256": {
+        "logic": "b3e4c9d0a5b4d99d0ada30441954e1a4358b78f46ea44e7749145e9e152f12c5",
+        "store": "9d81188fd390bf25bf8b6eeaa0f823114598b2011e6dba788aa9d5216d9ffaac",
+        "api": "0420f9e15aeea8ea073dfed3941a4854c6374ea11b8009997d9df4e9fec02f7f",
+        "ui": "7f2512768ee8cc18f8d5513738331cbdbc03b7875a272802902762c68d4787cd",
+        "css": "1149ef92ae597349b44bb4a2036111e68f06e9e596283807b04bb88ec1d05d21"
+      },
+      "public": {
+        "integrated": false,
+        "passed": {
+          "logic": false,
+          "store": false,
+          "api": false,
+          "ui": false,
+          "css": true
+        },
+        "checks": {
+          "logic_structured": true,
+          "app": true,
+          "health": true,
+          "get": true,
+          "post_invalid": true,
+          "delete": true,
+          "summary": true
+        },
+        "completed_checks": 8,
+        "failure_reasons": [
+          "logic: Expected {\"total_minutes\":295,\"by_project\":{\"api-server\":95,\"mobile-ui\":140,\"docs\":60},\"by_day\":{\"2026-11-03\":95,\"2026-11-04\":200},\"active_projects\":3,\"busiest_day\":\"2026-11-04\"}, received {\"total_minutes\":0,\"by_project\":{},\"by_day\":{},\"active_projects\":0,\"bus",
+          "store: Error: ENOENT: no such file or directory, open '/tmp/devm031-ZCZ6gy/entries.json'",
+          "api: post -> POST /api/entries must return 201 {item:store.create(req.body)} | projects -> GET /api/projects must return 200 {projects:sorted distinct project names}",
+          "ui: Error: UI lacks: DELETE request"
+        ]
+      },
+      "elapsed_seconds": 14642.9,
+      "output_tokens": 96734,
+      "fim_attempts": 234,
+      "fim_accepted": 2
+    }
+  ],
+  "search": {
+    "candidate_count": 276,
+    "output_tokens": 96734,
+    "wall_seconds": 14642.9,
+    "max_sweeps": 40,
+    "wall_budget_seconds": 14400.0,
+    "private_holdout_seen_during_selection": false
+  },
+  "ui_behavior_verified_in_jsdom": false,
+  "ui_browser_clicks_verified": false,
+  "production_ready": false
+}

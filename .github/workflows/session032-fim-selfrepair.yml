@@ -1,0 +1,139 @@
+name: Session 032 Qwen0.5B FIM self-repair with live deployment
+
+# Same discipline as Session031's seventh amendment: workflow_dispatch ONLY.
+# A push-triggered run would use the default inputs (rounds=4, resume=false)
+# and could clobber the published cumulative state with a fresh baseline.
+# Measured runs are always dispatched explicitly with rounds/wall_budget/resume.
+# Every commit from this workflow pushes to exp/32-fim-selfrepair ONLY and
+# carries the [exp/32-fim-selfrepair] prefix (see BRANCH_ACTIONS.md).
+on:
+  workflow_dispatch:
+    inputs:
+      rounds:
+        description: 'Total self-repair sweeps (0-40)'
+        default: '4'
+        type: string
+      wall_budget:
+        description: 'Cumulative wall-clock budget in seconds'
+        default: '14400'
+        type: string
+      resume:
+        description: 'Resume from the published state file and keep improving'
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: session032-live
+  cancel-in-progress: false
+
+jobs:
+  fim-selfrepair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prove FIM self-repair-only protocol and gallery safety
+        run: |
+          python -m compileall -q tinycoder/session032.py tinycoder/session032_py_worker.py tinycoder/collect_session032.py
+          python -m unittest discover -s tests -p 'test_session032.py' -v
+          node --check tinycoder/session032_worker.js
+      - name: Install frozen Qwen0.5B CPU inference dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch>=2.3,<3'
+          python -m pip install -r requirements.txt
+      - name: Build restricted evaluator images and run the trusted positive control
+        run: |
+          docker build -f docker/session017-fullstack.Dockerfile -t tinycoder-session017-fullstack:1 .
+          docker build -f docker/session031-selfrepair.Dockerfile -t tinycoder-session031-selfrepair:1 .
+          python -m tinycoder.session031_reference_smoke
+      - name: Run FIM-anchored self-repair generation
+        run: |
+          ROUNDS="${{ github.event.inputs.rounds || '4' }}"
+          BUDGET="${{ github.event.inputs.wall_budget || '14400' }}"
+          RESUME="${{ github.event.inputs.resume }}"
+          if [ "$RESUME" = "true" ] && [ -f experiments/session032_selfrepair_state.json ]; then
+            python -m tinycoder.session032 --output-dir outputs/session032 --rounds "$ROUNDS" --wall-budget "$BUDGET" --resume
+          else
+            python -m tinycoder.session032 --output-dir outputs/session032 --rounds "$ROUNDS" --wall-budget "$BUDGET"
+          fi
+      - name: Archive raw attempts even if publication fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: session032-qwen-fim-devmetrics-source
+          path: outputs/session032/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Verify FIM lineage authorship and publish the live gallery
+        env:
+          ESBUILD_BIN: /tmp/esbuild-tools/node_modules/.bin/esbuild
+        run: |
+          npm install --no-audit --no-fund --prefix /tmp/esbuild-tools --save-exact esbuild@0.25.9
+          python -m tinycoder.collect_session032 --output-dir outputs/session032
+          python -m json.tool experiments/session032_selfrepair_report.json > /dev/null
+      - name: Commit genuinely Qwen-authored app, scores and gallery
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/session032_selfrepair_report.json experiments/session032_selfrepair_predictions.json experiments/session032_selfrepair_state.json apps/devmetrics-qwen-fim-selfrepair docs/gallery/session032 docs/index.html docs/previews/session032 README.md
+          git commit -m '[exp/32-fim-selfrepair] Publish measured FIM self-repair round and live gallery' || echo 'Nothing to commit'
+          git pull --rebase origin exp/32-fim-selfrepair || true
+          git push origin HEAD:exp/32-fim-selfrepair
+
+  deploy-live-gallery:
+    needs: fim-selfrepair
+    if: needs.fim-selfrepair.result == 'success'
+    # The Pages site may be missing (one-time manual enable in repo Settings ->
+    # Pages -> Source: GitHub Actions). Measured rounds are committed
+    # regardless, and direct raw.githack live links are printed below, so
+    # this job never fails the measured run.
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/32-fim-selfrepair
+      - name: Enable Pages (first time only) and configure
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload the docs/ gallery artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - name: Deploy the live mission gallery
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Report the live URL
+        run: |
+          echo "Live mission gallery: ${{ steps.deployment.outputs.page_url }}"
+          echo "Session 032 gallery:  ${{ steps.deployment.outputs.page_url }}gallery/session032/"
+      - name: Print direct live links for every scored sweep
+        if: always()
+        run: |
+          SHA=$(git rev-parse HEAD)
+          echo "Pages mission gallery: https://7clan.github.io/ai-wieght-optimiization/"
+          echo "Direct live links for every scored sweep (always available):"
+          for R in $(ls -d docs/gallery/session032/rounds/*/ 2>/dev/null | sort); do
+            N=$(basename "$R")
+            echo "sweep $N: https://raw.githack.com/7clan/ai-wieght-optimiization/$SHA/docs/gallery/session032/rounds/$N/index.html"
+          done

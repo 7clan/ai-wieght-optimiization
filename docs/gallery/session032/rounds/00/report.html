@@ -1,0 +1,347 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>DevMetrics sweep 0 report — Qwen2.5-Coder-0.5B</title>
+<style>*{box-sizing:border-box}body{background:#0d1527;color:#e3ecf8;
+font:15px system-ui,sans-serif;margin:0}main{max-width:1080px;padding:34px 22px;
+margin:0 auto}h1{font-size:34px;letter-spacing:-.03em;margin:6px 0 10px}
+h2{font-size:20px;margin-top:34px}p{color:#b7c8e4;line-height:1.6}
+a{color:#9be4ec}table{border-collapse:collapse;width:100%;margin:14px 0}
+th,td{border:1px solid #33507a;padding:8px 11px;text-align:left;font-size:14px}
+th{background:#182a46}.pass,.fail{font-size:12px;font-weight:750;padding:6px 11px;
+border-radius:12px;display:inline-block;margin:3px}.pass{background:#165440;
+color:#b5ffdd}.fail{background:#67354b;color:#ffd6e1}
+section{background:#152442;border:1px solid #33507a;border-radius:12px;
+padding:20px;margin:18px 0}details{background:#152442;border:1px solid #33507a;
+border-radius:10px;padding:12px 16px;margin:10px 0}summary{cursor:pointer;
+font-weight:700}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;
+line-height:1.5;background:#0a1322;border-radius:8px;padding:14px}
+iframe{width:100%;height:640px;border:1px solid #33507a;border-radius:12px;
+background:white}.muted{color:#8fa3c4;font-size:13px}code{background:#0a1322;
+padding:2px 6px;border-radius:6px;font-size:13px}</style></head><body><main>
+<h1>DevMetrics — sweep 0 <span class="muted">(FIM self-repair sweep)</span></h1>
+<p>Every module below is raw Qwen2.5-Coder-0.5B output from the Session032
+FIM-anchored self-repair loop on branch <code>exp/32-fim-selfrepair</code>:
+whole-module regenerations plus native fill-in-the-middle splices of the
+model&rsquo;s own bytes anchored at the evaluator-reported failing line.
+Zero teacher bytes, zero human corrections.</p>
+<p><strong>Public score: 1/5 modules, 6 checks, integrated: no</strong></p>
+<div><span class="fail">logic: FAIL</span> <span class="fail">store: FAIL</span><div class="muted">persistence✗ store_delete✗ store_validation✗</div> <span class="fail">api: FAIL</span><div class="muted">health✓ get✓ post✓ post_invalid✓ delete✗ projects✗ summary✗</div> <span class="fail">ui: FAIL</span><div class="muted">ui_wiring✗ ui_offline✗</div> <span class="pass">css: PASS</span></div>
+<h2>Execution checks</h2>
+<p><code>app✓</code> <code>get✓</code> <code>health✓</code> <code>post✓</code> <code>post_invalid✓</code></p>
+<h2>Public failure reasons</h2>
+<ul><li>store: Error: Transform failed with 1 error:
+&lt;stdin&gt;:88:6: ERROR: Expected &quot;}&quot; but found &quot;.&quot; @ &lt;stdin&gt;:88:6: ERROR: Expected &quot;}&quot; but found &quot;.&quot;</li><li>ui: Error: Transform failed with 49 errors:
+&lt;stdin&gt;:24:9: ERROR: The symbol &quot;currentProject&quot; has already been declared
+&lt;stdin&gt;:24:25: ERROR: The symbol &quot;setCurrentProject&quot; has already been declared
+&lt;stdin&gt;:25:9: ERROR: The symbol &quot;currentMinutes&quot; has already been </li><li>logic: Expected {&quot;total_minutes&quot;:0,&quot;by_project&quot;:{},&quot;by_day&quot;:{},&quot;active_projects&quot;:0,&quot;busiest_day&quot;:null}, received null</li><li>api: delete -&gt; DELETE /api/entries/:id must return 200 {deleted:store.delete(id)} | projects -&gt; GET /api/projects must return 200 {projects:sorted distinct project names} | summary -&gt; GET /api/summary body must be exactly processor({entries:store.list()})</li></ul>
+<h2>Model source (exact bytes)</h2>
+<details><summary>backend/logic.py</summary><pre>def summarize(payload):
+    # YOUR CODE HERE
+    pass</pre></details><details><summary>server/store.js</summary><pre>const fs = require(&#x27;node:fs&#x27;);
+function createStore(filePath) {
+  let entries = [];
+  let id = 0;
+  return {
+    create: (body) =&gt; {
+      if (!body.project || !body.minutes || !body.date) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      if (body.project.length === 0 || body.minutes &lt; 0 || body.date.length !== 10) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      if (entries.some((entry) =&gt; entry.project === body.project)) {
+        throw new Error(&#x27;Invalid entry&#x27;);
+      }
+      body.id = id++;
+      entries.push(body);
+      fs.writeFileSync(filePath, JSON.stringify(entries));
+      return body;
+    },
+    list: () =&gt; {
+      return entries;
+    },
+    delete: (id) =&gt; {
+      if (!id) {
+        throw new Error(&#x27;Invalid id&#x27;);
+      }
+      const index = entries.findIndex((entry) =&gt; entry.id === id);
+      if (index === -1) {
+        throw new Error(&#x27;Invalid id&#x27;);
+      }
+      entries.splice(index, 1);
+      fs.writeFileSync(filePath, JSON.stringify(entries));
+      return true;
+    },
+  };
+}
+const s = createStore(&#x27;store-data.json&#x27;);
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;&#x27;, minutes: 5, date: &#x27;2026-11-03&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;, minutes: 95, date: &#x27;2026-11-03&#x27;, note: &#x27;routes&#x27; });
+console.log(s.list());
+s.create({ project: &#x27;api-server&#x27;,</pre></details><details><summary>server/routes.js</summary><pre>const express = require(&#x27;express&#x27;);
+function createApp(store, processor) {
+    const app = express();
+    app.use(express.json());
+    app.get(&#x27;/api/health&#x27;, (req, res) =&gt; {
+        res.status(200).json({ ok: true });
+    });
+    app.get(&#x27;/api/entries&#x27;, (req, res) =&gt; {
+        res.status(200).json({ entries: store.list() });
+    });
+    app.post(&#x27;/api/entries&#x27;, (req, res) =&gt; {
+        try {
+            const entry = req.body;
+            if (!entry.project || !entry.minutes || !entry.date || !entry.note) {
+                res.status(400).json({ error: &#x27;Invalid entry&#x27; });
+            }
+            else {
+                const id = store.create(entry);
+                res.status(201).json({ item: { id, ...entry } });
+            }
+        }
+        catch (error) {
+            res.status(400).json({ error: &#x27;Invalid entry&#x27; });
+        }
+    });
+    app.delete(&#x27;/api/entries/:id&#x27;, (req, res) =&gt; {
+        try {
+            const id = req.params.id;
+            const deleted = store.delete(id);
+            if (deleted) {
+                res.status(200).json({ deleted });
+            }
+            else {
+                res.status(404).json({ error: &#x27;Entry not found&#x27; });
+            }
+        }
+        catch (error) {
+            res.status(400).json({ error: &#x27;Invalid entry&#x27; });
+        }
+    });
+    app.get(&#x27;/api/projects&#x27;, (req, res) =&gt; {
+        const projects = Array.from(new Set(store.list()));
+        projects.sort();
+        res.status(200).json({ projects });
+    });
+    app.get(&#x27;/api/summary&#x27;, (req, res) =&gt; {
+        const summary = processor({ entries: store.list() });
+        res.status(200).json({ summary });
+    });
+    return app;
+}
+module.exports = createApp;</pre></details><details><summary>client/App.jsx</summary><pre>const React = require(&#x27;react&#x27;);
+function App() {
+  const [entries, setEntries] = React.useState([]);
+  const [form, setForm] = React.useState({ project: &#x27;&#x27;, minutes: &#x27;&#x27;, date: &#x27;&#x27;, note: &#x27;&#x27; });
+  const [filter, setFilter] = React.useState(&#x27;&#x27;);
+  const [summary, setSummary] = React.useState({ total_minutes: 0, by_project: {}, by_day: {}, active_projects: [], busiest_day: {} });
+  const [offline, setOffline] = React.useState(false);
+  const [project, setProject] = React.useState(&#x27;&#x27;);
+  const [minutes, setMinutes] = React.useState(&#x27;&#x27;);
+  const [date, setDate] = React.useState(&#x27;&#x27;);
+  const [note, setNote] = React.useState(&#x27;&#x27;);
+  const [id, setId] = React.useState(&#x27;&#x27;);
+  const [current, setCurrent] = React.useState(&#x27;&#x27;);
+  const [currentProject, setCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentMinutes, setCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentDate, setCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentNote, setCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentActiveProjects, setCurrentActiveProjects] = React.useState([]);
+  const [currentBusiestDay, setCurrentBusiestDay] = React.useState({ day: &#x27;&#x27;, minutes: 0, projects: [] });
+  const [currentEntries, setCurrentEntries] = React.useState([]);
+  const [currentFilter, setCurrentFilter] = React.useState(&#x27;&#x27;);
+  const [currentSummary, setCurrentSummary] = React.useState({ total_minutes: 0, by_project: {}, by_day: {}, active_projects: [], busiest_day: {} });
+  const [currentOffline, setCurrentOffline] = React.useState(false);
+  const [currentProject, setCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentMinutes, setCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentDate, setCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentNote, setCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentId, setCurrentId] = React.useState(&#x27;&#x27;);
+  const [currentCurrent, setCurrentCurrent] = React.useState(&#x27;&#x27;);
+  const [currentCurrentProject, setCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentMinutes, setCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentDate, setCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentNote, setCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentActiveProjects, setCurrentCurrentActiveProjects] = React.useState([]);
+  const [currentCurrentBusiestDay, setCurrentCurrentBusiestDay] = React.useState({ day: &#x27;&#x27;, minutes: 0, projects: [] });
+  const [currentCurrentEntries, setCurrentCurrentEntries] = React.useState([]);
+  const [currentCurrentFilter, setCurrentCurrentFilter] = React.useState(&#x27;&#x27;);
+  const [currentCurrentSummary, setCurrentCurrentSummary] = React.useState({ total_minutes: 0, by_project: {}, by_day: {}, active_projects: [], busiest_day: {} });
+  const [currentCurrentOffline, setCurrentCurrentOffline] = React.useState(false);
+  const [currentCurrentProject, setCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentMinutes, setCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentDate, setCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentNote, setCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentId, setCurrentCurrentId] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrent, setCurrentCurrentCurrent] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentProject, setCurrentCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentMinutes, setCurrentCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentDate, setCurrentCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentNote, setCurrentCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentActiveProjects, setCurrentCurrentCurrentActiveProjects] = React.useState([]);
+  const [currentCurrentCurrentBusiestDay, setCurrentCurrentCurrentBusiestDay] = React.useState({ day: &#x27;&#x27;, minutes: 0, projects: [] });
+  const [currentCurrentCurrentEntries, setCurrentCurrentCurrentEntries] = React.useState([]);
+  const [currentCurrentCurrentFilter, setCurrentCurrentCurrentFilter] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentSummary, setCurrentCurrentCurrentSummary] = React.useState({ total_minutes: 0, by_project: {}, by_day: {}, active_projects: [], busiest_day: {} });
+  const [currentCurrentCurrentOffline, setCurrentCurrentCurrentOffline] = React.useState(false);
+  const [currentCurrentCurrentProject, setCurrentCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentMinutes, setCurrentCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentDate, setCurrentCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentNote, setCurrentCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentId, setCurrentCurrentCurrentId] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrent, setCurrentCurrentCurrentCurrent] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentProject, setCurrentCurrentCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentMinutes, setCurrentCurrentCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentDate, setCurrentCurrentCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentNote, setCurrentCurrentCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentActiveProjects, setCurrentCurrentCurrentCurrentActiveProjects] = React.useState([]);
+  const [currentCurrentCurrentCurrentBusiestDay, setCurrentCurrentCurrentCurrentBusiestDay] = React.useState({ day: &#x27;&#x27;, minutes: 0, projects: [] });
+  const [currentCurrentCurrentCurrentEntries, setCurrentCurrentCurrentCurrentEntries] = React.useState([]);
+  const [currentCurrentCurrentCurrentFilter, setCurrentCurrentCurrentCurrentFilter] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentSummary, setCurrentCurrentCurrentCurrentSummary] = React.useState({ total_minutes: 0, by_project: {}, by_day: {}, active_projects: [], busiest_day: {} });
+  const [currentCurrentCurrentCurrentOffline, setCurrentCurrentCurrentCurrentOffline] = React.useState(false);
+  const [currentCurrentCurrentCurrentProject, setCurrentCurrentCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentMinutes, setCurrentCurrentCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentDate, setCurrentCurrentCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentNote, setCurrentCurrentCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentId, setCurrentCurrentCurrentCurrentId] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrent, setCurrentCurrentCurrentCurrentCurrent] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentProject, setCurrentCurrentCurrentCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentMinutes, setCurrentCurrentCurrentCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentDate, setCurrentCurrentCurrentCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentNote, setCurrentCurrentCurrentCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentActiveProjects, setCurrentCurrentCurrentCurrentCurrentActiveProjects] = React.useState([]);
+  const [currentCurrentCurrentCurrentCurrentBusiestDay, setCurrentCurrentCurrentCurrentCurrentBusiestDay] = React.useState({ day: &#x27;&#x27;, minutes: 0, projects: [] });
+  const [currentCurrentCurrentCurrentCurrentEntries, setCurrentCurrentCurrentCurrentCurrentEntries] = React.useState([]);
+  const [currentCurrentCurrentCurrentCurrentFilter, setCurrentCurrentCurrentCurrentCurrentFilter] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentSummary, setCurrentCurrentCurrentCurrentCurrentSummary] = React.useState({ total_minutes: 0, by_project: {}, by_day: {}, active_projects: [], busiest_day: {} });
+  const [currentCurrentCurrentCurrentCurrentOffline, setCurrentCurrentCurrentCurrentCurrentOffline] = React.useState(false);
+  const [currentCurrentCurrentCurrentCurrentProject, setCurrentCurrentCurrentCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentMinutes, setCurrentCurrentCurrentCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentDate, setCurrentCurrentCurrentCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentNote, setCurrentCurrentCurrentCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentId, setCurrentCurrentCurrentCurrentCurrentId] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrent, setCurrentCurrentCurrentCurrentCurrentCurrent] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentProject, setCurrentCurrentCurrentCurrentCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentMinutes, setCurrentCurrentCurrentCurrentCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentDate, setCurrentCurrentCurrentCurrentCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentNote, setCurrentCurrentCurrentCurrentCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentActiveProjects, setCurrentCurrentCurrentCurrentCurrentCurrentActiveProjects] = React.useState([]);
+  const [currentCurrentCurrentCurrentCurrentCurrentBusiestDay, setCurrentCurrentCurrentCurrentCurrentCurrentBusiestDay] = React.useState({ day: &#x27;&#x27;, minutes: 0, projects: [] });
+  const [currentCurrentCurrentCurrentCurrentCurrentEntries, setCurrentCurrentCurrentCurrentCurrentCurrentEntries] = React.useState([]);
+  const [currentCurrentCurrentCurrentCurrentCurrentFilter, setCurrentCurrentCurrentCurrentCurrentCurrentFilter] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentSummary, setCurrentCurrentCurrentCurrentCurrentCurrentSummary] = React.useState({ total_minutes: 0, by_project: {}, by_day: {}, active_projects: [], busiest_day: {} });
+  const [currentCurrentCurrentCurrentCurrentCurrentOffline, setCurrentCurrentCurrentCurrentCurrentCurrentOffline] = React.useState(false);
+  const [currentCurrentCurrentCurrentCurrentCurrentProject, setCurrentCurrentCurrentCurrentCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentMinutes, setCurrentCurrentCurrentCurrentCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentDate, setCurrentCurrentCurrentCurrentCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentNote, setCurrentCurrentCurrentCurrentCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentId, setCurrentCurrentCurrentCurrentCurrentCurrentId] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrent, setCurrentCurrentCurrentCurrentCurrentCurrentCurrent] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrentProject, setCurrentCurrentCurrentCurrentCurrentCurrentCurrentProject] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrentMinutes, setCurrentCurrentCurrentCurrentCurrentCurrentCurrentMinutes] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrentDate, setCurrentCurrentCurrentCurrentCurrentCurrentCurrentDate] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrentNote, setCurrentCurrentCurrentCurrentCurrentCurrentCurrentNote] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrentActiveProjects, setCurrentCurrentCurrentCurrentCurrentCurrentCurrentActiveProjects] = React.useState([]);
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrentBusiestDay, setCurrentCurrentCurrentCurrentCurrentCurrentCurrentBusiestDay] = React.useState({ day: &#x27;&#x27;, minutes: 0, projects: [] });
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrentEntries, setCurrentCurrentCurrentCurrentCurrentCurrentCurrentEntries] = React.useState([]);
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrentFilter, setCurrentCurrentCurrentCurrentCurrentCurrentCurrentFilter] = React.useState(&#x27;&#x27;);
+  const [currentCurrentCurrentCurrentCurrentCurrentCurrentSummary, setCurrentCurrentCurrentCurrentCurrentCurrentCurrentSummary] = React.useState({ total_minutes: 0, by_project: {}, by</pre></details><details><summary>client/style.css</summary><pre>body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen,
+    Ubuntu, Cantarell, &quot;Open Sans&quot;, &quot;Helvetica Neue&quot;, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-align: left;
+  text-decoration: none;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  -ms-user-drag: none;
+  user-drag: none;
+  -webkit-user-modify: read-write-locked;
+  -moz-user-modify: read-write-locked;
+  -ms-user-modify: read-write-locked;
+  user-modify: read-write-locked;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  -webkit-user-drag: text;
+  -moz-user-drag: text;
+  -ms-user-drag: text;
+  user-drag: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  -webkit-user-drag: text;
+  -moz-user-drag: text;
+  -ms-user-drag: text;
+  user-drag: text;
+  -webkit-user</pre></details>
+<p><a href="./index.html">Open this sweep&rsquo;s live app →</a> ·
+<a href="../index.html">Back to the session gallery</a></p>
+<p class="muted">Elapsed 564.1s · 4433 output tokens so far ·
+FIM splices: 0 attempted, 0 accepted ·
+SHA-256 of every module is published in the session gallery ledger.</p>
+</main></body></html>
