@@ -12,6 +12,6 @@ unsandboxed. Live deployment: `docs/gallery/session031/`.
 | --- | --- |
 | backend/logic.py | `757fc3e65c9883a2cd0597941cedc13cbe98dd0a4f5d267de1a155333f251592` |
 | server/store.js | `e6691820a0b584e309496368a2bf2c2210798186376019b80f8372492c088864` |
-| server/routes.js | `f7cc7f947b587c8806a7b076e31dbbdba0a14cac995c02b63099b3e85d4690d3` |
+| server/routes.js | `1d1332b4ac808e2dfb726dd19c53d28235f5de047ed5714c712ec13455588e23` |
 | client/App.jsx | `dde406e1b93fe991767e9027eff858517edbd27845f8744b9843921da0e1e370` |
 | client/style.css | `839eb48af4531b3eefd00e30ee698473aa80055c9f6b42b87462fd9db0da72b9` |
