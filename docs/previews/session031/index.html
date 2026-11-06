@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
-<title>DevMetrics round 36 report — Qwen2.5-Coder-0.5B</title>
+<title>DevMetrics round 40 report — Qwen2.5-Coder-0.5B</title>
 <style>*{box-sizing:border-box}body{background:#0d1527;color:#e3ecf8;
 font:15px system-ui,sans-serif;margin:0}main{max-width:1080px;padding:34px 22px;
 margin:0 auto}h1{font-size:34px;letter-spacing:-.03em;margin:6px 0 10px}
@@ -19,16 +19,16 @@ line-height:1.5;background:#0a1322;border-radius:8px;padding:14px}
 iframe{width:100%;height:640px;border:1px solid #33507a;border-radius:12px;
 background:white}.muted{color:#8fa3c4;font-size:13px}code{background:#0a1322;
 padding:2px 6px;border-radius:6px;font-size:13px}</style></head><body><main>
-<h1>DevMetrics — round 36 <span class="muted">(final self-repair round)</span></h1>
+<h1>DevMetrics — round 40 <span class="muted">(final self-repair round)</span></h1>
 <p>Every module below is raw Qwen2.5-Coder-0.5B output from the Session031
 self-repair loop: public-contract prompt, its own previous attempt, public
 execution errors. Zero teacher bytes, zero human corrections.</p>
-<p><strong>Public score: 2/5 modules, 9 checks, integrated: no</strong></p>
-<div><span class="pass">logic: PASS</span> <span class="fail">store: FAIL</span><div class="muted">persistence✗ store_delete✗ store_validation✗</div> <span class="fail">api: FAIL</span><div class="muted">health✓ get✗ post✓ post_invalid✓ delete✓ projects✗ summary✓</div> <span class="fail">ui: FAIL</span><div class="muted">ui_wiring✗ ui_offline✗</div> <span class="pass">css: PASS</span></div>
+<p><strong>Public score: 3/5 modules, 14 checks, integrated: no</strong></p>
+<div><span class="pass">logic: PASS</span> <span class="pass">store: PASS</span><div class="muted">persistence✓ store_delete✓ store_validation✓</div> <span class="fail">api: FAIL</span><div class="muted">health✓ get✗ post✓ post_invalid✓ delete✓ projects✗ summary✓</div> <span class="fail">ui: FAIL</span><div class="muted">ui_wiring✗ ui_offline✗</div> <span class="pass">css: PASS</span></div>
 <h2>Execution checks</h2>
-<p><code>app✓</code> <code>delete✓</code> <code>health✓</code> <code>logic_structured✓</code> <code>post✓</code> <code>post_invalid✓</code> <code>summary✓</code></p>
+<p><code>app✓</code> <code>create✓</code> <code>delete✓</code> <code>health✓</code> <code>logic_structured✓</code> <code>persistence✓</code> <code>post✓</code> <code>post_invalid✓</code> <code>store_delete✓</code> <code>store_validation✓</code> <code>summary✓</code></p>
 <h2>Public failure reasons</h2>
-<ul><li>store: TypeError: Assignment to constant variable.</li><li>api: get -&gt; GET /api/entries must return 200 {entries:store.list()} | projects -&gt; GET /api/projects must return 200 {projects:sorted distinct project names}</li><li>ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b</li><li>integration: TypeError: Assignment to constant variable.</li></ul>
+<ul><li>api: get -&gt; GET /api/entries must return 200 {entries:store.list()} | projects -&gt; GET /api/projects must return 200 {projects:sorted distinct project names}</li><li>ui: Error: UI lacks: state hook (React.useState), load effect (React.useEffect), API fetch, entries endpoint /api/entries, summary endpoint /api/summary, controlled input onChange=, working form onSubmit= or button onClick=, DELETE request, POST request, offline b</li><li>integration: Error: Real model store/API/Python end-to-end mismatch</li></ul>
 <h2>Model source (exact bytes)</h2>
 <details><summary>backend/logic.py</summary><pre>def summarize(payload):
     entries = payload.get(&#x27;entries&#x27;)
@@ -68,66 +68,40 @@ execution errors. Zero teacher bytes, zero human corrections.</p>
 # {&quot;project&quot;:&quot;docs&quot;,&quot;minutes&quot;:60,&quot;date&quot;:&quot;2026-11-03&quot;}]})
 </pre></details><details><summary>server/store.js</summary><pre>const fs = require(&#x27;node:fs&#x27;);
 function createStore(filePath) {
-    const entry = {};
-    if (fs.existsSync(filePath)) {
-        const json = fs.readFileSync(filePath).toString();
-        entry = JSON.parse(json);
+    const fileExists = fs.existsSync(filePath);
+    if (!fileExists) {
+        const data = [];
+        fs.writeFileSync(filePath, JSON.stringify(data));
     }
-    else {
-        entry = [];
-    }
+    const data = fs.readFileSync(filePath, &#x27;utf8&#x27;);
+    const dataObj = JSON.parse(data);
     return {
-        list: () =&gt; entry,
-        create(body) {
-            const newEntry = {
-                id: &#x27;&#x27;,
-                project: body.project,
-                minutes: body.minutes,
-                date: body.date,
-                note: body.note,
-            };
-            if (newEntry.project === &#x27;&#x27; || newEntry.minutes === 0) {
+        list: () =&gt; dataObj,
+        create: (entry) =&gt; {
+            if (entry.project.length === 0 || entry.minutes === 0 || entry.date.length === 0 || entry.note.length === 0) {
                 throw new Error(&#x27;Invalid entry&#x27;);
             }
-            newEntry.id = `${newEntry.project}-${newEntry.minutes}-${newEntry.date}`;
-            entry.push(newEntry);
-            fs.writeFileSync(filePath, JSON.stringify(entry));
-            return true;
+            const id = `${Date.now()}`;
+            const entryObj = {
+                id,
+                project: entry.project,
+                minutes: entry.minutes,
+                date: entry.date,
+                note: entry.note,
+            };
+            dataObj.push(entryObj);
+            fs.writeFileSync(filePath, JSON.stringify(dataObj));
+            return entryObj;
         },
-        delete(id) {
-            const index = entry.findIndex((entry) =&gt; entry.id === id);
-            if (index !== -1) {
-                entry.splice(index, 1);
-                fs.writeFileSync(filePath, JSON.stringify(entry));
-                return true;
-            }
-            return false;
+        delete: (id) =&gt; {
+            const newData = dataObj.filter((entry) =&gt; entry.id !== id);
+            fs.writeFileSync(filePath, JSON.stringify(newData));
+            return true;
         },
     };
 }
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes: 10, date: &#x27;2020-01-01&#x27; }));
-// console.log(store.create({ project: &#x27;foo&#x27;, minutes</pre></details><details><summary>server/routes.js</summary><pre>const express = require(&#x27;express&#x27;);
+
+module.exports = createStore;</pre></details><details><summary>server/routes.js</summary><pre>const express = require(&#x27;express&#x27;);
 function createApp(store, processor) {
     const app = express();
     app.use(express.json());
@@ -247,6 +221,6 @@ body &gt; div &gt; div {
   transition</pre></details>
 <p><a href="./index.html">Open this round&rsquo;s live app →</a> ·
 <a href="../index.html">Back to the session gallery</a></p>
-<p class="muted">Elapsed 34887.6s · 245116 output tokens so far ·
+<p class="muted">Elapsed 39167.1s · 273497 output tokens so far ·
 SHA-256 of every module is published in the session gallery ledger.</p>
 </main></body></html>

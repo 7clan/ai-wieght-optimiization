@@ -1,62 +1,36 @@
 const fs = require('node:fs');
 function createStore(filePath) {
-    const entry = {};
-    if (fs.existsSync(filePath)) {
-        const json = fs.readFileSync(filePath).toString();
-        entry = JSON.parse(json);
+    const fileExists = fs.existsSync(filePath);
+    if (!fileExists) {
+        const data = [];
+        fs.writeFileSync(filePath, JSON.stringify(data));
     }
-    else {
-        entry = [];
-    }
+    const data = fs.readFileSync(filePath, 'utf8');
+    const dataObj = JSON.parse(data);
     return {
-        list: () => entry,
-        create(body) {
-            const newEntry = {
-                id: '',
-                project: body.project,
-                minutes: body.minutes,
-                date: body.date,
-                note: body.note,
-            };
-            if (newEntry.project === '' || newEntry.minutes === 0) {
+        list: () => dataObj,
+        create: (entry) => {
+            if (entry.project.length === 0 || entry.minutes === 0 || entry.date.length === 0 || entry.note.length === 0) {
                 throw new Error('Invalid entry');
             }
-            newEntry.id = `${newEntry.project}-${newEntry.minutes}-${newEntry.date}`;
-            entry.push(newEntry);
-            fs.writeFileSync(filePath, JSON.stringify(entry));
-            return true;
+            const id = `${Date.now()}`;
+            const entryObj = {
+                id,
+                project: entry.project,
+                minutes: entry.minutes,
+                date: entry.date,
+                note: entry.note,
+            };
+            dataObj.push(entryObj);
+            fs.writeFileSync(filePath, JSON.stringify(dataObj));
+            return entryObj;
         },
-        delete(id) {
-            const index = entry.findIndex((entry) => entry.id === id);
-            if (index !== -1) {
-                entry.splice(index, 1);
-                fs.writeFileSync(filePath, JSON.stringify(entry));
-                return true;
-            }
-            return false;
+        delete: (id) => {
+            const newData = dataObj.filter((entry) => entry.id !== id);
+            fs.writeFileSync(filePath, JSON.stringify(newData));
+            return true;
         },
     };
 }
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes: 10, date: '2020-01-01' }));
-// console.log(store.create({ project: 'foo', minutes
+
+module.exports = createStore;
