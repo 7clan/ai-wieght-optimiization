@@ -416,3 +416,24 @@ feedback-only candidates)
   runs are dispatched explicitly with rounds/wall_budget/resume.
 
 
+
+## Session 010: architectural-circuits branch (ArchBench research)
+
+- Branch `exp/zai-architectural-circuits` owns the `archcircuits/` package, the
+  ArchBench benchmark (112 tasks, dev/val/holdout = 48/32/32, zero HumanEval
+  reuse), and `experiments/archcircuits/` reports and factor sets. Do not
+  retune or rebuild factors against its consumed holdout partition.
+- All interventions are closed-form (rank-one ridge or Woodbury multi-key),
+  bounded at 1.5% observed relative Frobenius norm per matrix, applied in RAM
+  only, and reversible via `W ±= left @ right`; the base checkpoint file
+  stays untouched.
+- Model-generated code is never executed anywhere in this pipeline; gold
+  answers come from executing our own reference snippets
+  (`archcircuits/verify_gold.py`).
+- Measured outcome: causal localization succeeded (L16 MLP + head 10 for
+  contract/cross-component info; L14 MLP for variable tracking), construction-set
+  gains were real (CON 6/12→8/12, zero losses), interference was additive and
+  code-NLL-neutral, but **no edit generalized to the frozen holdout**
+  (0 gained tasks; `var_L14` lost 2). Do not cite Session 010 as evidence that
+  weight editing improves architectural reasoning; cite it as evidence of
+  localization plus a generalization failure.

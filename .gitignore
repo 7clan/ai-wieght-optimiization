@@ -12,3 +12,4 @@ edits/
 *.bin
 .env
 
+!experiments/archcircuits/factors/**/*.safetensors

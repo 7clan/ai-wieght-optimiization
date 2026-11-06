@@ -1,0 +1,22 @@
+{
+  "unrelated_code_nll": {
+    "baseline": -2.2523,
+    "con_L16": -2.2536,
+    "xcom_L16": -2.2532,
+    "joint_L16": -2.2541,
+    "var_L14": -2.2524,
+    "jsr_L6": -2.2537,
+    "seq_con_xcom": -2.2548,
+    "seq_all_four": -2.2565
+  },
+  "files": [
+    "__main__.py",
+    "attention_steering.py",
+    "branch_experiments.py",
+    "collect_attention.py",
+    "collect_experiments.py",
+    "collect_fusion.py",
+    "data.py"
+  ],
+  "chunk_tokens": 384
+}

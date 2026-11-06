@@ -1,0 +1,34 @@
+{
+  "method": "multi-key",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B",
+  "layer_idx": 16,
+  "matrix_name": "mlp.down_proj",
+  "left_shape": [
+    896,
+    12
+  ],
+  "right_shape": [
+    12,
+    4864
+  ],
+  "category": "CON",
+  "alpha": 1.0,
+  "construction": {
+    "d_norm": 4.123163223266602,
+    "cos_gold_wrong": 0.33970651030540466,
+    "n_pairs": 12,
+    "ridge": 0.002550138905644417,
+    "rank": 12,
+    "residual_fraction": 1.0
+  },
+  "norm_limit": 0.015,
+  "note": "contrastive steering edit; behavioral effect must be measured",
+  "applied": {
+    "proposed_delta_frob": 0.5188131332397461,
+    "applied_scale": 1.0,
+    "relative_delta_frob": 0.013809,
+    "norm_before": 37.5699,
+    "norm_after": 37.5673,
+    "norm_change_ratio": 6.9e-05
+  }
+}

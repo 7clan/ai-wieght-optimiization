@@ -692,3 +692,38 @@ evaluator (byte-identical Session031 worker logic; Docker parity re-validated
 per report). The jsdom check is a behavioral DOM check, not a real browser
 click test. No production-readiness or frontier-model parity claim.
 <!-- SESSION032-RESULTS-END -->
+
+## Session 010 — Architectural-reasoning circuits (ArchBench)
+
+A new dedicated branch [`exp/zai-architectural-circuits`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/zai-architectural-circuits)
+introduces **ArchBench**, a 112-task architectural-reasoning benchmark
+(variable tracking, interface contracts, JavaScript reasoning, cross-component
+consistency) with fixed dev/val/holdout partitions and execution-verified gold
+answers. Zero HumanEval IDs are reused. Causal counterfactual patching
+localizes contract/cross-component information to **layer 16 MLP** (11/11 task
+consistency; head 10 of layer 16 alone carries most of the effect) and variable
+tracking to **layer 14 MLP**. Bounded (≤1.5%) multi-key contrastive steering
+edits at those sites improve the construction set (CON 6/12→8/12) with zero
+losses and zero code-perplexity cost, and same-layer edits compose additively
+(24°–51° principal angles). On the frozen holdout, **no candidate transfers**
+(0 gained tasks; the variable-tracking edit loses 2). The full method,
+evidence, and negative-result discussion live in
+[`docs/ZAI_ARCHITECTURAL_CIRCUITS.md`](docs/ZAI_ARCHITECTURAL_CIRCUITS.md).
+
+<!-- ARCHCIRCUITS-RESULTS-START -->
+### Session 010 measured results (frozen holdout, 32 tasks, greedy)
+
+| Intervention | Holdout score | Gained | Lost | Unrelated-code NLL change |
+| --- | ---: | ---: | ---: | ---: |
+| Untouched baseline | 18/32 (56.2%) | — | — | — |
+| L16 contract steer (`con_L16`, 1.38%) | 18/32 (56.2%) | 0 | 0 | −0.0013 |
+| L16 cross-component steer (`xcom_L16`) | 17/32 (53.1%) | 0 | 1 | −0.0009 |
+| L16 joint CON+XCOM subspace | 18/32 (56.2%) | 0 | 0 | −0.0018 |
+| Sequential con+xcom | 18/32 (56.2%) | 0 | 0 | −0.0025 |
+| L14 variable-tracking steer (`var_L14`) | 16/32 (50.0%) | 0 | 2 | −0.0001 |
+
+Construction-set effects did not generalize: CON improved 6/12→8/12 on the
+dev tasks whose error keys built the edit, and the val/holdout gradient
+(+3.1 pp → 0 pp) shows a construction-set effect rather than a transferable
+skill. No claim of improved general coding ability is made.
+<!-- ARCHCIRCUITS-RESULTS-END -->

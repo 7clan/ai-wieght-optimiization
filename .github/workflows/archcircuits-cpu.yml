@@ -1,0 +1,79 @@
+name: Session 010 archcircuits verification
+
+on:
+  push:
+    paths:
+      - archcircuits/**
+      - experiments/archcircuits/**
+      - .github/workflows/archcircuits-cpu.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HF_HUB_DISABLE_TELEMETRY: '1'
+  TOKENIZERS_PARALLELISM: 'false'
+  OMP_NUM_THREADS: '4'
+  MKL_NUM_THREADS: '4'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install transformers safetensors
+      - name: Compile and benchmark sanity
+        run: |
+          python -m compileall -q archcircuits
+          python -m archcircuits.benchmark
+      - name: Verify every gold answer with reference executions
+        run: |
+          python archcircuits/verify_gold.py
+      - name: Smoke-test causal patching and reversible edits
+        env:
+          ARCHCIRCUITS_MODEL: /tmp/qwen25-coder-0.5b
+        run: |
+          python - << 'PY'
+          import os, torch
+          torch.set_num_threads(4)
+          from huggingface_hub import snapshot_download
+          snapshot_download("Qwen/Qwen2.5-Coder-0.5B",
+                            local_dir=os.environ["ARCHCIRCUITS_MODEL"],
+                            allow_patterns=["*.json", "*.safetensors", "*.txt"])
+          import archcircuits.runner as runner
+          runner.MODEL_PATH = os.environ["ARCHCIRCUITS_MODEL"]
+          from archcircuits.benchmark import task_by_id, build_prompt
+          from archcircuits.tracing import mediation_scan
+          from archcircuits import edits
+          model, tok, _ = runner.load_model()
+          res = mediation_scan(model, tok, task_by_id("VAR-001"), layers=[8, 16])
+          assert res.get("scores"), "mediation scan produced no scores"
+          pairs = [{"prompt": build_prompt("VAR", task_by_id("VAR-001")["question"]),
+                    "gold": "16", "wrong": "17"}]
+          con = edits.collect_contrast(model, tok, pairs, 8, "mlp.down_proj")
+          assert con["d_norm"] > 0, "zero contrast direction"
+          W = edits._resolve(model, 8, "mlp.down_proj").weight.detach().float().clone()
+          left, right, _ = edits.rank_one_factors(W, con["keys_wrong"], con["d"], alpha=0.5)
+          edits.cap_and_apply(model, 8, "mlp.down_proj", left.unsqueeze(1), right.unsqueeze(0))
+          edits.save_factors("/tmp/smoke", 8, "mlp.down_proj", left.unsqueeze(1), right.unsqueeze(0), {})
+          edits.load_factor_set(model, "/tmp/smoke", remove=True)
+          after = edits._resolve(model, 8, "mlp.down_proj").weight.detach().float()
+          assert float((after - W).abs().max()) == 0.0, "edit was not exactly reversible"
+          print("smoke: mediation + contrast + reversible edit OK")
+          PY
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: archcircuits-verification
+          path: |
+            experiments/archcircuits/manifests/
+          if-no-files-found: ignore
