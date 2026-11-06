@@ -191,6 +191,7 @@ def run(args):
         if baseline_public is None:
             baseline_public = evaluate(baseline, PUBLIC, "public")
 
+    last_try = {}
     self_memory = load_self_memory(SELF_MEMORY_PATH) if args.self_memory else {}
     if self_memory:
         print(json.dumps({"self_memory_roles": sorted(self_memory)}), flush=True)
@@ -200,17 +201,26 @@ def run(args):
             print(json.dumps({"early_stop": "all public checks pass",
                               "round": round_ - 1}), flush=True)
             break
-        if elapsed > WALL_BUDGET_SECONDS:
+        if elapsed > args.wall_budget:
             print(json.dumps({"wall_budget_reached": True, "round": round_}), flush=True)
             break
         for i, role in enumerate(ROLES):
             if public["modules"][role]["passed"]:
+                last_try.pop(role, None)
                 continue
-            error = public["modules"][role]["error"] or "Public contract failed"
+            # The model's most recent own output for this role, accepted or not:
+            # rejected candidates are still the model's previous attempt, and
+            # their execution error is the freshest feedback it can receive.
+            recent = last_try.get(role)
+            if recent is not None:
+                previous_src, previous_err = recent
+            else:
+                previous_src = selected[role]
+                previous_err = public["modules"][role]["error"] or "Public contract failed"
             own_example = self_memory.get(role, "")
             candidates = (
                 ("feedback-repair",
-                 prompt(role, error=error, previous=selected[role],
+                 prompt(role, error=previous_err, previous=previous_src,
                         own_example=own_example),
                  BASE_SEED + 1000 + round_ * 100 + i),
                 ("resample", prompt(role),
@@ -226,6 +236,9 @@ def run(args):
                 challenger[role] = PREFIX[role] + raw
                 result = evaluate(challenger, PUBLIC, "public")
                 accepted = metric(result, role) > metric(public, role)
+                last_try[role] = (challenger[role],
+                                  result["modules"][role]["error"]
+                                  or "Public contract failed")
                 attempts.append({"stage": stage, "round": round_, "role": role,
                                  "prompt": head, "raw": raw, "output_tokens": n,
                                  "accepted": accepted,
@@ -237,6 +250,7 @@ def run(args):
                                   "error": result["modules"][role]["error"]}), flush=True)
                 if accepted:
                     selected, public = challenger, result
+                    last_try.pop(role, None)
                     break
         elapsed = elapsed0 + (time.monotonic() - started)
         rounds.append(snapshot(round_, selected, public, elapsed, tokens))
@@ -275,7 +289,7 @@ def run(args):
               "search": {"candidate_count": len(attempts), "output_tokens": tokens,
                          "wall_seconds": round(elapsed, 2),
                          "max_rounds": args.rounds,
-                         "wall_budget_seconds": WALL_BUDGET_SECONDS,
+                         "wall_budget_seconds": args.wall_budget,
                          "private_holdout_seen_during_selection": False},
               "ui_behavior_verified_in_jsdom": bool(final_public["checks"].get("ui_offline")),
               "ui_browser_clicks_verified": False,
@@ -310,9 +324,11 @@ def main():
     parser.add_argument("--self-memory", action="store_true",
                         help="Prompt with the model's own verified prior-session bytes")
     parser.add_argument("--state", default="experiments/session031_selfrepair_state.json")
+    parser.add_argument("--wall-budget", type=float, default=WALL_BUDGET_SECONDS,
+                        help="Cumulative wall-clock budget in seconds")
     args = parser.parse_args()
-    if args.rounds < 0 or args.rounds > 16:
-        raise ValueError("rounds must be within 0..16")
+    if args.rounds < 0 or args.rounds > 24:
+        raise ValueError("rounds must be within 0..24")
     run(args)
 
 

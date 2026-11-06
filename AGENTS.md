@@ -317,3 +317,15 @@ Explore reversible, directly computed edits to local open-model tensor weights.
   (logic newly passing after the worked-examples amendment), public checks
   include health/get/post; api, store and ui still fail. All published round
   pages remain deployed exactly as the model wrote them.
+
+## Session 031 fourth amendment (rejected-candidate feedback + budgets)
+
+- After 16 measured rounds (144 generations, 96,160 tokens, 14,836 s) repair
+  prompts still showed only the ACCEPTED module's error. A rejected candidate
+  is still the model's own most recent attempt, so its source and execution
+  error now feed the next round's repair prompt as `previous` (fresh, honest
+  execution feedback of the model's own output; no teacher or human bytes).
+  When a role finally passes, the per-role memory resets.
+- Cumulative wall budget is now a CLI argument (`--wall-budget`, default
+  14,400 s) and the workflow job timeout rose to 350 minutes; the resume
+  dispatch sets the budget explicitly. Round cap 24. All disclosed in reports.

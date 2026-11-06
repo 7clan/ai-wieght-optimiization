@@ -16,8 +16,12 @@ on:
   workflow_dispatch:
     inputs:
       rounds:
-        description: 'Total self-repair rounds (0-8)'
+        description: 'Total self-repair rounds (0-24)'
         default: '4'
+        type: string
+      wall_budget:
+        description: 'Cumulative wall-clock budget in seconds'
+        default: '14400'
         type: string
       resume:
         description: 'Resume from the published state file and keep improving'
@@ -34,7 +38,7 @@ concurrency:
 jobs:
   selfrepair-architect:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 350
     env:
       OMP_NUM_THREADS: '4'
       MKL_NUM_THREADS: '4'
@@ -63,11 +67,12 @@ jobs:
       - name: Run autonomous self-repair generation on the NEW app
         run: |
           ROUNDS="${{ github.event.inputs.rounds || '4' }}"
+          BUDGET="${{ github.event.inputs.wall_budget || '14400' }}"
           RESUME="${{ github.event.inputs.resume }}"
           if [ "$RESUME" = "true" ] && [ -f experiments/session031_selfrepair_state.json ]; then
-            python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS" --resume
+            python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS" --wall-budget "$BUDGET" --resume
           else
-            python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS"
+            python -m tinycoder.session031 --output-dir outputs/session031 --rounds "$ROUNDS" --wall-budget "$BUDGET"
           fi
       - name: Archive raw attempts even if publication fails
         if: always()
