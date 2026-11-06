@@ -264,3 +264,25 @@ they were built from — a construction-set effect, not a transferable skill.
 * Evaluations: `reports/eval_*.json`, `reports/holdout_*.json`
 * Interference: `reports/factor_geometry.json`, `reports/regression_probe.json`
 * Factors: `experiments/archcircuits/factors/*/` (safetensors + meta.json)
+
+## 11. Publication status
+
+The provided GitHub PAT was accepted for the initial clone but was revoked
+before the final push (GitHub returns 401 Bad credentials; secret-scanning
+revocation of an exposed token is the likely cause). All work is committed
+locally on `exp/zai-architectural-circuits` (3 commits, clean tree) and
+archived as a complete-history bundle at
+`/home/z/architectural-circuits-branch.bundle`. To publish with a fresh
+token:
+
+```bash
+cd /home/z/research-repo
+git remote set-url origin https://<USER>:<NEW_PAT>@github.com/7clan/ai-wieght-optimiization.git
+git push -u origin exp/zai-architectural-circuits
+```
+
+or restore from the bundle:
+
+```bash
+git clone /home/z/architectural-circuits-branch.bundle -b exp/zai-architectural-circuits
+```
