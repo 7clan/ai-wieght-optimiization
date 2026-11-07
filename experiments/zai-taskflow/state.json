@@ -19,6 +19,15 @@
     26
    ],
    "origin": "QWEN-REPAIRED (staged pieces, see generations)"
+  },
+  "api": {
+   "source": "const express = require('express');\nfunction createApi(app, store, processor) {\n  app.use(express.json());\n  app.get('/api/health', (req, res) => {\n    res.status(200).json({ok: true});\n  });\n  app.post('/api/projects', (req, res) => {\n    try {\n      const project = store.createProject(req.body);\n      res.status(201).json({ project: project });\n    } catch (e) {\n      res.status(400).json({ error: e.message });\n    }\n  });\n  app.get('/api/projects', (req, res) => {\n    const projects = store.listProjects();\n    res.status(200).json({ projects });\n  });\n  app.post('/api/tasks', (req, res) => {\n    try {\n      const task = store.createTask(req.body);\n      res.status(201).json({ task: task });\n    } catch (e) {\n      res.status(400).json({ error: e.message });\n    }\n  });\n  app.put('/api/tasks/:id', (req, res) => {\n    try {\n      const task = store.updateTask(req.params.id, req.body);\n      res.status(200).json({ task: task });\n    } catch (e) {\n      if (String(e.message).includes('not found')) {\n        res.status(404).json({ error: e.message });\n      } else {\n        res.status(400).json({ error: e.message });\n      }\n    }\n  });\n  app.get('/api/tasks', (req, res) => {\n    const filter = {};\n    if (req.query.projectId !== undefined) filter.projectId = req.query.projectId;\n    if (req.query.status !== undefined) filter.status = req.query.status;\n    if (req.query.q !== undefined) filter.q = req.query.q;\n    res.status(200).json({ tasks: store.listTasks(filter) });\n  });\n  app.delete('/api/tasks/:id', (req, res) => {\n    try {\n      store.deleteTask(req.params.id);\n      res.status(200).json({ deleted: true });\n    } catch (e) {\n      if (String(e.message).includes('not found')) {\n        res.status(404).json({ error: e.message });\n      } else {\n        res.status(400).json({ error: e.message });\n      }\n    }\n  });\n  app.delete('/api/projects/:id', (req, res) => {\n    // YOUR CODE HERE\n    try {\n      store.deleteProject(req.params.id);\n      res.status(200).json({ deleted: true });\n    } catch (e) {\n      if (String(e.message).includes('not found')) {\n        res.status(404).json({ error: e.message });\n      } else {\n        res.status(400).json({ error: e.message });\n      }\n    }\n  });\n  app.get('/api/projects/:id/progress', (req, res) => {\n    const project = store.listProjects().find(p => p.id === req.params.id);\n    if (!project) {\n      res.status(404).json({ error: 'project not found: ' + req.params.id });\n      return;\n    }\n    const tasks = store.listTasks({ projectId: req.params.id });\n    res.status(200).json(processor({ project: project, tasks: tasks }));\n  });\n}\nmodule.exports = createApi;\n",
+   "attempt_id": "api-staged-assembly-final",
+   "score": [
+    15,
+    15
+   ],
+   "origin": "QWEN (staged route pieces)"
   }
  },
  "staged_store_pieces": {
@@ -34,5 +43,16 @@
   "stateB": "    const data = JSON.stringify(state);\n    fs.writeFileSync(filePath, data);\n  }\n",
   "state": "  let state = { projects: [], tasks: [] };\n  // 2. write the load SETUP\n  if (fs.existsSync(filePath)) {\n    state = JSON.parse(fs.readFileSync(filePath, 'utf8'));\n  }\n  // 3. write the first counter SETUP\n  let pnext = 1;\n  let tnext = 1;\n  // 4. write the update SETUP\n  function save() {\n    const data = JSON.stringify(state);\n    fs.writeFileSync(filePath, data);\n  }\n"
  },
- "in_progress": {}
+ "in_progress": {},
+ "staged_api_pieces": {
+  "health": "    res.status(200).json({ok: true});\n  });\n",
+  "post_project": "    try {\n      const project = store.createProject(req.body);\n      res.status(201).json({ project: project });\n    } catch (e) {\n      res.status(400).json({ error: e.message });\n    }\n  });\n",
+  "get_projects": "    const projects = store.listProjects();\n    res.status(200).json({ projects });\n  });\n",
+  "delete_task": "    try {\n      store.deleteTask(req.params.id);\n      res.status(200).json({ deleted: true });\n    } catch (e) {\n      if (String(e.message).includes('not found')) {\n        res.status(404).json({ error: e.message });\n      } else {\n        res.status(400).json({ error: e.message });\n      }\n    }\n  });\n",
+  "delete_project": "    // YOUR CODE HERE\n    try {\n      store.deleteProject(req.params.id);\n      res.status(200).json({ deleted: true });\n    } catch (e) {\n      if (String(e.message).includes('not found')) {\n        res.status(404).json({ error: e.message });\n      } else {\n        res.status(400).json({ error: e.message });\n      }\n    }\n  });\n",
+  "get_tasks": "    const filter = {};\n    if (req.query.projectId !== undefined) filter.projectId = req.query.projectId;\n    if (req.query.status !== undefined) filter.status = req.query.status;\n    if (req.query.q !== undefined) filter.q = req.query.q;\n    res.status(200).json({ tasks: store.listTasks(filter) });\n  });\n",
+  "progress": "    const project = store.listProjects().find(p => p.id === req.params.id);\n    if (!project) {\n      res.status(404).json({ error: 'project not found: ' + req.params.id });\n      return;\n    }\n    const tasks = store.listTasks({ projectId: req.params.id });\n    res.status(200).json(processor({ project: project, tasks: tasks }));\n  });\n",
+  "post_task": "    try {\n      const task = store.createTask(req.body);\n      res.status(201).json({ task: task });\n    } catch (e) {\n      res.status(400).json({ error: e.message });\n    }\n  });\n",
+  "put_task": "    try {\n      const task = store.updateTask(req.params.id, req.body);\n      res.status(200).json({ task: task });\n    } catch (e) {\n      if (String(e.message).includes('not found')) {\n        res.status(404).json({ error: e.message });\n      } else {\n        res.status(400).json({ error: e.message });\n      }\n    }\n  });\n"
+ }
 }

@@ -1,0 +1,87 @@
+{
+ "role": "api",
+ "stopped": "wall",
+ "wall_seconds": 501.7,
+ "usage": {
+  "generations": 3,
+  "total_new_tokens": 3522,
+  "total_seconds": 500.0
+ },
+ "best": {
+  "attempt_id": "api-r0-whole-greedy-1",
+  "score": [
+   5,
+   15
+  ],
+  "source_sha256": "7adbaeb1280ad579e0708260b0dfcc36f210202cb557d568acc158a303199c03",
+  "result": {
+   "passed": false,
+   "syntax_valid": true,
+   "checks": {
+    "health": true,
+    "post_project": false,
+    "post_project_invalid": true,
+    "get_projects": false,
+    "post_task": false,
+    "post_task_invalid": true,
+    "put_task": false,
+    "put_task_404": true,
+    "get_tasks_filter": false,
+    "get_tasks_search": false,
+    "delete_task": false,
+    "delete_task_404": true,
+    "progress": false,
+    "delete_project": false,
+    "progress_404": false
+   },
+   "failures": [
+    {
+     "check": "post_project",
+     "detail": "status 500 (want 201)"
+    },
+    {
+     "check": "get_projects",
+     "detail": "status 404 (want 200)"
+    },
+    {
+     "check": "post_task",
+     "detail": "status 400 (want 201)"
+    },
+    {
+     "check": "put_task",
+     "detail": "status 404 (want 200)"
+    },
+    {
+     "check": "get_tasks_filter",
+     "detail": "status 200 (want 200) tasks.length=0 want 1"
+    },
+    {
+     "check": "get_tasks_search",
+     "detail": "status 200 (want 200) tasks.length=0 want 1"
+    },
+    {
+     "check": "delete_task",
+     "detail": "status 404 (want 200)"
+    },
+    {
+     "check": "progress",
+     "detail": "status 500 (want 200)"
+    },
+    {
+     "check": "delete_project",
+     "detail": "status 404 (want 200)"
+    },
+    {
+     "check": "progress_404",
+     "detail": "status 500 (want 404)"
+    }
+   ],
+   "error": null
+  }
+ },
+ "attempts": [
+  "api-r0-whole-greedy-1",
+  "api-r1-whole-greedy-1000",
+  "api-r1-whole-sample-1010"
+ ]
+}
