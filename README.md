@@ -1,415 +1,86 @@
 # TinyCoder Weight Lab
 
-## Session 024 — mentor-assisted final Express DELETE repair
+**Researching how far a 0.5B-parameter coding model can go toward reliable full-stack development.**
 
-**Full integrated holdout contract: PASS.** Qwen2.5-Coder-0.5B saw a
-teacher-authored *analogy* for `store.delete(id)` and attempted the previously
-unsolved DELETE expression. All eight completed slots in the final application
-must come from the genuine model outputs archived in Sessions022–024.
-The surrounding scaffold, API envelope, persistence and React state remain
-teacher/agent-written infrastructure. This is *in-context adaptation*, not
-permanent weight learning, independent generalization or an unassisted full
-application created by the 0.5B model.
+This project experiments with [Qwen2.5-Coder-0.5B](https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B), direct weight-space interventions, execution-guided generation, and a small-model coding-agent architecture. Our long-term goal is a model and development system that can plan, write, test, debug, and refine complete applications—not just produce convincing-looking code snippets.
 
-[View exact corrected student code and static snapshot](https://raw.githack.com/7clan/ai-wieght-optimiization/4e097c31688852d7fa2ed7a7b576b68eab2a8e24/docs/previews/session024/index.html) ·
-[Inspect teacher/student steps](https://raw.githack.com/7clan/ai-wieght-optimiization/4e097c31688852d7fa2ed7a7b576b68eab2a8e24/docs/previews/session024/mentor.html) ·
-[Measured results](experiments/session024_student_repair_report.json) ·
-[Every generated attempt](experiments/session024_student_repair_predictions.json).
+> **Current status — functional application milestone, not frontier-model parity.** The frozen 0.5B model produced the application-specific code for **TaskFlow**, a working project/task manager, using tightly staged generation, public-test feedback, and trusted infrastructure. Its Playwright browser run passed **15/15 interaction steps**. The result demonstrates an *assisted system*, not independent one-shot full-stack generation or a permanent increase in Qwen's abilities.
 
-The preview is static and cannot be used as a deployed full-stack application.
+## See what Qwen built: TaskFlow V1
 
+![Actual desktop screenshot of the Qwen-authored TaskFlow V1 application](docs/previews/zai-taskflow/desktop.png)
 
-## Session 023 — teacher–student coding apprenticeship
+<details>
+<summary>View the real mobile screenshot (390 × 844)</summary>
 
-**Integrated holdout: FAIL.** Starting with the
-Session022 real Qwen errors, a teacher supplied analogies and corrected the
-API response-envelope scaffold. The frozen 0.5B base model then produced its
-own five API data expressions, tested in independent Docker unit contexts.
-The UI, Python and CSS contributions are genuine frozen Session022 model
-outputs. The surrounding functional application is still trusted authored
-scaffolding. There was **zero parameter training**, so this measures only
-in-context transfer and verified external debugging memory.
+<img src="docs/previews/zai-taskflow/mobile.png" alt="Actual mobile screenshot of TaskFlow V1" width="300">
 
-| Student API slot | Independently verified |
-| --- | --- |
-| api_get | PASS |
-| api_post | PASS |
-| api_patch | PASS |
-| api_delete | FAIL |
-| api_summary | PASS |
+</details>
 
-[Inspect teacher corrections and each student attempt](https://raw.githack.com/7clan/ai-wieght-optimiization/b2bd390eb14098e8c37fdd853da511c681ae1bbf/docs/previews/session023/mentor.html) ·
-[View the actual Qwen-generated code and safe preview](https://raw.githack.com/7clan/ai-wieght-optimiization/b2bd390eb14098e8c37fdd853da511c681ae1bbf/docs/previews/session023/index.html) ·
-[Read the report](experiments/session023_live_mentor_report.json) ·
-[Read every token completion](experiments/session023_live_mentor_predictions.json).
+These are **real Playwright screenshots from a running React + Express application**, captured with synthetic data—not AI-generated concept art. **V1 is functional but visually unfinished.** Its cramped controls, weak hierarchy, spacing, and mobile presentation are targets for the next iteration. No production deployment is claimed.
 
-The HTML previews are not a live deployed Express application and do not
-establish out-of-distribution or permanent weight generalization.
+**Explore:** [TaskFlow application source](apps/taskflow-qwen/) · [Detailed Session 033 report](docs/ZAI_AUTONOMOUS_FULLSTACK.md) · [Browser-test evidence](experiments/zai-taskflow/reports/browser_test.json) · [Source provenance](apps/taskflow-qwen/ORIGIN.json) · [GitHub Actions workflow](.github/workflows/session033-zai-autonomous-fullstack.yml)
 
+### Measured milestone
 
-## Session 022 — Qwen0.5B native FIM, real application integration
-
-**End-to-end sandbox contract: FAIL.** Qwen2.5-Coder-0.5B filled eight
-small code slots in a separately authored functional React/Express/Python
-application scaffold. The code outside those slots was **not generated by
-Qwen**. A passing result demonstrates *model-assisted assembly*, not an
-autonomous senior-developer-level model.
-
-| Model-filled code slot | Public acceptance |
-| --- | --- |
-| logic_completed | PASS |
-| api_get | FAIL |
-| api_post | FAIL |
-| api_patch | FAIL |
-| api_delete | FAIL |
-| api_summary | FAIL |
-| ui_card | PASS |
-| css_theme | PASS |
-
-[View actual model code and static UI snapshot](https://raw.githack.com/7clan/ai-wieght-optimiization/e957a75c2602272c4b861fe1becb9532f3ba1ed4/docs/previews/session022/index.html)
-· [Exact prompt completions](experiments/session022_fim_app_predictions.json)
-· [Verified report](experiments/session022_fim_app_report.json).
-
-The visual snapshot is a sanitized document, not a hosted Express server.
-There is no claim of browser end-to-end reliability or production readiness.
-
-
-<!-- SESSION021-GENERATED-APP-START -->
-## Session 021 — actual Qwen0.5B-generated FocusBoard application
-
-The **frozen base Qwen2.5-Coder-0.5B** generated the Python logic, Express
-routes, React app and CSS directly. Every original completion, sampled attempt,
-feedback repair and selection is archived. No gradients, adapters or weight
-changes were used. A trusted SQLite adapter, bridge and build/test environment
-were supplied separately; this is **not independent autonomous infrastructure**.
-
-**Integrated contract result: FAIL** (selected after bounded public tests).
-
-| Model-written module | Holdout contract | Syntax |
-| --- | --- | --- |
-| logic | FAIL | YES |
-| api | FAIL | YES |
-| ui | FAIL | NO |
-| css | PASS | YES |
-
-**[View Qwen's actual UI preview and generated source](https://raw.githack.com/7clan/ai-wieght-optimiization/295d65f2fa397754547b112ccb93b57db78264eb/docs/previews/session021/index.html)**
-(static, script-free: **not** a running Express application).
-
-[Exact model predictions and repair history](experiments/session021_generated_app_predictions.json) ·
-[Measured report](experiments/session021_generated_app_report.json).
-
-This is one custom application and limited contract testing, not evidence of
-production-grade software or parity with frontier coding systems. It does not
-include an interactive browser-end-to-end assertion suite or security audit.
-<!-- SESSION021-GENERATED-APP-END -->
-
-<!-- REAL-PROJECT-MANAGER-START -->
-## Real full-stack application — Orbit Project Manager (Session 020)
-
-[**Open the interactive full-stack app in GitHub Codespaces**](https://codespaces.new/7clan/ai-wieght-optimiization/tree/exp/18-real-project-manager?quickstart=1) — select **Create codespace**, wait for the Node/Python setup to finish, then open the forwarded **port 3000** browser tab. This launches a real React frontend, Express API, Python SQLite bridge and persisted task database; it is not a static screenshot. Keep the forwarded port private.
-
-[App source and instructions](apps/real-project-manager/README.md) · [Docker](apps/real-project-manager/compose.yaml) · [CPU integration workflow](.github/workflows/session020-real-project-manager-cpu.yml)
-
-This application is a **trusted reference implementation**, not code generated by Qwen2.5-Coder-0.5B. It provides a reproducible, feature-rich target for future frozen-model autonomous generation and end-to-end benchmarking. The current benchmark does not claim senior-developer parity or any new 0.5B pass@1 gain. Local tests and a real HTTP server/restart smoke test passed; the independent GitHub Docker integration check is defined in the linked workflow.
-<!-- REAL-PROJECT-MANAGER-END -->
-
-<!-- APP-PREVIEW-GALLERY-START -->
-## Visual application previews — Session 018
-
-Every generated application now has an actual React UI render you can open
-in a browser, even if it failed the execution tests. These are **static,
-sandbox-rendered visual snapshots** with public example data, not live
-Express/Python deployments. No generated JavaScript runs in your browser.
-
-**[Open all ten applications in the visual gallery](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/index.html)**
-
-| Application | Preview | Full-stack holdout |
-| --- | --- | --- |
-| `invoice` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/invoice.html) | Passed |
-| `slug` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/slug.html) | Failed |
-| `discount` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/discount.html) | Passed |
-| `filter` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/filter.html) | Passed |
-| `progress` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/progress.html) | Passed |
-| `vowels` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/vowels.html) | Passed |
-| `fahrenheit` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/fahrenheit.html) | Passed |
-| `unique` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/unique.html) | Failed |
-| `maximum` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/maximum.html) | Passed |
-| `words` | [View UI](https://raw.githack.com/7clan/ai-wieght-optimiization/72e751667ac6b4b5dfee32671a6bc789399de2c9/docs/previews/session018/words.html) | Failed |
-
-Static pages are hosted via a third-party raw-file preview CDN
-from a public GitHub commit; use GitHub Pages if you prefer first-party
-hosting. Each page includes the generated Python, Express and React
-source and the verified test outcomes.
-
-<!-- APP-PREVIEW-GALLERY-END -->
-
-## Session 018 — extreme, bounded Python search (measured)
-
-The **unchanged Qwen2.5-Coder-0.5B** base model and frozen Session017b
-scaffold were re-used. This ablation tests whether repairing Python dictionary
-access and increasing *test-time* sampling/feedback improves complete mini-app
-execution. React and Express source bytes are identical in all four tracks.
-No model parameters were edited or trained.
-
-| Track | Integrated holdout | Python | Express | React | Valid three-module syntax |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Session017b frozen control | 5/10 | 5/10 | 9/10 | 10/10 | 9/10 |
-| Public-schema AST repair | 6/10 | 7/10 | 9/10 | 10/10 | 9/10 |
-| AST + up to 4 extra samples | 6/10 | 7/10 | 9/10 | 10/10 | 10/10 |
-| AST + up to 8 samples + 2 repairs | 7/10 | 8/10 | 9/10 | 10/10 | 10/10 |
-
-Additional inference: **4203 generated
-output tokens** (3580 samples,
-623 repairs),
-**400.13 seconds** total wall time.
-Candidate selection saw two original public examples and two additional
-PUBLIC edge-case probes per app; **two distinct holdout inputs** were evaluated
-only after code selection was frozen.
-
-**Interpretation:** These are ten custom, small, authored vertical slices, not
-production-ready applications, independently sourced benchmarks, or proof of
-parity with a larger coding model. The best-of-search result uses more compute
-and trusted compiler/scaffold assistance; it is a *system-level selected@1*,
-NOT the underlying model's single-sample pass@1. Generated code was evaluated
-only inside Docker with network and privilege restrictions.
-
-[Verified report](experiments/session018_extreme_report.json) ·
-[Exact source per ablation](experiments/session018_extreme_predictions.json) ·
-[Public search failures and selections](experiments/session018_extreme_public_candidates.json).
-
-## Session 017b — contract-derived React scaffold (measured)
-
-**No new model inference or edits.** Reused the exact Session017 frozen
-Qwen2.5-Coder-0.5B Python/Express/React completions. A deterministic
-`ResultView` implementation derived from the public app contract was
-substituted **only where the original generated React component failed public
-checks**. The complete app was then re-evaluated on the SAME holdout cases.
-Unchanged Python/Express modules and unmodified final tests isolate the effect
-of moving trivial UI structure to trusted deterministic scaffolding.
-
-| System | Integrated holdout apps | Python modules | Express modules | React modules |
-| --- | ---: | ---: | ---: | ---: |
-| Greedy generated-only | 0/10 | 4/10 | 9/10 | 1/10 |
-| Guided generated-only | 0/10 | 5/10 | 9/10 | 1/10 |
-| Greedy + contract UI scaffold | 4/10 | 4/10 | 9/10 | 10/10 |
-| Guided + contract UI scaffold | 5/10 | 5/10 | 9/10 | 10/10 |
-
-**Caution:** Scaffold-assisted code is NOT independently generated by the
-0.5B model, and these are custom, small application slices—not production
-software or an independent frontier-model comparison. A passing score is not
-a security, accessibility, or deployment audit. Candidate code remains
-untrusted and is executed only in isolated, network-disabled Docker.
-
-[Verified scaffold report](experiments/session017_scaffold_report.json) ·
-[Exact scaffolded source outputs](experiments/session017_scaffold_predictions.json).
-
-## Session 017 — contract-first full-stack vertical slices (measured)
-
-**Frozen model:** `Qwen/Qwen2.5-Coder-0.5B`, 494,032,768 parameters; no
-fine-tuning, gradients, static weight modification, or parameter scaling.
-Ten **newly authored mini-app specifications** require Python transformation,
-an Express POST endpoint, React JSX rendering, and the integrated request-to-UI
-path. Public cases steer up to one sampled continuation and one localized
-repair for failed modules; **two separate holdout inputs per app** are evaluated
-only after final candidates have been frozen. All code executes in restricted,
-network-disabled Docker.
-
-| System | Fully integrated apps on holdout | Python modules | Express modules | React modules | Valid three-module syntax |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Untouched greedy | 0/10 | 4/10 | 9/10 | 1/10 | 7/10 |
-| Contract-guided search | 0/10 | 5/10 | 9/10 | 1/10 | 8/10 |
-
-**Compute:** 5466 generated output tokens in all,
-including 2118 sampled alternatives and
-1464 repair tokens; 477.89s
-wall-time. The guided score is a **system-level** result after extra inference.
-
-This is a **controlled proof of concept, not evidence of production-ready
-autonomous development or parity with frontier models**. The ten specifications
-are authored, not an independently curated third-party benchmark; test cases
-may be similar to public examples even though holdout values were withheld from
-candidate selection. Browser-level accessibility, security, deployment and
-multi-page workflows are outside this session's scope. Archived candidate
-project files are untrusted; do not run them outside a sandbox.
-
-[Full verified report](experiments/session017_fullstack_report.json) ·
-[Generated modules and acceptances](experiments/session017_fullstack_predictions.json).
-The workflow also retains the ten candidate app directories as artifacts.
-
-## Session 016 — adaptive execution-guided search (measured)
-
-Same **Qwen2.5-Coder-0.5B base**, no trained/editable parameters. The
-Session015 untouched 100-task greedy control is reused exactly, saving compute
-and preserving the same test inputs. The searched variants begin with greedy
-and generate one sampled solution ONLY if public checks fail. They use original
-MBPP public assertions or independently derived web smoke tests, then
-optionally sample additional solutions
-(`search4`) and attempt one error-conditioned repair. Extra sampling stops
-after public validation succeeds. Final MBPP+ expanded tests are never used
-for candidate selection.
-
-| Variant | MBPP+ execution | React execution | Express execution | Overall selected solve@1 | Syntax valid | New output tokens |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| baseline | 28/50 | 1/25 | 0/25 | 29/100 | 65/100 | reused |
-| search2 | 28/50 | 10/25 | 4/25 | 42/100 | 85/100 | 13172 |
-| search4 | 32/50 | 16/25 | 6/25 | 54/100 | 97/100 | 22329 | 
-
-These are **system-level** final-selection results after additional compute,
-not comparable single-sample model pass@1. Original MBPP public tests are
-available to the search procedure; hidden EvalPlus plus inputs and canonical
-solutions remain inaccessible. React/Express tests are custom specifications,
-not independent third-party benchmarks; public smoke checks can necessarily
-overlap semantically with the final tests for constant-return and Boolean tasks.
-
-Read the [verified report](experiments/session016_search_report.json) and
-[all final task-level predictions](experiments/session016_search_predictions.json).
-Candidate-level records are available in the workflow artifacts.
-
-## Session 015 — context-gated orthogonal subspaces (measured)
-
-This experiment uses only the original Qwen2.5-Coder-0.5B base checkpoint
-and the **exact** Session014 rank32 factor file (SHA-256-verified). No
-optimization or training occurs. Static edits use in-memory weight changes;
-conditional edits use two `register_forward_pre_hook` and paired forward
-hooks, such that `W@X + M*(Left@Right)@X` is computed without changing `W`.
-
-The **100 new task prompts** are 50 MBPP+ test-split problems excluding
-all 150 previously consumed MBPP problems from Sessions013/014, plus 25
-new React and 25 new Express task variants from the custom fixture families.
-The web templates are not a public standardized benchmark. Mode selection
-uses lexical prompt triggers exclusively; Python defaults to zero mask.
-
-| Evaluation track | MBPP+ pass@1 (50) | React pass@1 (25) | Express pass@1 (25) | Total pass@1 | Syntax valid | Python exactly baseline? |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| baseline | 28/50 | 1/25 | 0/25 | 29/100 | 65/100 | Yes |
-| ungated | 28/50 | 9/25 | 0/25 | 37/100 | 78/100 | No |
-| gated-0.0 | 28/50 | 1/25 | 0/25 | 29/100 | 65/100 | Yes |
-| gated-0.5 | 28/50 | 3/25 | 0/25 | 31/100 | 67/100 | Yes |
-| gated-1.0 | 28/50 | 2/25 | 0/25 | 30/100 | 70/100 | Yes |
-| gated-ui-only-1.0 | 28/50 | 2/25 | 0/25 | 30/100 | 70/100 | Yes |
-
-The explicit backend gate activates the Session014 Layer16 backend factor;
-the separate `gated-ui-only-1.0` ablation intentionally disables it to
-test whether this prevents the Express regression.
-
-The former absolute targets (27/50 Python, 7/25 React, 1/25 Express)
-refer to a **different** evaluation sample and are not assumed to hold on
-fresh tasks. Strict Python/API preservation requires comparing identical
-prompts and outputs against this session's untouched baseline.
-
-See the [full per-task report](experiments/session015_gated_report.json)
-and [task-level predictions](experiments/session015_gated_predictions.json).
-The original [reversible factors](https://github.com/7clan/ai-wieght-optimiization/blob/exp/12-hybrid-ortho-hooks/experiments/session014_orthogonal_factors.safetensors)
-remain stored on the Session014 branch.
-
-A beginner-friendly experiment for **running, inspecting and directly editing weights in a very small coding AI**. The repository contains the software and examples; it intentionally **does not commit full pretrained model weights**.
-
-**Current direction (Session 002 onward): DIRECT WEIGHT EDITING, with no training.** The earlier LoRA session is preserved as historical research, not our active approach. Directly editing tensor values is real and reversible, but it is not a shortcut to the general intelligence of a larger model.
-
-### Internal weight-space programming (current research track)
-
-The original `edit` command adjusts one output-token weight row. The new `weight-inspect` and `weight-edit` commands operate on **internal attention or MLP linear matrices** (for example, `model.layers[12].mlp.down_proj`). They use tensor reads and closed-form matrix algebra only:
-
-```powershell
-python -m tinycoder weight-inspect --layer 12 --matrix mlp.down_proj
-python -m tinycoder weight-edit "Write only Python code defining max_of_three(a, b, c), returning the greatest argument." --reference-prompt "Return only the bare Python function definition of max_of_three(a, b, c), with no explanation." --method rank-one --layer 12 --matrix mlp.down_proj --alpha 0.5 --max-relative-change 0.002 --output edits/internal-001
-python -m tinycoder eval --weight-edit edits/internal-001 --report outputs/internal-after.json
-```
-
-The `rank-one` method captures the chosen matrix's last-token input vector `k` for the target prompt and its output `y` for a reference prompt. It calculates:
-
-`ΔW = α (y - Wk) (C^-1 k)^T / (k^T C^-1 k)`
-
-Here `C` is approximated by a regularized diagonal of key squared activations from `data/calibration.jsonl`; no trained covariance model is used. The factors are capped by a maximum relative matrix-norm change (default 0.2%) and saved as `factors.safetensors` and `weight_edit.json`. This **does not guarantee a more accurate answer**: a reference prompt is not a teacher's hidden state, and copying its activation can distort other behavior.
-
-Null-space input dampening is also available with `--method nullspace`, using `ΔW = -α (Wv)v^T` for normalized `v`. It can reduce one internal direction but may erase useful information. Use small bounds and compare multiple outputs.
-
-See [AGENTS.md](AGENTS.md) for the full inspect → derive → apply → verify protocol. The `.github/workflows/internal-weight-session.yml` workflow runs the initial internal-matrix experiment in GitHub Actions and saves a downloadable `internal-001-results` artifact. The method is a **simplified algebraic demonstration inspired by ROME/MEMIT, not their complete algorithms**.
-
-### HumanEval 20-failure causal-patching experiment
-
-For a more demanding evaluation, `python -m tinycoder.rome20` runs a **base-model** experiment with [`Qwen/Qwen2.5-Coder-0.5B`](https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B), *not* the Instruct variant. It uses the official, MIT-licensed [OpenAI HumanEval](https://github.com/openai/human-eval) dataset pinned to a specific commit, containing coding prompts, reference solutions and unit tests.
-
-The experiment:
-
-1. Greedily generates code until it has 20 sandbox-verified failures with corresponding passing canonical reference solutions.
-2. Reserves the next 20 HumanEval tasks as an untouched holdout set, regardless of their baseline results.
-3. Captures all 24 `mlp.down_proj` key/value activations on each failing prompt and teacher-forced correct completion.
-4. Patches success-side activations into failure-side forward passes to rank layers by change in first-reference-token log probability.
-5. Computes a single bounded, closed-form rank-one update at the selected layer from the **centroid** of 20 key/value pairs, using a regularized empirical covariance inverse via Woodbury algebra. One rank-one update generally cannot satisfy 20 independent targets.
-6. Runs one generated completion per task through a restricted, network-disabled, read-only **Docker** container with resource and time limits, then reports both failure-conditioned and independent holdout `pass@1` before/after deltas.
-
-Launch from **GitHub Actions → HumanEval 20-failure ROME-style experiment** or run on a machine with Docker, Python, sufficient memory, and internet access:
-
-```powershell
-python -m tinycoder.rome20 --edit-count 20 --holdout-count 20 --max-new-tokens 160
-```
-
-Results are saved to `outputs/rome20/` locally or as the `humaneval-rome20-results` Actions artifact. The output includes `progress.json`, `rome_factors.safetensors`, `rome20_report.json` and per-task `predictions.json`. The selected-failure set has pass@1=0 by construction, so **the independent holdout delta is the primary generalization signal**. This is **ROME-style** closed-form editing, not a reproduction of original ROME's optimized target-value computation, and a positive result would require replication on multiple unseen seeds and tasks.
-
-**Measured 20-failure ROME-style run — November 4, 2026:** [GitHub Actions run #1](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41746688416) completed successfully on the base `Qwen/Qwen2.5-Coder-0.5B` model. The best patching layer was **8 of 24** (mean first-reference-token log-probability gain **+0.00341** across 20 patches). One rank-one update was applied to layer 8's `mlp.down_proj` with a **1% relative Frobenius-norm cap**. The centroid activation target distance decreased from **5.3785 to 3.2088**. The precise factors are retained alongside the full report and per-task predictions in [`experiments/2026-11-04-rome20/`](experiments/2026-11-04-rome20/).
-
-| Execution-tested set | Before pass@1 | After pass@1 | Delta |
-| --- | ---: | ---: | ---: |
-| 20 deliberately selected failures | 0/20 (0%) | 1/20 (5%) | **+5 percentage points** |
-| 20 subsequent, independent holdout tasks | 3/20 (15%) | 5/20 (25%) | **+10 percentage points** |
-
-The repaired edit-set task was `HumanEval/7`. The holdout gained passes on `HumanEval/29` and `HumanEval/43`, with **no formerly passing holdout task regressing**. On the holdout, eight generated answers changed and twelve remained identical. These are verified one-generation-per-task execution results, **not proof of general coding-skill improvement**: a 20-task holdout has high statistical uncertainty, and the gain needs replication on a broader, untouched benchmark. Neither the selected 20 failures nor the 20 holdout tasks should be reused to choose future edits.
-
-### Session 006: CPU two-layer batch-edit experiment
-
-`python -m tinycoder.rome_batch --device cpu --threads 4` is a **CPU-approved** follow-up. It loads the original `Qwen/Qwen2.5-Coder-0.5B` base weights, reuses the 20 previously verified failure/reference pairs, and patches all 24 layer outputs to trace how strongly they affect the first reference token. It reports the causal ranks of candidate layers **8 and 12** before applying a sequential, **multi-key** ridge-regularized closed-form update to each layer's `mlp.down_proj`.
-
-The two low-rank factor pairs are exported to `experiments/rome_batch_factors.safetensors` with a maximum **1.5% per-layer Frobenius norm change** and checked for finite values. No gradients, backpropagation, optimizer steps, or adapter training are used. Key-value capture and batched generation run on the selected device (CPU in the free hosted workflow; CUDA remains optional). Execution tests run in up to four parallel, restricted Docker containers, using **50 fresh HumanEval tasks `HumanEval/44`–`HumanEval/93`** never used in the earlier 20-failure experiment or its 20-task holdout. Evaluation uses deterministic greedy generation (one output per task), checks the original HumanEval assertions, and logs passed/failed IDs before and after.
-
-The method uses a batch Woodbury projection, with the requested two target layers and residual splitting. This is **MEMIT-inspired**; it does *not* reproduce the original MEMIT's optimized target representations or demonstrate general capability transfer. Read the [MEMIT paper](https://openreview.net/forum?id=MkbcAHIYgyS) for the underlying editing research.
-
-**CPU run:** The [standard `ubuntu-latest` workflow](.github/workflows/rome-batch-cpu.yml) installs CPU-only PyTorch, sets `torch.set_num_threads(4)`, runs the full batch experiment and automatically commits verified results and factor tensors if the job succeeds. The earlier [manual GPU workflow](.github/workflows/rome-batch-gpu.yml) remains available for an explicitly configured CUDA runner. The [unit-test workflow](.github/workflows/rome-batch-checks.yml) checks algebra independently. No paid GPU is required for the CPU route.
-
-<!-- ROME-BATCH-RESULTS-START -->
-**Batch experiment:** completed on CPU / 4 PyTorch threads (cpu). A direct two-layer (8, 12) MEMIT-style update, at most 1.5% of the original Frobenius norm per layer, changed independent HumanEval pass@1 **4/50 → 3/50** (**-2.0 percentage points**). New passes: None; regressions: HumanEval/55.
-
-| Independent 50-task HumanEval holdout | Baseline | After two-layer edit |
-| --- | ---: | ---: |
-| Passing tasks | 4/50 | 3/50 |
-| Failing tasks | 46/50 | 47/50 |
-| pass@1 | 8.0% | 6.0% |
-
-**Passed IDs before:** HumanEval/54, HumanEval/55, HumanEval/60, HumanEval/66.
-
-**Passed IDs after:** HumanEval/54, HumanEval/60, HumanEval/66.
-
-**Failed IDs before:** HumanEval/44, HumanEval/45, HumanEval/46, HumanEval/47, HumanEval/48, HumanEval/49, HumanEval/50, HumanEval/51, HumanEval/52, HumanEval/53, HumanEval/56, HumanEval/57, HumanEval/58, HumanEval/59, HumanEval/61, HumanEval/62, HumanEval/63, HumanEval/64, HumanEval/65, HumanEval/67, HumanEval/68, HumanEval/69, HumanEval/70, HumanEval/71, HumanEval/72, HumanEval/73, HumanEval/74, HumanEval/75, HumanEval/76, HumanEval/77, HumanEval/78, HumanEval/79, HumanEval/80, HumanEval/81, HumanEval/82, HumanEval/83, HumanEval/84, HumanEval/85, HumanEval/86, HumanEval/87, HumanEval/88, HumanEval/89, HumanEval/90, HumanEval/91, HumanEval/92, HumanEval/93.
-
-**Failed IDs after:** HumanEval/44, HumanEval/45, HumanEval/46, HumanEval/47, HumanEval/48, HumanEval/49, HumanEval/50, HumanEval/51, HumanEval/52, HumanEval/53, HumanEval/55, HumanEval/56, HumanEval/57, HumanEval/58, HumanEval/59, HumanEval/61, HumanEval/62, HumanEval/63, HumanEval/64, HumanEval/65, HumanEval/67, HumanEval/68, HumanEval/69, HumanEval/70, HumanEval/71, HumanEval/72, HumanEval/73, HumanEval/74, HumanEval/75, HumanEval/76, HumanEval/77, HumanEval/78, HumanEval/79, HumanEval/80, HumanEval/81, HumanEval/82, HumanEval/83, HumanEval/84, HumanEval/85, HumanEval/86, HumanEval/87, HumanEval/88, HumanEval/89, HumanEval/90, HumanEval/91, HumanEval/92, HumanEval/93.
-
-See [`experiments/rome_batch_report.json`](experiments/rome_batch_report.json), [`experiments/rome_batch_predictions.json`](experiments/rome_batch_predictions.json), and [`experiments/rome_batch_factors.safetensors`](experiments/rome_batch_factors.safetensors). This limited holdout alone does not prove general improvement.
-<!-- ROME-BATCH-RESULTS-END -->
-
-On a CPU host with 4 available cores, Docker and CPU PyTorch installed:
-
-```powershell
-python -m tinycoder.rome_batch --device cpu --threads 4 --holdout-start 44 --holdout-count 50 --max-relative-change 0.015 --batch-size 4 --workers 4
-```
-
-This process edits only the in-memory model, not the downloaded base checkpoint. The factor file permits later reconstruction or reversal of both low-rank updates. **The CPU fallback is explicitly authorized for this session; its numeric results must still be measured.**
-
-**Safety:** Do not run generated code outside a sandbox. `tinycoder/sandbox_eval.py` refuses execution when Docker is unavailable. The Docker container has no network, uses an unprivileged user, read-only filesystem, dropped capabilities and strict resource limits. No sandbox is a guarantee against all attacks.
-
-**First internal-matrix result:** [GitHub Actions run](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41744954761) succeeded. A rank-one edit to layer 12's `mlp.down_proj` was bounded to **0.2% of the original matrix Frobenius norm**, and all matrix values remained finite. The targeted last-token output moved closer to the selected reference activation (Euclidean distance **3.1938 → 2.9704**, about 7% smaller). However, **all four generated answers remained identical**, and the simple static checks stayed **2/4 before and after**. This is a successful numerical intervention, **not an accuracy improvement**. Download `internal-001-results` from that run for the exact factor tensors and responses.
-
-## Which AI are we starting with?
-
-| Model | Size | Purpose |
+| Verification | Result | What it means |
 | --- | ---: | --- |
-| [Qwen2.5-Coder-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B-Instruct) | ~0.5B parameters | Default: small instruction-following coding assistant; our LoRA training target (Apache 2.0) |
-| [Tiny StarCoder Python](https://huggingface.co/bigcode/tiny_starcoder_py) | 164M parameters | Smaller comparison model for **Python completion**, not a strong assistant (BigCode OpenRAIL-M) |
+| Real browser interactions | **15/15** | Create/select projects, create/edit/filter/search/delete tasks, update progress, refresh, and verify persistence |
+| Public module checks | **82/82** | Checks across Python logic, Node store, Express API, React UI, and CSS |
+| Frozen holdout, Python logic | **2/2** | Held-out logic cases, not used to choose the final candidate |
+| Frozen holdout, Node store | **11/11** | Independent store checks |
+| Frozen holdout, Express API | **8/8** | Independent route checks |
+| Final application modules parsing | **5/5** | All selected role modules are syntactically valid |
+| Qwen-authored application-specific code | **676 lines** | Model-written selected code across five modules, excluding trusted scaffolding |
 
-These are **small practical research candidates**, not a verified claim about the world's smallest neural network. Their coding capabilities are limited. A small model cannot acquire a frontier model's complete general intelligence just through a few fine-tuning sessions, and OpenAI's proprietary model weights are not available for copying. Instead, we can train on carefully reviewed example answers and measure changes.
+The five role modules were Python progress logic, a persistent Node store, Express routes, React UI, and CSS. The build, server wiring, bridge, fixed public-contract anchors, piece-assembly rules, and evaluation harness were **trusted scaffolding**. The archived lineage ties selected source to actual Qwen generations; a supervising system searched, tested, selected, and guided local repairs.
 
-## First run (Windows PowerShell)
+The final experiment recorded **593 generations, 269,058 output tokens, and approximately 10.7 hours of generation time** on a 2-CPU setup. These costs matter: **15/15 is an end-to-end result for a heavily assisted build, not native model `pass@1`.** See the [full experiment report](docs/ZAI_AUTONOMOUS_FULLSTACK.md) for public/holdout separation, model attribution, limitations, and reproduction details.
 
-Requirements: **Python 3.10+** and sufficient free RAM/disk space to download and load a model. The default model's half-precision weights are roughly 1 GB, but inference and training use more RAM. CPU is supported for inference; training on CPU can be extremely slow. A CUDA GPU or cloud notebook is recommended for training.
+## The research tracks
+
+| Track | What we are testing | Evidence so far |
+| --- | --- | --- |
+| **Direct weight-space programming** | Reversible, algebraically computed changes to model matrices, without gradients or LoRA | Real tensor interventions are possible, but **no repeatable general full-stack skill gain has been established** |
+| **Execution-guided code generation** | Small code segments, public checks, error feedback, bounded retries, and deterministic assembly | **TaskFlow works in a real browser** under this assisted process |
+| **Learning from corrections** | Whether diagnosed errors help Qwen avoid analogous failures | Browser-feedback repairs helped TaskFlow; an initial independent-domain transfer test showed **no measurable benefit** |
+| **Independent application generation** | Whether the process carries over to new products rather than one carefully solved app | **Next evaluation**, not yet demonstrated by TaskFlow |
+
+### Why the distinction matters
+
+- **Native model capability:** what unchanged Qwen produces from a fresh prompt, without scaffold or test-time search.
+- **Agent-system capability:** what the same Qwen can accomplish with decomposition, examples, multiple samples, tests, feedback, and supplied integration code.
+- **Permanent model improvement:** a reproducible better result on *unseen tasks* when only model weights change. We **have not demonstrated this for full-stack development**.
+
+Our research reports track these separately. A polished interface by itself will not count as evidence that the model's neurons learned a transferable programming skill.
+
+## Milestones and next steps
+
+| Phase | Status | Goal / result |
+| --- | --- | --- |
+| Early tensor-edit and coding benchmarks | <code>Completed experiments</code> | Established baselines, bounded edits, and negative as well as positive results |
+| Small cross-language application slices | <code>Completed experiments</code> | Tested Python + Express + React integration under different scaffolds |
+| **TaskFlow V1 (Session 033)** | **Milestone achieved** | 15/15 real browser steps with full source lineage |
+| **TaskFlow V2 visual quality** | **Planned** | Strong design system, modern layout, accessible controls, responsive desktop/tablet/mobile behavior, while retaining tests |
+| **MediVault Lite independent application** | **Planned** | New document-management domain; measure whether staged generation genuinely transfers |
+| **Model-native full-stack competence** | **Long-term research** | Larger, unseen task suites, independent debugging, and honest before/after weight-edit evaluation |
+
+The next visual/intelligence study will compare the unchanged baseline against increasingly assisted generation on **a second application**. It should preserve all source-attribution records, full test evidence, execution budgets, and real application screenshots. Planned milestones are not presented as finished work.
+
+## Evidence, history, and reproducibility
+
+- **[Session 033 technical report](docs/ZAI_AUTONOMOUS_FULLSTACK.md):** exact module results, provenance, 593-attempt budget, browser repair record, independent transfer result, and weight-space limitations.
+- **[TaskFlow source provenance](apps/taskflow-qwen/ORIGIN.json):** module-level Qwen-versus-scaffold attribution.
+- **[TaskFlow browser run](experiments/zai-taskflow/reports/browser_test.json):** machine-readable step outcomes; see also the [frozen holdout report](experiments/zai-taskflow/reports/holdout_evaluation.json).
+- **[Architectural-circuits report](docs/ZAI_ARCHITECTURAL_CIRCUITS.md):** causal probes and bounded weight edits, including failures to generalize.
+- **[Full historical README](README_RESEARCH_ARCHIVE.md):** earlier sessions, setup commands, benchmark tables, and experiment notes, preserved rather than deleted.
+- **[Agent and safety protocol](AGENTS.md):** experiment boundaries and attribution standards.
+
+The TaskFlow report documents how to reproduce its build and browser checks in an appropriate isolated environment. **Treat all model-generated code as untrusted**: do not execute archived candidates on your normal machine. The project uses restricted evaluators and local-only (`127.0.0.1`) browser testing; a source repository or screenshot is not a permanently hosted live application.
+
+## Get started with the research code
+
+For the general experiment framework on Windows PowerShell:
 
 ```powershell
 git clone https://github.com/7clan/ai-wieght-optimiization.git
@@ -421,309 +92,8 @@ python -m unittest discover -s tests -v
 python -m tinycoder train --dry-run
 ```
 
-The first real model command downloads weights from Hugging Face into the local cache (internet required). Nothing is sent to a hosted chatbot API.
+The `train --dry-run` command is a configuration check, **not a training run**. The older LoRA experiment is archived; the active weight-space track does not train or fine-tune parameters. Consult the [historical guide](README_RESEARCH_ARCHIVE.md) and [repository agent instructions](AGENTS.md) before running specific experiments. The full pretrained model checkpoints are not committed to this repository.
 
-### 1. Ask the baseline model to code
+## What success would look like
 
-```powershell
-python -m tinycoder chat "Write a Python function to find prime numbers"
-```
-
-### Direct edit: change one weight row yourself (our active method)
-
-This is a simple **gradient-free, single-token** edit to the model's output-weight matrix. It uses the final hidden vector for a specific prompt to calculate an additive row update that increases the target token's logit. It changes actual base-model weights in memory, then saves a small reversible delta — no backpropagation, optimizer, fine-tuning or new adapter.
-
-```powershell
-python -m tinycoder edit "Write only Python code defining max_of_three(a, b, c), returning the greatest argument." --target-token def --boost 2 --output edits/direct-001
-python -m tinycoder chat "Write only Python code defining max_of_three(a, b, c), returning the greatest argument." --edit edits/direct-001
-python -m tinycoder eval --edit edits/direct-001 --report outputs/direct-after.json
-```
-
-See `edits/direct-001/edit.json` for the exact targeted token, weight-delta size and before/after logits. Remove `--edit` to return to the untouched model. The original weight checkpoint remains intact. One token being more probable **does not mean better code**, so inspect generated answers on multiple prompts and check for regressions. This is a teaching demonstration, **not an implementation of ROME or MEMIT**.
-
-You can run the same direct-edit demonstration in GitHub-hosted compute using **Actions → Direct weight edits - no training**. Previous runs preserve their own artifacts. A push changing that workflow file starts a new experiment; future runs can also be started manually.
-
-**Measured direct-edit trials:**
-
-| Trial | Edit | Target-token rank | Generated answers changed | AST static checks |
-| --- | --- | --- | --- | --- |
-| [Direct 001](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41742984583) | +2 next-token logit | Still below top | 0/4 | 2/4 before → 2/4 after |
-| [Direct 002](https://github.com/7clan/ai-wieght-optimiization/actions/runs/41743605402) | +5 next-token logit | 6th → 1st (`def`) | 2/4 | 2/4 before → 2/4 after |
-
-In Direct 002, `max_of_three` began with `def` instead of an introductory sentence; this better matches the "only code" instruction for that prompt. Another prompt (`gcd`) changed too, but its output contained stray Markdown, showing why stronger edits need regression checks. **These are format and next-token effects; neither trial proves improved coding correctness or general intelligence.** Download the artifact ZIP from the linked workflow page to inspect the exact saved delta and per-prompt outputs.
-
-For more sophisticated targeted weight edits, read the original research on [ROME](https://papers.nips.cc/paper_files/paper/2022/hash/6f1d43d5a82a37e89b0665b33bf3a182-Abstract-Conference.html) and [MEMIT](https://openreview.net/forum?id=MkbcAHIYgyS). Those methods primarily edit *specific factual associations*, not broad coding competence.
-
-Or inspect the smaller **completion-only** model:
-
-```powershell
-python -m tinycoder chat "def fibonacci(n):" --model bigcode/tiny_starcoder_py
-```
-
-For **lower-memory inference**, the author also publishes a 4-bit GGUF build that works with llama.cpp. This is a separate inference format, *not* the trainable Transformers checkpoint used by the commands above:
-
-```powershell
-winget install llama.cpp
-llama cli -hf Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF:Q4_K_M
-```
-
-Reference: [official Qwen GGUF model card](https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B-Instruct-GGUF).
-
-### 2. Establish a baseline before tuning
-
-```powershell
-python -m tinycoder eval --report outputs/before.json
-```
-
-The four held-out challenges live in `data/eval.jsonl`. **This first benchmark checks only Python syntax and the expected top-level function name**, not whether the function actually works. Keep and manually review the generated answers. We will add isolated functional tests in later sessions; do not execute untrusted AI-generated code directly on your laptop.
-
-### Archived approach: LoRA training (not used for new sessions)
-
-Edit or add carefully reviewed prompt/answer examples in `data/train.jsonl`. The 12 included examples are only a **smoke-test dataset**, too small to support claims of improved general coding ability. Do not include secrets, proprietary code, or evaluation prompts in training data.
-
-```powershell
-python -m tinycoder train --output checkpoints/session-001
-```
-
-This uses [LoRA](https://huggingface.co/docs/peft/quicktour): the base model is frozen and small extra weight matrices are learned. This is real fine-tuning, but it doesn't directly rewrite every original base-model weight. To use the trained model, load the original checkpoint together with the adapter:
-
-```powershell
-python -m tinycoder chat "Write a Python function to find prime numbers" --adapter checkpoints/session-001
-python -m tinycoder eval --adapter checkpoints/session-001 --report outputs/after.json
-```
-
-Compare `outputs/before.json` and `outputs/after.json`, inspect the responses and record what improved **and what regressed**. No improvement is claimed until an independent evaluation supports it.
-
-### 4. Look inside the weights
-
-```powershell
-python -m tinycoder inspect --filter q_proj --limit 5
-python -m tinycoder inspect --adapter checkpoints/session-001 --filter lora_ --limit 10
-```
-
-The statistics show layer names, tensor shapes, means, standard deviations, and which weights are trainable. A single weight does not correspond to a single concept like "Python skill"; blind manual edits tend to harm behavior.
-
-## Session log
-
-| Session | Dataset | Intervention | Evaluation | Result |
-| --- | --- | --- | --- | --- |
-| 000 | 12 toy examples / 4 held-out prompts | Baseline only | AST checks + manual review | **Not yet run** |
-| 001 | Same toy training examples | LoRA r=8 on attention q/v projections (archived) | Held-out static checks | Workflow succeeded; not part of current editing method |
-| 002 | 4 prompts | Direct output-row edit (+2 logit) | Rank and AST checks | Changed weight, no answers changed |
-| 003 | 4 prompts | Direct output-row edit (+5 logit) | Rank and AST checks | `def` rank 6→1; 2 answers changed; AST stayed 2/4 |
-| 004 | 4 prompts | Internal layer 12 `mlp.down_proj` rank-one update (0.2% cap) | Activation distance + AST checks | Distance 3.1938→2.9704; no answers changed; AST stayed 2/4 |
-| 005 | 20 selected HumanEval failures + 20 untouched holdouts | Causal-scan-selected layer 8 `mlp.down_proj` rank-one update (1% cap) | Restricted Docker execution, greedy pass@1 | Selected 0/20→1/20; holdout 3/20→5/20; preliminary +10 pp holdout |
-| 006 | Same 20 failure/reference pairs; independent HumanEval/44–93 holdout | CPU causal scan + layers 8/12 multi-key ridge updates (1.5% cap per layer) | 50 Docker-executed tasks, greedy pass@1 | 4/50 → 3/50 (8% → 6%); **−2 percentage points**, one regression |
-
-### Historical first experiment in GitHub Actions
-
-The `.github/workflows/model-session.yml` workflow records the earlier LoRA experiment. **Do not re-run it for our new direct-edit plan.** Our active workflow is `direct-edit-session.yml`. The older reports remain useful as a comparison, but no improvement is assumed.
-
-## Project layout
-
-- `tinycoder/model.py`: model loading and local generation
-- `tinycoder/data.py`: JSONL validation and answer-only training labels
-- `tinycoder/__main__.py`: `chat`, `train`, `eval`, `inspect` commands
-- `tinycoder/evaluation.py`: non-executing static checks
-- `tinycoder/direct_edit.py`: direct, reversible row-level weight editing without training
-- `data/train.jsonl`: starter demonstrations (not a serious training corpus)
-- `data/eval.jsonl`: held-out prompts
-- `tests/`: offline unit tests; `.github/workflows/`: CI
-- `checkpoints/`, `outputs/`: created locally and excluded from git
-
-## Limitations and research hygiene
-
-- Tiny models may generate wrong or insecure code. Always review their output.
-- The earlier `eval` command checks AST structure only; the newer HumanEval experiment **does execute generated code, exclusively in a restricted Docker sandbox**. AST validity alone **is not correctness**; a sandbox is not a perfect security boundary.
-- Keep evaluation examples separate from training. Build a much larger, independent benchmark before drawing conclusions.
-- Running inference is feasible on modest PCs, especially via quantization; local fine-tuning may need a GPU/cloud environment.
-- Do not commit `.env`, model weights, private data, or large checkpoints.
-- See the upstream model cards for license terms; the StarCoder license differs from Qwen's.
-
-
-## Session 007 — Four parallel, isolated direct-weight experiments
-
-Four independent branches use the same pristine 50-task HumanEval comparison set (`HumanEval/94` through `HumanEval/143`). All generated code is execution-tested only in restricted Docker containers. The base model remains unmodified on disk.
-
-- [`exp/01-transplant`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/01-transplant): Layer 18 reference outputs projected into layer 8, max 1.5% norm edit.
-- [`exp/02-svd-zeroing`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/02-svd-zeroing): remove two syntax-associated SVD components each from layer 8 `self_attn.o_proj` and `mlp.down_proj`.
-- [`exp/03-norm-break`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/03-norm-break): layer 8 stress trials at 3%, 5%, and 10%, restarted from base weights each time.
-- [`exp/04-memit-single-layer`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/04-memit-single-layer): layer 8-only regularized multi-key edit, max 1.5% norm edit.
-
-<!-- HIGH-RISK-EXPERIMENTS-START -->
-### Session 007: four independent high-risk CPU branches
-
-Every branch used the untouched **HumanEval/94–143** comparison set (50 tasks) and the original base Qwen2.5-Coder-0.5B checkpoint. The same holdout is now **used for model comparison**; future choices need a different final validation set.
-
-| Isolated branch and method | Baseline pass@1 | Edited pass@1 | Change | New passes | Regressions |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| [`01-transplant`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/01-transplant) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
-| [`02-svd-zeroing`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/02-svd-zeroing) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
-| [`03-norm-break`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/03-norm-break) (3%) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
-| [`03-norm-break`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/03-norm-break) (5%) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
-| [`03-norm-break`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/03-norm-break) (10%) | 2/50 (4%) | 3/50 (6%) | **+2.0 pp** | 1 | 0 |
-| [`04-memit-single-layer`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/04-memit-single-layer) | 2/50 (4%) | 2/50 (4%) | **+0.0 pp** | 0 | 0 |
-
-Each branch's exact passed/failed task IDs, activation measurements, tensor changes, and predictions are archived in `experiments/exp0*_report.json`, `experiments/exp0*_predictions.json`, and reversible `experiments/exp0*_factors.safetensors`.
-
-**Caution:** SVD projection gaps are only *associated* with syntax-invalid examples. Cross-layer transplantation is not established as a way to transfer skills. The 3%, 5%, and 10% stress trials can locate only the first *tested* failure threshold, not an exact continuous breakdown point. Results do not prove general coding improvements.
-<!-- HIGH-RISK-EXPERIMENTS-END -->
-
-## Session 008 — Out-of-sample confirmation and SVD/MEMIT fusion
-
-The original 10% Layer 8 `mlp.down_proj` factors are pinned to commit
-[`b48673a`](https://github.com/7clan/ai-wieght-optimiization/commit/b48673a26e7ef6a6220aca331dfc8c0024944aa8).
-The new workflow first evaluates the preselected candidate on the never-used
-HumanEval/144–163 block, then combines the original syntax-associated layer 8
-`self_attn.o_proj` SVD subtraction factors with the archived 10% MLP edit on
-[`exp/05-svd-norm-fusion`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/05-svd-norm-fusion).
-No training is performed. Results are populated only by a completed sandboxed
-GitHub Actions run; the fusion comparison is not another independent holdout.
-
-<!-- FUSION-VALIDATION-START -->
-### Session 008: out-of-sample confirmation and Layer 8 hybrid fusion
-
-**Final unused holdout:** the preselected 10% Layer 8 edit was evaluated first on HumanEval/144–163 (20 tasks), before constructing or scoring the hybrid.
-
-| Fresh 20-task validation | Baseline pass@1 | Edited pass@1 | Change | AST valid before | AST valid after | New passes | Regressions |
-| --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| Preselected 10% Layer 8 MEMIT | 0/20 (0.0%) | 0/20 (0.0%) | **+0.00 pp** | 0/20 | 5/20 | None | None |
-| Archived 1.5% Layer 8 MEMIT comparator | 0/20 (0.0%) | 0/20 (0.0%) | **+0.00 pp** | 0/20 | 1/20 | None | None |
-
-**70-task comparison (HumanEval/94–163):** previously recorded results on 94–143 were combined with the 20-task validation results for each MEMIT candidate. The new SVD-hybrid was executed on all 70 tasks. All rows use identical task IDs.
-
-| Intervention | Baseline pass@1 | Edited pass@1 | Change | AST valid before | AST valid after | New passes | Regressions |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| 1.5% Layer 8 MEMIT | 2/70 (2.9%) | 2/70 (2.9%) | **+0.00 pp** | 7/70 | 9/70 | None | None |
-| 10% Layer 8 MEMIT | 2/70 (2.9%) | 3/70 (4.3%) | **+1.43 pp** | 7/70 | 18/70 | HumanEval/122 | None |
-| [SVD + 10% hybrid](https://github.com/7clan/ai-wieght-optimiization/tree/exp/05-svd-norm-fusion) | 2/70 (2.9%) | 3/70 (4.3%) | **+1.43 pp** | 7/70 | 22/70 | HumanEval/122 | None |
-
-The hybrid removes the two previously identified singular components from layer 8 `self_attn.o_proj`, then applies the archived 10% multi-key Layer 8 `mlp.down_proj` edit. No layer 12 change, gradients, optimizer steps, or training.
-
-**Interpretation:** AST syntax validity only means `ast.parse(prompt + completion)` succeeded; it is not execution correctness. pass@1 means all official HumanEval assertions passed inside restricted Docker containers. The 70-task hybrid comparison is **not** an independent validation of the hybrid because these tasks have already been used for prior comparisons.
-
-Evidence: [`final_holdout_validation.json`](experiments/final_holdout_validation.json), [`hybrid_fusion_report.json`](experiments/hybrid_fusion_report.json), [`hybrid_fusion_comparison.json`](experiments/hybrid_fusion_comparison.json), [`hybrid_fusion_predictions.json`](experiments/hybrid_fusion_predictions.json), and [reversible `hybrid_fusion_factors.safetensors`](experiments/hybrid_fusion_factors.safetensors).
-<!-- FUSION-VALIDATION-END -->
-
-## Session 009 — Attention causal tracing and logic-alignment
-
-The new experiment will causally patch `self_attn.o_proj` outputs in layers 10–18
-on the original 20 failure/reference examples, then identify two target heads
-within layers 12–16 from loop-state and variable-reassignment code proxies.
-It will apply capped rank-one `o_proj` updates alongside the **unchanged
-archived 10% Layer 8 MLP** factors from
-[commit `e100c62`](https://github.com/7clan/ai-wieght-optimiization/commit/e100c628cd8fcf3c500e5c39070168e213b208aa).
-The separate branch is
-[`exp/06-attn-steering`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/06-attn-steering).
-
-All 70 HumanEval/94–163 tasks have already been used in previous comparisons.
-The new results will be exploratory and scored only in isolated Docker containers.
-
-<!-- ATTENTION-STEERING-START -->
-*Session 009 causal head tracing and execution evaluation pending; no scores claimed yet.*
-<!-- ATTENTION-STEERING-END -->
-
-## Session 031 — autonomous self-repair architect, deployed live (exp/29-selfrepair-deployment)
-
-The newest track pushes the frozen 0.5B model further with **zero teacher
-bytes**: Qwen2.5-Coder-0.5B must write a harder five-module full-stack app —
-**DevMetrics**, a developer time-tracking dashboard with Python analytics,
-a validated JSON store, a six-route Express API (including 400 invalid-input
-handling), and a React UI with a project filter and a *required offline demo
-mode* — and then repair its own failing modules using nothing but public
-execution feedback from the isolated Docker evaluator, round after round.
-
-Every scored round is **deployed as a live site** built exactly from the
-model's own bytes (React runtime and loader are disclosed, pinned
-infrastructure): one interactive page and one static report card per round,
-plus a mission dashboard, under GitHub Pages of this repository. Teacher
-corrections and human fixes are never shown as model achievements — the
-collector refuses any module that is not a recorded raw model output.
-
-- Live mission gallery: <https://7clan.github.io/ai-wieght-optimiization/>
-- Session gallery: <https://7clan.github.io/ai-wieght-optimiization/gallery/session031/>
-- Protocol and rules: [AGENTS.md](AGENTS.md) (Session 031 section)
-- Harness: `tinycoder/session031.py`, contract `tinycoder/session031_contract.py`,
-  evaluator `tinycoder/session031_worker.js` (jsdom behavioral offline check),
-  collector `tinycoder/collect_session031.py`, CI
-  [session031-selfrepair-live.yml](.github/workflows/session031-selfrepair-live.yml)
-
-<!-- SESSION031-RESULTS-START -->
-**Pending first measured run.** The baseline/self-repair scores, holdout
-outcome and deployed round links will be published here by the collector after
-the GitHub Actions run completes. No speculative numbers.
-<!-- SESSION031-RESULTS-END -->
-
-<!-- SESSION032-RESULTS-START -->
-**Measured run — DevMetrics (branch exp/32-fim-selfrepair).** Frozen
-Qwen2.5-Coder-0.5B, zero teacher bytes, zero human corrections. Same frozen
-DevMetrics contract as Session031; self-repair now also splices native
-fill-in-the-middle completions anchored at the evaluator-reported failing
-line (234 FIM attempts, 2 accepted). 17 sweep(s), 276 generations, 96734 output
-tokens, 14642.9 s wall time. Independent holdout — untouched greedy baseline:
-**1/5** modules, integrated: no. Final: **1/5** modules, integrated:
-**no**. Final module results: logic: FAIL, store: FAIL, api: FAIL, ui: FAIL, css: PASS.
-
-| sweep | public passes | checks | FIM acc/att | integrated | deployed sweep |
-| ---: | ---: | ---: | ---: | --- | --- |
-| 0 | 1/5 | 6 | 0/0 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/00/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/00/report.html) |
-| 1 | 1/5 | 7 | 0/6 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/01/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/01/report.html) |
-| 2 | 1/5 | 7 | 0/9 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/02/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/02/report.html) |
-| 4 | 1/5 | 7 | 0/15 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/04/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/04/report.html) |
-| 5 | 1/5 | 7 | 0/20 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/05/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/05/report.html) |
-| 6 | 1/5 | 7 | 0/34 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/06/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/06/report.html) |
-| 8 | 1/5 | 7 | 0/62 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/08/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/08/report.html) |
-| 9 | 1/5 | 7 | 1/82 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/09/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/09/report.html) |
-| 10 | 1/5 | 7 | 1/102 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/10/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/10/report.html) |
-| 11 | 1/5 | 7 | 1/122 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/11/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/11/report.html) |
-| 12 | 1/5 | 7 | 1/142 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/12/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/12/report.html) |
-| 13 | 1/5 | 8 | 2/162 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/13/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/13/report.html) |
-| 14 | 1/5 | 8 | 2/180 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/14/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/14/report.html) |
-| 15 | 1/5 | 8 | 2/198 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/15/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/15/report.html) |
-| 16 | 1/5 | 8 | 2/216 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/16/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/16/report.html) |
-| 17 | 1/5 | 8 | 2/234 | no | [live](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/17/index.html) · [report](https://7clan.github.io/ai-wieght-optimiization/gallery/session032/rounds/17/report.html) |
-
-Live mission gallery: <https://7clan.github.io/ai-wieght-optimiization/> ·
-Session gallery: <https://7clan.github.io/ai-wieght-optimiization/gallery/session032/>
-
-The static gallery runs the model's required offline demo mode with vendored
-React 18.3.1 UMD; the Express/Python halves are verified by the restricted
-evaluator (byte-identical Session031 worker logic; Docker parity re-validated
-per report). The jsdom check is a behavioral DOM check, not a real browser
-click test. No production-readiness or frontier-model parity claim.
-<!-- SESSION032-RESULTS-END -->
-
-## Session 010 — Architectural-reasoning circuits (ArchBench)
-
-A new dedicated branch [`exp/zai-architectural-circuits`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/zai-architectural-circuits)
-introduces **ArchBench**, a 112-task architectural-reasoning benchmark
-(variable tracking, interface contracts, JavaScript reasoning, cross-component
-consistency) with fixed dev/val/holdout partitions and execution-verified gold
-answers. Zero HumanEval IDs are reused. Causal counterfactual patching
-localizes contract/cross-component information to **layer 16 MLP** (11/11 task
-consistency; head 10 of layer 16 alone carries most of the effect) and variable
-tracking to **layer 14 MLP**. Bounded (≤1.5%) multi-key contrastive steering
-edits at those sites improve the construction set (CON 6/12→8/12) with zero
-losses and zero code-perplexity cost, and same-layer edits compose additively
-(24°–51° principal angles). On the frozen holdout, **no candidate transfers**
-(0 gained tasks; the variable-tracking edit loses 2). The full method,
-evidence, and negative-result discussion live in
-[`docs/ZAI_ARCHITECTURAL_CIRCUITS.md`](docs/ZAI_ARCHITECTURAL_CIRCUITS.md).
-
-<!-- ARCHCIRCUITS-RESULTS-START -->
-### Session 010 measured results (frozen holdout, 32 tasks, greedy)
-
-| Intervention | Holdout score | Gained | Lost | Unrelated-code NLL change |
-| --- | ---: | ---: | ---: | ---: |
-| Untouched baseline | 18/32 (56.2%) | — | — | — |
-| L16 contract steer (`con_L16`, 1.38%) | 18/32 (56.2%) | 0 | 0 | −0.0013 |
-| L16 cross-component steer (`xcom_L16`) | 17/32 (53.1%) | 0 | 1 | −0.0009 |
-| L16 joint CON+XCOM subspace | 18/32 (56.2%) | 0 | 0 | −0.0018 |
-| Sequential con+xcom | 18/32 (56.2%) | 0 | 0 | −0.0025 |
-| L14 variable-tracking steer (`var_L14`) | 16/32 (50.0%) | 0 | 2 | −0.0001 |
-
-Construction-set effects did not generalize: CON improved 6/12→8/12 on the
-dev tasks whose error keys built the edit, and the val/holdout gradient
-(+3.1 pp → 0 pp) shows a construction-set effect rather than a transferable
-skill. No claim of improved general coding ability is made.
-<!-- ARCHCIRCUITS-RESULTS-END -->
+The goal is not merely to produce a screenshot that resembles a modern app. Success means a small coding model can **reliably build and debug previously unseen full-stack applications**, with transparent assistance costs—and that any claimed *model improvement* survives separate, frozen evaluations. TaskFlow V1 is our clearest working milestone so far, and a starting point for that more demanding test.
