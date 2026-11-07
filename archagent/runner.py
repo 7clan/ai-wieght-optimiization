@@ -626,7 +626,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("command",
                     choices=["fingerprint", "stage-a", "develop", "holdout",
-                             "build-store", "build-api", "smoke"])
+                             "build-store", "build-api", "build-ui",
+                             "smoke"])
     ap.add_argument("--role", choices=list(contracts.ROLES))
     ap.add_argument("--docs", action="store_true",
                     help="documentation retrieval condition")
@@ -789,6 +790,44 @@ def main() -> None:
                 "origin": "QWEN (staged route pieces)",
             }
             state.setdefault("in_progress", {}).pop("api", None)
+            _save_state(args.state, state)
+        print(json.dumps(report, indent=1)[:500])
+        return
+
+    if args.command == "build-ui":
+        from archagent.model import FrozenModel
+        from archagent.ui_builder import build_ui
+        model = FrozenModel()
+        state = _load_state(args.state)
+        log_path = GEN / "generations_docs.jsonl"
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+
+        def log(entry):
+            with open(log_path, "a", encoding="utf8") as f:
+                f.write(json.dumps(entry) + "\n")
+
+        def checkpoint(pieces_):
+            state["staged_ui_pieces"] = pieces_
+            _save_state(args.state, state)
+
+        out = build_ui(model, log, docs=True, wall=args.wall,
+                       resume=state.get("staged_ui_pieces"),
+                       on_piece=checkpoint)
+        report = {"ok": out["ok"], "score": list(out.get("score", ())),
+                  "pieces": list(out.get("pieces", {}).keys()),
+                  "failures": out.get("result", {}).get("failures", [])[:8],
+                  "usage": model.usage()}
+        REPORTS.mkdir(parents=True, exist_ok=True)
+        (REPORTS / "build_ui_staged.json").write_text(
+            json.dumps(report, indent=1) + "\n", encoding="utf8")
+        if out.get("source"):
+            state.setdefault("selected", {})["ui"] = {
+                "source": out["source"],
+                "attempt_id": "ui-staged-assembly-final",
+                "score": list(out.get("score", ())),
+                "origin": "QWEN (staged ui pieces)",
+            }
+            state.setdefault("in_progress", {}).pop("ui", None)
             _save_state(args.state, state)
         print(json.dumps(report, indent=1)[:500])
         return

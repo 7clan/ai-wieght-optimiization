@@ -1,0 +1,24 @@
+{
+ "ok": true,
+ "score": [
+  13,
+  13
+ ],
+ "pieces": [
+  "state",
+  "api",
+  "addProject",
+  "addTask",
+  "toggle",
+  "editTask",
+  "removeTask",
+  "computed",
+  "jsx"
+ ],
+ "failures": [],
+ "usage": {
+  "generations": 1,
+  "total_new_tokens": 1100,
+  "total_seconds": 165.7
+ }
+}

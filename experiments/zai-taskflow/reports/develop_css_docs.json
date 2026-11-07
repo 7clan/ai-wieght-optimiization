@@ -1,0 +1,52 @@
+{
+ "role": "css",
+ "stopped": "pass",
+ "wall_seconds": 38.8,
+ "usage": {
+  "generations": 2,
+  "total_new_tokens": 315,
+  "total_seconds": 37.4
+ },
+ "best": {
+  "attempt_id": "css-r1-whole-greedy-1000",
+  "score": [
+   22,
+   22
+  ],
+  "source_sha256": "b4d28bac84151974fe7dc14396c4b0acfc0cddb39b75c1365fa2a6211d8f775a",
+  "result": {
+   "passed": true,
+   "syntax_valid": true,
+   "checks": {
+    "hasapp": true,
+    "hassidebar": true,
+    "hasproject-btn": true,
+    "hastask-row": true,
+    "haspriority-high": true,
+    "haspriority-medium": true,
+    "haspriority-low": true,
+    "hasprogress": true,
+    "hasprogress-fill": true,
+    "hasfilter-all": true,
+    "hasfilter-todo": true,
+    "hasfilter-doing": true,
+    "hasfilter-done": true,
+    "hassearch": true,
+    "hasoffline-badge": true,
+    "hasadd-form": true,
+    "media": true,
+    "media_count": true,
+    "app_flex": true,
+    "progress_bg": true,
+    "no_external": true,
+    "no_comments": true
+   },
+   "failures": [],
+   "error": null
+  }
+ },
+ "attempts": [
+  "css-r0-whole-greedy-1",
+  "css-r1-whole-greedy-1000"
+ ]
+}
