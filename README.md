@@ -4,7 +4,7 @@
 
 This project experiments with [Qwen2.5-Coder-0.5B](https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B), direct weight-space interventions, execution-guided generation, and a small-model coding-agent architecture. Our long-term goal is a model and development system that can plan, write, test, debug, and refine complete applications—not just produce convincing-looking code snippets.
 
-> **Current status — functional application milestone, not frontier-model parity.** The frozen 0.5B model produced the application-specific code for **TaskFlow**, a working project/task manager, using tightly staged generation, public-test feedback, and trusted infrastructure. Its Playwright browser run passed **15/15 interaction steps**. The result demonstrates an *assisted system*, not independent one-shot full-stack generation or a permanent increase in Qwen's abilities.
+> **Current status — partial application milestone, not frontier-model parity.** The frozen 0.5B model produced the application-specific code for **TaskFlow**, a project/task manager, using tightly staged generation, public-test feedback, and trusted infrastructure. Its original Playwright suite recorded **15/15 passing steps**, but a later source audit found that two steps did not actually validate search/filter behavior. The result demonstrates an *assisted system*, not independent one-shot full-stack generation or a permanent increase in Qwen's abilities.
 
 ## See what Qwen built: TaskFlow V1
 
@@ -17,7 +17,7 @@ This project experiments with [Qwen2.5-Coder-0.5B](https://huggingface.co/Qwen/Q
 
 </details>
 
-These are **real Playwright screenshots from a running React + Express application**, captured with synthetic data—not AI-generated concept art. **V1 is functional but visually unfinished.** Its cramped controls, weak hierarchy, spacing, and mobile presentation are targets for the next iteration. No production deployment is claimed.
+These are **real Playwright screenshots from a running React + Express application**, captured with synthetic data—not AI-generated concept art. **V1 has working core CRUD/persistence flows, but is visually and functionally unfinished.** Its cramped controls, weak hierarchy, spacing, nonfunctional search/filter controls, and mobile presentation are targets for the next iteration. No production deployment is claimed.
 
 **Explore:** [TaskFlow application source](apps/taskflow-qwen/) · [Detailed Session 033 report](docs/ZAI_AUTONOMOUS_FULLSTACK.md) · [Browser-test evidence](experiments/zai-taskflow/reports/browser_test.json) · [Source provenance](apps/taskflow-qwen/ORIGIN.json) · [GitHub Actions workflow](.github/workflows/session033-zai-autonomous-fullstack.yml)
 
@@ -25,7 +25,7 @@ These are **real Playwright screenshots from a running React + Express applicati
 
 | Verification | Result | What it means |
 | --- | ---: | --- |
-| Real browser interactions | **15/15** | Create/select projects, create/edit/filter/search/delete tasks, update progress, refresh, and verify persistence |
+| Original browser-suite outcome | **15/15 recorded** | Core project/task workflows, progress, refresh, and persistence were exercised; search/filter assertions were weak, and two screenshot steps are included |
 | Public module checks | **82/82** | Checks across Python logic, Node store, Express API, React UI, and CSS |
 | Frozen holdout, Python logic | **2/2** | Held-out logic cases, not used to choose the final candidate |
 | Frozen holdout, Node store | **11/11** | Independent store checks |
@@ -35,7 +35,7 @@ These are **real Playwright screenshots from a running React + Express applicati
 
 The five role modules were Python progress logic, a persistent Node store, Express routes, React UI, and CSS. The build, server wiring, bridge, fixed public-contract anchors, piece-assembly rules, and evaluation harness were **trusted scaffolding**. The archived lineage ties selected source to actual Qwen generations; a supervising system searched, tested, selected, and guided local repairs.
 
-The final experiment recorded **593 generations, 269,058 output tokens, and approximately 10.7 hours of generation time** on a 2-CPU setup. These costs matter: **15/15 is an end-to-end result for a heavily assisted build, not native model `pass@1`.** See the [full experiment report](docs/ZAI_AUTONOMOUS_FULLSTACK.md) for public/holdout separation, model attribution, limitations, and reproduction details.
+The final experiment recorded **593 generations, 269,058 output tokens, and approximately 10.7 hours of generation time** on a 2-CPU setup. These costs matter: **15/15 is the outcome of the original, imperfect browser suite for a heavily assisted build—not native model `pass@1` or proof that all visible controls work.** In the committed V1 React source, `.search` and `.filter-*` controls have no handlers; the old assertions did not check that nonmatching tasks were excluded. See the [full experiment report](docs/ZAI_AUTONOMOUS_FULLSTACK.md) and [original browser harness](archagent/browser_test.mjs) for the original results and test design.
 
 ## The research tracks
 
@@ -60,7 +60,7 @@ Our research reports track these separately. A polished interface by itself will
 | --- | --- | --- |
 | Early tensor-edit and coding benchmarks | <code>Completed experiments</code> | Established baselines, bounded edits, and negative as well as positive results |
 | Small cross-language application slices | <code>Completed experiments</code> | Tested Python + Express + React integration under different scaffolds |
-| **TaskFlow V1 (Session 033)** | **Milestone achieved** | 15/15 real browser steps with full source lineage |
+| **TaskFlow V1 (Session 033)** | **Partial milestone achieved** | Qwen-authored core app with documented browser result and full source lineage; search/filter behavior remains unimplemented |
 | **TaskFlow V2 visual quality** | **Planned** | Strong design system, modern layout, accessible controls, responsive desktop/tablet/mobile behavior, while retaining tests |
 | **MediVault Lite independent application** | **Planned** | New document-management domain; measure whether staged generation genuinely transfers |
 | **Model-native full-stack competence** | **Long-term research** | Larger, unseen task suites, independent debugging, and honest before/after weight-edit evaluation |
