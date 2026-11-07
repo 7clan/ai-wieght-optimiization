@@ -377,10 +377,15 @@ class Harness:
                 mem_block = (self.memory.prompt_block(role, feedback)
                              if self.memory else "")
                 hide_full = round_i >= 3  # seventh-amendment copy-rut break
+                browser_feedback = os.environ.get("BROWSER_FEEDBACK", "")
+                full_feedback = feedback
+                if browser_feedback:
+                    full_feedback = (feedback + " | REAL BROWSER TEST "
+                                     "FEEDBACK: " + browser_feedback)[:700]
                 rp = contracts.prompt(
                     role,
                     docs=retrieval.doc_block(role) if self.docs else "",
-                    feedback=feedback,
+                    feedback=full_feedback,
                     previous_excerpt=_prev_excerpt(prev, res, hide_full),
                     self_note=mem_block.rstrip() if mem_block else "",
                     concept=_concept_note(role, res))
@@ -627,7 +632,7 @@ def main() -> None:
     ap.add_argument("command",
                     choices=["fingerprint", "stage-a", "develop", "holdout",
                              "build-store", "build-api", "build-ui",
-                             "smoke"])
+                             "repair-ui-piece", "smoke"])
     ap.add_argument("--role", choices=list(contracts.ROLES))
     ap.add_argument("--docs", action="store_true",
                     help="documentation retrieval condition")
@@ -830,6 +835,83 @@ def main() -> None:
             state.setdefault("in_progress", {}).pop("ui", None)
             _save_state(args.state, state)
         print(json.dumps(report, indent=1)[:500])
+        return
+
+    if args.command == "repair-ui-piece":
+        # re-burst ONE ui piece with execution feedback (browser test
+        # failures feed back into the loop; the piece stays model bytes)
+        from archagent.model import FrozenModel
+        from archagent.ui_builder import (build_ui, PIECE_ANCHORS,
+                                          HANDLER_SPECS, piece_prompt,
+                                          piece_gate, assemble,
+                                          _extract_plain_piece,
+                                          _extract_jsx_piece)
+        from archagent.runner import _degenerate
+        import archagent.ui_builder as ub
+        model = FrozenModel()
+        state = _load_state(args.state)
+        pieces = state.get("staged_ui_pieces", {})
+        name = os.environ.get("PIECE", "")
+        feedback = os.environ.get("FEEDBACK", "")
+        if name not in PIECE_ANCHORS:
+            raise SystemExit(f"unknown piece {name}")
+        order = ["state"] + ub.HANDLER_PIECES + ["jsx"]
+        accepted_before = "".join(pieces.get(m, "") for m in order
+                                  if m != name)
+        prompt = piece_prompt(name, accepted_before, True)
+        if feedback:
+            prompt = prompt.replace(
+                "\n" + PIECE_ANCHORS[name],
+                contracts.commentize(
+                    "ui", "PUBLIC CHECK FEEDBACK: " + feedback) +
+                "\n" + PIECE_ANCHORS[name])
+        log_path = GEN / "generations_docs.jsonl"
+        best = None
+        for k in range(6):
+            seed = 300000 + (int(time.time() * 7) % 89000) + k * 11
+            completion, usage = model.generate(
+                prompt, max_tokens=1100 if name == "jsx" else 950,
+                seed=seed, stochastic=True)
+            if _degenerate(completion):
+                continue
+            body = (_extract_jsx_piece(completion) if name == "jsx"
+                    else _extract_plain_piece(completion, name))
+            with open(log_path, "a", encoding="utf8") as f:
+                f.write(json.dumps({
+                    "id": f"ui-repair-{name}-{seed}", "role": "ui",
+                    "round": f"repair-{name}", "kind": "repair-piece",
+                    "seed": seed, "stochastic": True, "usage": usage,
+                    "checks_passed": None, "checks_total": None,
+                    "syntax_valid": None, "accepted": False,
+                    "origin": {"type": "repair", "piece": name,
+                               "feedback": feedback[:200]},
+                    "source_sha256": sha(body), "source": body,
+                    "failures": [], "error": None}) + "\n")
+            gate = piece_gate(name, body)
+            if gate:
+                print(f"  [repair/{name}] sample {k} gate: {gate}")
+                continue
+            best = body
+            break
+        if best is None:
+            raise SystemExit("repair found no valid sample")
+        pieces[name] = best
+        state["staged_ui_pieces"] = pieces
+        module = assemble(pieces)
+        # verify the full offline checks still pass
+        res = evaluate_module("ui", module, timeout=60)
+        sc = score_of(res)
+        print(f"  [repair/{name}] offline checks {sc[0]}/{sc[1]}")
+        if sc[1] == 0 or sc[0] != sc[1]:
+            raise SystemExit("repair broke offline checks; not applied")
+        state.setdefault("selected", {})["ui"] = {
+            "source": module,
+            "attempt_id": f"ui-repair-{name}-final",
+            "score": list(sc),
+            "origin": "QWEN-REPAIRED (browser-feedback repair)",
+        }
+        _save_state(args.state, state)
+        print("repair applied; ui module updated")
         return
 
     if args.command == "develop":

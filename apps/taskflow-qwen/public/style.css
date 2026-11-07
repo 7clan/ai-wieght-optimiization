@@ -1,0 +1,43 @@
+
+  .app { display: flex; }
+  .sidebar { width: 240px; }
+  @media (max-width: 720px) { .app { flex-direction: column; } }
+  .project-btn { background-color: #000; color: #fff; }
+  .priority-high { background-color: #800080; }
+  .priority-medium { background-color: #ff0000; }
+  .priority-low { background-color: #0000ff; }
+  .progress { background-color: #608000; }
+  .progress-fill { background-color: #006000; }
+  .filter-all { background-color: #000000; }
+  .filter-todo { background-color: #900000; }
+  .filter-doing { background-color: #009000; }
+  .filter-done { background-color: #000090; }
+  .search { background-color: #000000; }
+  .offline-badge { background-color: #000000; }
+  .add-form { background-color: #000000; }
+  .task-row {
+    background-color: #000000;
+    border: 1px solid #000000;
+    padding: 2px 8px;
+    margin-bottom: 4px;
+    border-radius: 3px;
+  }
+  .project-row {
+    background-color: #000000;
+    border: 1px solid #000000;
+    padding: 2px 8px;
+    margin-bottom: 4px;
+    border-radius: 3px;
+  }
+  .priority-row {
+    background-color: #000000;
+    border: 1px solid #000000;
+    padding: 2px 8px;
+    margin-bottom: 4px;
+    border-radius: 3px;
+  }
+  .priority-row {
+    background-color: #000000;
+    border: 1px solid #000000;
+    padding: 2px 8px;
+    margin-bottom: 4px

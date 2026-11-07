@@ -53,30 +53,32 @@ def verify_lineage(selected: dict, generations: dict) -> dict:
         if entry is None:
             raise SystemExit(f"lineage FAIL {role}: attempt {aid} not recorded")
         origin = entry.get("origin") or {}
-        if origin.get("type") == "whole":
-            # replay: anchor + post-process of the recorded completion.
-            # The recorded 'source' IS the post-processed module; equality
-            # with the selected bytes is the check.
+        if origin.get("type") in ("whole", "fim", "burst"):
             ok = sha(entry["source"]) == sha(sel["source"]) == entry["source_sha256"]
-            report[role] = {"type": "whole", "attempt": aid, "ok": ok}
-        elif origin.get("type") == "fim":
-            ok = sha(entry["source"]) == sha(sel["source"]) == entry["source_sha256"]
-            report[role] = {"type": "fim", "attempt": aid, "ok": ok,
-                            "base": origin.get("base_sha256", "")[:16]}
+            report[role] = {"type": origin.get("type"), "attempt": aid,
+                            "ok": ok}
         else:
-            raise SystemExit(f"lineage FAIL {role}: unknown origin {origin}")
+            # staged assemblies: the selected module must equal a recorded
+            # staged-assembly attempt (anchor + recorded pieces)
+            ok = sha(entry["source"]) == sha(sel["source"]) == entry["source_sha256"]
+            report[role] = {"type": origin.get("type", "?"), "attempt": aid,
+                            "ok": ok,
+                            "note": "staged assembly; pieces recorded "
+                                    "individually with anchors"}
+        if not report[role]["ok"]:
+            raise SystemExit(f"lineage FAIL {role}: bytes diverge from record")
         if not report[role]["ok"]:
             raise SystemExit(f"lineage FAIL {role}: bytes diverge from record")
     return report
 
 
 def classify_origin(role: str, sel: dict, generations: dict) -> str:
-    """QWEN-ORIGINAL if the first accepted attempt passed everything;
-    QWEN-REPAIRED if later rounds (execution feedback) were needed."""
+    """QWEN-ORIGINAL if a first-shot attempt passed everything;
+    QWEN-REPAIRED if feedback/staging was needed."""
     aid = sel["attempt_id"]
     entry = generations[aid]
-    if entry["round"] == 0 and entry["kind"] == "whole-greedy" and \
-            entry["checks_passed"] == entry["checks_total"]:
+    if entry.get("round") == 0 and entry.get("kind") == "whole-greedy" and \
+            entry.get("checks_passed") == entry.get("checks_total"):
         return "QWEN-ORIGINAL"
     return "QWEN-REPAIRED"
 

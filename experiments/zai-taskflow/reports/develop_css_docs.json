@@ -1,19 +1,19 @@
 {
  "role": "css",
  "stopped": "pass",
- "wall_seconds": 38.8,
+ "wall_seconds": 237.0,
  "usage": {
-  "generations": 2,
-  "total_new_tokens": 315,
-  "total_seconds": 37.4
+  "generations": 5,
+  "total_new_tokens": 1753,
+  "total_seconds": 233.8
  },
  "best": {
-  "attempt_id": "css-r1-whole-greedy-1000",
+  "attempt_id": "css-r7-whole-sample-7010",
   "score": [
    22,
    22
   ],
-  "source_sha256": "b4d28bac84151974fe7dc14396c4b0acfc0cddb39b75c1365fa2a6211d8f775a",
+  "source_sha256": "8a7c40363a73c42fbd47c4de94fb0238f00a61f12218b0415e81b84a2fd8770b",
   "result": {
    "passed": true,
    "syntax_valid": true,
@@ -47,6 +47,25 @@
  },
  "attempts": [
   "css-r0-whole-greedy-1",
-  "css-r1-whole-greedy-1000"
+  "css-r1-whole-greedy-1000",
+  "css-r1-whole-sample-1010",
+  "css-r1-whole-sample-1011",
+  "css-r2-whole-greedy-2000",
+  "css-r2-whole-sample-2010",
+  "css-r2-whole-sample-2011",
+  "css-r3-whole-greedy-3000",
+  "css-r3-whole-sample-3010",
+  "css-r3-whole-sample-3011",
+  "css-r4-whole-greedy-4000",
+  "css-r4-whole-sample-4010",
+  "css-r4-whole-sample-4011",
+  "css-r5-whole-greedy-5000",
+  "css-r5-whole-sample-5010",
+  "css-r5-whole-sample-5011",
+  "css-r6-whole-greedy-6000",
+  "css-r6-whole-sample-6010",
+  "css-r6-whole-sample-6011",
+  "css-r7-whole-greedy-7000",
+  "css-r7-whole-sample-7010"
  ]
 }

@@ -359,20 +359,27 @@ def _extract_plain_piece(completion: str, piece: str = "handlers") -> str:
             kept.append(line)
         return chr(10).join(kept).rstrip() + chr(10)
 
+    # handler pieces: the anchor opened a function brace; keep code
+    # until the brace depth returns to zero (the piece's own close)
+    depth = 1
     kept = []
     for line in lines:
         stripped = line.strip()
         if jsx_boundary(stripped):
             break
+        depth += line.count("{") - line.count("}")
         kept.append(line)
-    while kept:
-        last = kept[-1].strip()
-        balanced = (last.count("(") == last.count(")") and
-                    last.count("{") == last.count("}") and
-                    last.count("[") == last.count("]"))
-        if balanced and last and not last.rstrip().endswith(("await", "=", ",", "+")):
-            break
-        kept.pop()
+        if depth <= 0:
+            return chr(10).join(kept).rstrip() + chr(10)
+    if depth > 0:
+        while kept:
+            last = kept[-1].strip()
+            balanced = (last.count("(") == last.count(")") and
+                        last.count("{") == last.count("}"))
+            if balanced and last:
+                break
+            kept.pop()
+        kept.append("  }")
     return chr(10).join(kept).rstrip() + chr(10)
 
 def piece_gate(name: str, body: str) -> str | None:

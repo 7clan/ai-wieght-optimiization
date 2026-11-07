@@ -1,0 +1,15 @@
+{
+ "id": "css-46107",
+ "ts": "2026-11-07T06:09:06Z",
+ "role": "css",
+ "requirement": "TaskFlow CSS string. The anchor opens a template literal:\ncomplete it with plain CSS then close the backtick. Rules needed for\nclasses: .app (display flex), .sidebar, .project-btn, .task-row,\n.priority-high, .priority-medium, .priority-low, .progress (with a\nbackground), .progress-fill, .filter-all, .filter-todo, .filter-doing,\n.filter-done, .search, .offline-badge, .add-form. Include exactly one\n",
+ "failed_excerpt": "const css = `\n  .app { display: flex; }\n  .sidebar { width: 240px; }\n  @media (max-width: 720px) { .app { flex-direction: column; } }\n  .project-btn { background-color: #000; color: #fff; }\n  .priority-high { background-color: #800080; }",
+ "failure_message": "[{\"check\": \"hastask-row\", \"detail\": \".task-row missing\"}]",
+ "repaired_excerpt": "const css = `\n  .app { display: flex; }\n  .sidebar { width: 240px; }\n  @media (max-width: 720px) { .app { flex-direction: column; } }\n  .project-btn { background-color: #000; color: #fff; }\n  .priority-high { background-color: #800080; }",
+ "corrected_behavior": "checks 22/22",
+ "principle": "Match the documented contract exactly.",
+ "category": "validation",
+ "contract_refs": [
+  "css:public"
+ ]
+}

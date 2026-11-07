@@ -1,0 +1,87 @@
+{
+ "application": "TaskFlow",
+ "contract_fingerprint": "47f0ea4ebabeccb38b75d90b53237cc35adb6d9663ce5255cdd13888f2839cb0",
+ "model": "Qwen/Qwen2.5-Coder-0.5B (frozen, greedy + disclosed seeded sampling)",
+ "files": {
+  "apps/taskflow-qwen/server/logic.py": {
+   "origin": "QWEN-REPAIRED",
+   "sha256": "0a2eb34ddaa04e19cd5ca4c5e632110a15b875276986e883e46ede3bec711802",
+   "attempt_id": "logic-burst-90000",
+   "checks": [
+    3,
+    3
+   ]
+  },
+  "apps/taskflow-qwen/server/store.js": {
+   "origin": "QWEN-REPAIRED",
+   "sha256": "f02f2bb6747702dbb0fb99263d7ea48cebf5f19f3724b36ddb082358a12e1f3b",
+   "attempt_id": "store-piece-wave0-0",
+   "checks": [
+    26,
+    26
+   ]
+  },
+  "apps/taskflow-qwen/server/api.js": {
+   "origin": "QWEN-REPAIRED",
+   "sha256": "f8df2252d5695ed0b6aac0e291c66fadeb03844e452c0f390ee74ca0d57cf774",
+   "attempt_id": "api-piece-final-0",
+   "checks": [
+    18,
+    18
+   ]
+  },
+  "apps/taskflow-qwen/client/App.jsx": {
+   "origin": "QWEN-REPAIRED",
+   "sha256": "784c659a38d7f4310d2cb2aebbf666f7ab0dc6f361eb6a6897eb7729c5c2ff58",
+   "attempt_id": "ui-repair-assembly-final",
+   "checks": [
+    13,
+    13
+   ]
+  },
+  "apps/taskflow-qwen/client/style.js": {
+   "origin": "QWEN-REPAIRED",
+   "sha256": "8a7c40363a73c42fbd47c4de94fb0238f00a61f12218b0415e81b84a2fd8770b",
+   "attempt_id": "css-r7-whole-sample-7010",
+   "checks": [
+    22,
+    22
+   ]
+  }
+ },
+ "lineage": {
+  "logic": {
+   "type": "burst",
+   "attempt": "logic-burst-90000",
+   "ok": true
+  },
+  "store": {
+   "type": "staged-piece",
+   "attempt": "store-piece-wave0-0",
+   "ok": true,
+   "note": "staged assembly; pieces recorded individually with anchors"
+  },
+  "api": {
+   "type": "staged-piece",
+   "attempt": "api-piece-final-0",
+   "ok": true,
+   "note": "staged assembly; pieces recorded individually with anchors"
+  },
+  "css": {
+   "type": "whole",
+   "attempt": "css-r7-whole-sample-7010",
+   "ok": true
+  },
+  "ui": {
+   "type": "staged-piece",
+   "attempt": "ui-repair-assembly-final",
+   "ok": true,
+   "note": "staged assembly; pieces recorded individually with anchors"
+  }
+ },
+ "notes": [
+  "Anchor signature lines in each module are TRUSTED-SCAFFOLD (exact public-contract signatures); every byte after the anchor is model output.",
+  "client/style.js exports the CSS string; build.mjs extracts it to public/style.css deterministically.",
+  "server.js, bridge.py, client/main.jsx, public/index.html, build.mjs, package.json are TRUSTED-SCAFFOLD."
+ ]
+}

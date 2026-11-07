@@ -1,0 +1,85 @@
+{
+ "base": "http://127.0.0.1:4173",
+ "when": "2026-11-07T06:09:28.133Z",
+ "steps": [
+  {
+   "step": "1 open application",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "step": "2 create project",
+   "ok": true,
+   "detail": "[\"Website Redesign\"]"
+  },
+  {
+   "step": "2b select project",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "step": "3 add task",
+   "ok": true,
+   "detail": "[\"Draft homepagehighdoneeditdelete\"]"
+  },
+  {
+   "step": "3b add second task",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "step": "4 change task priority",
+   "ok": true,
+   "detail": "{\"id\":\"t2\",\"projectId\":\"p1\",\"title\":\"Review colors\",\"priority\":\"high\",\"status\":\""
+  },
+  {
+   "step": "5 mark complete",
+   "ok": true,
+   "detail": "progress=\"50% (1/2)\""
+  },
+  {
+   "step": "6 refresh page",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "step": "7 persistence after refresh",
+   "ok": true,
+   "detail": "[\"Draft homepagehighundoeditdelete\",\"Review colorshighdoneeditdelete\"]"
+  },
+  {
+   "step": "8 search tasks",
+   "ok": true,
+   "detail": "[\"Draft homepagehighundoeditdele\",\"Review colorshighdoneeditdelet\"]"
+  },
+  {
+   "step": "9 delete task",
+   "ok": true,
+   "detail": "[\"Draft homepagehighundoeditdele\"]"
+  },
+  {
+   "step": "10 updated project progress",
+   "ok": true,
+   "detail": "progress=\"100% (1/1)\""
+  },
+  {
+   "step": "11 filter by status",
+   "ok": true,
+   "detail": "done=1 all=1"
+  },
+  {
+   "step": "12 screenshot desktop",
+   "ok": true,
+   "detail": "4 projects seeded"
+  },
+  {
+   "step": "13 screenshot mobile",
+   "ok": true,
+   "detail": ""
+  }
+ ],
+ "passed": 15,
+ "total": 15,
+ "page_errors": [],
+ "all_passed": true
+}
