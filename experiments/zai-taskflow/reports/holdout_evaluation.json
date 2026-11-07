@@ -1,0 +1,51 @@
+{
+ "phase": "holdout",
+ "digest": "81f7f032433b8ca9",
+ "roles": {
+  "logic": {
+   "checks_passed": 2,
+   "checks_total": 2,
+   "checks": {
+    "case0": true,
+    "case1": true
+   },
+   "failures": [],
+   "error": null
+  },
+  "store": {
+   "checks_passed": 11,
+   "checks_total": 11,
+   "checks": {
+    "createProject:{\"name\":\"Gamma\"}": true,
+    "createTask:{\"projectId\":\"p1\",\"title\":\"Search me\",\"p": true,
+    "createTask:{\"projectId\":\"p1\",\"title\":\"Another\"}": true,
+    "updateTask:t2:{\"priority\":\"high\",\"status\":\"done\"}": true,
+    "updateTask:t1:{\"status\":\"nope\"}": true,
+    "listTasks:{\"projectId\":\"p1\",\"status\":\"doing\"}": true,
+    "listTasks:{\"q\":\"search\"}": true,
+    "deleteProject:p1": true,
+    "reload": true,
+    "listProjects": true,
+    "listTasks:{}": true
+   },
+   "failures": [],
+   "error": null
+  },
+  "api": {
+   "checks_passed": 8,
+   "checks_total": 8,
+   "checks": {
+    "post_two_projects": true,
+    "post_project_two": true,
+    "post_task_p2": true,
+    "put_project": true,
+    "put_project_404": true,
+    "delete_project_cascade": true,
+    "get_tasks_after_cascade": true,
+    "progress_404_after_delete": true
+   },
+   "failures": [],
+   "error": null
+  }
+ }
+}

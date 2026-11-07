@@ -37,6 +37,8 @@ ROUTES = [
      "POST /api/projects with body {name} -> 201 {project: {...}} or 400"),
     ("get_projects", "  app.get('/api/projects', (req, res) => {\n",
      "GET /api/projects -> 200 {projects: [...]}"),
+    ("put_project", "  app.put('/api/projects/:id', (req, res) => {\n",
+     "PUT /api/projects/:id with {name} -> 200 {project} or 404 or 400"),
     ("post_task", "  app.post('/api/tasks', (req, res) => {\n",
      "POST /api/tasks with {projectId, title, priority?} -> 201 {task} or 400"),
     ("put_task", "  app.put('/api/tasks/:id', (req, res) => {\n",
@@ -84,6 +86,20 @@ id is unknown. Write EXACTLY:
   try {
     const task = store.updateTask(req.params.id, req.body);
     res.status(200).json({ task: task });
+  } catch (e) {
+    if (String(e.message).includes('not found')) {
+      res.status(404).json({ error: e.message });
+    } else {
+      res.status(400).json({ error: e.message });
+    }
+  }""",
+    "put_project": """Write the PUT /api/projects/:id route handler. The
+store method store.updateProject(req.params.id, req.body) returns the
+updated project or throws Error ('not found' in the message for unknown
+ids; invalid name otherwise). Write EXACTLY:
+  try {
+    const project = store.updateProject(req.params.id, req.body);
+    res.status(200).json({ project: project });
   } catch (e) {
     if (String(e.message).includes('not found')) {
       res.status(404).json({ error: e.message });
@@ -246,6 +262,9 @@ CHECK_TO_ROUTE = {
     "post_project": "post_project",
     "post_project_invalid": "post_project",
     "get_projects": "get_projects",
+    "put_project": "put_project",
+    "put_project_404": "put_project",
+    "put_project_invalid": "put_project",
     "post_task": "post_task",
     "post_task_invalid": "post_task",
     "put_task": "put_task",

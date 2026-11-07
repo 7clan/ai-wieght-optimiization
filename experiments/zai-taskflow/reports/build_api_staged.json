@@ -1,8 +1,8 @@
 {
  "ok": true,
  "score": [
-  15,
-  15
+  18,
+  18
  ],
  "pieces": [
   "health",
@@ -13,12 +13,13 @@
   "get_tasks",
   "progress",
   "post_task",
-  "put_task"
+  "put_task",
+  "put_project"
  ],
  "failures": [],
  "usage": {
-  "generations": 5,
-  "total_new_tokens": 1211,
-  "total_seconds": 198.3
+  "generations": 4,
+  "total_new_tokens": 1280,
+  "total_seconds": 206.9
  }
 }
