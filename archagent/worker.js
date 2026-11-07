@@ -36,9 +36,14 @@ const PY_WORKER = process.env.ARCHAGENT_PY_WORKER ||
   path.join(__dirname, 'py_worker.py');
 
 function fail(reason) { out.error = String(reason).slice(0, 400); }
+const seenNames = new Map();
 function check(name, ok, detail) {
-  out.checks[name] = !!ok;
-  if (!ok) out.failures.push({check: name, detail: String(detail || '').slice(0, 300)});
+  // dedupe: a later step with the same derived name gets #2, #3, ...
+  const n = seenNames.get(name) || 0;
+  seenNames.set(name, n + 1);
+  const key = n === 0 ? name : name + '#' + (n + 1);
+  out.checks[key] = !!ok;
+  if (!ok) out.failures.push({check: key, detail: String(detail || '').slice(0, 300)});
 }
 
 // ---------------------------------------------------------------------------
@@ -117,12 +122,18 @@ function evalLogic() {
   const r = JSON.parse(p.stdout);
   out.syntax_valid = !!r.syntax_valid;
   if (!r.syntax_valid) return fail('syntax: ' + r.error);
-  if (!r.ok) return fail('runtime: ' + r.error);
-  for (let i = 0; i < r.results.length; i++) {
-    check('case' + i, r.results[i].ok,
-      'expected ' + JSON.stringify(r.results[i].expected) + ' got ' +
-      JSON.stringify(r.results[i].got));
+  // record per-case checks even when the function raises: the repair loop
+  // needs the exact failing case and error (Session 033 fix)
+  const results = r.results || [];
+  for (let i = 0; i < results.length; i++) {
+    const d = results[i];
+    check('case' + i, !!d.ok,
+      (d.error ? 'raised ' + d.error + (d.line ? ' at line ' + d.line : '') + ' ' : '') +
+      'got ' + JSON.stringify(d.got).slice(0, 140) +
+      ' expected keys ' + JSON.stringify(Object.keys(d.expected || {})) +
+      ' e.g. ' + JSON.stringify(d.expected).slice(0, 140));
   }
+  if (!r.ok && !results.length) return fail('runtime: ' + (r.error || 'unknown'));
 }
 
 function evalStore() {

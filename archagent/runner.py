@@ -40,8 +40,8 @@ from archagent.repair_memory import RepairMemory, record_repair  # noqa: E402
 MAX_ROUNDS = 8
 CANDIDATES_PER_ROUND = 5          # 1 greedy + 2 sampled + 2 FIM
 WALL_BUDGET_ROLE = 45 * 60        # seconds per role
-GEN_TOKENS = {"logic": 320, "store": 900, "api": 900, "ui": 1100,
-              "css": 420, "stage_a": 420}
+GEN_TOKENS = {"logic": 600, "store": 1300, "api": 1400, "ui": 1500,
+              "css": 500, "stage_a": 420}
 
 sys.path.insert(0, str(ROOT))
 
@@ -120,13 +120,36 @@ def first_failure(result: dict) -> dict | None:
     return fails[0] if fails else None
 
 
+def semantic_anchor(source: str, result: dict) -> int | None:
+    """For value-mismatch failures (no exception line), anchor at the
+    assignment line of the identifier the failure mentions."""
+    import re as _re
+    blob = json.dumps(result.get("failures", []))
+    ids = []
+    for name in ("by_priority", "by_status", "percent", "remaining",
+                 "total", "done"):
+        if name in blob:
+            ids.append(name)
+    lines = source.splitlines()
+    for name in ids:
+        pat = _re.compile(rf"^\s*(?:const|let|var)?\s*{name}\s*=|^\s*{name}\s*=")
+        for i, line in enumerate(lines, 1):
+            if pat.match(line):
+                return i
+    return None
+
+
 def failing_line(result: dict) -> int | None:
     err = result.get("error") or ""
     m = re.search(r"qwen-[a-z]+\.js:(\d+):(\d+)", err)
     if m:
         return int(m.group(1))
     for f in result.get("failures", []):
-        m = re.search(r"@?line (\d+)", str(f.get("detail", "")))
+        detail = str(f.get("detail", ""))
+        m = re.search(r"at line (\d+)", detail)
+        if m:
+            return int(m.group(1))
+        m = re.search(r"@?line (\d+)", detail)
         if m:
             return int(m.group(1))
     return None
@@ -159,6 +182,31 @@ def _prev_excerpt(source: str, result: dict, hide_full: bool) -> str:
 
 
 _CONCEPTS = [
+    (re.compile(r"string indices must be integers|iterating a dict", re.I),
+     "payload is a dict; iterating it yields its KEYS (strings). The task "
+     "list is the value: tasks = payload[\"tasks\"]."),
+    (re.compile(r"KeyError", re.I),
+     "Initialize every output key before the loop (by_priority = "
+     "{\"low\": 0, \"medium\": 0, \"high\": 0}, by_status = {\"todo\": 0, "
+     "\"doing\": 0, \"done\": 0}) so counts start at zero and every key "
+     "is always present."),
+    (re.compile(r"ZeroDivisionError|division by zero", re.I),
+     "When total is 0 the percent must be 0: use "
+     "percent = round(100 * done / total) if total else 0."),
+    (re.compile(r"percent.{0,12}(1[0-9]{2}|[2-9][0-9]{2})|remaining.{0,8}:", re.I),
+     "remaining = total - done (the tasks not done yet); percent = "
+     "round(100 * done / total) and can never exceed 100."),
+    (re.compile(r"by_priority.{0,40}(done|todo|doing)|by_status.{0,40}(low|medium|high)", re.I),
+     "by_priority counts task[\"priority\"] values (low/medium/high); "
+     "by_status counts task[\"status\"] values (todo/doing/done). They "
+     "are different fields of each task."),
+    (re.compile(r'expected .{0,40}"id": ?"p1".{0,60}got .{0,40}"id": ?"?"1', re.I),
+     "Project ids are the string 'p' + counter ('p1', 'p2'); task ids 't' + "
+     "counter ('t1', 't2'); createdAt is always the fixed string "
+     "'2026-11-07', never new Date()."),
+    (re.compile(r"Cannot read properties of undefined", re.I),
+     "Find the record before mutating it: const rec = list.find(x => x.id "
+     "=== String(id)); if (!rec) throw Error('not found: ' + id)."),
     (re.compile(r"Assignment to constant variable", re.I),
      "In JavaScript a const binding cannot be reassigned; use let for "
      "variables that must change."),
@@ -202,10 +250,18 @@ def fim_instructions(role: str, result: dict) -> str:
     f = first_failure(result)
     concept = _concept_note(role, result)
     detail = f.get("detail", "") if f else ""
-    return ("\n// FIX the region below. Failure: " + str(f.get("check") if f else "")
-            + " " + detail[:160].replace("\n", " ")
-            + (("\n// Concept: " + concept) if concept else "")
-            + "\n// Keep everything else identical.\n")
+    c = "#" if role == "logic" else "//"
+    expected = ""
+    m = re.search(r"e\.g\. (\{.*?\})(?:\s|$)", detail)
+    if m:
+        expected = (f"\n{c} The expected output for that case starts: "
+                    + m.group(1)[:180])
+    return (f"\n{c} FIX the code in the gap. Failure: "
+            + str(f.get("check") if f else "")
+            + " " + detail[:200].replace("\n", " ")
+            + expected
+            + (f"\n{c} Concept: " + concept if concept else "")
+            + f"\n{c} Output ONLY the replacement code for the gap.{c}\n")
 
 
 def splice(source: str, fill: str, lo: int, hi: int) -> str:
@@ -223,12 +279,58 @@ class Harness:
         self.model = model
         self.docs = docs
         self.memory = memory
+        self._gen_cache: dict[str, str] = {}
         self.log = GEN / ("generations_docs.jsonl" if docs else "generations.jsonl")
         GEN.mkdir(parents=True, exist_ok=True)
 
     def record(self, entry: dict) -> None:
         with open(self.log, "a", encoding="utf8") as f:
             f.write(json.dumps(entry) + "\n")
+
+    def burst(self, role: str, n: int = 10, *, store_source=None,
+              logic_source=None, base_seed: int = 90000,
+              on_sample=None) -> dict:
+        """High-temperature sampling burst from the round-0 prompt.
+
+        Bounded stochastic search: the repair loop anchors the model to its
+        own broken structure; fresh diverse completions of the original
+        contract prompt explore structurally different solutions."""
+        prompt = contracts.prompt(
+            role, docs=retrieval.doc_block(role) if self.docs else "")
+        best = {"source": None, "result": None, "score": (-1, -1),
+                "attempt_id": None}
+        for k in range(n):
+            completion, usage = self.model.generate(
+                prompt, max_tokens=GEN_TOKENS[role],
+                seed=base_seed + k, stochastic=True)
+            if _degenerate(completion):
+                continue
+            source = _post_process(role, completion)
+            result = evaluate_module(role, source,
+                                     store_source=store_source,
+                                     logic_source=logic_source)
+            sc = score_of(result)
+            attempt_id = f"{role}-burst-{base_seed + k}"
+            self.record({
+                "id": attempt_id, "role": role, "round": "burst",
+                "kind": "burst", "seed": base_seed + k, "stochastic": True,
+                "usage": usage, "checks_passed": sc[0],
+                "checks_total": sc[1],
+                "syntax_valid": result.get("syntax_valid"),
+                "accepted": False, "origin": {"type": "burst"},
+                "source_sha256": sha(source), "source": source,
+                "failures": result.get("failures", [])[:8],
+                "error": result.get("error"),
+            })
+            if sc > best["score"]:
+                best = {"source": source, "result": result, "score": sc,
+                        "attempt_id": attempt_id}
+                print(f"  [{role}] burst {k} -> {sc[0]}/{sc[1]}", flush=True)
+                if on_sample is not None:
+                    on_sample(role, best)
+            if sc[1] and sc[0] == sc[1]:
+                break
+        return best
 
     def develop(self, role: str, *, store_source=None, logic_source=None,
                 max_rounds=MAX_ROUNDS, wall=WALL_BUDGET_ROLE,
@@ -280,12 +382,13 @@ class Harness:
                     docs=retrieval.doc_block(role) if self.docs else "",
                     feedback=feedback,
                     previous_excerpt=_prev_excerpt(prev, res, hide_full),
-                    self_note=mem_block.rstrip() if mem_block else "")
+                    self_note=mem_block.rstrip() if mem_block else "",
+                    concept=_concept_note(role, res))
                 candidates.append(("whole-greedy", rp, round_i * 1000, False))
                 for k in range(2):
                     candidates.append(("whole-sample", rp,
                                        round_i * 1000 + 10 + k, True))
-                anchor = failing_line(res)
+                anchor = failing_line(res) or semantic_anchor(prev, res)
                 if anchor:
                     prefix, suffix, lo = fim_window(prev, anchor)
                     instr = fim_instructions(role, res)
@@ -303,23 +406,32 @@ class Harness:
                     fill, usage = self.model.fim(
                         prefix, suffix, instructions=instr,
                         max_tokens=320, seed=seed, stochastic=stoch)
-                    if _degenerate(fill):
+                    if _degenerate(fill) or _echoes_instructions(fill, instr):
                         fill, usage = self.model.fim(
                             prefix, suffix, instructions=instr,
                             max_tokens=320, seed=seed + 500, stochastic=True)
+                    if _echoes_instructions(fill, instr):
+                        continue  # both attempts echoed; skip this candidate
                     source = splice(best["source"], fill, lo, hi)
                     origin = {"type": "fim", "base_sha256": sha(best["source"]),
                               "fill": fill[:2000], "anchor_line": lo + 1,
                               "seed": seed}
                 else:
                     _, prompt, seed, stoch = cand
-                    completion, usage = self.model.generate(
-                        prompt, max_tokens=GEN_TOKENS[role], seed=seed,
-                        stochastic=stoch)
-                    if _degenerate(completion):
+                    key = sha(prompt) + f"#{seed}#{stoch}"
+                    if key in self._gen_cache:
+                        completion = self._gen_cache[key]
+                        usage = {"tokens": 0, "seconds": 0.0, "seed": seed,
+                                 "stochastic": stoch, "cached": True}
+                    else:
                         completion, usage = self.model.generate(
-                            prompt, max_tokens=GEN_TOKENS[role],
-                            seed=seed + 500, stochastic=True)
+                            prompt, max_tokens=GEN_TOKENS[role], seed=seed,
+                            stochastic=stoch)
+                        if _degenerate(completion):
+                            completion, usage = self.model.generate(
+                                prompt, max_tokens=GEN_TOKENS[role],
+                                seed=seed + 500, stochastic=True)
+                        self._gen_cache[key] = completion
                     source = _post_process(role, completion)
                     origin = {"type": "whole", "seed": seed}
                 result = evaluate_module(role, source,
@@ -362,7 +474,7 @@ class Harness:
                     break
             if best["score"][1] and best["score"][0] == best["score"][1]:
                 stopped = "pass"; break
-            if not improved and round_i > 0 and round_i >= 3 and \
+            if not improved and round_i > 0 and round_i >= 5 and \
                     best["score"][0] == 0:
                 stopped = "plateau-zero"; break
             round_i += 1
@@ -404,6 +516,17 @@ def _post_process(role: str, completion: str) -> str:
     if last:
         text = text[:last + 1]
     return contracts.ANCHOR[role] + text.strip() + "\n"
+
+
+def _echoes_instructions(fill: str, instructions: str) -> bool:
+    """True when the fill copied the instruction comment lines instead of
+    writing code (measured failure mode of the frozen model)."""
+    instr_words = [w for w in instructions.split() if len(w) > 6]
+    if not instr_words or not fill.strip():
+        return True
+    fill_words = set(fill.split())
+    overlap = sum(1 for w in instr_words if w in fill_words)
+    return overlap / len(instr_words) > 0.5
 
 
 def _degenerate(text: str) -> bool:
@@ -503,10 +626,15 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("command",
                     choices=["fingerprint", "stage-a", "develop", "holdout",
-                             "smoke"])
+                             "build-store", "smoke"])
     ap.add_argument("--role", choices=list(contracts.ROLES))
     ap.add_argument("--docs", action="store_true",
                     help="documentation retrieval condition")
+    ap.add_argument("--burst", type=int, default=0,
+                    help="run N high-temperature samples from the round-0 "
+                         "prompt before the repair loop")
+    ap.add_argument("--burst-seed", type=int, default=90000,
+                    help="base seed for the burst samples")
     ap.add_argument("--max-rounds", type=int, default=MAX_ROUNDS)
     ap.add_argument("--wall", type=int, default=WALL_BUDGET_ROLE)
     ap.add_argument("--state",
@@ -582,9 +710,49 @@ def main() -> None:
         print("saved", REPORTS / "holdout_evaluation.json")
         return
 
+    if args.command == "build-store":
+        from archagent.model import FrozenModel
+        from archagent.store_builder import build_store
+        model = FrozenModel()
+        memory = RepairMemory(str(MEMORY))
+        state = _load_state(args.state)
+        log_path = GEN / "generations_docs.jsonl"
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+
+        def log(entry):
+            with open(log_path, "a", encoding="utf8") as f:
+                f.write(json.dumps(entry) + "\n")
+
+        resume = state.get("staged_store_pieces")
+        def checkpoint(pieces_):
+            state["staged_store_pieces"] = pieces_
+            _save_state(args.state, state)
+        out = build_store(model, log, docs=True, wall=args.wall,
+                          resume=resume, on_piece=checkpoint)
+        report = {"ok": out["ok"], "score": list(out.get("score", ())),
+                  "pieces": {k: len(v.splitlines()) for k, v in
+                             out.get("pieces", {}).items()},
+                  "failures": out.get("result", {}).get("failures", [])[:8],
+                  "usage": model.usage()}
+        REPORTS.mkdir(parents=True, exist_ok=True)
+        (REPORTS / "build_store_staged.json").write_text(
+            json.dumps(report, indent=1) + "\n", encoding="utf8")
+        if out.get("source"):
+            state.setdefault("selected", {})["store"] = {
+                "source": out["source"],
+                "attempt_id": "staged-assembly-final",
+                "score": list(out.get("score", ())),
+                "origin": "QWEN-REPAIRED (staged pieces, see generations)",
+            }
+            state.setdefault("in_progress", {}).pop("store", None)
+            _save_state(args.state, state)
+        print(json.dumps(report, indent=1)[:600])
+        return
+
     if args.command == "develop":
         if not args.role:
             ap.error("--role is required for develop")
+        role = args.role
         from archagent.model import FrozenModel
         model = FrozenModel()
         memory = RepairMemory(str(MEMORY))
@@ -598,6 +766,33 @@ def main() -> None:
                 deps["logic_source"] = state["selected"]["logic"]["source"]
         harness = Harness(model, docs=args.docs, memory=memory)
         in_progress = state.get("in_progress", {}).get(args.role)
+        if args.burst > 0:
+            def burst_checkpoint(r_, best_):
+                cur = (state.get("in_progress", {}).get(r_) or {}) \
+                    .get("best", {})
+                if tuple(cur.get("score", (-1, -1))) < best_["score"]:
+                    state.setdefault("in_progress", {})[r_] = {
+                        "best": {"source": best_["source"],
+                                 "score": list(best_["score"]),
+                                 "attempt_id": best_["attempt_id"]},
+                        "round": 1,
+                        "attempts": [best_["attempt_id"]]}
+                    _save_state(args.state, state)
+            burst_best = harness.burst(role, args.burst,
+                                       base_seed=args.burst_seed,
+                                       on_sample=burst_checkpoint)
+            if burst_best["source"] is not None:
+                cur = (in_progress or {}).get("best", {})
+                if tuple(cur.get("score", (-1, -1))) < burst_best["score"]:
+                    state.setdefault("in_progress", {})[args.role] = {
+                        "best": {"source": burst_best["source"],
+                                 "score": list(burst_best["score"]),
+                                 "attempt_id": burst_best["attempt_id"]},
+                        "round": 1, "attempts": [burst_best["attempt_id"]],
+                    }
+                    _save_state(args.state, state)
+                    in_progress = state["in_progress"][args.role]
+                    print(f"burst best {burst_best['score']} stored")
 
         def checkpoint(role, round_i, best, attempts):
             state.setdefault("in_progress", {})[role] = {
@@ -611,7 +806,10 @@ def main() -> None:
         result = harness.develop(args.role, max_rounds=args.max_rounds,
                                  wall=args.wall, resume_state=in_progress,
                                  on_round_end=checkpoint, **deps)
-        state.setdefault("in_progress", {}).pop(args.role, None)
+        # keep in_progress unless the role fully passed, so a later
+        # invocation can continue improving the same best candidate
+        if result["stopped"] == "pass":
+            state.setdefault("in_progress", {}).pop(args.role, None)
         report = {
             "role": args.role, "stopped": result["stopped"],
             "wall_seconds": result["wall"], "usage": result["usage"],

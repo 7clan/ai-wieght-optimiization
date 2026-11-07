@@ -1,0 +1,136 @@
+{
+ "role": "store",
+ "stopped": "wall",
+ "wall_seconds": 514.6,
+ "usage": {
+  "generations": 8,
+  "total_new_tokens": 3658,
+  "total_seconds": 511.4
+ },
+ "best": {
+  "attempt_id": "store-burst-90002",
+  "score": [
+   7,
+   24
+  ],
+  "source_sha256": "c44bde1dffbdf97b74931b7840afa9bf29c3c9a9ebdb3007da7dc342ec996085",
+  "result": {
+   "passed": false,
+   "syntax_valid": true,
+   "checks": {
+    "listProjects": false,
+    "createProject:{\"name\":\"Alpha\"}": false,
+    "createProject:{\"name\":\"Beta\"}": false,
+    "createProject:{\"name\":\"\"}": false,
+    "createTask:{\"projectId\":\"p1\",\"title\":\"First task\"}": false,
+    "createTask:{\"projectId\":\"p1\",\"title\":\"Second\",\"prio": false,
+    "createTask:{\"projectId\":\"zz\",\"title\":\"X\"}": true,
+    "createTask:{\"projectId\":\"p1\",\"title\":\"\"}": true,
+    "createTask:{\"projectId\":\"p1\",\"title\":\"Bad\",\"priorit": true,
+    "updateTask:t1:{\"status\":\"done\"}": false,
+    "updateTask:t1:{\"title\":\"First task v2\"}": false,
+    "updateTask:zz:{}": true,
+    "listTasks:{\"projectId\":\"p1\"}": false,
+    "listTasks:{\"projectId\":\"p1\",\"status\":\"done\"}": false,
+    "createTask:{\"projectId\":\"p2\",\"title\":\"Other task\"}": false,
+    "listTasks:{\"q\":\"task\"}": false,
+    "listTasks:{\"q\":\"FIRST\"}": false,
+    "deleteTask:t2": true,
+    "updateProject:p1:{\"name\":\"Alpha v2\"}": false,
+    "deleteProject:p2": false,
+    "listTasks:{\"projectId\":\"p2\"}": true,
+    "reload": true,
+    "listTasks:{}": false,
+    "persistedShape": false
+   },
+   "failures": [
+    {
+     "check": "createProject:{\"name\":\"Alpha\"}",
+     "detail": "expected {\"id\":\"p1\",\"name\":\"Alpha\",\"createdAt\":\"2026-11-07\"} got {\"id\":\"1\",\"name\":\"Alpha\",\"createdAt\":\"2026-11-06T18:36:47.017Z\"}"
+    },
+    {
+     "check": "createProject:{\"name\":\"Beta\"}",
+     "detail": "expected {\"id\":\"p2\",\"name\":\"Beta\",\"createdAt\":\"2026-11-07\"} got {\"id\":\"2\",\"name\":\"Beta\",\"createdAt\":\"2026-11-06T18:36:47.017Z\"}"
+    },
+    {
+     "check": "createProject:{\"name\":\"\"}",
+     "detail": "expected Error, returned {\"id\":\"3\",\"name\":\"\",\"createdAt\":\"2026-11-06T18:36:47.017Z\"}"
+    },
+    {
+     "check": "createTask:{\"projectId\":\"p1\",\"title\":\"First task\"}",
+     "detail": "threw Cannot read properties of undefined (reading 'id') @line 30"
+    },
+    {
+     "check": "createTask:{\"projectId\":\"p1\",\"title\":\"Second\",\"prio",
+     "detail": "threw Cannot read properties of undefined (reading 'id') @line 30"
+    },
+    {
+     "check": "updateTask:t1:{\"status\":\"done\"}",
+     "detail": "threw Cannot read properties of undefined (reading 'id') @line 35"
+    },
+    {
+     "check": "updateTask:t1:{\"title\":\"First task v2\"}",
+     "detail": "threw Cannot read properties of undefined (reading 'id') @line 35"
+    },
+    {
+     "check": "listTasks:{\"projectId\":\"p1\"}",
+     "detail": "expected 2 items, got 0"
+    },
+    {
+     "check": "listTasks:{\"projectId\":\"p1\",\"status\":\"done\"}",
+     "detail": "expected 1 items, got 0"
+    },
+    {
+     "check": "createTask:{\"projectId\":\"p2\",\"title\":\"Other task\"}",
+     "detail": "threw Cannot read properties of undefined (reading 'id') @line 30"
+    },
+    {
+     "check": "listTasks:{\"q\":\"task\"}",
+     "detail": "expected 2 items, got 0"
+    },
+    {
+     "check": "listTasks:{\"q\":\"FIRST\"}",
+     "detail": "expected 1 items, got 0"
+    },
+    {
+     "check": "deleteTask:t2",
+     "detail": "threw Cannot read properties of undefined (reading 'id') @line 40"
+    },
+    {
+     "check": "updateProject:p1:{\"name\":\"Alpha v2\"}",
+     "detail": "threw Cannot read properties of undefined (reading 'id') @line 11"
+    },
+    {
+     "check": "deleteProject:p2",
+     "detail": "threw Cannot read properties of undefined (reading 'id') @line 16"
+    },
+    {
+     "check": "listProjects",
+     "detail": "expected 1 items, got 0"
+    },
+    {
+     "check": "listTasks:{}",
+     "detail": "expected 1 items, got 0"
+    },
+    {
+     "check": "persistedShape",
+     "detail": "cannot read/parse db.json: ENOENT: no such file or directory, open '/tmp/taskflow-store-erxR2b/db.json'"
+    }
+   ],
+   "error": null
+  }
+ },
+ "attempts": [
+  "store-burst-90002",
+  "store-r1-whole-greedy-1000",
+  "store-r1-whole-sample-1010",
+  "store-r1-whole-sample-1011",
+  "store-r1-fim-1020",
+  "store-r2-whole-greedy-2000",
+  "store-r2-whole-sample-2010",
+  "store-r2-whole-sample-2011",
+  "store-r2-fim-2020",
+  "store-r2-fim-2021",
+  "store-r3-whole-greedy-3000"
+ ]
+}

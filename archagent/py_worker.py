@@ -44,9 +44,13 @@ def main() -> None:
                     results.append({"ok": got == case["expected"],
                                     "got": got, "expected": case["expected"]})
                 except BaseException as exc:
+                    import traceback
+                    tb = traceback.extract_tb(exc.__traceback__)
+                    line = tb[-1].lineno if tb else None
                     results.append({"ok": False, "got": None,
                                     "expected": case["expected"],
-                                    "error": f"{type(exc).__name__}: {exc}"})
+                                    "error": f"{type(exc).__name__}: {exc}",
+                                    "line": line})
             print(json.dumps({"ok": all(r["ok"] for r in results),
                               "syntax_valid": True, "results": results}))
         else:

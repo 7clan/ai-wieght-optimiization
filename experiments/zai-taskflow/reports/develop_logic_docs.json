@@ -1,0 +1,33 @@
+{
+ "role": "logic",
+ "stopped": "pass",
+ "wall_seconds": 13.5,
+ "usage": {
+  "generations": 2,
+  "total_new_tokens": 270,
+  "total_seconds": 34.5
+ },
+ "best": {
+  "attempt_id": "logic-burst-90000",
+  "score": [
+   3,
+   3
+  ],
+  "source_sha256": "0a2eb34ddaa04e19cd5ca4c5e632110a15b875276986e883e46ede3bec711802",
+  "result": {
+   "passed": true,
+   "syntax_valid": true,
+   "checks": {
+    "case0": true,
+    "case1": true,
+    "case2": true
+   },
+   "failures": [],
+   "error": null
+  }
+ },
+ "attempts": [
+  "logic-burst-90000",
+  "logic-r1-whole-greedy-1000"
+ ]
+}

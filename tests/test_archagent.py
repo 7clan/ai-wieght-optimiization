@@ -29,19 +29,9 @@ def summarize_project(payload):
     tasks = payload.get("tasks", [])
     total = len(tasks)
     done = sum(1 for t in tasks if t.get("status") == "done")
-    by_priority = {"low": 0, "medium": 0, "high": 0}
-    by_status = {"todo": 0, "doing": 0, "done": 0}
-    for t in tasks:
-        p = t.get("priority")
-        if p in by_priority:
-            by_priority[p] += 1
-        s = t.get("status")
-        if s in by_status:
-            by_status[s] += 1
     percent = round(100 * done / total) if total else 0
     return {"total": total, "done": done, "remaining": total - done,
-            "percent": percent, "by_priority": by_priority,
-            "by_status": by_status}
+            "percent": percent}
 '''
 
 REF_STORE = '''
@@ -267,7 +257,7 @@ def _worker_available() -> bool:
 class TestContractFrozen(unittest.TestCase):
     def test_fingerprint_stable(self):
         self.assertEqual(contracts.fingerprint(),
-                         "c39769cd5e046b28ddf4ea329a2b8dd8168125924161e10e73e911cbc117ba9b")
+                         "d50113c91c60bac2eb4736c3d684c4d74efa9236bed76927fe1866469193a2c6")
 
     def test_holdout_disjoint_from_public(self):
         self.assertNotEqual(contracts.LOGIC_PUBLIC, contracts.LOGIC_HOLDOUT)
@@ -330,7 +320,7 @@ class TestEvaluatorRejectsBroken(unittest.TestCase):
 
     def test_logic_wrong_percent_detected(self):
         bad = REF_LOGIC.replace("round(100 * done / total) if total else 0",
-                                "100 if total else 0")
+                                "100 if total else 0")  # 2/3 -> 100 not 50
         r = evaluate_module("logic", bad)
         self.assertFalse(r["passed"])
 

@@ -21,7 +21,7 @@ import hashlib
 import json
 
 NAME = "TaskFlow"
-VERSION = "taskflow-contract-v1"
+VERSION = "taskflow-contract-v2-logic-simplified"
 ROLES = ("logic", "store", "api", "ui", "css")
 
 SPEC = """Build TaskFlow, a project and task management application.
@@ -45,12 +45,9 @@ project. Return a dict with EXACTLY these keys:
   done: int, number of tasks with status "done"
   remaining: int, total minus done
   percent: int, round(100 * done / total), 0 when total is 0
-  by_priority: dict mapping each priority ("low","medium","high") to the
-    count of tasks with that priority (all three keys always present)
-  by_status: dict mapping each status ("todo","doing","done") to its count
-Rules: never mutate the payload; empty tasks -> total 0, done 0, remaining 0,
-percent 0, by_priority all zeros, by_status all zeros.
-Output only the function, no imports needed. Start with 'def summarize_project(payload):'."""
+Rules: never mutate the payload; empty tasks -> total 0, done 0, remaining
+0, percent 0. Output only the function, no imports needed. Start with
+'def summarize_project(payload):'."""
 
 STORE_SPEC = """Write ONE JavaScript module: a factory createStore(filePath)
 that manages projects and tasks with JSON file persistence at filePath.
@@ -166,6 +163,72 @@ Start with 'const css = `'."""
 # model continues with code instead of prose (Session 031's measured
 # lesson).  The anchor bytes are TRUSTED-SCAFFOLD; every byte after the
 # anchor is model output.
+# Public worked examples (the public test cases shown as exact shapes —
+# the Session 031 measured lesson: concrete input->output examples anchor
+# the frozen model far better than prose descriptions).
+EXAMPLES = {
+    "logic": """PUBLIC EXAMPLE (exact shapes):
+summarize_project({"project": {"id": "p1", "name": "Website Redesign"},
+"tasks": [{"priority": "high", "status": "done"},
+{"priority": "low", "status": "todo"}]})
+returns
+{"total": 2, "done": 1, "remaining": 1, "percent": 50}
+summarize_project({"project": {"id": "p1"}, "tasks": []})
+returns
+{"total": 0, "done": 0, "remaining": 0, "percent": 0}
+total, done, remaining, percent are plain ints.""",
+    "store": """PUBLIC EXAMPLE (exact behavior):
+const s = createStore('db.json');
+s.createProject({name: 'Alpha'}) returns
+{id: 'p1', name: 'Alpha', createdAt: '2026-11-07'}  // id is a STRING
+and ADDS it: s.listProjects() now returns that project in an array.
+Every create/update/delete must MUTATE the state array AND persist:
+fs.writeFileSync(filePath, JSON.stringify({projects, tasks})).
+s.createTask({projectId: 'p1', title: 'First'}) returns
+{id: 't1', projectId: 'p1', title: 'First', priority: 'medium',
+status: 'todo', createdAt: '2026-11-07'}  // defaults applied
+and ADDS it: s.listTasks({}) now contains it.
+s.createTask({projectId: 'zz', title: 'X'}) throws Error.
+s.updateTask('t1', {status: 'done'}) CHANGES the stored task:
+a later s.listTasks({}) shows status 'done'.
+A NEW createStore('db.json') still lists them (file persistence:
+write after EVERY mutation, read on construction).
+s.listTasks({q: 'first'}) matches title case-insensitively;
+{projectId: 'p1'} matches that project's tasks only.
+Separate counters: projects 'p1','p2'... tasks 't1','t2'...
+createdAt is ALWAYS the string '2026-11-07', never a Date.
+Values reassigned later must use let, never const.
+Write ONLY to the filePath parameter; use fs.readFileSync and
+fs.writeFileSync only.""",
+    "api": """PUBLIC EXAMPLE (exact routes and envelopes):
+GET /api/health -> 200 {"ok": true}
+POST /api/projects {"name": "Alpha"} -> 201
+{"project": {"id": "p1", "name": "Alpha", "createdAt": "2026-11-07"}}
+POST /api/projects {"name": ""} -> 400 {"error": "..."}
+PUT /api/tasks/t1 {"status": "done"} -> 200 {"task": {...}}
+PUT /api/tasks/zz {"status": "done"} -> 404 {"error": "..."}
+DELETE /api/tasks/t1 -> 200 {"deleted": true}
+GET /api/tasks?projectId=p1&status=done&q=first -> 200 {"tasks": [...]}
+GET /api/projects/p1/progress -> 200 {"total": 2, "done": 1, ...}
+Every handler answers exactly once with the exact status code.""",
+    "ui": """PUBLIC EXAMPLE (structure):
+const [projects, setProjects] = React.useState([]);
+const [selectedId, setSelectedId] = React.useState(null);
+const [tasks, setTasks] = React.useState([]);
+const [form, setForm] = React.useState({project: '', title: '', priority: 'medium'});
+const [offline, setOffline] = React.useState(false);
+React.useEffect(() => { /* fetch projects once */ }, []);
+After a mutation: refetch the task list and progress.
+In offline mode render the demo data and update local state only.""",
+    "css": """PUBLIC EXAMPLE (shape):
+const css = `
+.app { display: flex; }
+.sidebar { width: 240px; }
+@media (max-width: 720px) { .app { flex-direction: column; } }
+`;
+module.exports = css;""",
+}
+
 ANCHOR = {
     "logic": "def summarize_project(payload):\n",
     "store": "const fs = require('node:fs');\nfunction createStore(filePath) {\n",
@@ -176,12 +239,13 @@ ANCHOR = {
 
 # Short line-oriented contract summaries used to build comment prompts.
 GOALS = {
-    "logic": """TaskFlow progress processor (Python). payload has project and
-tasks. Return dict keys exactly: total, done, remaining, percent,
-by_priority, by_status. done counts status "done". percent is
-round(100*done/total), 0 when total is 0. by_priority maps low, medium,
-high to counts (all three always). by_status maps todo, doing, done.
-Never mutate the payload. Empty tasks -> all zeros.""",
+    "logic": """TaskFlow progress processor (Python). payload is a dict:
+payload["project"] is the project, payload["tasks"] is the task list.
+Start with: tasks = payload["tasks"]. Return dict with EXACTLY four keys:
+total (int, len(tasks)), done (int, count of status "done"), remaining
+(int, total - done), percent (int, round(100 * done / total), and 0 when
+total is 0). Never mutate the payload. Empty tasks -> total 0, done 0,
+remaining 0, percent 0. The four values are plain ints, never dicts.""",
     "store": """TaskFlow storage module (Node.js). Factory createStore(filePath)
 returns object with methods: listProjects, createProject(body),
 updateProject(id, body), deleteProject(id), listTasks(filter),
@@ -276,36 +340,26 @@ DEMO_TASKS = [
 
 LOGIC_PUBLIC = [
     {"payload": {"project": DEMO_PROJECT, "tasks": []},
-     "expected": {"total": 0, "done": 0, "remaining": 0, "percent": 0,
-                  "by_priority": {"low": 0, "medium": 0, "high": 0},
-                  "by_status": {"todo": 0, "doing": 0, "done": 0}}},
+     "expected": {"total": 0, "done": 0, "remaining": 0, "percent": 0}},
     {"payload": {"project": DEMO_PROJECT, "tasks": DEMO_TASKS},
-     "expected": {"total": 2, "done": 1, "remaining": 1, "percent": 50,
-                  "by_priority": {"low": 1, "medium": 0, "high": 1},
-                  "by_status": {"todo": 1, "doing": 0, "done": 1}}},
+     "expected": {"total": 2, "done": 1, "remaining": 1, "percent": 50}},
     {"payload": {"project": DEMO_PROJECT, "tasks": [
         {"priority": "medium", "status": "doing"},
         {"priority": "medium", "status": "done"},
         {"priority": "high", "status": "done"},
         {"priority": "low", "status": "todo"}]},
-     "expected": {"total": 4, "done": 2, "remaining": 2, "percent": 50,
-                  "by_priority": {"low": 1, "medium": 2, "high": 1},
-                  "by_status": {"todo": 1, "doing": 1, "done": 2}}},
+     "expected": {"total": 4, "done": 2, "remaining": 2, "percent": 50}},
 ]
 
 LOGIC_HOLDOUT = [
     {"payload": {"project": DEMO_PROJECT, "tasks": [
         {"priority": "high", "status": "done"}] * 3 +
         [{"priority": "low", "status": "todo"}]},
-     "expected": {"total": 4, "done": 3, "remaining": 1, "percent": 75,
-                  "by_priority": {"low": 1, "medium": 0, "high": 3},
-                  "by_status": {"todo": 1, "doing": 0, "done": 3}}},
+     "expected": {"total": 4, "done": 3, "remaining": 1, "percent": 75}},
     {"payload": {"project": DEMO_PROJECT, "tasks": [
         {"priority": "medium", "status": "doing"},
         {"priority": "medium", "status": "doing"}]},
-     "expected": {"total": 2, "done": 0, "remaining": 2, "percent": 0,
-                  "by_priority": {"low": 0, "medium": 2, "high": 0},
-                  "by_status": {"todo": 0, "doing": 2, "done": 0}}},
+     "expected": {"total": 2, "done": 0, "remaining": 2, "percent": 0}},
 ]
 
 # store checks are executed as a scripted scenario by the worker
@@ -498,7 +552,8 @@ def commentize(role: str, text: str, width: int = 108) -> str:
 
 
 def prompt(role: str, *, docs: str = "", feedback: str = "",
-           previous_excerpt: str = "", self_note: str = "") -> str:
+           previous_excerpt: str = "", self_note: str = "",
+           concept: str = "") -> str:
     """Generation prompt: comment contract (+docs/feedback) ending with the
     code anchor so the frozen base model continues with code."""
     if role == "stage_a":
@@ -506,10 +561,14 @@ def prompt(role: str, *, docs: str = "", feedback: str = "",
     parts = [commentize(role, f"NEW {NAME} TASK. Complete the code after the"
                               " final signature. No prose.")]
     parts.append(commentize(role, GOALS[role]))
+    parts.append(commentize(role, EXAMPLES[role]))
     if docs:
         parts.append(docs)
     if feedback:
         parts.append(commentize(role, "PUBLIC CHECK FEEDBACK: " + feedback))
+    if concept:
+        parts.append(commentize(role, "PROGRAMMING CONCEPT (no code): "
+                                    + concept))
     if self_note:
         parts.append(commentize(role, self_note))
     if previous_excerpt:

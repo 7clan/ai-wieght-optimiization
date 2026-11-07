@@ -1,0 +1,26 @@
+{
+ "ok": true,
+ "score": [
+  26,
+  26
+ ],
+ "pieces": {
+  "createProject": 9,
+  "updateProject": 11,
+  "deleteProject": 7,
+  "createTask": 21,
+  "updateTask": 23,
+  "deleteTask": 9,
+  "listTasks": 7,
+  "stateA": 9,
+  "listProjects": 2,
+  "stateB": 3,
+  "state": 13
+ },
+ "failures": [],
+ "usage": {
+  "generations": 2,
+  "total_new_tokens": 438,
+  "total_seconds": 59.5
+ }
+}
