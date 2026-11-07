@@ -1,0 +1,17 @@
+{
+ "id": "ui-browser-0001",
+ "role": "ui",
+ "requirement": "After creating a project via POST /api/projects, the project list must refresh to show the new project.",
+ "failed_excerpt": "const res = await fetch('/api/projects', { method: 'POST', ... });\nconst data = await res.json();\nsetProjects(data.projects || []);  // BUG: POST response has no projects key",
+ "failure_message": "REAL BROWSER TEST: after creating a project the list becomes EMPTY (0 buttons rendered)",
+ "repaired_excerpt": "await api('/api/projects', { method: 'POST', ... });\nconst data = await api('/api/projects');  // REFETCH\nsetProjects(data.projects || []);",
+ "corrected_behavior": "browser test step 2 passes: project button appears after create",
+ "principle": "A mutation response describes the created item; to refresh a LIST you must re-issue the GET that returns the list. Never read list fields from a mutation response.",
+ "category": "api_response_structure",
+ "contract_refs": [
+  "ui:online-refresh",
+  "api:POST /api/projects"
+ ],
+ "detected_by": "real Playwright browser test (jsdom offline checks could not see it)",
+ "ts": "2026-11-07T06:11:21Z"
+}

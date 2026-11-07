@@ -112,8 +112,9 @@ function bridgedProcessor(logicSource) {
 // role evaluators
 // ---------------------------------------------------------------------------
 function evalLogic() {
+  const fnName = (extra && extra.fnName) || 'summarize_project';
   const p = spawnSync('python3', ['-I', '-B', PY_WORKER], {
-    input: JSON.stringify({source, cases, fn: 'summarize_project'}),
+    input: JSON.stringify({source, cases, fn: fnName}),
     encoding: 'utf8', timeout: 8000, maxBuffer: 65536,
     env: {PYTHONDONTWRITEBYTECODE: '1', PYTHONHASHSEED: '0'},
   });
@@ -137,11 +138,13 @@ function evalLogic() {
 }
 
 function evalStore() {
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'taskflow-store-'));
+  const clinic = !!(extra && extra.clinic);
+  const factoryName = clinic ? 'createQueue' : 'createStore';
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'archagent-store-'));
   const file = path.join(tmp, 'db.json');
   let store, factory;
   try {
-    factory = loadModule(source, 'createStore', 'store', true);
+    factory = loadModule(source, factoryName, 'store', true);
     if (typeof factory !== 'function') return fail('createStore is not a function');
     store = factory(file);
   } catch (e) { return fail('load: ' + e.message + (errLine(e) ? ' @' + JSON.stringify(errLine(e)) : '')); }
@@ -157,7 +160,9 @@ function evalStore() {
         let raw;
         try { raw = JSON.parse(fs.readFileSync(file, 'utf8')); }
         catch (e) { check(name, false, 'cannot read/parse ' + path.basename(file) + ': ' + e.message); continue; }
-        const okShape = raw && Array.isArray(raw.projects) && Array.isArray(raw.tasks);
+        const okShape = clinic
+          ? raw && Array.isArray(raw.appointments)
+          : raw && Array.isArray(raw.projects) && Array.isArray(raw.tasks);
         check(name, okShape, 'file shape ' + JSON.stringify(Object.keys(raw || {})));
         continue;
       }
@@ -171,6 +176,10 @@ function evalStore() {
         else if (step.op === 'createTask') result = store.createTask(step.body);
         else if (step.op === 'updateTask') result = store.updateTask(step.id, step.body);
         else if (step.op === 'deleteTask') result = store.deleteTask(step.id);
+        else if (step.op === 'listWaiting') result = store.listWaiting(step.filter || {});
+        else if (step.op === 'add') result = store.add(step.body);
+        else if (step.op === 'markSeen') result = store.markSeen(step.id);
+        else if (step.op === 'cancel') result = store.cancel(step.id);
         else { check(name, false, 'unknown op ' + step.op); continue; }
       } catch (e) { threw = true; result = e; }
       if (step.expectError) {

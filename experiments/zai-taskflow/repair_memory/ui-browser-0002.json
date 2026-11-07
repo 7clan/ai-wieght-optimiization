@@ -1,0 +1,16 @@
+{
+ "id": "ui-browser-0002",
+ "role": "css",
+ "requirement": "Project buttons must be visible and clickable in the sidebar.",
+ "failed_excerpt": ".project-btn { display: none; }",
+ "failure_message": "REAL BROWSER TEST: waitForSelector(.project-btn) times out \u2014 buttons exist in the DOM but are invisible (display: none)",
+ "repaired_excerpt": ".project-btn { background-color: #000; color: #fff; }",
+ "corrected_behavior": "browser test passes; buttons visible and clickable",
+ "principle": "UI elements must remain visible: never use display:none on content the user must see; style with colors/padding instead.",
+ "category": "component_integration",
+ "contract_refs": [
+  "css:project-btn"
+ ],
+ "detected_by": "real Playwright browser test (selector-presence checks could not see it)",
+ "ts": "2026-11-07T06:11:21Z"
+}

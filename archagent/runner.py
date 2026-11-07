@@ -75,13 +75,20 @@ def holdout_cases(role: str):
 
 
 def evaluate_module(role: str, source: str, *, store_source=None,
-                    logic_source=None, phase="public", timeout=60) -> dict:
-    cases = (public_cases(role) if phase == "public"
-             else holdout_cases(role))
+                    logic_source=None, phase="public", timeout=60,
+                    clinic: bool = False) -> dict:
+    if clinic:
+        from archagent import clinic_contract as _cc
+        cases = (_cc.LOGIC_TESTS if role == "logic" else _cc.STORE_TESTS)
+    else:
+        cases = (public_cases(role) if phase == "public"
+                 else holdout_cases(role))
     payload = {
         "role": role, "source": source, "phase": phase,
         "cases": cases or [],
-        "extra": {"storeSource": store_source, "logicSource": logic_source},
+        "extra": {"storeSource": store_source, "logicSource": logic_source,
+                  "clinic": clinic,
+                  "fnName": "summarize_queue" if clinic else None},
     }
     with tempfile.TemporaryDirectory(prefix="archagent-") as tmp:
         inp, outp = Path(tmp) / "in.json", Path(tmp) / "out.json"
@@ -490,12 +497,14 @@ class Harness:
                 "usage": self.model.usage()}
 
 
-def _post_process(role: str, completion: str) -> str:
+def _post_process(role: str, completion: str, anchor: str | None = None) -> str:
     """Deterministic anchor+cleanup: module = anchor + cleaned completion.
 
     Only strips code fences and trailing prose around the model's own
     bytes; never adds, fixes or rewrites model code.  The anchor is the
-    public-contract signature (TRUSTED-SCAFFOLD, disclosed)."""
+    public-contract signature (TRUSTED-SCAFFOLD, disclosed).  For
+    non-TaskFlow contracts (e.g. ClinicQueue transfer) pass the matching
+    anchor explicitly."""
     text = completion
     m = re.search(r"```(?:python|jsx|javascript|js|css)?\s*\n(.*?)```",
                   text, re.S)
@@ -509,18 +518,18 @@ def _post_process(role: str, completion: str) -> str:
                 break
             keep.append(line)
         text = "\n".join(keep)
-        return contracts.ANCHOR[role] + text.rstrip() + "\n"
+        return (anchor if anchor is not None else contracts.ANCHOR[role]) + text.rstrip() + "\n"
     if role == "css":
         if "`" in text:
             text = text[:text.index("`") + 1]
         else:
             text = text.rstrip() + "\n`"
-        return contracts.ANCHOR[role] + text.lstrip("\n") + \
+        return (anchor if anchor is not None else contracts.ANCHOR[role]) + text.lstrip("\n") + \
             "\nmodule.exports = css;\n"
     last = max(text.rfind("}"), 0)
     if last:
         text = text[:last + 1]
-    return contracts.ANCHOR[role] + text.strip() + "\n"
+    return (anchor if anchor is not None else contracts.ANCHOR[role]) + text.strip() + "\n"
 
 
 def _echoes_instructions(fill: str, instructions: str) -> bool:
@@ -632,7 +641,7 @@ def main() -> None:
     ap.add_argument("command",
                     choices=["fingerprint", "stage-a", "develop", "holdout",
                              "build-store", "build-api", "build-ui",
-                             "repair-ui-piece", "smoke"])
+                             "repair-ui-piece", "clinic-transfer", "smoke"])
     ap.add_argument("--role", choices=list(contracts.ROLES))
     ap.add_argument("--docs", action="store_true",
                     help="documentation retrieval condition")
@@ -912,6 +921,76 @@ def main() -> None:
         }
         _save_state(args.state, state)
         print("repair applied; ui module updated")
+        return
+
+    if args.command == "clinic-transfer":
+        # Independent transfer: frozen Qwen on ClinicQueue (unseen domain),
+        # whole-module generations, with vs without TaskFlow repair-memory
+        # patterns. Bounded: 3 seeds x 2 conditions x 2 roles.
+        from archagent.model import FrozenModel
+        from archagent import clinic_contract as clinic
+        from archagent.repair_memory import RepairMemory
+        from archagent.runner import _post_process
+        model = FrozenModel()
+        memory = RepairMemory(str(MEMORY))
+        out_file = REPORTS / "clinic_transfer.json"
+        if out_file.is_file():
+            results = json.loads(out_file.read_text(encoding="utf8"))
+        else:
+            results = {"conditions": {},
+                       "clinic_fingerprint": clinic.fingerprint(),
+                       "note": "whole-module generations; patterns are "
+                               "TaskFlow repair-memory concepts only "
+                               "(no TaskFlow code)"}
+        for cond, with_patterns in (("baseline", False),
+                                    ("with_patterns", True)):
+            cond_res = results["conditions"].setdefault(cond, {})
+            for role in clinic.ROLES:
+                if role in cond_res and cond_res[role].get("done"):
+                    continue
+                cases = (clinic.LOGIC_TESTS if role == "logic"
+                         else clinic.STORE_TESTS)
+                best, per_seed = (-1, -1), []
+                for seed in (7001, 7002, 7003):
+                    patterns = ""
+                    if with_patterns:
+                        # retrieve patterns for this role from a generic
+                        # failure signal (all patterns; concepts only)
+                        recs = memory.retrieve(role, "all checks", k=3)
+                        patterns = "".join(
+                            f"/* Verified concept from a DIFFERENT app "
+                            f"(never its code): {rec['principle'][:150]} */\n"
+                            for rec in recs)
+                    text, usage = model.generate(
+                        clinic.prompt(role, patterns=patterns),
+                        max_tokens=900, seed=seed, stochastic=seed != 7001)
+                    source = _post_process(role, text,
+                                           anchor=clinic.ANCHOR[role])
+                    payload = {
+                        "role": role, "source": source, "phase": "clinic",
+                        "cases": cases if role == "logic" else cases,
+                        "extra": {},
+                    }
+                    res = evaluate_module(role, source, timeout=60,
+                                          clinic=True)
+                    sc = score_of(res)
+                    per_seed.append({"seed": seed, "score": list(sc),
+                                     "usage": usage})
+                    if sc > best:
+                        best = sc
+                cond_res[role] = {"best": list(best), "per_seed": per_seed,
+                                  "done": True}
+                REPORTS.mkdir(parents=True, exist_ok=True)
+                out_file.write_text(json.dumps(results, indent=1) + "\n",
+                                    encoding="utf8")
+                print(f"  [clinic/{cond}/{role}] best {best}", flush=True)
+        REPORTS.mkdir(parents=True, exist_ok=True)
+        (REPORTS / "clinic_transfer.json").write_text(
+            json.dumps(results, indent=1) + "\n", encoding="utf8")
+        print(json.dumps({c: {r_: v["best"] for r_, v in cr.items()}
+                          for c, cr in results["conditions"].items()},
+                         indent=1))
+        print("usage:", model.usage())
         return
 
     if args.command == "develop":

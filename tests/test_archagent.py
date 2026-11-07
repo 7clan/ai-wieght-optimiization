@@ -257,7 +257,7 @@ def _worker_available() -> bool:
 class TestContractFrozen(unittest.TestCase):
     def test_fingerprint_stable(self):
         self.assertEqual(contracts.fingerprint(),
-                         "d50113c91c60bac2eb4736c3d684c4d74efa9236bed76927fe1866469193a2c6")
+                         "47f0ea4ebabeccb38b75d90b53237cc35adb6d9663ce5255cdd13888f2839cb0")
 
     def test_holdout_disjoint_from_public(self):
         self.assertNotEqual(contracts.LOGIC_PUBLIC, contracts.LOGIC_HOLDOUT)

@@ -1,0 +1,202 @@
+{
+ "conditions": {
+  "baseline": {
+   "logic": {
+    "best": [
+     0,
+     3
+    ],
+    "per_seed": [
+     {
+      "seed": 7001,
+      "score": [
+       0,
+       0
+      ],
+      "usage": {
+       "tokens": 900,
+       "seconds": 114.28,
+       "seed": 7001,
+       "stochastic": false
+      }
+     },
+     {
+      "seed": 7002,
+      "score": [
+       0,
+       0
+      ],
+      "usage": {
+       "tokens": 900,
+       "seconds": 123.49,
+       "seed": 7002,
+       "stochastic": true
+      }
+     },
+     {
+      "seed": 7003,
+      "score": [
+       0,
+       3
+      ],
+      "usage": {
+       "tokens": 900,
+       "seconds": 128.25,
+       "seed": 7003,
+       "stochastic": true
+      }
+     }
+    ],
+    "done": true
+   },
+   "store": {
+    "best": [
+     6,
+     16
+    ],
+    "per_seed": [
+     {
+      "seed": 7001,
+      "score": [
+       0,
+       0
+      ],
+      "usage": {
+       "tokens": 900,
+       "seconds": 109.81,
+       "seed": 7001,
+       "stochastic": false
+      }
+     },
+     {
+      "seed": 7002,
+      "score": [
+       0,
+       0
+      ],
+      "usage": {
+       "tokens": 398,
+       "seconds": 52.87,
+       "seed": 7002,
+       "stochastic": true
+      }
+     },
+     {
+      "seed": 7003,
+      "score": [
+       6,
+       16
+      ],
+      "usage": {
+       "tokens": 814,
+       "seconds": 109.0,
+       "seed": 7003,
+       "stochastic": true
+      }
+     }
+    ],
+    "done": true
+   }
+  },
+  "with_patterns": {
+   "logic": {
+    "best": [
+     1,
+     3
+    ],
+    "per_seed": [
+     {
+      "seed": 7001,
+      "score": [
+       0,
+       0
+      ],
+      "usage": {
+       "tokens": 900,
+       "seconds": 116.44,
+       "seed": 7001,
+       "stochastic": false
+      }
+     },
+     {
+      "seed": 7002,
+      "score": [
+       0,
+       3
+      ],
+      "usage": {
+       "tokens": 286,
+       "seconds": 42.26,
+       "seed": 7002,
+       "stochastic": true
+      }
+     },
+     {
+      "seed": 7003,
+      "score": [
+       1,
+       3
+      ],
+      "usage": {
+       "tokens": 404,
+       "seconds": 54.68,
+       "seed": 7003,
+       "stochastic": true
+      }
+     }
+    ],
+    "done": true
+   },
+   "store": {
+    "best": [
+     0,
+     0
+    ],
+    "per_seed": [
+     {
+      "seed": 7001,
+      "score": [
+       0,
+       0
+      ],
+      "usage": {
+       "tokens": 900,
+       "seconds": 105.15,
+       "seed": 7001,
+       "stochastic": false
+      }
+     },
+     {
+      "seed": 7002,
+      "score": [
+       0,
+       0
+      ],
+      "usage": {
+       "tokens": 900,
+       "seconds": 120.29,
+       "seed": 7002,
+       "stochastic": true
+      }
+     },
+     {
+      "seed": 7003,
+      "score": [
+       0,
+       0
+      ],
+      "usage": {
+       "tokens": 667,
+       "seconds": 90.98,
+       "seed": 7003,
+       "stochastic": true
+      }
+     }
+    ],
+    "done": true
+   }
+  }
+ },
+ "clinic_fingerprint": "e128f0bd8a848d4ca2f28dc526325c01c1bec944e217837a400892872496a78a",
+ "note": "whole-module generations; patterns are TaskFlow repair-memory concepts only (no TaskFlow code)"
+}
