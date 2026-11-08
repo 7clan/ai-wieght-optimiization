@@ -1,0 +1,53 @@
+name: Adaptive Qwen frozen pilot
+
+on:
+  push:
+    branches:
+      - exp/qwen-adaptive-generalization
+    paths:
+      - experiments/adaptive/**
+      - .github/workflows/adaptive-qwen-pilot.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: adaptive-qwen-pilot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify static controller tests first
+        run: python -m unittest -q tests.test_adaptive_controller tests.test_adaptive_infrastructure
+      - name: Install CPU-only frozen inference dependencies
+        run: |
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install 'transformers>=4.45,<5' 'accelerate>=0.34,<2' 'safetensors>=0.4'
+      - name: Pre-pull allowed Docker runtime images
+        run: |
+          docker pull python:3.11-alpine
+          docker pull node:22-alpine
+      - name: Run first real frozen Qwen solo versus bounded controller pilot
+        run: python -m experiments.adaptive.pilot --output experiments/adaptive/pilot_report.json --max-new-tokens 400
+      - name: Preserve independent evidence report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-qwen-frozen-pilot
+          path: experiments/adaptive/pilot_report.json
+          if-no-files-found: warn
+          retention-days: 30
