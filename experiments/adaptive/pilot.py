@@ -18,7 +18,7 @@ import time
 from adaptive_agent import AgentController, Budget, ControllerError, ModelContext, Task
 from adaptive_agent.controller import _validate_proposal
 from adaptive_agent.docker_sandbox import DockerSandbox, PublicFixture, require_docker
-from adaptive_agent.qwen_adapter import load_local_qwen
+from adaptive_agent.qwen_adapter import QwenSingleFileAdapter, load_local_qwen
 
 
 MODEL_ID = "Qwen/Qwen2.5-Coder-0.5B-Instruct"
@@ -110,6 +110,7 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
     model = load_local_qwen(MODEL_ID, max_new_tokens=max_new_tokens)
     loading_s = round(time.monotonic() - setup, 3)
     records = []
+    direct_adapter = QwenSingleFileAdapter(model.generate_text)
 
     # The same model instance is reused, but generation is stateless/deterministic.
     for spec in PILOT_TASKS:
@@ -121,11 +122,17 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
             spec.contract, model, public_evaluator, NoWebResearch(),
         )
         assisted_seconds = round(time.monotonic() - start, 3)
-        records.append((spec, solo, assisted, assisted_seconds))
+        start = time.monotonic()
+        direct = AgentController(Budget(max_attempts=3, max_proposals=4,
+                                        max_research=0)).run(
+            spec.contract, direct_adapter, public_evaluator, NoWebResearch(),
+        )
+        direct_seconds = round(time.monotonic() - start, 3)
+        records.append((spec, solo, assisted, assisted_seconds, direct, direct_seconds))
 
     # The private oracle runs ONLY once all solo and controller generation is over.
     rows = []
-    for spec, solo, assisted, assisted_seconds in records:
+    for spec, solo, assisted, assisted_seconds, direct, direct_seconds in records:
         rows.append({
             "task_id": spec.contract.task_id,
             "public_spec_hash": sha256(spec.public.test_source.encode()).hexdigest(),
@@ -144,12 +151,24 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
                            "invalid_proposals": assisted.invalid_proposals,
                            "research_calls": assisted.research_calls,
                            "proposal_trace": assisted.proposal_trace},
+            "single_file_controller": {
+                "status": direct.status,
+                "public_pass": direct.status == "public_checks_passed",
+                "private_pass": private_score(spec, direct.selected_files),
+                "seconds": direct_seconds,
+                "proposals": direct.proposals,
+                "evaluations": direct.evaluations,
+                "invalid_proposals": direct.invalid_proposals,
+                "research_calls": direct.research_calls,
+                "proposal_trace": direct.proposal_trace,
+            },
         })
     report = {
         "description": "Exploratory two-task frozen Qwen0.5B protocol smoke; NOT fullstack generalization",
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "model": MODEL_ID, "weights_updated": False, "training": False,
         "teacher_repairs": 0, "docs_search_enabled": False,
+        "protocols": ["json_solo", "json_controller", "single_file_controller"],
         "host_cpu_threads": 2, "max_new_tokens": max_new_tokens,
         "loading_seconds": loading_s,
         "peak_host_rss_kib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
