@@ -98,6 +98,18 @@ def run_gates(contract: dict, installed_ok: bool) -> tuple[bool, str]:
                 if not _re.search(need, block):
                     ok = False
                     feedback_parts.append("schema: " + why)
+    required = contract.get("exports") or []
+    if required and contract["kind"] != "schema":
+        import re as _re2
+        text = (install.APP / contract["file"]).read_text()
+        for name in required:
+            if not _re2.search(
+                    rf"export\s+(?:default\s+)?(?:async\s+)?"
+                    rf"(?:function|const|interface|type|class)\s+{name}\b",
+                    text):
+                ok = False
+                feedback_parts.append(
+                    f"file is missing required export: {name}")
     if "prisma" in gates:
         r = install.run_cmd(["bun", "run", "db:push"], install.APP,
                             timeout=180)

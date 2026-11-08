@@ -1,0 +1,19 @@
+{
+ "kind": "fim",
+ "contract": "route-list",
+ "step": "get",
+ "k": 1,
+ "seed": 1013,
+ "usage": {
+  "tokens": 400,
+  "seconds": 50.79,
+  "seed": 1013,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix": "import { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n",
+ "suffix": "  const items = rows.map((r) => ({ ...r, updatedAt: r.updatedAt.toISOString() }))\n  return NextResponse.json({ items, total: items.length })\n}\n\nexport async function POST(req: NextRequest) {\n",
+ "instructions": "Fill in the body of the GET handler for listing inventory\nitems. Read the query params from req.nextUrl.searchParams: q,\ncategory, status, sort, order. Build a Prisma where object with ONLY\nthe defined filters: when q is non-empty match name OR sku with\ncontains; when category is non-empty and not 'all' match category\nexactly; status 'low' means quantity > 0 AND quantity <= minQuantity;\nstatus 'out' means quantity = 0; status 'ok' means quantity >\nminQuantity. Build the orderBy object from sort ('name', 'quantity'\nor 'updatedAt') and order ('asc' or 'desc'). Assign the findMany\nresult to a variable named rows.",
+ "completion": " Assign the total count from the\nrows to a variable named count. Return the rows and count as JSON.\n\nFill in the body of the GET handler for viewing an inventory item.\nRead the req.params.itemID and build a Prisma findUnique object with\nthe given itemID. If the item is found, return the item as JSON.\n\nFill in the body of the GET handler for viewing a list of inventory\nitems. Read the query params from req.nextUrl.searchParams: q, category,\nstatus, sort, order. Build a Prisma where object with ONLY\nthe defined filters: when q is non-empty match name OR sku with\ncontains; when category is non-empty and not 'all' match category\nexactly; status 'low' means quantity > 0 AND quantity <= minQuantity;\nstatus 'out' means quantity = 0; status 'ok' means quantity >\nminQuantity. Build the orderBy object from sort ('name', 'quantity'\nor 'updatedAt') and order ('asc' or 'desc'). Assign the findMany\nresult to a variable named rows. Assign the total count from the\nrows to a variable named count. Return the rows and count as JSON.\n\nFill in the body of the GET handler for viewing a list of inventory\nitems sorted by a particular column. Read the query params from\nreq.nextUrl.searchParams: sort, order. Build a Prisma where object\nwith the defined filters: when sort is 'name' match name; when\nsort is 'quantity' match quantity; when sort is 'updated_at' match\nupdatedAt. Build the orderBy object from sort ('name', 'quantity'\nor 'updatedAt') and order ('asc' or 'desc'). Assign the findMany\nresult to a variable named rows. Assign the total count from the\nrows to a variable named count. Return the rows and count as JSON.\n\nFill in the body of the GET handler for listing inventory items sorted\nby a particular column",
+ "sane": false
+}

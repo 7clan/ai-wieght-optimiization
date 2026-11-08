@@ -1,0 +1,33 @@
+[devserver] stopped (up=False)
+model loaded; usage so far: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+
+===== STAGE route-id (src/app/api/items/[id]/route.ts) =====
+  [gen r0 k0] seed=7 tok=900 reject=demo echo: contains 'book'
+  [gen r0 k1] seed=1013 tok=900 reject=demo echo: contains 'book'
+  [gen r0 k2] seed=2026 tok=900 reject=None
+  [gen r0 k3] seed=3039 tok=900 reject=None
+  ACCEPTED r0 k2 (900 tokens)
+[checkpoint route-id] unloading model for dynamic gates ['apitest']
+[devserver] up after 6s
+[dynamic:apitest] exit=2
+    FAIL 14 PUT invalid 400 / unknown 404
+    FAIL 15 DELETE 204 then 404
+    FAIL 16 post-delete total is 10 (restart-phase baseline) — total=null
+    SUITE ERROR TypeError: Cannot read properties of null (reading 'total')
+        at main (file:///home/z/s035/experiments/zai-fullstack/apitest.mjs:191:36)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[devserver] stopped (up=False)
+model reloaded; usage: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+[devserver] up after 4s
+runner_d finished; dev server restarted
+STAGE SUMMARY:
+  schema: accepted=False
+  schema:fim-repair: accepted=True
+  types: accepted=True
+  client: accepted=False
+  route-list: accepted=False
+  route-list: accepted=True
+  route-id: accepted=False
+  route-id: accepted=False
+  route-id: accepted=True
+  route-id:dynamic: accepted=None

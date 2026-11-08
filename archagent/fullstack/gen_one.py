@@ -135,7 +135,8 @@ def strip_prompt_echo(text: str, prompt: str) -> str:
             lines.pop()
             popped += 1
             continue
-        if len(last) >= 8 and last in prompt:
+        if (len(last) >= 8 and last in prompt
+                and _is_prose_fragment(last)):
             lines.pop()
             popped += 1
             continue

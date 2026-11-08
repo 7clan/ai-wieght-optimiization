@@ -26,6 +26,15 @@
    "tokens": 900,
    "label": "QWEN-ORIGINAL",
    "note": "accepted on round 0 sample 1"
+  },
+  "src/app/api/items/[id]/route.ts": {
+   "contract": "route-id",
+   "round": 0,
+   "k": 2,
+   "seed": 2026,
+   "tokens": 900,
+   "label": "QWEN-ORIGINAL",
+   "note": "accepted on round 0 sample 2"
   }
  },
  "stages": [
@@ -119,11 +128,45 @@
     "total_seconds": 1497.2
    },
    "label": "FAILED"
+  },
+  {
+   "contract": "route-id",
+   "file": "src/app/api/items/[id]/route.ts",
+   "accepted": true,
+   "rounds": 1,
+   "usage_delta": {
+    "generations": 4,
+    "total_new_tokens": 3600,
+    "total_seconds": 492.3
+   },
+   "label": "QWEN-ORIGINAL"
+  },
+  {
+   "contract": "route-id:dynamic",
+   "results": {
+    "apitest": {
+     "exit": 2,
+     "tail": [
+      "FAIL  8 GET ?category=Electronics -> 3 items all Electronics",
+      "FAIL  9 GET ?status=low -> 4 items, all genuinely low \u2014 total=null",
+      "FAIL 10 GET ?status=out -> 2 items with quantity 0",
+      "FAIL 11 GET ?sort=quantity&order=asc ascending \u2014 q=[]",
+      "FAIL 12 GET /:id 200 then 404 for unknown",
+      "FAIL 13 PUT updates and persists (now low stock)",
+      "FAIL 14 PUT invalid 400 / unknown 404",
+      "FAIL 15 DELETE 204 then 404",
+      "FAIL 16 post-delete total is 10 (restart-phase baseline) \u2014 total=null",
+      "SUITE ERROR TypeError: Cannot read properties of null (reading 'total')",
+      "    at main (file:///home/z/s035/experiments/zai-fullstack/apitest.mjs:191:36)",
+      "    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+     ]
+    }
+   }
   }
  ],
  "model_usage_cumulative": {
-  "generations": 68,
-  "total_new_tokens": 49814,
-  "total_seconds": 75696.8
+  "generations": 72,
+  "total_new_tokens": 53414,
+  "total_seconds": 303771.80000000005
  }
 }

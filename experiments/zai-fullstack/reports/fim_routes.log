@@ -1,0 +1,7 @@
+[devserver] stopped (up=False)
+== route-list FIM repair ==
+  [fim route-list/get k0] seed=7 tok=400 sane=False
+  [fim route-list/get k1] seed=1013 tok=400 sane=False
+  [fim route-list/get k2] seed=2026 tok=400 sane=False
+GET body FIM failed
+[devserver] up after 4s

@@ -1,0 +1,19 @@
+{
+ "kind": "fim",
+ "contract": "route-list",
+ "step": "get",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 400,
+  "seconds": 50.17,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "prefix": "import { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n",
+ "suffix": "  const items = rows.map((r) => ({ ...r, updatedAt: r.updatedAt.toISOString() }))\n  return NextResponse.json({ items, total: items.length })\n}\n\nexport async function POST(req: NextRequest) {\n",
+ "instructions": "Fill in the body of the GET handler for listing inventory\nitems. Read the query params from req.nextUrl.searchParams: q,\ncategory, status, sort, order. Build a Prisma where object with ONLY\nthe defined filters: when q is non-empty match name OR sku with\ncontains; when category is non-empty and not 'all' match category\nexactly; status 'low' means quantity > 0 AND quantity <= minQuantity;\nstatus 'out' means quantity = 0; status 'ok' means quantity >\nminQuantity. Build the orderBy object from sort ('name', 'quantity'\nor 'updatedAt') and order ('asc' or 'desc'). Assign the findMany\nresult to a variable named rows.",
+ "completion": "\nReturn a JSON response with the following structure:\n{\n  \"items\": [\n    {\n      \"id\": 1,\n      \"name\": \"Item 1\",\n      \"sku\": \"SKU123\",\n      \"quantity\": 10,\n      \"category\": \"Electronics\",\n      \"status\": \"low\",\n      \"updatedAt\": \"2023-01-01T00:00:00.000Z\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Item 2\",\n      \"sku\": \"SKU456\",\n      \"quantity\": 5,\n      \"category\": \"Clothing\",\n      \"status\": \"out\",\n      \"updatedAt\": \"2023-01-02T00:00:00.000Z\"\n    }\n  ],\n  \"total\": 2\n}\nNote: You can use the Prisma client to build the SQL query for the\nfindMany method. You can also use the Prisma client to build the\norderBy object. You can use the Prisma client to build the findMany\nmethod. You can use the Prisma client to build the orderBy object.\nYou can use the Prisma client to build the findMany method. You can\nuse the Prisma client to build the orderBy object. You can use the\nPrisma client to build the findMany method. You can use the Prisma\nclient to build the orderBy object. You can use the Prisma client to\nbuild the findMany method. You can use the Prisma client to build the\norderBy object. You can use the Prisma client to build the findMany\nmethod. You can use the Prisma client to build the orderBy object.\nYou can use the Prisma client to build the findMany method. You can\nuse the Prisma client to build the orderBy object. You can use",
+ "sane": false
+}

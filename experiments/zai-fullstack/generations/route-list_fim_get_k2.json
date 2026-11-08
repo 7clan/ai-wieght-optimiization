@@ -1,0 +1,19 @@
+{
+ "kind": "fim",
+ "contract": "route-list",
+ "step": "get",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 400,
+  "seconds": 49.3,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix": "import { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n",
+ "suffix": "  const items = rows.map((r) => ({ ...r, updatedAt: r.updatedAt.toISOString() }))\n  return NextResponse.json({ items, total: items.length })\n}\n\nexport async function POST(req: NextRequest) {\n",
+ "instructions": "Fill in the body of the GET handler for listing inventory\nitems. Read the query params from req.nextUrl.searchParams: q,\ncategory, status, sort, order. Build a Prisma where object with ONLY\nthe defined filters: when q is non-empty match name OR sku with\ncontains; when category is non-empty and not 'all' match category\nexactly; status 'low' means quantity > 0 AND quantity <= minQuantity;\nstatus 'out' means quantity = 0; status 'ok' means quantity >\nminQuantity. Build the orderBy object from sort ('name', 'quantity'\nor 'updatedAt') and order ('asc' or 'desc'). Assign the findMany\nresult to a variable named rows.",
+ "completion": "\nIf rows is empty, return a 404 Not Found response. Otherwise, return a\n200 OK response with the rows as JSON and a header named Content-Type\nwith the value application/json.\n\nIf you're feeling adventurous, add the following code to the end of the\nfunction:\n\nconst rows = await db.inventory.findMany({\n  where: {\n    name: {\n      contains: q,\n      mode: 'insensitive'\n    },\n    category: {\n      not: 'all'\n    },\n    status: {\n      in: ['low', 'out', 'ok']\n    },\n    updatedAt: {\n      gt: new Date(1614754400000)\n    }\n  },\n  orderBy: {\n    name: 'asc',\n    updatedAt: 'desc'\n  }\n})\nreturn NextResponse.json({ rows, total: rows.length }, { status: 200 })\n}\n\nThe db.inventory.findMany() method returns a Prisma client object, but\nyou'll need to pass it a query string to get the data you want. In this\ncase, the query string looks like this:\n\n{\n  where: {\n    name: {\n      contains: q,\n      mode: 'insensitive'\n    },\n    category: {\n      not: 'all'\n    },\n    status: {\n      in: ['low', 'out', 'ok']\n    },\n    updatedAt: {\n      gt: new Date(1614754400000)\n    }\n  },\n  orderBy: {\n    name: 'asc',\n    updatedAt: 'desc'\n  }\n}\n\nThe where object specifies the filters you want to apply to the query. In\nthis case, you want to filter by name, category, status, and updatedAt.\nThe order object specifies the order of the results. In this case, you\nwant to order by name in",
+ "sane": false
+}
