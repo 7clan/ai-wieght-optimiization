@@ -1,0 +1,17 @@
+/* fix: button hit areas */
+.btn {
+min-height: 28px;
+  padding: 6px 14px;
+}
+.btn-icon {
+  min-width: 28px;
+  min-height: 28px;
+}
+
+
+/* fix: doc-name hit area */
+.doc-name {
+min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+}

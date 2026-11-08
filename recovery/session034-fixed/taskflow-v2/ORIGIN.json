@@ -1,0 +1,136 @@
+{
+  "entries": {
+    "index.html": {
+      "notes": "loader manifest (CSS/JS file list, vendor scripts, hooks shim, app mount). Build infrastructure, not app implementation. Qwen S3.1 generations are stored in generations/staged-all-trackD/S3.1-index.json.",
+      "origin": "trusted-scaffolding",
+      "recorded_at": "2026-11-08T01:50:42"
+    },
+    "js/app.jsx": {
+      "notes": "GENERATION FAILED stage=staged-all task=S4.3b-app-component track=D - no valid candidate within budget; teacher will author or relax the task",
+      "origin": "teacher-authored",
+      "recorded_at": "2026-11-08T01:40:06"
+    },
+    "js/components/badge-progress.jsx": {
+      "generation": {
+        "candidates_tried": 3,
+        "tokens": 230
+      },
+      "notes": "stage=staged-all track=D task=S2.1-badge-progress round=1",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-07T23:46:29"
+    },
+    "js/components/modal-empty.jsx": {
+      "notes": "S2.3 accepted candidate was fully commented out; de-commented + 3 bounded repairs (icon content, action-as-node, heading level).",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T02:04:41"
+    },
+    "js/components/sidebar.jsx": {
+      "generation": {
+        "candidates_tried": 3,
+        "tokens": 150
+      },
+      "notes": "stage=staged-all track=D task=S2.4-sidebar round=1",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-08T00:01:31"
+    },
+    "js/components/task-card.jsx": {
+      "notes": "S2.2 accepted candidate was fully commented out (comment-degeneration); de-commented + 3 bounded repairs (title placeholder, ISO due handling, nonexistent PriorityChip).",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T02:04:41"
+    },
+    "js/lib/filter-tasks.js": {
+      "generation": {
+        "candidates_tried": 3,
+        "tokens": 191
+      },
+      "notes": "stage=staged-all track=D task=S3.2a-filter-lib round=1",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-08T00:29:22"
+    },
+    "js/store.js": {
+      "notes": "S4.1a+S4.1b candidates + 7 bounded repairs (R1-R7 in file header) fixing data-flow defects caught by the browser test suite.",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T02:04:41"
+    },
+    "js/views/modal-forms.jsx": {
+      "notes": "NewProjectForm = S4.2b candidate (qwen-original). NewTaskForm = S4.2a salvaged candidate + 2 bounded repairs (inverted validation guard, heading).",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T02:04:41"
+    },
+    "js/views/task-list-view.jsx": {
+      "notes": "S3.2b candidate r0c0 + 6 bounded repairs (R1-R6 documented in file header): nonexistent Input/Select components, stale local state, TypeError filter misuse, undefined doneCount, undefined props ref, missing New Task button.",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T01:51:08"
+    },
+    "styles/components.css": {
+      "notes": "VF2 regeneration (hardened validator, comment-stripped acceptance). Best candidate r0c0 (7/8 acceptance, 74 real rule lines) installed; original S1.3 file was 100% prompt-echo (unterminated comment, 0 browser rules).",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T02:20:56"
+    },
+    "styles/feedback2.css": {
+      "generation": {
+        "candidates_tried": 1,
+        "tokens": 294
+      },
+      "notes": "stage=staged-all track=D task=S1.4b-feedback-css round=0",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-07T23:37:40"
+    },
+    "styles/fixes-v1.css": {
+      "notes": "VF1 accepted candidate contained 3 invalid/garbage rules (accent-dot, .use-var, badge-doing dark background) - neutralized by fixes-v2.css overrides; file kept as record.",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T02:20:56"
+    },
+    "styles/fixes-v2.css": {
+      "notes": "VF2 polish fixes accepted first candidate.",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-08T02:20:56"
+    },
+    "styles/fixes-v3.css": {
+      "notes": "VF3 first-candidate acceptance (106 tokens).",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-08T02:22:34"
+    },
+    "styles/layout.css": {
+      "generation": {
+        "candidates_tried": 1,
+        "tokens": 406
+      },
+      "notes": "stage=staged-all track=D task=S1.2-layout round=0",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-07T22:58:39"
+    },
+    "styles/polish.css": {
+      "notes": "S5.1 best candidate (4/7 acceptance) + teacher completion of 3 missing rule blocks and 2 property fixes. See experiments/zai-visual/reports/S5.1-salvage.json",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T01:50:42"
+    },
+    "styles/scale.css": {
+      "generation": {
+        "candidates_tried": 1,
+        "tokens": 141
+      },
+      "notes": "stage=staged-all track=D task=S1.1b-space-effect-tokens round=0",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-07T23:04:15"
+    },
+    "styles/status.css": {
+      "generation": {
+        "candidates_tried": 5,
+        "tokens": 277
+      },
+      "notes": "stage=staged-all track=D task=S1.4a-status-css round=2",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-07T23:36:39"
+    },
+    "styles/tokens.css": {
+      "generation": {
+        "candidates_tried": 1,
+        "tokens": 291
+      },
+      "notes": "stage=staged-all track=D task=S1.1a-color-type-tokens round=0",
+      "origin": "qwen-original",
+      "recorded_at": "2026-11-07T23:14:00"
+    }
+  }
+}

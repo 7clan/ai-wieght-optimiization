@@ -1,0 +1,14 @@
+{
+ "defect": "mv-buttons",
+ "kind": "rejected",
+ "why": "check still failing",
+ "regress": [],
+ "prompt": "You write small CSS patch files that fix measured\naccessibility/visual defects in an existing web application.  Answer\nwith CSS rules only.  The patch will be appended after the existing\nstylesheets, so later rules override earlier ones.\n\nExample from a DIFFERENT app (cooking blog).  Measured defect:\n\"button height 19px, below the 24px minimum\".  The correct patch was:\n\n/* fix: raise button hit area */\n.blog-btn {\n  min-height: 28px;\n  padding: 6px 14px;\n}\n.blog-btn-icon {\n  min-width: 28px;\n  min-height: 28px;\n}\n\n\nNow YOUR task.  Measured defect (from the automated checker):\n.btn buttons compute to 21px tall (96x21, 123x21) on every viewport; WCAG 2.2 minimum target is 24px. Checker: 'btn btn-ghost 96x21', 'btn btn-primary 123x21'.\n\nThe relevant existing CSS is:\n.btn { padding: 4px 12px; font-size: 14px; line-height: 1.2; border: 1px solid; }\n\nWrite a patch that raises button height.  TWO rules:\n1. .btn { min-height: 28px; padding: 6px 14px; }\n2. .btn-icon { min-width: 28px; min-height: 28px; }\nDo not change colors or fonts.\n\nYour previous patch (which did not fix the measurement) was:\n/* fix: button hit areas */\n.btn {\nmin-height: 28px;\n  padding: 6px 14px;\n}\n.btn-icon {\n  min-width: 28px;\n  min-height: 28px;\n}\n\nAfter your patch the checker reported:\nThe specific checker for THIS defect still reports:\nviewport 1440px: still failing \u2014 doc-name 108x18; doc-name 142x18; doc-name 165x18\nviewport 1280px: still failing \u2014 doc-name 108x18; doc-name 142x18; doc-name 165x18\nviewport 768px: still failing \u2014 doc-name 108x18; doc-name 142x18; doc-name 165x18\nviewport 390px: still failing \u2014 doc-name 108x18; btn-icon 28x28; btn-icon 28x28\nviewport 320px: still failing \u2014 doc-name 108x18; btn-icon 28x28; btn-icon 28x28\nIgnore every other metric; fix only this.\nFix exactly that.\n\nWrite the patch now.  The first line is already written; continue from it:\n/* fix: button hit areas */\n.btn {\n",
+ "text": "/* fix: button hit areas */\n.btn {\nmin-height: 28px;\n  padding: 6px 14px;\n}\n.btn-icon {\n  min-width: 28px;\n  min-height: 28px;\n}",
+ "usage": {
+  "tokens": 260,
+  "seconds": 39.77,
+  "seed": 3039,
+  "stochastic": true
+ }
+}

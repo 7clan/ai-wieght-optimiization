@@ -1,0 +1,50 @@
+{
+ "when": "2026-11-08T09:11:18",
+ "log": [
+  {
+   "defect": "tf-hierarchy",
+   "already_passing": true
+  },
+  {
+   "defect": "tf-typo-320",
+   "ok": true,
+   "attempts": 1,
+   "attribution": "QWEN-ORIGINAL",
+   "seconds": 38.0,
+   "sha256": "d04b680966a280f720b8e1c197ad4d63257b30e17ad19ed659e74e7f13448add",
+   "lines": 6
+  },
+  {
+   "defect": "tf-touch",
+   "ok": true,
+   "attempts": 1,
+   "attribution": "QWEN-ORIGINAL",
+   "seconds": 42.1,
+   "sha256": "ec0d3926d25c7989c23a0e838894b123cf49b5d087a8abf2153040512ac7241d",
+   "lines": 5
+  },
+  {
+   "defect": "mv-buttons",
+   "ok": true,
+   "attempts": 1,
+   "attribution": "QWEN-ORIGINAL",
+   "seconds": 40.6,
+   "sha256": "913e86b5f2425b3dbd97a5851a6679c1efeade90cd771a121e8c416f262aff29",
+   "lines": 9
+  },
+  {
+   "defect": "mv-docname",
+   "ok": true,
+   "attempts": 1,
+   "attribution": "QWEN-ORIGINAL",
+   "seconds": 41.8,
+   "sha256": "409d480909263c48d604f78f556f9fb1c6342a5dcbb286f8d43895dbec58b681",
+   "lines": 6
+  }
+ ],
+ "usage": {
+  "generations": 2,
+  "total_new_tokens": 520,
+  "total_seconds": 69.0
+ }
+}

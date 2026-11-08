@@ -1,0 +1,46 @@
+.app-title {
+    font-size: 22px;
+    color: var(--color-text);
+    ::before {
+        accent-dot: 4.5px;
+    }
+}
+
+.view-head h2 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+}
+
+.badge-doing, .badge-todo, .badge-done, .chip-high, .chip-medium, .chip-low {
+    color: var(--color-text-muted);
+    border-radius: 999px;
+    font-size: 12px;
+    tinted-background: 10-15% alpha of the status color;
+    cursor: pointer;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+}
+
+button, .nav-item, .menu-btn, .btn-icon {
+    cursor: pointer;
+}
+
+.use-var() {
+    var(--color-text) = #0f172a;
+    var(--color-primary) = #0d9488;
+    var(--color-secondary) = #64748b;
+    var(--color-text-muted) = #64748b;
+    var(--space-1) = 4;
+    var(--space-2) = 8;
+    var(--space-3) = 12;
+    var(--space-4) = 16;
+    var(--space-5) = 24;
+    var(--space-6) = 32;
+}
+
+/* Example usage */
+.badge-doing {
+    background-color: #92400e;
+}

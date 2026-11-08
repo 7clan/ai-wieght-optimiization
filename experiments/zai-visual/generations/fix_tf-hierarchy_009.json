@@ -1,0 +1,14 @@
+{
+ "defect": "tf-hierarchy",
+ "kind": "rejected",
+ "why": "check still failing",
+ "regress": [],
+ "prompt": "You write small CSS patch files that fix measured\naccessibility/visual defects in an existing web application.  Answer\nwith CSS rules only.  The patch will be appended after the existing\nstylesheets, so later rules override earlier ones.\n\nExample from a DIFFERENT app (cooking blog).  Measured defect:\n\"button height 19px, below the 24px minimum\".  The correct patch was:\n\n/* fix: raise button hit area */\n.blog-btn {\n  min-height: 28px;\n  padding: 6px 14px;\n}\n.blog-btn-icon {\n  min-width: 28px;\n  min-height: 28px;\n}\n\n\nNow YOUR task.  Measured defect (from the automated checker):\nthe FIRST h3 on the page is .sidebar-label (the sidebar 'PROJECTS' heading) at 18.72px, while the section h2 (.view-head h2) computes 18px \u2014 a label renders larger than a section heading. Checker: 'h3(18.72) > h2(18)'.  (Harness note: an earlier spec misattributed this to .card h3; a probe showed card h3s already compute 16px. The 12 model patches from that round were exactly as specified \u2014 the spec was wrong, not the model.)\n\nThe relevant existing CSS is:\n.view-head h2 { font-size: 18px; }\n.sidebar-label { font-size: 1.17em; }  /* 18.72px: the actual culprit */\n.card h3 { /* already 16px via app rules */ }\n\nWrite a patch that restores the heading hierarchy.  The\npatch has THREE parts, in this exact order \u2014 write all three:\n1. a rule for the selector .view-head h2 with font-size: 20px;\n2. a rule for the selector .sidebar-label with font-size: 14px;\n3. a media query @media (max-width: 720px) containing a rule for the\n   selector .view-head h2 with font-size: 17px;  (measured fact: at\n   320px width the app's own rules shrink h1 to 19px, so the h2 must\n   be smaller than 19px on narrow screens)\nUse px values everywhere.  Use ONLY these three selectors \u2014 do not\ninvent other class names.\n\nYour previous patch (which did not fix the measurement) was:\n/* fix: heading hierarchy */\n.view-head h2 {\nfont-size: 20px;\n}\n\nAfter your patch the checker reported:\nThe specific checker for THIS defect still reports:\nviewport 320px: still failing \u2014 h2(20) > h1(19)\nIgnore every other metric; fix only this.\nFix exactly that.\n\nWrite the patch now.  The first line is already written; continue from it:\n/* fix: heading hierarchy */\n.view-head h2 {\n",
+ "text": "/* fix: heading hierarchy */\n.view-head h2 {\nfont-size: 20px;\n}",
+ "usage": {
+  "tokens": 260,
+  "seconds": 33.74,
+  "seed": 154,
+  "stochastic": false
+ }
+}

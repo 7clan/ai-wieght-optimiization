@@ -1,0 +1,61 @@
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-primary:hover, .btn-ghost:hover, .btn-danger:hover {
+  filter: brightness(0.95);
+}
+
+.card, .btn, .nav-item {
+  transition: box-shadow .15s ease, transform .15s ease, background-color .15s ease, border-color .15s ease;
+}
+
+.badge-todo {
+  color: #475569;
+  background: #f1f5f9;
+}
+
+.badge-doing {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.badge-done {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.chip-high {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.chip-medium {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.chip-low {
+  color: #475569;
+  background: #f1f5f9;
+}
+
+@media (max-width: 360px) {
+  .app-header {
+    padding: 0 8px;
+    gap: 8px;
+  }
+  .app-title {
+    font-size: 18px;
+  }
+  .btn-ghost {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}

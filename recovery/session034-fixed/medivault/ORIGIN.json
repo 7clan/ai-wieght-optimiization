@@ -1,0 +1,54 @@
+{
+  "entries": {
+    "index.html": {
+      "notes": "loader manifest + hooks shim + readiness-polling mount",
+      "origin": "trusted-scaffolding",
+      "recorded_at": "2026-11-08T03:27:24"
+    },
+    "js/app.jsx": {
+      "notes": "integration layer (same classification as TaskFlow)",
+      "origin": "teacher-authored",
+      "recorded_at": "2026-11-08T03:27:24"
+    },
+    "js/components/doc-row-modal.jsx": {
+      "notes": "M5 candidate + 5 bounded repairs",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T03:27:24"
+    },
+    "js/lib/search-filter.js": {
+      "notes": "M4 candidate + 2 bounded repairs (OR semantics, typeFilter honored)",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T03:34:32"
+    },
+    "js/store.js": {
+      "notes": "M3 candidate + 6 bounded data-model repairs (R1-R6 in header)",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T03:27:24"
+    },
+    "js/views/forms.jsx": {
+      "notes": "M7 candidate + 5 bounded repairs (file-reading logic preserved)",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T03:27:24"
+    },
+    "js/views/vault-view.jsx": {
+      "notes": "M6 candidate + 7 bounded repairs",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T03:27:24"
+    },
+    "styles/fixes-v1.css": {
+      "notes": "MV1 first-candidate acceptance + teacher completion of 3 omitted rules (.btn cursor, .btn-primary white text, .doc-name min-height)",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T03:45:47"
+    },
+    "styles/layout.css": {
+      "notes": "M2 candidate + 4 missing rule groups completed",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T03:27:24"
+    },
+    "styles/tokens.css": {
+      "notes": "M1 candidate + shorthand expansion + radii",
+      "origin": "qwen-repaired",
+      "recorded_at": "2026-11-08T03:27:24"
+    }
+  }
+}

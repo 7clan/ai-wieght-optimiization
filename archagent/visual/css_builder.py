@@ -73,6 +73,55 @@ def balanced_block(text: str) -> str | None:
     return text[:end] if end else None
 
 
+def cut_trailing_prose(code: str) -> str:
+    """Keep only the leading run of well-formed CSS rules.
+
+    Forward state machine: while at rule-boundary depth 0, a line must
+    be blank, a comment, a selector opening '{', or (at rule start) a
+    declaration line.  The FIRST prose line (English explanation,
+    quoted checker output, etc.) ends the stylesheet — everything from
+    there on is dropped, so prose that later embeds quoted CSS blocks
+    cannot leak back in.
+    """
+    lines = code.splitlines()
+    kept = []          # committed lines
+    pend = []          # blanks/comments waiting for the next rule
+    depth = 0
+    for ln in lines:
+        s = ln.strip()
+        if depth == 0:
+            if s == '' or s.startswith('/*') or s.startswith('//'):
+                pend.append(ln)
+                continue
+            if '{' in s:
+                kept += pend
+                pend = []
+                depth = s.count('{') - s.count('}')
+                kept.append(ln)
+                continue
+            if re.match(r'^[a-zA-Z-]+\s*:\s*[^;{}]+;?\s*$', s):
+                # top-level declaration (only valid right after an anchor
+                # opened a block we did not see); keep it
+                kept += pend
+                pend = []
+                kept.append(ln)
+                continue
+            # prose → stop here
+            break
+        else:
+            kept.append(ln)
+            depth += s.count('{') - s.count('}')
+            if depth < 0:
+                depth = 0
+    # drop trailing blank/comment run after the last real rule
+    while kept and (kept[-1].strip() == '' or
+                    kept[-1].strip().startswith('/*') or
+                    kept[-1].strip().startswith('//')):
+        kept.pop()
+    out = '\n'.join(kept)
+    return out if re.search(r'[};]\s*$', out) else code
+
+
 def strip_prose(completion: str, anchor: str = "") -> str:
     """Drop markdown fences / leading prose; dedupe anchor repetition."""
     text = completion
@@ -114,18 +163,47 @@ def degenerate(text: str) -> bool:
     return False
 
 
-def echoes(completion: str, spec: str) -> bool:
-    """Reject spec-echo (model quoting the instructions, not CSS)."""
+# Common CSS declaration vocabulary — legitimate in any rule body, so
+# excluded from spec-echo overlap (a CSS patch that says "font-size" is
+# writing code, not echoing the requirement text).
+CSS_VOCAB = {
+    "font", "size", "color", "family", "weight", "height", "width",
+    "padding", "margin", "border", "radius", "background", "solid",
+    "none", "center", "space", "between", "pointer", "hidden",
+    "visible", "flex", "grid", "inline", "block", "items", "align",
+    "justify", "content", "display", "overflow", "text", "decoration",
+    "line", "letter", "spacing", "min-height", "min-width", "max-width",
+    "auto", "transparent", "inherit", "initial", "relative", "absolute",
+    "fixed", "sticky", "left", "right", "top", "bottom", "inside",
+    "outside", "large", "small", "larger", "smaller", "medium",
+}
+
+
+def echoes(completion: str, spec: str, anchor: str = "") -> bool:
+    """Reject spec-echo (model quoting the instructions, not CSS).
+
+    Words that appear in the ANCHOR are excluded: the anchor is the
+    interface contract (selector names, property names) — writing those
+    is required, not echoing.  CSS_VOCAB likewise covers the standard
+    declaration vocabulary.  For tiny CSS patches the body vocabulary
+    is legitimately a near-subset of the spec's, so without these
+    exclusions the check is mathematically guaranteed to misfire.
+    """
     rules = re.findall(r"\{([^{}]*)\}", completion)
     if not rules:
         return True
-    spec_words = set(re.findall(r"[a-z]{4,}", spec.lower()))
+    anchor_words = set(re.findall(r"[a-z]{4,}", anchor.lower()))
+    spec_words = (set(re.findall(r"[a-z]{4,}", spec.lower()))
+                  - CSS_VOCAB - anchor_words)
     for body in rules[:3]:
         decls = [d for d in body.split(";") if ":" in d]
         if not decls:
             continue
-        words = set(re.findall(r"[a-z]{4,}", body.lower()))
-        overlap = len(words & spec_words) / max(1, len(words))
+        words = (set(re.findall(r"[a-z]{4,}", body.lower()))
+                 - CSS_VOCAB - anchor_words)
+        if not words:
+            continue
+        overlap = len(words & spec_words) / len(words)
         if overlap > 0.6:
             return True
     return False

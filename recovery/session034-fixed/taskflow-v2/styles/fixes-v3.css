@@ -1,0 +1,22 @@
+.btn-primary {
+    background: #0f766e;
+}
+
+.btn-primary:hover {
+    background: #115e56;
+}
+
+@media (max-width: 360px) {
+    .app-header {
+        padding: 0 8px;
+        gap: 8px;
+    }
+
+    .app-title {
+        font-size: 19px;
+    }
+
+    .view-head h2 {
+        font-size: var(--text-base);
+    }
+}

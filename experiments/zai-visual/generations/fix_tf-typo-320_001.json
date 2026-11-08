@@ -1,0 +1,14 @@
+{
+ "defect": "tf-typo-320",
+ "kind": "accepted",
+ "why": "",
+ "regress": [],
+ "prompt": "You write small CSS patch files that fix measured\naccessibility/visual defects in an existing web application.  Answer\nwith CSS rules only.  The patch will be appended after the existing\nstylesheets, so later rules override earlier ones.\n\nExample from a DIFFERENT app (cooking blog).  Measured defect:\n\"button height 19px, below the 24px minimum\".  The correct patch was:\n\n/* fix: raise button hit area */\n.blog-btn {\n  min-height: 28px;\n  padding: 6px 14px;\n}\n.blog-btn-icon {\n  min-width: 28px;\n  min-height: 28px;\n}\n\n\nNow YOUR task.  Measured defect (from the automated checker):\nat 320px width the page now uses 9 distinct font sizes (typography limit is 8).  The extra size is the 17px media-query h2: at 320px the sizes include both 17 (h2) and 16 (body).  Setting the narrow-screen h2 to 16px keeps the hierarchy (h1=19 > h2=16 > h3=14) and collapses into the body size.\n\nThe relevant existing CSS is:\n@media (max-width: 720px) {\n  .view-head h2 {\n    font-size: 17px;\n  }\n}\n\nWrite a patch that adjusts the narrow-screen heading size.\nAdd ONE media query @media (max-width: 720px) containing a rule for\nthe selector .view-head h2 with font-size: 16px;  Do not change any\nother selector or property.\n\nWrite the patch now.  The first line is already written; continue from it:\n/* fix: narrow heading size */\n@media (max-width: 720px) {\n",
+ "text": "/* fix: narrow heading size */\n@media (max-width: 720px) {\n.view-head h2 {\n    font-size: 16px;\n  }\n}",
+ "usage": {
+  "tokens": 260,
+  "seconds": 31.31,
+  "seed": 7,
+  "stochastic": false
+ }
+}

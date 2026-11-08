@@ -1,0 +1,37 @@
+/* CSS for MediVault Lite */
+.btn-primary {
+    background: #6d28d9;
+}
+
+.btn-primary:hover {
+    background: #5b21b6;
+}
+
+.table th {
+    color: #475569;
+}
+
+.btn-icon {
+    min-width: 26px;
+    min-height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 420px) {
+    .app-header {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 8px;
+        row-gap: 6px;
+    }
+    .brand-sub {
+        display: none;
+    }
+}
+
+/* --- teacher completion (audit findings the Qwen fix round missed) --- */
+.btn { cursor: pointer; }
+.btn-primary { color: #ffffff; }
+.doc-name { min-height: 18px; display: inline-flex; align-items: center; }

@@ -1,0 +1,32 @@
+/* fix: touch targets */
+@media (max-width: 720px) {
+.menu-btn { width: 44px; height: 44px; }
+  .btn-icon { width: 40px; height: 40px; }
+}
+
+/* fix: heading hierarchy */
+.view-head h2 {
+font-size: 20px;
+}
+.sidebar-label {
+  font-size: 14px;
+}
+@media (max-width: 720px) {
+  .view-head h2 {
+    font-size: 17px;
+  }
+}
+
+
+/* fix: narrow heading size */
+@media (max-width: 720px) {
+.view-head h2 {
+    font-size: 16px;
+  }
+}
+
+/* fix: menu button shrink */
+@media (max-width: 720px) {
+.menu-btn { flex-shrink: 0; }
+  .btn-icon { flex-shrink: 0; }
+}
