@@ -7,6 +7,7 @@ the inference function; Qwen runs only if the caller opts in.
 from __future__ import annotations
 
 import json
+import re
 from typing import Callable
 
 from .controller import ControllerError, ModelContext, Proposal
@@ -62,14 +63,63 @@ class QwenJSONAdapter:
         )
 
 
+class QwenSingleFileAdapter:
+    """Generate one complete source file, not a verbose JSON-escaped program.
+
+    Exact source location is specified mechanically. For repairs, supply the
+    *actual failing source* and public error. The model still writes every
+    line of implementation; neither controller nor teacher writes fixes.
+    """
+
+    def __init__(self, generate_text: Callable[[str], str]) -> None:
+        self.generate_text = generate_text
+
+    def propose(self, context: ModelContext) -> Proposal:
+        paths = context.task.required_files
+        if len(paths) != 1:
+            raise ControllerError("Single-file adapter requires exactly one declared target path")
+        path = paths[0]
+        language = "Python" if path.endswith(".py") else "JavaScript" if path.endswith((".js", ".cjs", ".mjs")) else "source"
+        previous = context.previous_files.get(path, "")
+        if previous:
+            prompt = (
+                f"Fix this {language} file: {path}. Output ONLY the entire corrected source code.\n"
+                f"REQUIREMENT: {context.task.description[:700]}\n"
+                f"CURRENT SOURCE:\n{previous[:1500]}\n"
+                f"ACTUAL PUBLIC ERROR:\n{context.public_feedback[-1][:700] if context.public_feedback else 'Not yet tested'}\n"
+                "Keep valid existing code. Resolve the error. No explanation, no JSON, no markdown.\n"
+                "COMPLETE CORRECTED SOURCE:\n"
+            )
+        else:
+            prompt = (
+                f"Write complete {language} source code for the file {path}.\n"
+                f"REQUIREMENT: {context.task.description[:950]}\n"
+                f"CHECKS: {'; '.join(context.task.public_acceptance)[:450]}\n"
+                "Output ONLY the entire source code. Finish every function body. "
+                "No explanation, no JSON, no markdown.\n"
+                "COMPLETE SOURCE:\n"
+            )
+        source = self.generate_text(prompt).strip()
+        # Strip presentation fences only; never synthesize or repair source.
+        fence = re.fullmatch(r"```(?:python|javascript|js)?\s*\n(.*?)\n```", source, re.S | re.I)
+        if fence:
+            source = fence.group(1).strip()
+        if not source:
+            raise ControllerError("Qwen produced an empty single-file source")
+        return Proposal(files={path: source + "\n"}, hypothesis="single-file direct completion/repair")
+
+
 def load_local_qwen(model_id: str = "Qwen/Qwen2.5-Coder-0.5B-Instruct",
-                    max_new_tokens: int = 512) -> QwenJSONAdapter:
+                    max_new_tokens: int = 512,
+                    response_format: str = "json") -> QwenJSONAdapter | QwenSingleFileAdapter:
     """Explicitly load one model; model cache/download requirements are caller's.
 
     The default is the frozen 0.5B Instruct checkpoint. No adapters or edits.
     """
     if not (32 <= max_new_tokens <= 1024):
         raise ValueError("Generation budget must be 32–1024 tokens")
+    if response_format not in ("json", "single_file"):
+        raise ValueError("response_format must be json or single_file")
     import torch
     from tinycoder.model import load_inference
 
@@ -96,4 +146,5 @@ def load_local_qwen(model_id: str = "Qwen/Qwen2.5-Coder-0.5B-Instruct",
                                     pad_token_id=tokenizer.eos_token_id)
         return tokenizer.decode(output[0, input_ids.shape[1]:], skip_special_tokens=True).strip()
 
-    return QwenJSONAdapter(produce)
+    return (QwenJSONAdapter(produce) if response_format == "json"
+            else QwenSingleFileAdapter(produce))
