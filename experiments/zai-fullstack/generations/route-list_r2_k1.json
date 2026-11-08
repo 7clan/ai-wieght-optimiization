@@ -6,7 +6,7 @@
  "anchor": "import { NextRequest, NextResponse } from 'next/server'\n",
  "usage": {
   "tokens": 900,
-  "seconds": 141.8,
+  "seconds": 132.4,
   "seed": 1167,
   "stochastic": true
  },

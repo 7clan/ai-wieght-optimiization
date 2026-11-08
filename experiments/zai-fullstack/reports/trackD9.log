@@ -1,0 +1,50 @@
+[devserver] stopped (up=False)
+model loaded; usage so far: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+
+===== STAGE route-list (src/app/api/items/route.ts) =====
+  [gen r0 k0] seed=7 tok=900 reject=unbalanced brackets (3 unclosed)
+  [gen r0 k1] seed=1013 tok=900 reject=None
+  [gen r0 k2] seed=2026 tok=900 reject=None
+  [gen r0 k3] seed=3039 tok=900 reject=None
+  rejected r0 k1: file is missing required export: GET
+file is missing required export: POST
+  rejected r0 k2: file is missing required export: GET
+file is missing required export: POST
+tsc --noEmit reported:
+word or identifier.
+src/app/api/items/route.ts(117,1): error TS1434: Unexpected keyword or identifier.
+  rejected r0 k3: tsc --noEmit reported:
+src/app/api/items/route.ts(32,47): error TS2322: Type '{ name: string; sku: string; quantity: number; minQuantity: number; }' is not assignable to type '(Without<InventoryItemCr
+  [gen r1 k0] seed=77 tok=900 reject=demo echo: contains 'adoption'
+  [gen r1 k1] seed=1090 tok=900 reject=None
+  [gen r1 k2] seed=2103 tok=900 reject=demo echo: contains 'adoption'
+  [gen r1 k3] seed=3116 tok=900 reject=demo echo: contains 'adoption'
+  rejected r1 k1: file is missing required export: GET
+file is missing required export: POST
+  [gen r2 k0] seed=154 tok=900 reject=None
+  [gen r2 k1] seed=1167 tok=900 reject=None
+  [gen r2 k2] seed=2180 tok=900 reject=None
+  [gen r2 k3] seed=3193 tok=900 reject=None
+  rejected r2 k0: file is missing required export: GET
+file is missing required export: POST
+  rejected r2 k1: file is missing required export: GET
+file is missing required export: POST
+  rejected r2 k2: file is missing required export: GET
+file is missing required export: POST
+  rejected r2 k3: file is missing required export: GET
+file is missing required export: POST
+  STAGE route-list FAILED after 3 rounds — needs integration decision
+[devserver] up after 6s
+runner_d finished; dev server restarted
+STAGE SUMMARY:
+  schema: accepted=False
+  schema:fim-repair: accepted=True
+  types: accepted=True
+  client: accepted=False
+  route-list: accepted=False
+  route-list: accepted=True
+  route-id: accepted=False
+  route-id: accepted=False
+  route-id: accepted=True
+  route-id:dynamic: accepted=None
+  route-list: accepted=False

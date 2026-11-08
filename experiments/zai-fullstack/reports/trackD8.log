@@ -1,0 +1,24 @@
+[devserver] stopped (up=False)
+model loaded; usage so far: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+
+===== STAGE route-list (src/app/api/items/route.ts) =====
+  [gen r0 k0] seed=7 tok=900 reject=unbalanced brackets (3 unclosed)
+  [gen r0 k1] seed=1013 tok=900 reject=None
+  [gen r0 k2] seed=2026 tok=900 reject=None
+  [gen r0 k3] seed=3039 tok=900 reject=None
+  rejected r0 k1: file is missing required export: GET
+file is missing required export: POST
+tsc --noEmit reported:
+expected.
+src/app/api/items/[id]/route.ts(50,1): error TS1434: Unexpected keyword or identifier.
+src/a
+  rejected r0 k2: file is missing required export: GET
+file is missing required export: POST
+tsc --noEmit reported:
+word or identifier.
+src/app/api/items/route.ts(117,1): error TS1434: Unexpected keyword or identifier.
+  rejected r0 k3: tsc --noEmit reported:
+expected.
+src/app/api/items/[id]/route.ts(50,1): error TS1434: Unexpected keyword or identifier.
+src/app/api/items/[id]/route.ts(50,7): error TS1434: Unexpected keyword or ident
+  [gen r1 k0] seed=77 tok=900 reject=demo echo: contains 'adoption'
