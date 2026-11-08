@@ -23,10 +23,13 @@ class Task:
     task_id: str
     description: str
     public_acceptance: tuple[str, ...]
+    required_files: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if not self.task_id.strip() or not self.description.strip() or not self.public_acceptance:
             raise ValueError("A task requires an ID, description and public acceptance criteria")
+        if len(set(self.required_files)) != len(self.required_files):
+            raise ValueError("Duplicate required files")
 
 
 @dataclass(frozen=True)
@@ -103,6 +106,8 @@ class RunReport:
     invalid_proposals: int = 0
     messages: list[str] = field(default_factory=list)
     accepted_files: dict[str, str] = field(default_factory=dict)
+    selected_files: dict[str, str] = field(default_factory=dict)
+    proposal_trace: list[dict] = field(default_factory=list)
 
     def as_dict(self) -> dict:
         # Only SHA values are exported, avoiding publication of generated code.
@@ -113,15 +118,21 @@ class RunReport:
             "reused_proposals": self.reused_proposals,
             "invalid_proposals": self.invalid_proposals,
             "messages": self.messages,
+            "proposal_trace": self.proposal_trace,
             "accepted_sha256": {
                 path: sha256(body.encode("utf-8")).hexdigest()
                 for path, body in sorted(self.accepted_files.items())
+            },
+            "selected_sha256": {
+                path: sha256(body.encode("utf-8")).hexdigest()
+                for path, body in sorted(self.selected_files.items())
             },
             "provenance": "controller + supplied model; no weight update",
         }
 
 
-def _validate_proposal(files: Mapping[str, str], max_file_bytes: int) -> None:
+def _validate_proposal(files: Mapping[str, str], max_file_bytes: int,
+                       required_files: tuple[str, ...] = ()) -> None:
     if not files or len(files) > 24:
         raise ControllerError("Proposal must contain between 1 and 24 files")
     total = 0
@@ -136,6 +147,9 @@ def _validate_proposal(files: Mapping[str, str], max_file_bytes: int) -> None:
         total += len(content.encode("utf-8"))
     if total > max_file_bytes:
         raise ControllerError("Model artifact exceeds the resource budget")
+    missing = set(required_files).difference(files)
+    if missing:
+        raise ControllerError("Missing required file path(s): " + ", ".join(sorted(missing)))
 
 
 def _failure_family(feedback: str) -> str:
@@ -175,6 +189,7 @@ class AgentController:
         seen_queries: set[str] = set()
         seen_artifacts: set[str] = set()
         repeated = 0
+        best_public_checks = -1
         strategy = "Split contracts; change one hypothesis at a time; verify public checks."
 
         while (report.proposals < self.budget.max_proposals
@@ -183,15 +198,19 @@ class AgentController:
                 proposal = model.propose(ModelContext(
                     task, report.evaluations + 1, tuple(feedback), tuple(findings), strategy,
                 ))
-                _validate_proposal(proposal.files, self.budget.max_file_bytes)
+                _validate_proposal(proposal.files, self.budget.max_file_bytes,
+                                   task.required_files)
             except ControllerError as exc:
                 report.proposals += 1
                 report.invalid_proposals += 1
                 # Invalid output is not a public test failure; keep the
                 # generated-program sandbox untouched and give format feedback.
-                strategy = "Strict JSON object with a files map; no prose, fences or unsafe paths."
+                strategy = ("Create exactly these required paths: " + ", ".join(task.required_files)
+                            if "Missing required file" in str(exc) else
+                            "Strict JSON object with a files map; no prose, fences or unsafe paths.")
                 feedback.append(f"Invalid proposal: {str(exc)[:300]}")
                 report.messages.append(f"Model output rejected: {str(exc)[:300]}")
+                report.proposal_trace.append({"rejected": str(exc)[:200]})
                 continue
             report.proposals += 1
 
@@ -227,6 +246,17 @@ class AgentController:
             if not isinstance(outcome, SandboxResult):
                 raise ControllerError("Sandbox returned an invalid public result")
             report.evaluations += 1
+            public_count = sum(value is True for value in outcome.checks.values())
+            report.proposal_trace.append({
+                "file_paths": sorted(proposal.files),
+                "artifact_sha256": fingerprint,
+                "public_passed_checks": public_count,
+                "public_total_checks": len(outcome.checks),
+                "feedback_preview": outcome.feedback[-280:],
+            })
+            if public_count > best_public_checks:
+                best_public_checks = public_count
+                report.selected_files = dict(proposal.files)
             if outcome.passed:
                 report.status = "public_checks_passed"
                 report.accepted_files = dict(proposal.files)
