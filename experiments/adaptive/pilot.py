@@ -36,7 +36,7 @@ PILOT_TASKS = (
         Task("py-nonempty", (
             "Write solution.py defining count_nonempty(items), returning the number of "
             "nonempty or non-whitespace strings. Input is a list of strings."
-        ), ("count_nonempty([' a ', '', 'b']) == 2",)),
+        ), ("count_nonempty([' a ', '', 'b']) == 2",), ("solution.py",)),
         PublicFixture("python", (
             "import sys\nsys.path.insert(0,'/app')\nfrom solution import count_nonempty\n"
             "assert count_nonempty([' a ', '', 'b']) == 2\n"
@@ -51,7 +51,7 @@ PILOT_TASKS = (
             "Write solution.cjs exporting a function normalizeTags(items). Given a JavaScript "
             "array of strings, trim and lowercase each, drop empty strings, keep first occurrence "
             "of each unique normalized string, preserving order."
-        ), ("normalizeTags([' A ','a','B']) returns ['a','b']",)),
+        ), ("normalizeTags([' A ','a','B']) returns ['a','b']",), ("solution.cjs",)),
         PublicFixture("javascript", (
             "const assert=require('node:assert/strict');\n"
             "const {normalizeTags}=require('/app/solution.cjs');\n"
@@ -81,7 +81,8 @@ def solo_attempt(model, spec: PilotTask, sandbox: DockerSandbox) -> dict:
             spec.contract, 1, (), (),
             "Split contracts; change one hypothesis at a time; verify public checks.",
         ))
-        _validate_proposal(candidate.files, max_file_bytes=60_000)
+        _validate_proposal(candidate.files, max_file_bytes=60_000,
+                           required_files=spec.contract.required_files)
         output["proposal_valid"] = True
         output["files"] = dict(candidate.files)
         result = sandbox.evaluate(spec.contract, candidate.files)
@@ -130,17 +131,19 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
             "public_spec_hash": sha256(spec.public.test_source.encode()).hexdigest(),
             "private_spec_hash": sha256(spec.private.test_source.encode()).hexdigest(),
             "solo": {"valid": solo["proposal_valid"],
+                     "file_paths": sorted(solo["files"] or {}),
                      "public_pass": solo["public_pass"],
                      "private_pass": private_score(spec, solo["files"]),
                      "seconds": solo["seconds"], "error": solo["error"]},
             "controller": {"status": assisted.status,
                            "public_pass": assisted.status == "public_checks_passed",
-                           "private_pass": private_score(spec, assisted.accepted_files),
+                           "private_pass": private_score(spec, assisted.selected_files),
                            "seconds": assisted_seconds,
                            "proposals": assisted.proposals,
                            "evaluations": assisted.evaluations,
                            "invalid_proposals": assisted.invalid_proposals,
-                           "research_calls": assisted.research_calls},
+                           "research_calls": assisted.research_calls,
+                           "proposal_trace": assisted.proposal_trace},
         })
     report = {
         "description": "Exploratory two-task frozen Qwen0.5B protocol smoke; NOT fullstack generalization",
