@@ -1,0 +1,18 @@
+[devserver] stopped (up=False)
+model loaded; usage so far: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+
+===== STAGE client (src/lib/inventory/api-client.ts) =====
+  [gen r0 k0] seed=7 tok=700 reject=demo echo: contains 'shelter'
+  [gen r0 k1] seed=1013 tok=700 reject=demo echo: contains 'Adoption'
+  [gen r0 k2] seed=2026 tok=700 reject=None
+  [gen r0 k3] seed=3039 tok=700 reject=demo echo: contains 'shelter'
+  rejected r0 k2: tsc --noEmit reported:
+src/lib/inventory/api-client.ts(10,71): error TS2304: Cannot find name 'InventoryItem'.
+src/lib/inventory/api-client.ts(12,23): error TS2389: Function implementation name must b
+  [gen r1 k0] seed=77 tok=700 reject=demo echo: contains 'Adoption'
+  [gen r1 k1] seed=1090 tok=700 reject=demo echo: contains 'Adoption'
+  [gen r1 k2] seed=2103 tok=700 reject=demo echo: contains 'Adoption'
+  [gen r1 k3] seed=3116 tok=700 reject=demo echo: contains 'shelter'
+  [gen r2 k0] seed=154 tok=700 reject=demo echo: contains 'Adoption'
+  [gen r2 k1] seed=1167 tok=700 reject=demo echo: contains 'Adoption'
+  [gen r2 k2] seed=2180 tok=700 reject=demo echo: contains 'Adoption'

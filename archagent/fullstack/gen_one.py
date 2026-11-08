@@ -32,7 +32,8 @@ GEN = ROOT / "experiments/zai-fullstack/generations"
 # echo (the pet-shelter example leaked into target code) -> rejected.
 DEMO_ECHO = ["Adoption", "adoption", "species", "shelter", "Shelter",
              "pet-", "Pet ", "HealthStatus", "healthOf", "HealthRecord",
-             "CareLevel", "careLevelOf"]
+             "CareLevel", "careLevelOf", "Animal", "useAnimals",
+             "saveAnimal", "/api/animals"]
 
 
 def _looks_like_prose(line: str) -> bool:

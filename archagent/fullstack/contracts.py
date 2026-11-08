@@ -149,16 +149,25 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
 }"""
 
 HOOK_DEMO = """Example from a DIFFERENT app (a pet shelter), showing
-the ANSWER FORMAT for a data-fetching hook.  That task was "load
-adoptions with loading + error + retry", and the correct answer was:
+the ANSWER FORMAT for a data hook with an inline fetch layer.  That
+task was "load animals with loading + error + retry + save":
 
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { listAdoptions, AdoptionRecord } from '@/lib/shelter/client'
 
-export function useAdoptions() {
-  const [items, setItems] = useState<AdoptionRecord[]>([])
+type Animal = { id: string; name: string; age: number }
+
+async function getJson(res: Response) {
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({ error: 'request failed' }))
+    throw new Error(body.error)
+  }
+  return res.json()
+}
+
+export function useAnimals() {
+  const [items, setItems] = useState<Animal[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -166,7 +175,8 @@ export function useAdoptions() {
     setLoading(true)
     setError(null)
     try {
-      setItems(await listAdoptions(''))
+      const data = await getJson(await fetch('/api/animals'))
+      setItems(data.items)
     } catch (e) {
       setError(e instanceof Error ? e.message : 'failed to load')
     } finally {
@@ -176,7 +186,17 @@ export function useAdoptions() {
 
   useEffect(() => { load() }, [load])
 
-  return { items, loading, error, reload: load }
+  async function saveAnimal(input: { name: string; age: number }, id?: string) {
+    const res = await fetch(id ? `/api/animals/${id}` : '/api/animals', {
+      method: id ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(input),
+    })
+    await getJson(res)
+    await load()
+  }
+
+  return { items, loading, error, reload: load, saveAnimal }
 }"""
 
 COMPONENT_DEMO = """Example from a DIFFERENT app (a pet shelter),
@@ -306,34 +326,6 @@ exports:
         gates=["tsc", "eslint", "types_unit"],
         max_tokens=550,
         exports=['InventoryItem', 'InventoryInput', 'StockStatus', 'stockStatus'],
-    ),
-    dict(
-        id="client", file="src/lib/inventory/api-client.ts", kind="file",
-        demo=CLIENT_DEMO,
-        spec="""Import { InventoryItem, InventoryInput } from
-'@/lib/inventory/types' FIRST and use these EXACT names in every
-signature — never invent other type names.  Write the API client for
-/api/items with exactly these exports (all fetch the same origin,
-relative URLs):
-1. async function listItems(params: { q?: string; category?:
-   string; status?: string; sort?: string; order?: string }):
-   Promise<InventoryItem[]>. Build a URLSearchParams from the defined,
-   non-empty values (skip 'all' / empty), append it to '/api/items'
-   with ?, call fetch WITHOUT a body, return the parsed .items.
-2. async function createItem(input: InventoryInput): POST JSON to
-   /api/items, return parsed .item.
-3. async function updateItem(id: string, input: InventoryInput): PUT
-   JSON to /api/items/:id, return parsed .item.
-4. async function deleteItem(id: string): Promise<void>. DELETE
-   /api/items/:id, do NOT parse any body (the response is 204 and
-   empty) — just check res.ok and return.
-All functions must throw an Error with the server's .error message
-when the response is not ok. Include one small non-exported helper
-getJson(res) that does the ok-check and parsing.""",
-        anchor="async function getJson(res: Response) {\n",
-        gates=["tsc", "eslint"],
-        max_tokens=700,
-        exports=['listItems', 'createItem', 'updateItem', 'deleteItem'],
     ),
     dict(
         id="route-list", file="src/app/api/items/route.ts", kind="file",
@@ -513,27 +505,43 @@ Import InventoryItem, InventoryInput from '@/lib/inventory/types'.""",
     dict(
         id="hook", file="src/lib/inventory/use-inventory.ts", kind="file",
         demo=HOOK_DEMO,
-        spec="""Write the inventory data hook:
-export function useInventory() — client hook returning
-{ items, loading, error, reload, patch, q, category, status, sort,
-order } where:
-- state: items (InventoryItem[]), loading (bool, starts true), error
-  (string | null), and filter state q/category/status/sort/order with
-  defaults '', 'all', 'all', 'updatedAt', 'desc'
-- patch(partial) merges into the filter state
-- an effect depends on [q, category, status, sort, order] and calls
-  listItems with the current filters (debounced ~300ms for q:
-  simplest correct form — setTimeout cleared on cleanup, always
-  applied); sets loading true before, false after; on throw sets
-  error to the message
-- reload() forces a refetch (a counter state in the effect deps)
-- the categories list is NOT this hook's job
-Import listItems and the types from '@/lib/inventory/types' and
-'@/lib/inventory/api-client'. The file starts with 'use client'.""",
+        spec="""Write the inventory data hook with the fetch layer
+INLINE in the same file (there is no separate client module).
+Structure (all in ONE file):
+1. a non-exported helper: async function getJson(res: Response) —
+   like the demo: if (!res.ok) parse the error body and throw new
+   Error(body.error); else return res.json()
+2. Import { InventoryItem, InventoryInput } from
+   '@/lib/inventory/types' and use these EXACT names — never invent
+   other type names.
+3. export function useInventory() returning
+   { items, loading, error, reload, patch, q, category, status,
+   sort, order, saveItem, removeItem } where:
+   - state: items (InventoryItem[]), loading (true initially),
+     error (string | null), filter state q/category/status/sort/order
+     with defaults '', 'all', 'all', 'updatedAt', 'desc', plus a
+     reloadKey number (starts 0)
+   - patch(partial) merges into the filter state
+   - an effect depends on [q, category, status, sort, order,
+     reloadKey]; inside, a setTimeout of 300ms (cleared on cleanup)
+     then: setLoading(true); build a URLSearchParams from the filters
+     (skip empty and 'all' values); fetch(`/api/items?${params}`)
+     WITHOUT a body through getJson; setItems(data.items); on catch
+     setError(message); finally setLoading(false)
+   - reload() increments reloadKey (use a state setter)
+   - async function saveItem(input: InventoryItem, id?: string):
+     if id is present PUT to `/api/items/${id}` else POST to
+     '/api/items', both with JSON body of { name: input.name,
+     category: input.category, sku: input.sku, quantity:
+     input.quantity, minQuantity: input.minQuantity }, through
+     getJson, then call reload afterwards
+   - async function removeItem(id: string): DELETE
+     `/api/items/${id}` (do NOT parse the 204 body — only check
+     res.ok, throw on failure), then reload""",
         anchor="'use client'\n\nimport { useCallback, useEffect, useState } from 'react'\n",
         gates=["tsc", "eslint"],
-        max_tokens=700,
-        exports=['useInventory'],
+        max_tokens=1300,
+        exports=["useInventory"],
     ),
     dict(
         id="page", file="src/app/page.tsx", kind="file",
@@ -559,20 +567,22 @@ Import listItems and the types from '@/lib/inventory/types' and
      the form); when items.length === 0 -> NoMatchesState (onClear
      resets filters via patch); otherwise ItemTable
    - ItemForm (open, initial=editing, onClose, onSaved: calls
-     createItem or updateItem depending on editing, closes the form,
-     sets toast 'Item added'/'Item updated', calls reload; on client
-     error sets toast to the message)
+     saveItem(input, editing?.id) from the hook, closes the form,
+     sets toast 'Item added'/'Item updated'; on client error sets
+     toast to the error message)
    - a delete confirm Dialog when confirmItem is set: text mentions
      deleting the item by name; buttons 'Cancel' and a destructive
-     'Delete' that calls deleteItem(confirmItem.id), closes, sets
-     toast 'Item deleted', reloads
+     'Delete' that calls removeItem(confirmItem.id), closes, sets
+     toast 'Item deleted'
    - the toast: a div with role='status' showing the toast text
      (fixed bottom-right, simple styling)
 5. onSaved also needs the created input assembled from the form —
    ItemForm passes the InventoryInput directly to onSaved.
 Imports: Button from '@/components/ui/button', Dialog pieces from
-'@/components/ui/dialog', all stockpilot components, the client
-functions, and the types.""",
+'@/components/ui/dialog', all stockpilot components, and
+useInventory from '@/lib/inventory/use-inventory'.  The page does
+NOT import any fetch/client module — everything goes through the
+hook.""",
         anchor="'use client'\n\nimport { useState } from 'react'\n",
         gates=["tsc", "eslint", "uitest"],
         max_tokens=1300,
