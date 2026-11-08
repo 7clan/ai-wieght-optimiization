@@ -48,7 +48,8 @@ class RepairController:
                  state_path: str | None = None, priors: dict | None = None,
                  bandit_seed: int = 0, budget_per_defect: int = 12,
                  fixed_ladder: bool = False, tsc_per_attempt: bool = False,
-                 archive_dir: str | None = None):
+                 archive_dir: str | None = None,
+                 ladder: list[str] | None = None):
         self.model = model
         self.ws = Path(workspace)
         self.ledger_path = Path(ledger_path)
@@ -57,6 +58,7 @@ class RepairController:
                                      seed=bandit_seed)
         self.budget = budget_per_defect
         self.fixed_ladder = fixed_ladder
+        self.ladder = ladder or list(FIXED_LADDER)
         self.tsc_per_attempt = tsc_per_attempt
         self.archive_dir = (Path(archive_dir) if archive_dir
                             else Path(str(ledger_path) + ".archive"))
@@ -130,9 +132,9 @@ class RepairController:
         order = []
         for i in range(self.budget):
             if self.fixed_ladder:
-                strat = FIXED_LADDER[min(i // 4, len(FIXED_LADDER) - 1)]
+                strat = self.ladder[min(i // 4, len(self.ladder) - 1)]
                 why = {"mode": "fixed-ladder (ablation)",
-                       "index": i}
+                       "index": i, "ladder": list(self.ladder)}
             else:
                 strat, why = self.bandit.sample(
                     category, allowed=[s for s in STRATEGIES

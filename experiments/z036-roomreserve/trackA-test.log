@@ -1,0 +1,6 @@
+  k0: files=6 struct=FAIL tsc=1 api=-
+  k1: files=1 struct=FAIL tsc=1 api=-
+  k2: files=6 struct=FAIL tsc=1 api=-
+  k3: files=1 struct=FAIL tsc=1 api=-
+  k4: files=1 struct=FAIL tsc=1 api=-
+results -> /home/z/ai-research/experiments/z036-roomreserve/reports/trackA.json

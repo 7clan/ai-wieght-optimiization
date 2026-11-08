@@ -1,0 +1,152 @@
+You are writing RoomReserve, a Next.js 16 meeting-room reservation app. TypeScript, Prisma + SQLite, NextResponse JSON APIs. Dates are plain ISO strings 'YYYY-MM-DDTHH:mm' compared lexicographically.
+
+// a hotel spa treatment route (different domain, for shape)
+import { NextRequest, NextResponse } from 'next/server'
+import { db } from '@/lib/db'
+
+export async function POST(req: NextRequest) {
+  const body = await req.json()
+  const title = String(body.title ?? '').trim()
+  if (!title) {
+    return NextResponse.json({ error: 'Title is required' }, { status: 400 })
+  }
+  const clash = await db.treatment.findFirst({
+    where: { suiteId: body.suiteId, status: 'booked',
+             start: { lt: body.end }, end: { gt: body.start } },
+  })
+  if (clash) {
+    return NextResponse.json(
+      { error: 'Time conflict with an existing treatment' },
+      { status: 409 })
+  }
+  const created = await db.treatment.create({
+    data: { suiteId: body.suiteId, title, start: body.start, end: body.end },
+  })
+  return NextResponse.json({ treatment: created }, { status: 201 })
+}
+
+
+Now YOUR task.  Build this application's backend + page.
+
+## 1. Data model (Prisma, SQLite)
+
+```prisma
+model Room {
+  id        String        @id @default(cuid())
+  name      String
+  capacity  Int
+  floor     Int
+  createdAt DateTime      @default(now())
+  reservations Reservation[]
+}
+
+model Reservation {
+  id         String   @id @default(cuid())
+  roomId     String
+  title      String
+  organizer  String
+  start      String          // ISO local datetime "YYYY-MM-DDTHH:mm"
+  end        String          // ISO local datetime "YYYY-MM-DDTHH:mm"
+  status     String   @default("confirmed")  // "confirmed" | "cancelled"
+  createdAt  DateTime @default(now())
+  room       Room     @relation(fields: [roomId], references: [id])
+}
+```
+
+Nullable fields: NONE in Room; NONE in Reservation (all required).
+`start`/`end` are plain ISO local strings — no timezone math.
+
+## 2. API contract
+
+All responses are `NextResponse.json`. Errors: `{ "error": string }`
+with the stated status code.
+
+### 2.1 GET /api/rooms
+- 200 `{ "rooms": Room[], "total": number }`
+- Query `?q=` case-insensitive match on room name (substring).
+- Query `?minCapacity=<int>` keeps rooms with `capacity >= minCapacity`.
+- Ordered by `name` ascending.
+
+### 2.2 GET /api/rooms/:id
+- 200 `{ "room": Room }` (with `reservations` relation included, newest
+  first by `start` descending)
+- 404 `{ "error": "Room not found" }`
+
+### 2.3 GET /api/reservations
+- 200 `{ "reservations": ReservationView[], "total": number }`
+- `ReservationView` = reservation fields + `roomName: string` (joined).
+- Default: `status = "confirmed"` only, ordered by `start` ascending.
+- Query `?date=YYYY-MM-DD` — only reservations overlapping that day
+  (`start < date+1day 00:00` and `end > date 00:00`).
+- Query `?roomId=<id>` — only that room.
+- Query `?includeCancelled=1` — also cancelled ones.
+- Query `?q=` — case-insensitive substring on title or organizer.
+
+### 2.4 POST /api/reservations
+Body: `{ roomId, title, organizer, start, end }` (JSON).
+Validation (in order; first failure wins):
+1. `title` non-empty after trim → else 400 `"Title is required"`
+2. `organizer` non-empty after trim → else 400 `"Organizer is required"`
+3. `roomId` is a string, matches an existing Room → else 404 `"Room not found"`
+4. `start`/`end` match `^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$` → else 400
+   `"Invalid date format"`
+5. `start < end` as strings (ISO local compares lexicographically) →
+   else 400 `"End must be after start"`
+6. No overlap with any **confirmed** reservation in the same room:
+   overlap ⟺ `new.start < existing.end && existing.start < new.end`
+   (back-to-back `existing.end == new.start` is NOT an overlap) →
+   else **409** `{ "error": "Time conflict with an existing reservation" }`
+- Success: 201 `{ "reservation": ReservationView }` with
+  `status: "confirmed"`.
+
+### 2.5 PUT /api/reservations/:id
+- Body may contain any of `title, organizer, start, end, roomId`.
+- 404 `"Reservation not found"` for unknown id.
+- Same validation as POST, applied to the merged result. Overlap check
+  must EXCLUDE the reservation being edited.
+- Success: 200 `{ "reservation": ReservationView }`.
+
+### 2.6 DELETE /api/reservations/:id — CANCELLATION
+- 404 for unknown id.
+- Sets `status = "cancelled"` (soft cancel; row is kept).
+- Success: 200 `{ "reservation": ReservationView }` (cancelled).
+- A second DELETE on an already-cancelled row: still 200 (idempotent).
+
+### Conflict semantics (frozen)
+- Same room, overlapping confirmed window → 409 on POST and PUT.
+- Cancelled reservations NEVER block (excluded from overlap checks).
+- Different rooms never conflict with each other.
+- Boundary: `end == start` touching windows do NOT conflict.
+
+## 3. Seed data (synthetic; wiped and re-seeded by the test harness)
+
+Rooms (created in this order):
+1. `Atlas Boardroom`, capacity 12, floor 3
+2. `Breeze Huddle`, capacity 4, floor 1
+3. `Cove Focus Room`, capacity 2, floor 2
+4. `Dune Workshop`, capacity 8, floor 3
+
+Reservations (all `confirmed` unless noted): seeded relative to a fixed
+test date `2026-11-12` (no timezone arithmetic — literal ISO strings):
+- R1 Atlas, "Quarterly Review", "Ava Chen", 2026-11-12T09:00 → 10:30
+- R2 Atlas, "Design Sync", "Mia Torres", 2026-11-12T11:00 → 12:00
+- R3 Breeze, "Standup", "Liam Patel", 2026-11-12T09:30 → 09:45
+- R4 Cove, "Focus Block", "Noah Kim", 2026-11-12T14:00 → 16:00
+- R5 Dune, "Interview Loop", "Sofia Ross", 2026-11-13T10:00 → 12:00
+- R6 Atlas, "Cancelled Planning", "Ava Chen", 2026-11-12T14:00 → 15:00,
+  status `cancelled` (blocks nothing)
+
+Page: single page with header title RoomReserve, a New Reservation button, a rooms panel, a date filter, a reservation table with Edit and Cancel buttons, loading, error and empty states.
+
+OUTPUT FORMAT — write these seven files, complete, in this exact order, each introduced by its marker line:
+
+=== FILE: prisma/schema.prisma (model block only) ===
+=== FILE: src/lib/roomreserve/types.ts ===
+=== FILE: src/app/api/rooms/route.ts ===
+=== FILE: src/app/api/rooms/[id]/route.ts ===
+=== FILE: src/app/api/reservations/route.ts ===
+=== FILE: src/app/api/reservations/[id]/route.ts ===
+=== FILE: src/app/page.tsx ===
+
+prisma/schema.prisma contains ONLY the model blocks (datasource is already configured).  Start writing now, beginning with the marker line:
+=== FILE: prisma/schema.prisma (model block only) ===

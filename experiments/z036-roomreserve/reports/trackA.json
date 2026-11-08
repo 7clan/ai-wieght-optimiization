@@ -1,0 +1,129 @@
+[
+ {
+  "k": 0,
+  "seed": 0,
+  "n_files": 6,
+  "structural_failures": [
+   "src/app/api/rooms/route.ts: exports: HTTP handler 'GET' not exported (found: POST)",
+   "src/app/api/rooms/[id]/route.ts: exports: HTTP handler 'GET' not exported (found: DELETE)",
+   "src/app/api/reservations/route.ts: exports: HTTP handler 'GET' not exported (found: POST)",
+   "src/app/api/reservations/[id]/route.ts: exports: HTTP handler 'PUT' not exported (found: DELETE)",
+   "src/lib/roomreserve/types.ts: types: interface 'Room' not exported (found: POST:function); types: interface 'Reservation' not exported (found: POST:function)",
+   "src/app/page.tsx: parse: syntax errors \u2014 Expression expected."
+  ],
+  "structural_pass": false,
+  "installed": [
+   "src/lib/roomreserve/types.ts",
+   "src/app/api/rooms/route.ts",
+   "src/app/api/rooms/[id]/route.ts",
+   "src/app/api/reservations/route.ts",
+   "src/app/api/reservations/[id]/route.ts",
+   "src/app/page.tsx"
+  ],
+  "tsc_errors": 1,
+  "tsc_first": [
+   "error TS5058: The specified path does not exist: 'tsconfig.gate.json'."
+  ]
+ },
+ {
+  "k": 1,
+  "seed": 1013,
+  "n_files": 1,
+  "structural_failures": [
+   "src/app/api/rooms/route.ts: not extracted",
+   "src/app/api/rooms/[id]/route.ts: not extracted",
+   "src/app/api/reservations/route.ts: not extracted",
+   "src/app/api/reservations/[id]/route.ts: not extracted",
+   "src/lib/roomreserve/types.ts: parse: syntax errors \u2014 Unterminated string literal.",
+   "src/app/page.tsx: not extracted"
+  ],
+  "structural_pass": false,
+  "installed": [
+   "src/lib/roomreserve/types.ts"
+  ],
+  "tsc_errors": 1,
+  "tsc_first": [
+   "error TS5058: The specified path does not exist: 'tsconfig.gate.json'."
+  ]
+ },
+ {
+  "k": 2,
+  "seed": 2026,
+  "n_files": 6,
+  "structural_failures": [
+   "src/app/api/rooms/route.ts: exports: HTTP handler 'GET' not exported (found: POST)",
+   "src/app/api/rooms/[id]/route.ts: exports: HTTP handler 'GET' not exported (found: DELETE)",
+   "src/app/api/reservations/route.ts: exports: HTTP handler 'GET' not exported (found: POST)",
+   "src/app/api/reservations/[id]/route.ts: exports: HTTP handler 'PUT' not exported (found: DELETE)",
+   "src/lib/roomreserve/types.ts: types: interface 'Room' not exported (found: Room:type, Room:type); types: interface 'Reservation' not exported (found: Room:type, Room:type)",
+   "src/app/page.tsx: exports: 'default' not exported (found: GET, GET)"
+  ],
+  "structural_pass": false,
+  "installed": [
+   "src/lib/roomreserve/types.ts",
+   "src/app/api/rooms/route.ts",
+   "src/app/api/rooms/[id]/route.ts",
+   "src/app/api/reservations/route.ts",
+   "src/app/api/reservations/[id]/route.ts",
+   "src/app/page.tsx"
+  ],
+  "tsc_errors": 1,
+  "tsc_first": [
+   "error TS5058: The specified path does not exist: 'tsconfig.gate.json'."
+  ]
+ },
+ {
+  "k": 3,
+  "seed": 3039,
+  "n_files": 1,
+  "structural_failures": [
+   "src/app/api/rooms/route.ts: not extracted",
+   "src/app/api/rooms/[id]/route.ts: not extracted",
+   "src/app/api/reservations/route.ts: not extracted",
+   "src/app/api/reservations/[id]/route.ts: not extracted",
+   "src/lib/roomreserve/types.ts: types: interface 'Room' not exported (found: none); types: interface 'Reservation' not exported (found: none)",
+   "src/app/page.tsx: not extracted"
+  ],
+  "structural_pass": false,
+  "installed": [
+   "src/lib/roomreserve/types.ts"
+  ],
+  "tsc_errors": 1,
+  "tsc_first": [
+   "error TS5058: The specified path does not exist: 'tsconfig.gate.json'."
+  ]
+ },
+ {
+  "k": 4,
+  "seed": 4052,
+  "n_files": 1,
+  "structural_failures": [
+   "src/app/api/rooms/route.ts: not extracted",
+   "src/app/api/rooms/[id]/route.ts: not extracted",
+   "src/app/api/reservations/route.ts: not extracted",
+   "src/app/api/reservations/[id]/route.ts: not extracted",
+   "src/lib/roomreserve/types.ts: parse: syntax errors \u2014 ';' expected. | Unexpected keyword or identifier.",
+   "src/app/page.tsx: not extracted"
+  ],
+  "structural_pass": false,
+  "installed": [
+   "src/lib/roomreserve/types.ts"
+  ],
+  "tsc_errors": 1,
+  "tsc_first": [
+   "error TS5058: The specified path does not exist: 'tsconfig.gate.json'."
+  ]
+ },
+ {
+  "k": 5,
+  "seed": 5165,
+  "n_files": 0,
+  "verdict": "no files extracted"
+ },
+ {
+  "k": 6,
+  "seed": 6278,
+  "n_files": 0,
+  "verdict": "no files extracted"
+ }
+]

@@ -1,0 +1,10 @@
+[devserver] stopped (up=False)
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<00:30,  9.32it/s]Loading weights:  34%|███▍      | 99/290 [00:00<00:00, 546.41it/s]Loading weights:  55%|█████▍    | 159/290 [00:00<00:00, 559.96it/s]Loading weights:  74%|███████▍  | 216/290 [00:00<00:00, 550.82it/s]Loading weights:  96%|█████████▌| 279/290 [00:00<00:00, 567.81it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 541.19it/s]
+  k0 seed=0: 6 files, 1500 tokens, 209s
+  k1 seed=1013: 1 files, 1500 tokens, 234s
+  k2 seed=2026: 6 files, 1500 tokens, 229s
+  k3 seed=3039: 1 files, 1500 tokens, 227s
+  k4 seed=4052: 1 files, 1500 tokens, 229s
+  k5 seed=5165: 0 files, 1500 tokens, 228s
+  k6 seed=6278: 0 files, 1500 tokens, 219s
+model usage: {'generations': 7, 'total_new_tokens': 10500, 'total_seconds': 1575.8}
