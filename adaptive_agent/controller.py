@@ -46,6 +46,7 @@ class DocFinding:
     query: str
     source_url: str
     excerpt: str
+    content_sha256: str = ""
 
 
 @dataclass(frozen=True)
