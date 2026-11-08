@@ -7,7 +7,8 @@ from adaptive_agent import (
     AgentController, Budget, ControllerError, DocFinding, Proposal,
     SandboxResult, Task,
 )
-from adaptive_agent.qwen_adapter import QwenJSONAdapter, QwenSingleFileAdapter
+from adaptive_agent.qwen_adapter import (QwenCommonJSScaffoldAdapter,
+                                         QwenJSONAdapter, QwenSingleFileAdapter)
 from adaptive_agent.controller import _failure_family
 
 
@@ -129,6 +130,25 @@ class ControllerTests(unittest.TestCase):
         )
         self.assertTrue(report.proposal_trace[0]["feedback_preview"].startswith("SyntaxError"))
         self.assertEqual(report.proposal_trace[0]["file_lines"], {"src/index.js": 1})
+
+    def test_commonjs_export_glue_is_append_only(self):
+        from adaptive_agent import ModelContext
+        code = "function normalizeTags(items) {\n  return items.map(x => x.trim());\n}\n"
+        model = QwenCommonJSScaffoldAdapter(lambda _: code, "normalizeTags")
+        task = Task("js", "Normalize tags", ("works",), ("solution.cjs",))
+        result = model.propose(ModelContext(task, 1, (), (), ""))
+        self.assertEqual(result.files["solution.cjs"],
+                         code + "module.exports = { normalizeTags };\n")
+        self.assertIn("harness-only", result.hypothesis)
+
+    def test_commonjs_scaffold_refuses_missing_symbol_without_fabricating_logic(self):
+        from adaptive_agent import ModelContext
+        task = Task("js", "Normalize tags", ("works",), ("solution.cjs",))
+        with self.assertRaises(ControllerError):
+            QwenCommonJSScaffoldAdapter(lambda _: "const x = 1;", "normalizeTags").propose(
+                ModelContext(task, 1, (), (), ""))
+        with self.assertRaises(ValueError):
+            QwenCommonJSScaffoldAdapter(lambda _: "", "bad; process.exit(1)")
 
     def test_repeated_identical_patch_stops_without_reexecuting(self):
         model = FakeModel([proposal("bad"), proposal("bad"), proposal("bad")])
