@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import re
+import textwrap
 from typing import Callable
 
 from .controller import ControllerError, ModelContext, Proposal
@@ -147,6 +148,63 @@ class QwenCommonJSScaffoldAdapter:
         return Proposal(
             files={path: assembled},
             hypothesis=f"Qwen implementation + harness-only CommonJS export of {self.symbol}",
+        )
+
+
+class QwenFunctionBodyAdapter:
+    """Stage the exact interface; Qwen generates only its function body.
+
+    The declaration and export are fixed mechanical scaffolding. A failing
+    body is not automatically repaired by the harness; feedback returns to
+    Qwen through the controller. This is an explicit *assisted* protocol.
+    """
+
+    def __init__(self, generate_text: Callable[[str], str], symbol: str,
+                 parameters: tuple[str, ...]) -> None:
+        names = (symbol, *parameters)
+        if not all(re.fullmatch(r"[A-Za-z_$][A-Za-z0-9_$]*", x) for x in names):
+            raise ValueError("Unsafe JavaScript function contract")
+        if len(set(parameters)) != len(parameters):
+            raise ValueError("Duplicate JavaScript function arguments")
+        self.generate_text = generate_text
+        self.symbol = symbol
+        self.parameters = parameters
+
+    def propose(self, context: ModelContext) -> Proposal:
+        if len(context.task.required_files) != 1 or not context.task.required_files[0].endswith(".cjs"):
+            raise ControllerError("Body adapter requires one .cjs target")
+        signature = f"function {self.symbol}({', '.join(self.parameters)})"
+        prev = context.previous_files.get(context.task.required_files[0], "")
+        if prev:
+            prompt = (
+                f"Repair only the JavaScript BODY of {signature}.\n"
+                f"REQUIREMENT: {context.task.description[:850]}\n"
+                f"PREVIOUS FULL FILE (for context):\n{prev[:1300]}\n"
+                f"PUBLIC FAILURE: {(context.public_feedback[-1] if context.public_feedback else '')[:650]}\n"
+                "Output only corrected statements that belong INSIDE the function braces. "
+                "Include a return statement. No function declaration, braces enclosing whole function, exports, JSON or markdown.\n"
+                "BODY:\n"
+            )
+        else:
+            prompt = (
+                f"Write only the JavaScript statements INSIDE this function: {signature}.\n"
+                f"REQUIREMENT: {context.task.description[:900]}\n"
+                f"CHECK: {'; '.join(context.task.public_acceptance)[:350]}\n"
+                "Include a return statement. Do NOT write the function declaration, enclosing braces, "
+                "exports, JSON or markdown.\n"
+                "BODY:\n"
+            )
+        body = self.generate_text(prompt).strip()
+        fence = re.fullmatch(r"```(?:javascript|js)?\s*\n(.*?)\n```", body, re.S | re.I)
+        if fence:
+            body = fence.group(1).strip()
+        if not body or re.match(r"^(?:async\s+)?function\s+", body):
+            raise ControllerError("Model output is not a nonempty function body")
+        code = (signature + " {\n" + textwrap.indent(body, "  ") +
+                f"\n}}\nmodule.exports = {{ {self.symbol} }};\n")
+        return Proposal(
+            files={context.task.required_files[0]: code},
+            hypothesis="Qwen function body + mechanical declaration and export",
         )
 
 
