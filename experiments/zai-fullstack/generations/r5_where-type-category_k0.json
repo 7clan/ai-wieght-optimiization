@@ -1,0 +1,19 @@
+{
+ "kind": "fim-patch",
+ "pid": "where-type-category",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 60,
+  "seconds": 9.86,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "instructions": "Add category?: string to the type.",
+ "completion": "}\n  if (q) where.name = { contains: q }\n  if (category && category !== 'all') where.category = category\n  if (status && status !== 'all') where.status = status\n  if (sort && sort !== 'name' && sort !== 'quantity'",
+ "reject": [
+  "missing 'category?: string'",
+  "too long"
+ ]
+}

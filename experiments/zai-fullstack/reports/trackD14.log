@@ -1,0 +1,67 @@
+[devserver] stopped (up=False)
+model loaded in 17s
+GET base (get3 r0_k1, cut): 17 lines
+  [r4 get-drop-where-status k0] seed=7 tok=18 ok=True fill="  const minQuantity = parseInt(sp.get('m"
+  [r4 get-a-minquantity k0] seed=7 tok=22 ok=False missing 'a.minQuantity'
+  [r4 get-a-minquantity k1] seed=1013 tok=43 ok=False missing 'a.minQuantity'
+  [r4 get-a-minquantity k2] seed=2026 tok=2 ok=False missing 'a.minQuantity'; empty
+  [r4 put-sku-optional k0] seed=7 tok=4 ok=False missing 'sku.length > 40'
+  [r4 put-sku-optional k1] seed=1013 tok=4 ok=False missing 'sku.length > 40'
+  [r4 put-sku-optional k2] seed=2026 tok=4 ok=False missing 'sku.length > 40'
+  [r4 put-quantity-integer k0] seed=7 tok=38 ok=False missing 'Number.isInteger'
+  [r4 put-quantity-integer k1] seed=1013 tok=38 ok=False missing 'Number.isInteger'
+  [r4 put-quantity-integer k2] seed=2026 tok=24 ok=True 
+  [r4 put-min-integer k0] seed=7 tok=3 ok=False missing 'Number.isInteger'
+  [r4 put-min-integer k1] seed=1013 tok=56 ok=False missing 'Number.isInteger'; too long
+  [r4 put-min-integer k2] seed=2026 tok=50 ok=False missing 'Number.isInteger'
+  [r4 put-sku-null k0] seed=7 tok=1 ok=False missing 'sku: sku || null'; empty
+  [r4 put-sku-null k1] seed=1013 tok=14 ok=False missing 'sku: sku || null'
+  [r4 put-sku-null k2] seed=2026 tok=5 ok=False missing 'sku: sku || null'
+  [r4 post-sku-null k0] seed=7 tok=5 ok=False missing 'sku: sku || null'
+  [r4 post-sku-null k1] seed=1013 tok=40 ok=False missing 'sku: sku || null'
+  [r4 post-sku-null k2] seed=2026 tok=40 ok=False missing 'sku: sku || null'; too long
+model usage this run: {'generations': 19, 'total_new_tokens': 411, 'total_seconds': 81.4}
+patch outcomes: {"get_drop_where_status": {"k": 0, "seed": 7, "tokens": 18, "empty": false}, "get_a_minquantity": "FAILED-FOR-TEACHER", "put_sku_optional": "FAILED-FOR-TEACHER", "put_quantity_integer": {"k": 2, "seed": 2026, "tokens": 24}, "put_min_integer": "FAILED-FOR-TEACHER", "put_sku_null": "FAILED-FOR-TEACHER", "post_sku_null": "FAILED-FOR-TEACHER"}
+round-4 files installed + archived
+GATES route-list: ok=False
+  feedback: tsc --noEmit reported:
+  /app/api/items/[id]/route.ts(35,8): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/[id]/route.ts(35,13): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/[id]/route.ts(35,16): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/[id]/route.ts(35,25): error TS1005: '(' expected.
+  src/app/api/items/[id]/route.ts(35,29): error TS1005: ')' expected.
+  src/app/api/items/[id]/route.ts(35,38): error TS1228: A type predicate is only allowed in return type position for functions and methods.
+  src/app/api/items/[id]/route.ts(35,41): err
+GATES route-id: ok=False
+  feedback: tsc --noEmit reported:
+  /app/api/items/[id]/route.ts(35,8): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/[id]/route.ts(35,13): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/[id]/route.ts(35,16): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/[id]/route.ts(35,25): error TS1005: '(' expected.
+  src/app/api/items/[id]/route.ts(35,29): error TS1005: ')' expected.
+  src/app/api/items/[id]/route.ts(35,38): error TS1228: A type predicate is only allowed in return type position for functions and methods.
+  src/app/api/items/[id]/route.ts(35,41): err
+[devserver] up after 6s
+== apitest (frozen, as-committed) ==
+PASS  1 GET empty list 200 {items:[],total:0}
+PASS  2 POST valid item 201, echoes fields + id
+PASS  3 POST missing name 400 {error}
+PASS  4 POST negative quantity 400
+PASS  5 POST non-integer quantity 400
+PASS  6 seed 10 + earlier = 11 items, total matches — total=11
+FAIL  7 GET ?q=usb matches name+sku case-insensitively (3) — total=2
+PASS  8 GET ?category=Electronics -> 3 items all Electronics
+FAIL  9 GET ?status=low -> 4 items, all genuinely low — total=0
+PASS 10 GET ?status=out -> 2 items with quantity 0
+PASS 11 GET ?sort=quantity&order=asc ascending — q=[0,0,1,2,3,5,8,14,25,42,120]
+FAIL 12 GET /:id 200 then 404 for unknown
+FAIL 13 PUT updates and persists (now low stock)
+FAIL 14 PUT invalid 400 / unknown 404
+FAIL 15 DELETE 204 then 404
+FAIL 16 post-delete total is 10 (restart-phase baseline) — total=null
+
+stderr: SUITE ERROR TypeError: Cannot read properties of null (reading 'total')
+    at main (file:///home/z/s035/experiments/zai-fullstack/apitest.mjs:191:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+round-4 complete in 125s

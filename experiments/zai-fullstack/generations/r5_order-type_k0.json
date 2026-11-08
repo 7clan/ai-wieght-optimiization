@@ -1,0 +1,19 @@
+{
+ "kind": "fim-patch",
+ "pid": "order-type",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 60,
+  "seconds": 7.8,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "instructions": "Cast the value so order is 'asc' or 'desc'.",
+ "completion": "\n  const data = await db.post.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: 'insensitive'\n      },\n      category: category,\n      status: status\n    },\n    orderBy: {\n      [sort]: order\n    }\n  })\n ",
+ "reject": [
+  "missing \"'asc' | 'desc'\"",
+  "too long"
+ ]
+}

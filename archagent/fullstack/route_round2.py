@@ -80,6 +80,7 @@ def cut_repetition(text: str) -> str:
                 or s.startswith("The next task") or s.startswith("I wrote")
                 or s.startswith("And the second line")
                 or s.startswith("And then the body")
+                or s.startswith("That's it")
                 or s.startswith("Note:") or s.startswith("```")
                 or s.startswith("Write the body")):
             break

@@ -2,3 +2,61 @@
 model loaded in 18s
 == GET body contract, corrected checks ==
   [get3 r0 k0] seed=7 tok=500 ok=False forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+  [get3 r0 k1] seed=1013 tok=500 ok=False forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+  [get3 r0 k2] seed=2026 tok=500 ok=False missing "get('category')"; missing "get('status')"
+  [get3 r0 k3] seed=3039 tok=500 ok=False forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+  [get3 r1 k0] seed=77 tok=500 ok=False missing "get('category')"; forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+  [get3 r1 k1] seed=1090 tok=500 ok=False missing "get('category')"; missing 'findMany'; missing 'filter'; missing 'orderBy'; forbidden 'where.status'; forbidden pattern '(
+  [get3 r1 k2] seed=2103 tok=500 ok=False missing "get('category')"; forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+  [get3 r1 k3] seed=3116 tok=500 ok=False missing 'filter'; forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+  [get3 r2 k0] seed=154 tok=500 ok=False missing 'filter'; forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+  [get3 r2 k1] seed=1167 tok=500 ok=False missing 'filter'; forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+  [get3 r2 k2] seed=2180 tok=500 ok=False missing 'filter'; forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+  [get3 r2 k3] seed=3193 tok=500 ok=False missing 'filter'; forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'
+== POST sku-null literal (micro-FIM on post2 r1_k0) ==
+  [fim3 route-list/post-sku-null k0] seed=7 tok=26 ok=False missing 'sku: sku || null'
+  [fim3 route-list/post-sku-null k1] seed=1013 tok=60 ok=False missing 'sku: sku || null'
+  [fim3 route-list/post-sku-null k2] seed=2026 tok=31 ok=False missing 'sku: sku || null'
+== PUT body contract, validation required ==
+  [put3 r0 k0] seed=7 tok=500 ok=False missing 'Number.isInteger'; missing 'sku: sku || null'
+  [put3 r0 k1] seed=1013 tok=500 ok=False missing 'Number.isInteger'
+  [put3 r0 k2] seed=2026 tok=500 ok=False missing 'Number.isInteger'; missing 'if (name.length'; missing 'sku: sku || null'
+  [put3 r0 k3] seed=3039 tok=404 ok=False missing 'if (name.length'
+  [put3 r1 k0] seed=77 tok=500 ok=False demo echo 'species'; missing 'db.inventoryItem.update'; missing 'sku: sku || null'
+  [put3 r1 k1] seed=1090 tok=500 ok=False demo echo 'species'; missing 'sku: sku || null'
+  [put3 r1 k2] seed=2103 tok=500 ok=False demo echo 'species'; missing 'db.inventoryItem.update'; missing 'sku: sku || null'
+  [put3 r1 k3] seed=3116 tok=500 ok=False demo echo 'species'
+  [put3 r2 k0] seed=154 tok=500 ok=False demo echo 'species'
+  [put3 r2 k1] seed=1167 tok=500 ok=False demo echo 'species'; missing 'sku: sku || null'
+  [put3 r2 k2] seed=2180 tok=500 ok=False demo echo 'species'
+  [put3 r2 k3] seed=3193 tok=500 ok=False missing 'sku: sku || null'
+model usage this run: {'generations': 27, 'total_new_tokens': 12021, 'total_seconds': 1698.5}
+route-list round-3 file installed + archived
+  PUT fell back to r1_k1 (no validation) — recorded
+route-id round-3 file installed + archived
+GATES route-list: ok=True
+GATES route-id: ok=True
+[devserver] up after 6s
+== apitest (frozen, as-committed) ==
+FAIL  1 GET empty list 200 {items:[],total:0}
+PASS  2 POST valid item 201, echoes fields + id
+PASS  3 POST missing name 400 {error}
+PASS  4 POST negative quantity 400
+PASS  5 POST non-integer quantity 400
+FAIL  6 seed 10 + earlier = 11 items, total matches — total=null
+FAIL  7 GET ?q=usb matches name+sku case-insensitively (3) — total=null
+FAIL  8 GET ?category=Electronics -> 3 items all Electronics
+FAIL  9 GET ?status=low -> 4 items, all genuinely low — total=null
+FAIL 10 GET ?status=out -> 2 items with quantity 0
+FAIL 11 GET ?sort=quantity&order=asc ascending — q=[]
+PASS 12 GET /:id 200 then 404 for unknown
+PASS 13 PUT updates and persists (now low stock)
+FAIL 14 PUT invalid 400 / unknown 404
+PASS 15 DELETE 204 then 404
+FAIL 16 post-delete total is 10 (restart-phase baseline) — total=null
+
+stderr: SUITE ERROR TypeError: Cannot read properties of null (reading 'total')
+    at main (file:///home/z/s035/experiments/zai-fullstack/apitest.mjs:191:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+round-3 complete in 1744s

@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "get-a-minquantity",
+ "k": 1,
+ "seed": 1013,
+ "usage": {
+  "tokens": 43,
+  "seconds": 6.06,
+  "seed": 1013,
+  "stochastic": true,
+  "fim": true
+ },
+ "instructions": "Use a.minQuantity in the comparisons.",
+ "completion": "rows.map((r) => ({ ...r, updatedAt: r.updatedAt.toISOString() }))\n  else if (status === 'high') rows = rows.filter((r) => r.quantity > minQuantity)\n",
+ "reject": [
+  "missing 'a.minQuantity'"
+ ]
+}

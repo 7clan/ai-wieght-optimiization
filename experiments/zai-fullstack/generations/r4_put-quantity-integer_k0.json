@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "put-quantity-integer",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 38,
+  "seconds": 5.97,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "instructions": "Use !Number.isInteger(quantity) || in the condition.",
+ "completion": "\n  return NextResponse.json({ error: 'quantity must be an integer 0-1000000' }, { status: 400 })\n  }\n",
+ "reject": [
+  "missing 'Number.isInteger'"
+ ]
+}

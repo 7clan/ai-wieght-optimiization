@@ -21,17 +21,78 @@
   "src/app/api/items/route.ts": {
    "contract": "route-list",
    "label": "QWEN-REPAIRED",
-   "base": "route-list_r0_k3 near-miss (round 1)",
-   "post_body": "FAILED-ROUND2",
    "get_body": {
-    "mode": "body-contract",
-    "round": 0,
-    "k": 0,
-    "seed": 7,
-    "tokens": 500,
-    "src": "route-list_get2_*.json"
+    "src": "route-list_get3_r0_k1 + r4 patches",
+    "patches": {
+     "get_drop_where_status": {
+      "k": 0,
+      "seed": 7,
+      "tokens": 18,
+      "empty": false
+     },
+     "get_a_minquantity": "FAILED-FOR-TEACHER"
+    }
    },
-   "note": "round-2 rebuild: POST regenerated as one body contract; GET via fim-ladder or body contract; per-sample evidence in generations/"
+   "post_body": {
+    "src": "route-list_post2_r1_k0 + r4 patch",
+    "patches": {
+     "sku_null": "FAILED-FOR-TEACHER"
+    }
+   },
+   "note": "round-4 surgical FIM finals; all samples archived",
+   "teacher": {
+    "label": "TEACHER-INTEGRATION",
+    "edits": [
+     {
+      "id": "T1-get-filters",
+      "before": "  const minQuantity = parseInt(sp.get('minQuantity') ?? '0')\n",
+      "after": "",
+      "bytes_changed": 61,
+      "bytes_written": 0
+     },
+     {
+      "id": "T1-get-filters",
+      "before": "a.quantity > 0 && a.quantity <= minQuantity",
+      "after": "a.quantity > 0 && a.quantity <= a.minQuantity",
+      "bytes_changed": 2,
+      "bytes_written": 45
+     },
+     {
+      "id": "T1-get-filters",
+      "before": "a.quantity > minQuantity",
+      "after": "a.quantity > a.minQuantity",
+      "bytes_changed": 2,
+      "bytes_written": 26
+     },
+     {
+      "id": "T6-post-sku-null",
+      "before": "data: { name, category, sku, quantity, minQuantity }",
+      "after": "data: { name, category, sku: sku || null, quantity, minQuantity }",
+      "bytes_changed": 13,
+      "bytes_written": 65
+     }
+    ],
+    "teacher_bytes": 484
+   },
+   "round5": {
+    "patches": {
+     "where_type_category": "FAILED-FOR-TEACHER",
+     "order_type": "FAILED-FOR-TEACHER"
+    },
+    "teacher": [
+     {
+      "id": "U1",
+      "before": "  const where: { OR?: { name: { contains: string } }[] } = {}",
+      "after": "  const where: { OR?: { name: { contains: string } }[]; category?: string } = {}"
+     },
+     {
+      "id": "U2",
+      "before": "  const order = sp.get('order') ?? 'desc'",
+      "after": "  const order = (sp.get('order') ?? 'desc') as 'asc' | 'desc'"
+     }
+    ],
+    "note": "type-level finals; U1/U2"
+   }
   },
   "src/app/api/items/[id]/route.ts": {
    "contract": "route-id",
@@ -42,15 +103,58 @@
      "cut": "repetition"
     },
     "put": {
-     "src": "route-id_put_r1_k1",
-     "note": "right-ordered complete body from round 1"
+     "src": "route-id_put3_r0_k0 + r4 patches",
+     "patches": {
+      "put_sku_optional": "FAILED-FOR-TEACHER",
+      "put_quantity_integer": {
+       "k": 2,
+       "seed": 2026,
+       "tokens": 24
+      },
+      "put_min_integer": "FAILED-FOR-TEACHER",
+      "put_sku_null": "FAILED-FOR-TEACHER"
+     }
     },
     "delete": {
      "src": "body_route-id_delete_r0_k1",
      "cut": "repetition"
     }
    },
-   "note": "skeleton lines are disclosed interface scaffolding"
+   "note": "skeleton lines are disclosed interface scaffolding",
+   "teacher": {
+    "label": "TEACHER-INTEGRATION",
+    "edits": [
+     {
+      "id": "T2-put-restore",
+      "before": "  if (quantity < 0 || quantity > 1000000) {\nIf you need to check if the quantity is an integer, use the !Number.isInteger() operator.\n}",
+      "after": "  if (!Number.isInteger(quantity) || quantity < 0 || quantity > 1000000) {\n    return NextResponse.json({ error: 'quantity must be an integer 0-1000000' }, { status: 400 })\n  }",
+      "bytes_changed": 41,
+      "bytes_written": 176
+     },
+     {
+      "id": "T2-put-restore",
+      "before": "  if (sku.length < 1 || sku.length > 40) {",
+      "after": "  if (sku.length > 40) {",
+      "bytes_changed": 18,
+      "bytes_written": 24
+     },
+     {
+      "id": "T2-put-restore",
+      "before": "  if (minQuantity < 0 || minQuantity > 1000000) {",
+      "after": "  if (!Number.isInteger(minQuantity) || minQuantity < 0 || minQuantity > 1000000) {",
+      "bytes_changed": 34,
+      "bytes_written": 83
+     },
+     {
+      "id": "T2-put-restore",
+      "before": "data: { name, category, sku, quantity, minQuantity }",
+      "after": "data: { name, category, sku: sku || null, quantity, minQuantity }",
+      "bytes_changed": 13,
+      "bytes_written": 65
+     }
+    ],
+    "teacher_bytes": 484
+   }
   }
  },
  "stages": [
@@ -237,11 +341,180 @@
     "total_new_tokens": 6380,
     "total_seconds": 888.6
    }
+  },
+  {
+   "contract": "route-round3",
+   "accepted": true,
+   "get_body_ok": false,
+   "post_sku_check": false,
+   "post_sku_null": false,
+   "put_validation": false,
+   "gates": {
+    "route-list": {
+     "ok": true,
+     "feedback": ""
+    },
+    "route-id": {
+     "ok": true,
+     "feedback": ""
+    }
+   },
+   "usage_run": {
+    "generations": 27,
+    "total_new_tokens": 12021,
+    "total_seconds": 1698.5
+   }
+  },
+  {
+   "contract": "route-round4",
+   "patches": {
+    "get_drop_where_status": {
+     "k": 0,
+     "seed": 7,
+     "tokens": 18,
+     "empty": false
+    },
+    "get_a_minquantity": "FAILED-FOR-TEACHER",
+    "put_sku_optional": "FAILED-FOR-TEACHER",
+    "put_quantity_integer": {
+     "k": 2,
+     "seed": 2026,
+     "tokens": 24
+    },
+    "put_min_integer": "FAILED-FOR-TEACHER",
+    "put_sku_null": "FAILED-FOR-TEACHER",
+    "post_sku_null": "FAILED-FOR-TEACHER"
+   },
+   "accepted": false,
+   "gates": {
+    "route-list": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\n/app/api/items/[id]/route.ts(35,8): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/[id]/route.ts(35,13): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/[id]/route.ts(35,16): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/[id]/route.ts(35,25): error TS1005: '(' expected.\nsrc/app/api/items/[id]/route.ts(35,29): error TS1005: ')' expected.\nsrc/app/api/items/[id]/route.ts(35,38): error TS1228: A type predicate is only allowed in return type position for functions and methods.\nsrc/app/api/items/[id]/route.ts(35,41): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/[id]/route.ts(35,57): error TS1005: ';' expected.\nsrc/app/api/items/[id]/route.ts(35,62): error TS1005: ';' expected.\nsrc/app/api/items/[id]/route.ts(35,81): error TS1005: ';' expected.\nsrc/app/api/items/[id]/route.ts(36,1): error TS1003: Identifier expected.\n\neslint reported:\n\n/home/z/my-project/src/app/api/items/[id]/route.ts\n  35:0  error  Parsing error: Unexpected keyword or identifier\n\n\u2716 1 problem (1 error, 0 warnings)\n\n"
+    },
+    "route-id": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\n/app/api/items/[id]/route.ts(35,8): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/[id]/route.ts(35,13): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/[id]/route.ts(35,16): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/[id]/route.ts(35,25): error TS1005: '(' expected.\nsrc/app/api/items/[id]/route.ts(35,29): error TS1005: ')' expected.\nsrc/app/api/items/[id]/route.ts(35,38): error TS1228: A type predicate is only allowed in return type position for functions and methods.\nsrc/app/api/items/[id]/route.ts(35,41): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/[id]/route.ts(35,57): error TS1005: ';' expected.\nsrc/app/api/items/[id]/route.ts(35,62): error TS1005: ';' expected.\nsrc/app/api/items/[id]/route.ts(35,81): error TS1005: ';' expected.\nsrc/app/api/items/[id]/route.ts(36,1): error TS1003: Identifier expected.\n\neslint reported:\n\n/home/z/my-project/src/app/api/items/[id]/route.ts\n  35:0  error  Parsing error: Unexpected keyword or identifier\n\n\u2716 1 problem (1 error, 0 warnings)\n\n"
+    }
+   },
+   "usage_run": {
+    "generations": 19,
+    "total_new_tokens": 411,
+    "total_seconds": 81.4
+   }
+  },
+  {
+   "contract": "route-teacher",
+   "accepted": false,
+   "edits": [
+    {
+     "id": "T1-get-filters",
+     "before": "  const minQuantity = parseInt(sp.get('minQuantity') ?? '0')\n",
+     "after": "",
+     "bytes_changed": 61,
+     "bytes_written": 0
+    },
+    {
+     "id": "T1-get-filters",
+     "before": "a.quantity > 0 && a.quantity <= minQuantity",
+     "after": "a.quantity > 0 && a.quantity <= a.minQuantity",
+     "bytes_changed": 2,
+     "bytes_written": 45
+    },
+    {
+     "id": "T1-get-filters",
+     "before": "a.quantity > minQuantity",
+     "after": "a.quantity > a.minQuantity",
+     "bytes_changed": 2,
+     "bytes_written": 26
+    },
+    {
+     "id": "T2-put-restore",
+     "before": "  if (quantity < 0 || quantity > 1000000) {\nIf you need to check if the quantity is an integer, use the !Number.isInteger() operator.\n}",
+     "after": "  if (!Number.isInteger(quantity) || quantity < 0 || quantity > 1000000) {\n    return NextResponse.json({ error: 'quantity must be an integer 0-1000000' }, { status: 400 })\n  }",
+     "bytes_changed": 41,
+     "bytes_written": 176
+    },
+    {
+     "id": "T2-put-restore",
+     "before": "  if (sku.length < 1 || sku.length > 40) {",
+     "after": "  if (sku.length > 40) {",
+     "bytes_changed": 18,
+     "bytes_written": 24
+    },
+    {
+     "id": "T2-put-restore",
+     "before": "  if (minQuantity < 0 || minQuantity > 1000000) {",
+     "after": "  if (!Number.isInteger(minQuantity) || minQuantity < 0 || minQuantity > 1000000) {",
+     "bytes_changed": 34,
+     "bytes_written": 83
+    },
+    {
+     "id": "T2-put-restore",
+     "before": "data: { name, category, sku, quantity, minQuantity }",
+     "after": "data: { name, category, sku: sku || null, quantity, minQuantity }",
+     "bytes_changed": 13,
+     "bytes_written": 65
+    },
+    {
+     "id": "T6-post-sku-null",
+     "before": "data: { name, category, sku, quantity, minQuantity }",
+     "after": "data: { name, category, sku: sku || null, quantity, minQuantity }",
+     "bytes_changed": 13,
+     "bytes_written": 65
+    }
+   ],
+   "teacher_bytes": 484,
+   "gates": {
+    "route-list": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/app/api/items/route.ts(13,45): error TS2339: Property 'category' does not exist on type '{ OR?: { name: { contains: string; }; }[] | undefined; }'.\nsrc/app/api/items/route.ts(14,55): error TS2322: Type '{ name: string; }' is not assignable to type 'InventoryItemOrderByWithRelationInput | InventoryItemOrderByWithRelationInput[] | undefined'.\n  Types of property 'name' are incompatible.\n    Type 'string' is not assignable to type 'SortOrder | undefined'.\n"
+    },
+    "route-id": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/app/api/items/route.ts(13,45): error TS2339: Property 'category' does not exist on type '{ OR?: { name: { contains: string; }; }[] | undefined; }'.\nsrc/app/api/items/route.ts(14,55): error TS2322: Type '{ name: string; }' is not assignable to type 'InventoryItemOrderByWithRelationInput | InventoryItemOrderByWithRelationInput[] | undefined'.\n  Types of property 'name' are incompatible.\n    Type 'string' is not assignable to type 'SortOrder | undefined'.\n"
+    }
+   },
+   "note": "minimal disclosed integration after 4 model rounds; all model attempts archived in generations/"
+  },
+  {
+   "contract": "route-round5",
+   "patches": {
+    "where_type_category": "FAILED-FOR-TEACHER",
+    "order_type": "FAILED-FOR-TEACHER"
+   },
+   "teacher_edits": [
+    {
+     "id": "U1",
+     "before": "  const where: { OR?: { name: { contains: string } }[] } = {}",
+     "after": "  const where: { OR?: { name: { contains: string } }[]; category?: string } = {}"
+    },
+    {
+     "id": "U2",
+     "before": "  const order = sp.get('order') ?? 'desc'",
+     "after": "  const order = (sp.get('order') ?? 'desc') as 'asc' | 'desc'"
+    }
+   ],
+   "accepted": true,
+   "gates": {
+    "route-list": {
+     "ok": true,
+     "feedback": ""
+    },
+    "route-id": {
+     "ok": true,
+     "feedback": ""
+    }
+   },
+   "usage_run": {
+    "generations": 6,
+    "total_new_tokens": 303,
+    "total_seconds": 49.5
+   }
   }
  ],
  "model_usage_cumulative": {
-  "generations": 144,
-  "total_new_tokens": 88124,
+  "generations": 196,
+  "total_new_tokens": 100859,
   "total_seconds": 1219827.5
  }
 }

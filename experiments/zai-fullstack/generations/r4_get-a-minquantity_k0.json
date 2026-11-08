@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "get-a-minquantity",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 22,
+  "seconds": 3.73,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "instructions": "Use a.minQuantity in the comparisons.",
+ "completion": "\n  if (minQuantity) rows = rows.filter((r) => r.quantity >= minQuantity)\n",
+ "reject": [
+  "missing 'a.minQuantity'"
+ ]
+}

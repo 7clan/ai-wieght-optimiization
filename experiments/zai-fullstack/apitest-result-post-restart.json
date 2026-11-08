@@ -1,0 +1,19 @@
+{
+  "phase": "post-restart",
+  "passed": 2,
+  "total": 2,
+  "results": [
+    {
+      "n": 1,
+      "name": "after server restart: list still 200",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 2,
+      "name": "after server restart: same 10 items (SQLite persisted)",
+      "pass": true,
+      "extra": "total=10 expected=10"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "put-min-integer",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 50,
+  "seconds": 8.52,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "instructions": "Use !Number.isInteger(minQuantity) || in the condition.",
+ "completion": "\n}\n  const item = await db.inventoryItem.findUnique({ where: { id } }).catch(() => null)\n  if (item) return NextResponse.json({ error: 'already exists' }, { status: 409 })\n",
+ "reject": [
+  "missing 'Number.isInteger'"
+ ]
+}

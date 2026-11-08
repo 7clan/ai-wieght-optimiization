@@ -1,0 +1,19 @@
+{
+ "kind": "fim-patch",
+ "pid": "post-sku-null",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 40,
+  "seconds": 7.16,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "instructions": "Replace sku with sku || null.",
+ "completion": "sku || null } })\n  return NextResponse.json({ item: { ...row, updatedAt: row.updatedAt.toISOString() } }, { status: 201 })\n}\n\nexport const GET =",
+ "reject": [
+  "missing 'sku: sku || null'",
+  "too long"
+ ]
+}

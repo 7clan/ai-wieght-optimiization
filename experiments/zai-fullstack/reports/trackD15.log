@@ -1,0 +1,33 @@
+  [T1-get-filters] applied: "  const minQuantity = parseInt(sp.get('minQuanti" -> '' (delta -61)
+  [T1-get-filters] applied: 'a.quantity > 0 && a.quantity <= minQuantity' -> 'a.quantity > 0 && a.quantity <= a.minQuantity' (delta +2)
+  [T1-get-filters] applied: 'a.quantity > minQuantity' -> 'a.quantity > a.minQuantity' (delta +2)
+  [T2-put-restore] applied: '  if (quantity < 0 || quantity > 1000000) {\nIf y' -> '  if (!Number.isInteger(quantity) || quantity < ' (delta +41)
+  [T2-put-restore] applied: '  if (sku.length < 1 || sku.length > 40) {' -> '  if (sku.length > 40) {' (delta -18)
+  [T2-put-restore] applied: '  if (minQuantity < 0 || minQuantity > 1000000) ' -> '  if (!Number.isInteger(minQuantity) || minQuant' (delta +34)
+  [T2-put-restore] applied: 'data: { name, category, sku, quantity, minQuanti' -> 'data: { name, category, sku: sku || null, quanti' (delta +13)
+  [T6-post-sku-null] applied: 'data: { name, category, sku, quantity, minQuanti' -> 'data: { name, category, sku: sku || null, quanti' (delta +13)
+teacher bytes written: 484
+GATES route-list: ok=False
+  feedback: tsc --noEmit reported:
+  src/app/api/items/route.ts(13,45): error TS2339: Property 'category' does not exist on type '{ OR?: { name: { contains: string; }; }[] | undefined; }'.
+  src/app/api/items/route.ts(14,55): error TS2322: Type '{ name: string; }' is not assignable to type 'InventoryItemOrderByWithRelationInput | InventoryItemOrderByWithRelationInput[] | undefined'.
+    Types of property 'name' are incompatible.
+      Type 'string' is not assignable to type 'SortOrder | undefined'.
+  
+GATES route-id: ok=False
+  feedback: tsc --noEmit reported:
+  src/app/api/items/route.ts(13,45): error TS2339: Property 'category' does not exist on type '{ OR?: { name: { contains: string; }; }[] | undefined; }'.
+  src/app/api/items/route.ts(14,55): error TS2322: Type '{ name: string; }' is not assignable to type 'InventoryItemOrderByWithRelationInput | InventoryItemOrderByWithRelationInput[] | undefined'.
+    Types of property 'name' are incompatible.
+      Type 'string' is not assignable to type 'SortOrder | undefined'.
+  
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/z/s035/archagent/fullstack/route_teacher.py", line 190, in <module>
+    main()
+  File "/home/z/s035/archagent/fullstack/route_teacher.py", line 173, in main
+    devserver.start_dev()
+  File "/home/z/s035/archagent/fullstack/devserver.py", line 67, in start_dev
+    raise RuntimeError("dev server did not come up within 120s")
+RuntimeError: dev server did not come up within 120s

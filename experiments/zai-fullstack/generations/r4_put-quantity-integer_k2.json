@@ -1,0 +1,16 @@
+{
+ "kind": "fim-patch",
+ "pid": "put-quantity-integer",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 24,
+  "seconds": 4.88,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "instructions": "Use !Number.isInteger(quantity) || in the condition.",
+ "completion": "\nIf you need to check if the quantity is an integer, use the !Number.isInteger() operator.\n}\n",
+ "reject": null
+}

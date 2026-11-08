@@ -1,0 +1,103 @@
+{
+  "phase": "pre",
+  "passed": 16,
+  "total": 16,
+  "results": [
+    {
+      "n": 1,
+      "name": "GET empty list 200 {items:[],total:0}",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 2,
+      "name": "POST valid item 201, echoes fields + id",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 3,
+      "name": "POST missing name 400 {error}",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 4,
+      "name": "POST negative quantity 400",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 5,
+      "name": "POST non-integer quantity 400",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 6,
+      "name": "seed 10 + earlier = 11 items, total matches",
+      "pass": true,
+      "extra": "total=11"
+    },
+    {
+      "n": 7,
+      "name": "GET ?q=usb matches name+sku case-insensitively (3)",
+      "pass": true,
+      "extra": "total=3"
+    },
+    {
+      "n": 8,
+      "name": "GET ?category=Electronics -> 3 items all Electronics",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 9,
+      "name": "GET ?status=low -> 4 items, all genuinely low",
+      "pass": true,
+      "extra": "total=4"
+    },
+    {
+      "n": 10,
+      "name": "GET ?status=out -> 2 items with quantity 0",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 11,
+      "name": "GET ?sort=quantity&order=asc ascending",
+      "pass": true,
+      "extra": "q=[0,0,1,2,3,5,8,14,25,42,120]"
+    },
+    {
+      "n": 12,
+      "name": "GET /:id 200 then 404 for unknown",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 13,
+      "name": "PUT updates and persists (now low stock)",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 14,
+      "name": "PUT invalid 400 / unknown 404",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 15,
+      "name": "DELETE 204 then 404",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 16,
+      "name": "post-delete total is 10 (restart-phase baseline)",
+      "pass": true,
+      "extra": "total=10"
+    }
+  ]
+}

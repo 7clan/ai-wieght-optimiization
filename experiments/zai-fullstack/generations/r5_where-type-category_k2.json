@@ -1,0 +1,19 @@
+{
+ "kind": "fim-patch",
+ "pid": "where-type-category",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 60,
+  "seconds": 11.38,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "instructions": "Add category?: string to the type.",
+ "completion": "}\n  if (sort === 'name') where = { name: { contains: '' } }\n  if (sort === 'quantity') where = { quantity: { contains: '' } }\n  if (sort === 'minQuantity') where = { minQuantity: { contains: '' } }\n",
+ "reject": [
+  "missing 'category?: string'",
+  "too long"
+ ]
+}

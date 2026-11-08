@@ -1,0 +1,19 @@
+{
+ "kind": "fim-patch",
+ "pid": "order-type",
+ "k": 1,
+ "seed": 1013,
+ "usage": {
+  "tokens": 60,
+  "seconds": 8.62,
+  "seed": 1013,
+  "stochastic": true,
+  "fim": true
+ },
+ "instructions": "Cast the value so order is 'asc' or 'desc'.",
+ "completion": "\nconst order = order === 'asc' ? 'asc' : 'desc'\nconst categories = ['all', 'ecommerce', 'food', 'movies', 'music', 'travel']\n\nconst categoriesArray = categories.map((category) => ({\n  category,\n  count: await db",
+ "reject": [
+  "missing \"'asc' | 'desc'\"",
+  "too long"
+ ]
+}

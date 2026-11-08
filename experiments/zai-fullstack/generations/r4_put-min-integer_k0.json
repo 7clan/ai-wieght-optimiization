@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "put-min-integer",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 3,
+  "seconds": 1.81,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "instructions": "Use !Number.isInteger(minQuantity) || in the condition.",
+ "completion": "\n}\n",
+ "reject": [
+  "missing 'Number.isInteger'"
+ ]
+}

@@ -1,0 +1,21 @@
+{
+ "kind": "fim-patch",
+ "cid": "route-list",
+ "step": "post-sku-null",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 31,
+  "seconds": 5.98,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix_tail": "'quantity must be an integer 0-1000000' }, { status: 400 })\n  }\n  if (!Number.isInteger(minQuantity) || minQuantity < 0 || minQuantity > 1000000) {\n    return NextResponse.json({ error: 'minQuantity must be an integer 0-1000000' }, { status: 400 })\n  }\n\n  const row = await db.inventoryItem.create({ ",
+ "suffix_head": " })\n  return NextResponse.json({ item: { ...row, updatedAt: row.updatedAt.toISOString() } }, { status: 201 })",
+ "instructions": "Use sku: sku || null for the sku value.",
+ "completion": "\n    data: {\n      name: name,\n      category: category,\n      quantity: quantity,\n      minQuantity: minQuantity,\n    },\n ",
+ "reject": [
+  "missing 'sku: sku || null'"
+ ]
+}

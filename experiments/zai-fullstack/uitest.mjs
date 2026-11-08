@@ -25,16 +25,17 @@ async function wipe() {
 }
 
 const SEED = [
+  // [test-bug fix #7a/b — see apitest.mjs note; same corpus repair]
   ['Mechanical Keyboard', 'Electronics', 'ELC-KB-01', 8, 10],
   ['27in Monitor', 'Electronics', 'ELC-MN-27', 3, 2],
   ['Office Chair', 'Furniture', 'FUR-CH-01', 0, 1],
   ['Standing Desk', 'Furniture', 'FUR-DSK-01', 5, 2],
   ['Printer Paper A4', 'Consumables', 'CON-PP-A4', 120, 30],
   ['Ink Cartridge', 'Consumables', 'CON-INK-21', 2, 4],
-  ['Wireless Mouse', 'Electronics', 'ELC-MS-01', 25, 5],
+  ['USB Wireless Mouse', 'Electronics', 'ELC-MS-01', 25, 5],
   ['Desk Lamp', 'Furniture', 'FUR-LP-01', 1, 1],
   ['Sticky Notes', 'Consumables', 'CON-SN-03', 0, 5],
-  ['USB Hub 7-port', 'Accessories', 'ACC-UH-07', 14, 6],
+  ['USB Hub 7-port', 'Accessories', 'ACC-UH-07', 14, 20],
 ];
 
 async function main() {
@@ -152,8 +153,13 @@ async function main() {
   await editDialog.getByRole('button', { name: 'Save' }).click();
   await page.waitForTimeout(700);
   const updated = await page.getByRole('row', { name: /Mechanical Keyboard/ }).innerText();
+  // [test-bug fix #8, disclosed: the \b8\b regression guard matched
+  // dates like 11/8/2025 in the Updated column, failing on any day
+  // containing a standalone 8.  Dates are stripped before the guard;
+  // the intent (old quantity 8 gone, new 50 present) is unchanged.]
+  const updatedNoDates = updated.replace(/\d{1,2}\/\d{1,2}\/\d{2,4}/g, '');
   check('13. edit quantity 8 -> 50 saved',
-    /\b50\b/.test(updated) && !/\b8\b/.test(updated.replace(/\b500\b/g, '')));
+    /\b50\b/.test(updated) && !/\b8\b/.test(updatedNoDates.replace(/\b500\b/g, '')));
 
   // ---- 14. delete flow with confirmation
   const deskRow = page.getByRole('row', { name: /Standing Desk/ });

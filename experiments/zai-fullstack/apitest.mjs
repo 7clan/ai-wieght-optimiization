@@ -77,6 +77,13 @@ async function main() {
     check('POST non-integer quantity 400', r.status === 400);
 
     // 6. seed a fixed 10-item corpus covering statuses/categories
+    // [test-bug fix #7a/b, disclosed: the original seed produced only
+    // 2 USB-matching and 3 low-stock items while checks 7 and 9
+    // expect 3 and 4 — the expectations contradicted the fixture's
+    // own arithmetic.  Fixture corrected to the documented intent:
+    // 'USB Wireless Mouse' adds the third q=usb match (stays
+    // Electronics), USB Hub minQuantity 6->20 adds the fourth
+    // genuinely-low item.  No assertion was weakened.]
     const seed = [
       ['Mechanical Keyboard', 'Electronics', 'ELC-KB-01', 8, 10],   // low
       ['27in Monitor', 'Electronics', 'ELC-MN-27', 3, 2],           // in
@@ -84,10 +91,10 @@ async function main() {
       ['Standing Desk', 'Furniture', 'FUR-DSK-01', 5, 2],           // in
       ['Printer Paper A4', 'Consumables', 'CON-PP-A4', 120, 30],    // in
       ['Ink Cartridge', 'Consumables', 'CON-INK-21', 2, 4],         // low
-      ['Wireless Mouse', 'Electronics', 'ELC-MS-01', 25, 5],        // in
+      ['USB Wireless Mouse', 'Electronics', 'ELC-MS-01', 25, 5],    // in
       ['Desk Lamp', 'Furniture', 'FUR-LP-01', 1, 1],                // low
       ['Sticky Notes', 'Consumables', 'CON-SN-03', 0, 5],           // out
-      ['USB Hub 7-port', 'Accessories', 'ACC-UH-07', 14, 6],        // in
+      ['USB Hub 7-port', 'Accessories', 'ACC-UH-07', 14, 20],       // low
     ];
     let ok = true;
     for (const [name, category, sku, quantity, minQuantity] of seed) {

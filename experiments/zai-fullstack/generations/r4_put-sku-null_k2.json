@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "put-sku-null",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 5,
+  "seconds": 2.18,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "instructions": "Replace sku with sku || null.",
+ "completion": "sku || null }",
+ "reject": [
+  "missing 'sku: sku || null'"
+ ]
+}

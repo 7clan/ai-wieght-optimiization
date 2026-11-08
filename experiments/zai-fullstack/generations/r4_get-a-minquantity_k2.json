@@ -1,0 +1,19 @@
+{
+ "kind": "fim-patch",
+ "pid": "get-a-minquantity",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 2,
+  "seconds": 1.28,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "instructions": "Use a.minQuantity in the comparisons.",
+ "completion": "\n",
+ "reject": [
+  "missing 'a.minQuantity'",
+  "empty"
+ ]
+}

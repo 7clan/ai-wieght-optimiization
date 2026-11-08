@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "put-sku-optional",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 4,
+  "seconds": 2.01,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "instructions": "sku is optional: reject only when longer than 40 chars.",
+ "completion": "\n  }\n",
+ "reject": [
+  "missing 'sku.length > 40'"
+ ]
+}

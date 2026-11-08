@@ -1,0 +1,16 @@
+{
+ "kind": "fim-patch",
+ "pid": "get-drop-where-status",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 18,
+  "seconds": 3.29,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "instructions": "Delete this line: status is not a database field.",
+ "completion": "\n  const minQuantity = parseInt(sp.get('minQuantity') ?? '0')\n",
+ "reject": null
+}
