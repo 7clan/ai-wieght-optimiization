@@ -1,0 +1,32 @@
+name: Adaptive controller isolated smoke
+
+on:
+  push:
+    branches:
+      - exp/qwen-adaptive-generalization
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: adaptive-controller-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run deterministic tests without model inference
+        run: python -m unittest -v tests.test_adaptive_controller tests.test_adaptive_infrastructure
+      - name: Pre-pull fixed runtime images (no model checkpoint)
+        run: |
+          docker pull python:3.11-alpine
+          docker pull node:22-alpine
+      - name: Run isolated Docker smoke on controlled samples
+        run: python -m tests.smoke_adaptive_docker
