@@ -78,6 +78,7 @@ class ModelContext:
     public_feedback: tuple[str, ...]
     documentation: tuple[DocFinding, ...]
     strategy: str
+    previous_files: Mapping[str, str] = field(default_factory=dict)
 
 
 class ModelClient(Protocol):
@@ -191,12 +192,14 @@ class AgentController:
         repeated = 0
         best_public_checks = -1
         strategy = "Split contracts; change one hypothesis at a time; verify public checks."
+        previous_files: dict[str, str] = {}
 
         while (report.proposals < self.budget.max_proposals
                and report.evaluations < self.budget.max_attempts):
             try:
                 proposal = model.propose(ModelContext(
                     task, report.evaluations + 1, tuple(feedback), tuple(findings), strategy,
+                    previous_files=dict(previous_files),
                 ))
                 _validate_proposal(proposal.files, self.budget.max_file_bytes,
                                    task.required_files)
@@ -213,6 +216,7 @@ class AgentController:
                 report.proposal_trace.append({"rejected": str(exc)[:200]})
                 continue
             report.proposals += 1
+            previous_files = dict(proposal.files)
 
             # Consult new documentation before executing an uncertain proposal.
             if proposal.uncertain and report.research_calls < self.budget.max_research:
