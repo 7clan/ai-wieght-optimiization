@@ -80,13 +80,17 @@ class QwenSingleFileAdapter:
             raise ControllerError("Single-file adapter requires exactly one declared target path")
         path = paths[0]
         language = "Python" if path.endswith(".py") else "JavaScript" if path.endswith((".js", ".cjs", ".mjs")) else "source"
+        module_contract = ("This is a .cjs CommonJS module: use module.exports for named functions, not export/default.\n"
+                           if path.endswith(".cjs") else "")
         previous = context.previous_files.get(path, "")
         if previous:
             prompt = (
                 f"Fix this {language} file: {path}. Output ONLY the entire corrected source code.\n"
                 f"REQUIREMENT: {context.task.description[:700]}\n"
+                f"{module_contract}"
                 f"CURRENT SOURCE:\n{previous[:1500]}\n"
                 f"ACTUAL PUBLIC ERROR:\n{context.public_feedback[-1][:700] if context.public_feedback else 'Not yet tested'}\n"
+                f"ERROR CLASS: {context.strategy[:240]}\n"
                 "Keep valid existing code. Resolve the error. No explanation, no JSON, no markdown.\n"
                 "COMPLETE CORRECTED SOURCE:\n"
             )
@@ -94,6 +98,7 @@ class QwenSingleFileAdapter:
             prompt = (
                 f"Write complete {language} source code for the file {path}.\n"
                 f"REQUIREMENT: {context.task.description[:950]}\n"
+                f"{module_contract}"
                 f"CHECKS: {'; '.join(context.task.public_acceptance)[:450]}\n"
                 "Output ONLY the entire source code. Finish every function body. "
                 "No explanation, no JSON, no markdown.\n"
