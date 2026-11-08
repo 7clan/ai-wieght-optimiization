@@ -8,6 +8,7 @@ from adaptive_agent import (
     SandboxResult, Task,
 )
 from adaptive_agent.qwen_adapter import QwenJSONAdapter, QwenSingleFileAdapter
+from adaptive_agent.controller import _failure_family
 
 
 TASK = Task("novel-001", "Implement a small inventory endpoint", ("GET returns items",))
@@ -108,6 +109,26 @@ class ControllerTests(unittest.TestCase):
         task = Task("js", "Export value", ("works",), ("solution.cjs",))
         output = model.propose(ModelContext(task, 1, (), (), ""))
         self.assertEqual(output.files["solution.cjs"], "module.exports = { value: 1 };\n")
+
+    def test_javascript_prompts_require_commonjs_contract(self):
+        from adaptive_agent import ModelContext
+        prompts = []
+        model = QwenSingleFileAdapter(lambda prompt: (prompts.append(prompt) or "module.exports = {};"))
+        task = Task("js", "Export normalizeTags", ("works",), ("solution.cjs",))
+        model.propose(ModelContext(task, 1, (), (), ""))
+        self.assertIn("CommonJS", prompts[0])
+        self.assertIn("module.exports", prompts[0])
+
+    def test_trace_preserves_error_head_and_syntax_diagnosis(self):
+        self.assertIn("syntax", _failure_family("SyntaxError: Unexpected token 'export'"))
+        model = FakeModel([proposal("broken")])
+        sandbox = FakeSandbox([SandboxResult({"public": False},
+                         "SyntaxError: Unexpected token 'export'\n" + "stack trace\n" * 80)])
+        report = AgentController(Budget(max_attempts=1)).run(
+            TASK, model, sandbox, FakeResearcher(),
+        )
+        self.assertTrue(report.proposal_trace[0]["feedback_preview"].startswith("SyntaxError"))
+        self.assertEqual(report.proposal_trace[0]["file_lines"], {"src/index.js": 1})
 
     def test_repeated_identical_patch_stops_without_reexecuting(self):
         model = FakeModel([proposal("bad"), proposal("bad"), proposal("bad")])
