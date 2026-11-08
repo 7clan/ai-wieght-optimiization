@@ -1,0 +1,170 @@
+"""Small, *exploratory* frozen Qwen solo-vs-controller pilot.
+
+Both tracks use the exact same loaded checkpoint. Private test fixtures are
+evaluated only after generation for BOTH tracks has finished. No gradients.
+"""
+
+from __future__ import annotations
+
+import argparse
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from hashlib import sha256
+import json
+from pathlib import Path
+import resource
+import time
+
+from adaptive_agent import AgentController, Budget, ControllerError, ModelContext, Task
+from adaptive_agent.controller import _validate_proposal
+from adaptive_agent.docker_sandbox import DockerSandbox, PublicFixture, require_docker
+from adaptive_agent.qwen_adapter import load_local_qwen
+
+
+MODEL_ID = "Qwen/Qwen2.5-Coder-0.5B-Instruct"
+
+
+@dataclass(frozen=True)
+class PilotTask:
+    contract: Task
+    public: PublicFixture
+    private: PublicFixture
+
+
+PILOT_TASKS = (
+    PilotTask(
+        Task("py-nonempty", (
+            "Write solution.py defining count_nonempty(items), returning the number of "
+            "nonempty or non-whitespace strings. Input is a list of strings."
+        ), ("count_nonempty([' a ', '', 'b']) == 2",)),
+        PublicFixture("python", (
+            "import sys\nsys.path.insert(0,'/app')\nfrom solution import count_nonempty\n"
+            "assert count_nonempty([' a ', '', 'b']) == 2\n"
+        )),
+        PublicFixture("python", (
+            "import sys\nsys.path.insert(0,'/app')\nfrom solution import count_nonempty\n"
+            "assert count_nonempty([]) == 0\nassert count_nonempty([' ', '\\t', 'x']) == 1\n"
+        )),
+    ),
+    PilotTask(
+        Task("js-normalizetags", (
+            "Write solution.cjs exporting a function normalizeTags(items). Given a JavaScript "
+            "array of strings, trim and lowercase each, drop empty strings, keep first occurrence "
+            "of each unique normalized string, preserving order."
+        ), ("normalizeTags([' A ','a','B']) returns ['a','b']",)),
+        PublicFixture("javascript", (
+            "const assert=require('node:assert/strict');\n"
+            "const {normalizeTags}=require('/app/solution.cjs');\n"
+            "assert.deepEqual(normalizeTags([' A ', 'a', 'B']), ['a','b']);\n"
+        )),
+        PublicFixture("javascript", (
+            "const assert=require('node:assert/strict');\n"
+            "const {normalizeTags}=require('/app/solution.cjs');\n"
+            "assert.deepEqual(normalizeTags([]), []);\n"
+            "assert.deepEqual(normalizeTags(['  ', 'X', ' x ', 'Y']), ['x','y']);\n"
+        )),
+    ),
+)
+
+
+class NoWebResearch:
+    """No hidden internet or teacher assistance in this protocol smoke."""
+    def lookup(self, query):
+        return None
+
+
+def solo_attempt(model, spec: PilotTask, sandbox: DockerSandbox) -> dict:
+    started = time.monotonic()
+    output = {"public_pass": False, "proposal_valid": False, "files": None, "error": None}
+    try:
+        candidate = model.propose(ModelContext(
+            spec.contract, 1, (), (),
+            "Split contracts; change one hypothesis at a time; verify public checks.",
+        ))
+        _validate_proposal(candidate.files, max_file_bytes=60_000)
+        output["proposal_valid"] = True
+        output["files"] = dict(candidate.files)
+        result = sandbox.evaluate(spec.contract, candidate.files)
+        output["public_pass"] = result.passed
+        if not result.passed:
+            output["error"] = result.feedback[-300:]
+    except ControllerError as exc:
+        output["error"] = f"{type(exc).__name__}: {str(exc)[:300]}"
+    output["seconds"] = round(time.monotonic() - started, 3)
+    return output
+
+
+def private_score(spec: PilotTask, files: dict[str, str] | None) -> bool | None:
+    if not files:
+        return None
+    evaluator = DockerSandbox({spec.contract.task_id: spec.private})
+    return evaluator.evaluate(spec.contract, files).passed
+
+
+def run(output_path: Path, max_new_tokens: int = 400) -> dict:
+    require_docker()  # Don't download a model if execution cannot be scored.
+    import torch
+    torch.set_num_threads(2)
+    setup = time.monotonic()
+    model = load_local_qwen(MODEL_ID, max_new_tokens=max_new_tokens)
+    loading_s = round(time.monotonic() - setup, 3)
+    records = []
+
+    # The same model instance is reused, but generation is stateless/deterministic.
+    for spec in PILOT_TASKS:
+        public_evaluator = DockerSandbox({spec.contract.task_id: spec.public})
+        solo = solo_attempt(model, spec, public_evaluator)
+        start = time.monotonic()
+        assisted = AgentController(Budget(max_attempts=2, max_proposals=3,
+                                          max_research=0)).run(
+            spec.contract, model, public_evaluator, NoWebResearch(),
+        )
+        assisted_seconds = round(time.monotonic() - start, 3)
+        records.append((spec, solo, assisted, assisted_seconds))
+
+    # The private oracle runs ONLY once all solo and controller generation is over.
+    rows = []
+    for spec, solo, assisted, assisted_seconds in records:
+        rows.append({
+            "task_id": spec.contract.task_id,
+            "public_spec_hash": sha256(spec.public.test_source.encode()).hexdigest(),
+            "private_spec_hash": sha256(spec.private.test_source.encode()).hexdigest(),
+            "solo": {"valid": solo["proposal_valid"],
+                     "public_pass": solo["public_pass"],
+                     "private_pass": private_score(spec, solo["files"]),
+                     "seconds": solo["seconds"], "error": solo["error"]},
+            "controller": {"status": assisted.status,
+                           "public_pass": assisted.status == "public_checks_passed",
+                           "private_pass": private_score(spec, assisted.accepted_files),
+                           "seconds": assisted_seconds,
+                           "proposals": assisted.proposals,
+                           "evaluations": assisted.evaluations,
+                           "invalid_proposals": assisted.invalid_proposals,
+                           "research_calls": assisted.research_calls},
+        })
+    report = {
+        "description": "Exploratory two-task frozen Qwen0.5B protocol smoke; NOT fullstack generalization",
+        "generated_utc": datetime.now(timezone.utc).isoformat(),
+        "model": MODEL_ID, "weights_updated": False, "training": False,
+        "teacher_repairs": 0, "docs_search_enabled": False,
+        "host_cpu_threads": 2, "max_new_tokens": max_new_tokens,
+        "loading_seconds": loading_s,
+        "peak_host_rss_kib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+        "tasks": rows,
+    }
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    return report
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=Path("experiments/adaptive/pilot_report.json"))
+    parser.add_argument("--max-new-tokens", type=int, default=400)
+    args = parser.parse_args()
+    report = run(args.output, args.max_new_tokens)
+    print(json.dumps(report, indent=2))
+
+
+if __name__ == "__main__":
+    main()
