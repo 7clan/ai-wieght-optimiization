@@ -1,0 +1,20 @@
+{
+ "kind": "fim-patch",
+ "pid": "p7-quantity-integer",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 100,
+  "seconds": 15.7,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix_tail": " sku = String(body.sku ?? '').trim()\n  const quantity = Number(body.quantity)\n  const minQuantity = Number(body.minQuantity)\n  if (name.length < 1 || name.length > 80) {\n    return NextResponse.json({ error: 'name is required (1-80 chars)' }, { status: 400 })\n  }\n  if (sku.length < 1 || sku.length > 40) {\n    return NextResponse.json({ error: 'sku is required (1-40 chars)' }, { status: 400 })\n  }\n",
+ "suffix_head": "  if (minQuantity < 0 || minQuantity > 100000) {\n    return NextResponse.json({ error: 'minQuantity must be 0-100000' }, { status: 400 })\n  }\n  const row = await db.inventoryItem.create({ data: { name",
+ "instructions": "Replace the check: also reject non-integer quantity.",
+ "completion": "\nIf minQuantity is less than 0, reject with 400.\nIf minQuantity is greater than 100000, reject with 400.\nIf minQuantity is not an integer, reject with 400.\nIf minQuantity is not 0-100000, reject with 400.\nCheck: if minQuantity is less than 0, reject with 400.\nIf minQuantity is greater than ",
+ "reject": [
+  "expect Number.isInteger missing"
+ ]
+}

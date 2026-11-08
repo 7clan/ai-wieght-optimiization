@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "p4-category-read",
+ "k": 1,
+ "seed": 1013,
+ "usage": {
+  "tokens": 60,
+  "seconds": 11.01,
+  "seed": 1013,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix_tail": "Many({\n    where: q ? { OR: [{ name: { contains: q } }, { sku: { contains: q } }] } : {},\n    orderBy: { updatedAt: 'desc' },\n  })\n  const items = rows.map((r) => ({ ...r, updatedAt: r.updatedAt.toISOString() }))\n  return NextResponse.json({ items, total: items.length })\n}\n\nexport async function POST(req: NextRequest) {\n  const body = await req.json()\n  const name = String(body.name ?? '').trim()\n",
+ "suffix_head": "  const sku = String(body.sku ?? '').trim()\n  const quantity = Number(body.quantity)\n  const minQuantity = Number(body.minQuantity)\n  if (name.length < 1 || name.length > 80) {\n    return NextResponse",
+ "instructions": "Also read a category field the same way as name.",
+ "completion": "\n  const description = String(body.description ?? '').trim()\n  const category = String(body.category ?? '').trim()\n  const weight = Number(body.weight)\n  const cost = Number(body.cost)\n  const imageUrl = String(body.imageUrl ?? '').trim()\n  const image = String(body.image ?? '').trim",
+ "reject": null
+}

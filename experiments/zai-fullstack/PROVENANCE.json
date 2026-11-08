@@ -20,12 +20,42 @@
   },
   "src/app/api/items/route.ts": {
    "contract": "route-list",
-   "round": 0,
-   "k": 1,
-   "seed": 1013,
-   "tokens": 900,
-   "label": "QWEN-ORIGINAL",
-   "note": "accepted on round 0 sample 1"
+   "label": "QWEN-REPAIRED",
+   "base": "route-list_r0_k3 (QWEN-ORIGINAL bytes, mechanical strip+trim)",
+   "patches": {
+    "p4-category-read": {
+     "pid": "p4-category-read",
+     "k": 1,
+     "seed": 1013,
+     "tokens": 60
+    },
+    "p5-category-validate": {
+     "pid": "p5-category-validate",
+     "k": 0,
+     "seed": 7,
+     "tokens": 49
+    },
+    "p6-sku-optional": {
+     "pid": "p6-sku-optional",
+     "k": 0,
+     "seed": 7,
+     "tokens": 49
+    },
+    "p9-create-data": {
+     "pid": "p9-create-data",
+     "k": 0,
+     "seed": 7,
+     "tokens": 39
+    }
+   },
+   "missing": [
+    "p1-get-params",
+    "p2-where-orderby",
+    "p3-status-filter",
+    "p7-quantity-integer",
+    "p8-min-integer"
+   ],
+   "note": "9-region micro-FIM ladder; per-patch samples in generations/route-list_fimp_*.json"
   },
   "src/app/api/items/[id]/route.ts": {
    "contract": "route-id",
@@ -162,11 +192,49 @@
      ]
     }
    }
+  },
+  {
+   "contract": "route-list",
+   "file": "src/app/api/items/route.ts",
+   "accepted": false,
+   "rounds": 3,
+   "usage_delta": {
+    "generations": 12,
+    "total_new_tokens": 10800,
+    "total_seconds": 1580.1
+   },
+   "label": "FAILED"
+  },
+  {
+   "contract": "route-microfim",
+   "accepted": false,
+   "gates": {
+    "route-list": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/app/api/items/[id]/route.ts(22,11): error TS2451: Cannot redeclare block-scoped variable 'id'.\nsrc/app/api/items/[id]/route.ts(23,9): error TS2451: Cannot redeclare block-scoped variable 'ok'.\nsrc/app/api/items/[id]/route.ts(29,11): error TS2451: Cannot redeclare block-scoped variable 'id'.\nsrc/app/api/items/[id]/route.ts(30,9): error TS2451: Cannot redeclare block-scoped variable 'ok'.\nsrc/app/api/items/[id]/route.ts(36,11): error TS2451: Cannot redeclare block-scoped variable 'id'.\n"
+    },
+    "route-id": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/app/api/items/[id]/route.ts(22,11): error TS2451: Cannot redeclare block-scoped variable 'id'.\nsrc/app/api/items/[id]/route.ts(23,9): error TS2451: Cannot redeclare block-scoped variable 'ok'.\nsrc/app/api/items/[id]/route.ts(29,11): error TS2451: Cannot redeclare block-scoped variable 'id'.\nsrc/app/api/items/[id]/route.ts(30,9): error TS2451: Cannot redeclare block-scoped variable 'ok'.\nsrc/app/api/items/[id]/route.ts(36,11): error TS2451: Cannot redeclare block-scoped variable 'id'.\n"
+    }
+   },
+   "usage_run": {
+    "generations": 32,
+    "total_new_tokens": 6730,
+    "total_seconds": 936.4
+   },
+   "missing": [
+    "p1-get-params",
+    "p2-where-orderby",
+    "p3-status-filter",
+    "p7-quantity-integer",
+    "p8-min-integer"
+   ]
   }
  ],
  "model_usage_cumulative": {
-  "generations": 72,
-  "total_new_tokens": 53414,
-  "total_seconds": 303771.80000000005
+  "generations": 128,
+  "total_new_tokens": 81744,
+  "total_seconds": 1219827.5
  }
 }

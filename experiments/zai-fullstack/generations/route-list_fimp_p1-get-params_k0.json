@@ -1,0 +1,23 @@
+{
+ "kind": "fim-patch",
+ "pid": "p1-get-params",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 36,
+  "seconds": 7.09,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "prefix_tail": "import { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n  const q = req.nextUrl.searchParams.get('q')?.trim().toLowerCase() ?? ''\n",
+ "suffix_head": "  const rows = await db.inventoryItem.findMany({\n    where: q ? { OR: [{ name: { contains: q } }, { sku: { contains: q } }] } : {},\n    orderBy: { updatedAt: 'desc' },\n  })\n  const items = rows.map((r",
+ "instructions": "Read category, status, sort, order params with defaults all, all, updatedAt, desc.",
+ "completion": "\n\n  if (q.length < 1) {\n    return NextResponse.json({ error: 'q is required' }, { status: 400 })\n  }\n",
+ "reject": [
+  "expect get\\('category'\\) missing",
+  "expect get\\('status'\\) missing",
+  "expect get\\('sort'\\) missing",
+  "expect get\\('order'\\) missing"
+ ]
+}

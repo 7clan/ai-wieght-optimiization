@@ -1,0 +1,21 @@
+{
+ "kind": "fim-patch",
+ "pid": "p8-min-integer",
+ "k": 1,
+ "seed": 1013,
+ "usage": {
+  "tokens": 100,
+  "seconds": 15.07,
+  "seed": 1013,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix_tail": ".length < 1 || name.length > 80) {\n    return NextResponse.json({ error: 'name is required (1-80 chars)' }, { status: 400 })\n  }\n  if (sku.length < 1 || sku.length > 40) {\n    return NextResponse.json({ error: 'sku is required (1-40 chars)' }, { status: 400 })\n  }\n  if (quantity < 0 || quantity > 1000000) {\n    return NextResponse.json({ error: 'quantity must be 0-1000000' }, { status: 400 })\n  }\n",
+ "suffix_head": "  const row = await db.inventoryItem.create({ data: { name, sku, quantity, minQuantity } })\n  return NextResponse.json({ item: { ...row, updatedAt: row.updatedAt.toISOString() } }, { status: 201 })\n}\n",
+ "instructions": "Also reject non-integer minQuantity.",
+ "completion": "\n  if (minQuantity < 0 || minQuantity > 1000000) {\n    return NextResponse.json({ error: 'minQuantity must be 0-1000000' }, { status: 400 })\n  }\n  if (isNaN(minQuantity)) {\n    return NextResponse.json({ error: 'minQuantity must be a number' }, { status: 400 })\n  }\n  if (isNaN(quantity)) {\n",
+ "reject": [
+  "expect Number.isInteger missing",
+  "merged brace imbalance"
+ ]
+}

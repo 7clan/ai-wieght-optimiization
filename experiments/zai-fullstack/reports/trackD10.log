@@ -1,0 +1,82 @@
+[devserver] stopped (up=False)
+model loaded in 17s; usage={'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+base derived: 34 lines, 1533 chars (from route-list_r0_k3, mechanical)
+[devserver] stopped (up=False)
+model loaded in 16s; usage={'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+base derived: 34 lines, 1533 chars (from route-list_r0_k3, mechanical)
+  [fimp p1-get-params k0] seed=7 tok=36 ok=False expect get\('category'\) missing; expect get\('status'\) missing; expect get\('sort'\) missing; expect get\('order'\) mi
+  [fimp p1-get-params k1] seed=1013 tok=69 ok=False expect get\('category'\) missing; expect get\('status'\) missing; expect get\('sort'\) missing; expect get\('order'\) mi
+  [fimp p1-get-params k2] seed=2026 tok=140 ok=False expect get\('category'\) missing; expect get\('status'\) missing; expect get\('sort'\) missing; expect get\('order'\) mi
+  [fimp p2-where-orderby k0] seed=7 tok=64 ok=False expect category missing
+  [fimp p2-where-orderby k1] seed=1013 tok=69 ok=False expect category missing
+  [fimp p2-where-orderby k2] seed=2026 tok=35 ok=False expect category missing; merged brace imbalance
+  [fimp p3-status-filter k0] seed=7 tok=18 ok=False expect shown missing; expect minQuantity missing
+  [fimp p3-status-filter k1] seed=1013 tok=18 ok=False expect shown missing; expect minQuantity missing
+  [fimp p3-status-filter k2] seed=2026 tok=24 ok=False expect shown missing; expect minQuantity missing
+  [fimp p4-category-read k0] seed=7 tok=60 ok=False merged brace imbalance
+  [fimp p4-category-read k1] seed=1013 tok=60 ok=True 
+  [fimp p5-category-validate k0] seed=7 tok=49 ok=True 
+  [fimp p6-sku-optional k0] seed=7 tok=49 ok=True 
+  [fimp p7-quantity-integer k0] seed=7 tok=100 ok=False expect Number.isInteger missing; merged brace imbalance
+  [fimp p7-quantity-integer k1] seed=1013 tok=100 ok=False expect Number.isInteger missing; merged brace imbalance
+  [fimp p7-quantity-integer k2] seed=2026 tok=100 ok=False expect Number.isInteger missing
+  [fimp p8-min-integer k0] seed=7 tok=100 ok=False expect Number.isInteger missing; merged brace imbalance
+  [fimp p8-min-integer k1] seed=1013 tok=100 ok=False expect Number.isInteger missing; merged brace imbalance
+  [fimp p8-min-integer k2] seed=2026 tok=100 ok=False expect Number.isInteger missing; merged brace imbalance
+  [fimp p9-create-data k0] seed=7 tok=39 ok=True 
+patches landed: 4/9  MISSING: ['p1-get-params', 'p2-where-orderby', 'p3-status-filter', 'p7-quantity-integer', 'p8-min-integer']
+route-list merged file installed + archived
+archived bodies cut: get 8 lines, delete 15 lines
+  [put r0 k0] seed=7 tok=450 ok=False missing 'Number.isInteger'
+  [put r0 k1] seed=1013 tok=450 ok=False missing 'Number.isInteger'; brace imbalance
+  [put r0 k2] seed=2026 tok=450 ok=False missing 'Number.isInteger'; brace imbalance
+  [put r0 k3] seed=3039 tok=450 ok=False brace imbalance
+  [put r1 k0] seed=77 tok=450 ok=False missing 'db.inventoryItem.update'; missing '.catch'; missing "'not found'"; brace imbalance
+  [put r1 k1] seed=1090 tok=450 ok=False missing 'Number.isInteger'; brace imbalance
+  [put r1 k2] seed=2103 tok=450 ok=False missing 'Number.isInteger'; brace imbalance
+  [put r1 k3] seed=3116 tok=450 ok=False missing 'Number.isInteger'; brace imbalance
+  [put r2 k0] seed=154 tok=450 ok=False missing 'Number.isInteger'; brace imbalance
+  [put r2 k1] seed=1167 tok=450 ok=False missing 'Number.isInteger'; brace imbalance
+  [put r2 k2] seed=2180 tok=450 ok=False missing 'Number.isInteger'; brace imbalance
+  [put r2 k3] seed=3193 tok=450 ok=False missing 'db.inventoryItem.update'; missing '.catch'; missing "'not found'"; missing 'Number.isInteger'; brace imbalance
+PUT BODY FAILED after 3x4 — route-id cannot be assembled
+route-id assembled file installed + archived
+model usage this run: {'generations': 32, 'total_new_tokens': 6730, 'total_seconds': 936.4}
+GATES route-list: ok=False
+  feedback: tsc --noEmit reported:
+  src/app/api/items/[id]/route.ts(22,11): error TS2451: Cannot redeclare block-scoped variable 'id'.
+  src/app/api/items/[id]/route.ts(23,9): error TS2451: Cannot redeclare block-scoped variable 'ok'.
+  src/app/api/items/[id]/route.ts(29,11): error TS2451: Cannot redeclare block-scoped variable 'id'.
+  src/app/api/items/[id]/route.ts(30,9): error TS2451: Cannot redeclare block-scoped variable 'ok'.
+  src/app/api/items/[id]/route.ts(36,11): error TS2451: Cannot redeclare block-scoped
+GATES route-id: ok=False
+  feedback: tsc --noEmit reported:
+  src/app/api/items/[id]/route.ts(22,11): error TS2451: Cannot redeclare block-scoped variable 'id'.
+  src/app/api/items/[id]/route.ts(23,9): error TS2451: Cannot redeclare block-scoped variable 'ok'.
+  src/app/api/items/[id]/route.ts(29,11): error TS2451: Cannot redeclare block-scoped variable 'id'.
+  src/app/api/items/[id]/route.ts(30,9): error TS2451: Cannot redeclare block-scoped variable 'ok'.
+  src/app/api/items/[id]/route.ts(36,11): error TS2451: Cannot redeclare block-scoped
+[devserver] up after 6s
+== apitest (frozen, as-committed) ==
+PASS  1 GET empty list 200 {items:[],total:0}
+PASS  2 POST valid item 201, echoes fields + id
+PASS  3 POST missing name 400 {error}
+PASS  4 POST negative quantity 400
+PASS  5 POST non-integer quantity 400
+PASS  6 seed 10 + earlier = 11 items, total matches — total=11
+FAIL  7 GET ?q=usb matches name+sku case-insensitively (3) — total=2
+FAIL  8 GET ?category=Electronics -> 3 items all Electronics
+FAIL  9 GET ?status=low -> 4 items, all genuinely low — total=11
+FAIL 10 GET ?status=out -> 2 items with quantity 0
+FAIL 11 GET ?sort=quantity&order=asc ascending — q=[14,0,1,25,2,120,5,0,3,8,42]
+FAIL 12 GET /:id 200 then 404 for unknown
+FAIL 13 PUT updates and persists (now low stock)
+FAIL 14 PUT invalid 400 / unknown 404
+FAIL 15 DELETE 204 then 404
+FAIL 16 post-delete total is 10 (restart-phase baseline) — total=null
+
+stderr: SUITE ERROR TypeError: Cannot read properties of null (reading 'total')
+    at main (file:///home/z/s035/experiments/zai-fullstack/apitest.mjs:191:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+runner complete in 980s

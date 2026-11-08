@@ -1,0 +1,21 @@
+{
+ "kind": "fim-patch",
+ "pid": "p3-status-filter",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 18,
+  "seconds": 4.62,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "prefix_tail": "import { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n  const q = req.nextUrl.searchParams.get('q')?.trim().toLowerCase() ?? ''\n  const rows = await db.inventoryItem.findMany({\n    where: q ? { OR: [{ name: { contains: q } }, { sku: { contains: q } }] } : {},\n    orderBy: { updatedAt: 'desc' },\n  })\n",
+ "suffix_head": "}\n\nexport async function POST(req: NextRequest) {\n  const body = await req.json()\n  const name = String(body.name ?? '').trim()\n  const sku = String(body.sku ?? '').trim()\n  const quantity = Number(bo",
+ "instructions": "First filter rows into const shown by status: low is quantity above 0 and at most minQuantity, out is zero, ok is above minQuantity; then map and return as before.",
+ "completion": "\n  return NextResponse.json({ rows }, { status: 200 })\n",
+ "reject": [
+  "expect shown missing",
+  "expect minQuantity missing"
+ ]
+}

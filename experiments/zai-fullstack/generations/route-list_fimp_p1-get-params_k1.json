@@ -1,0 +1,23 @@
+{
+ "kind": "fim-patch",
+ "pid": "p1-get-params",
+ "k": 1,
+ "seed": 1013,
+ "usage": {
+  "tokens": 69,
+  "seconds": 12.17,
+  "seed": 1013,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix_tail": "import { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n  const q = req.nextUrl.searchParams.get('q')?.trim().toLowerCase() ?? ''\n",
+ "suffix_head": "  const rows = await db.inventoryItem.findMany({\n    where: q ? { OR: [{ name: { contains: q } }, { sku: { contains: q } }] } : {},\n    orderBy: { updatedAt: 'desc' },\n  })\n  const items = rows.map((r",
+ "instructions": "Read category, status, sort, order params with defaults all, all, updatedAt, desc.",
+ "completion": "\n\n  if (q) {\n    if (q.length > 40) {\n      return NextResponse.json({ error: 'q is too long (40 chars)' }, { status: 400 })\n    }\n  }\n\n  // If q is not provided, return all items, sorted by updatedAt in descending order.\n",
+ "reject": [
+  "expect get\\('category'\\) missing",
+  "expect get\\('status'\\) missing",
+  "expect get\\('sort'\\) missing",
+  "expect get\\('order'\\) missing"
+ ]
+}

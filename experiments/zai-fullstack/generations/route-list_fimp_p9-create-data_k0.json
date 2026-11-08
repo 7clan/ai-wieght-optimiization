@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "p9-create-data",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 39,
+  "seconds": 6.83,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "prefix_tail": "gth < 1 || sku.length > 40) {\n    return NextResponse.json({ error: 'sku is required (1-40 chars)' }, { status: 400 })\n  }\n  if (quantity < 0 || quantity > 1000000) {\n    return NextResponse.json({ error: 'quantity must be 0-1000000' }, { status: 400 })\n  }\n  if (minQuantity < 0 || minQuantity > 100000) {\n    return NextResponse.json({ error: 'minQuantity must be 0-100000' }, { status: 400 })\n  }\n",
+ "suffix_head": "  return NextResponse.json({ item: { ...row, updatedAt: row.updatedAt.toISOString() } }, { status: 201 })\n}\n",
+ "instructions": "Add category to the data; use null when sku is empty.",
+ "completion": "\n  const row = await db.inventoryItem.create({\n    data: {\n      name,\n      sku,\n      quantity,\n      minQuantity,\n      category: body.category,\n    },\n  })\n",
+ "reject": null
+}

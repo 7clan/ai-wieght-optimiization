@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "p6-sku-optional",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 49,
+  "seconds": 7.4,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "prefix_tail": "\n}\n\nexport async function POST(req: NextRequest) {\n  const body = await req.json()\n  const name = String(body.name ?? '').trim()\n  const sku = String(body.sku ?? '').trim()\n  const quantity = Number(body.quantity)\n  const minQuantity = Number(body.minQuantity)\n  if (name.length < 1 || name.length > 80) {\n    return NextResponse.json({ error: 'name is required (1-80 chars)' }, { status: 400 })\n  }\n",
+ "suffix_head": "  if (quantity < 0 || quantity > 1000000) {\n    return NextResponse.json({ error: 'quantity must be 0-1000000' }, { status: 400 })\n  }\n  if (minQuantity < 0 || minQuantity > 100000) {\n    return NextR",
+ "instructions": "Replace the check: sku is optional, reject only when longer than 40 chars.",
+ "completion": "\n  if (sku.length < 1 || sku.length > 40) {\n    return NextResponse.json({ error: 'sku is required (1-40 chars)' }, { status: 400 })\n  }\n",
+ "reject": null
+}

@@ -1,0 +1,20 @@
+{
+ "kind": "fim-patch",
+ "pid": "p2-where-orderby",
+ "k": 1,
+ "seed": 1013,
+ "usage": {
+  "tokens": 69,
+  "seconds": 11.56,
+  "seed": 1013,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix_tail": "import { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n  const q = req.nextUrl.searchParams.get('q')?.trim().toLowerCase() ?? ''\n  const rows = await db.inventoryItem.findMany({\n",
+ "suffix_head": "  })\n  const items = rows.map((r) => ({ ...r, updatedAt: r.updatedAt.toISOString() }))\n  return NextResponse.json({ items, total: items.length })\n}\n\nexport async function POST(req: NextRequest) {\n  co",
+ "instructions": "Filter exact category when not all; map sort and order to the orderBy object.",
+ "completion": "\n  orderBy: {\n    updatedAt: 'desc',\n    createdAt: 'desc',\n  },\n  select: {\n    id: true,\n    name: true,\n    sku: true,\n    quantity: true,\n    minQuantity: true,\n    createdAt: true,\n    updatedAt: true,\n  },\n  take: 20,\n",
+ "reject": [
+  "expect category missing"
+ ]
+}

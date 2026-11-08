@@ -1,0 +1,4 @@
+[devserver] stopped (up=False)
+model loaded in 16s
+== POST body contract ==
+  [post2 r0 k0] seed=7 tok=450 ok=False missing 'Number.isInteger'; missing 'sku: sku || null'

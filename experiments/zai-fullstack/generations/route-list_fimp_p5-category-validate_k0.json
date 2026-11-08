@@ -1,0 +1,18 @@
+{
+ "kind": "fim-patch",
+ "pid": "p5-category-validate",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 49,
+  "seconds": 8.39,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "prefix_tail": "\n}\n\nexport async function POST(req: NextRequest) {\n  const body = await req.json()\n  const name = String(body.name ?? '').trim()\n  const sku = String(body.sku ?? '').trim()\n  const quantity = Number(body.quantity)\n  const minQuantity = Number(body.minQuantity)\n  if (name.length < 1 || name.length > 80) {\n    return NextResponse.json({ error: 'name is required (1-80 chars)' }, { status: 400 })\n  }\n",
+ "suffix_head": "  if (sku.length < 1 || sku.length > 40) {\n    return NextResponse.json({ error: 'sku is required (1-40 chars)' }, { status: 400 })\n  }\n  if (quantity < 0 || quantity > 1000000) {\n    return NextRespo",
+ "instructions": "Insert the same check for category, 1 to 40 chars.",
+ "completion": "\n  if (category.length < 1 || category.length > 40) {\n    return NextResponse.json({ error: 'category is required (1-40 chars)' }, { status: 400 })\n  }\n",
+ "reject": null
+}
