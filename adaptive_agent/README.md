@@ -15,6 +15,10 @@ This is a **tested controller prototype** for our frozen Qwen2.5-Coder-0.5B rese
   Python/JavaScript source for one contractually named file, then receives its
   own prior file and a real public test error for bounded micro-repair. No
   teacher writes code and the frozen checkpoint is unchanged.
+- Experimental CommonJS export-only and function-body-only adapters that
+  attribute every deterministic wrapper line to the harness; both remain
+  negative on the exploratory JavaScript pilot and must not be called
+  evidence of model improvement.
 - A sandbox evaluator interface; the controller refuses to invoke a non-isolated evaluator.
 - A **DockerSandbox** adapter with fixed Python/Node runtimes, trusted tests,
   network-disabled/read-only/non-root containers, memory and CPU bounds.
@@ -46,19 +50,24 @@ passed. Docker sandboxing is defense in depth, not perfect isolation.
 
 ## Experimental real-Qwen pilot
 
-`experiments/adaptive/pilot.py` compares three exploratory frozen-model tracks on
+`experiments/adaptive/pilot.py` compares three primary exploratory frozen-model tracks on
 one small Python and one JavaScript challenge. Track A uses a single JSON
 proposal. Track B may make up to three JSON proposals and two public evaluations.
 Track C uses raw single-file completion and at most four proposals/three public
 evaluations, with the exact previous source supplied after a failure.
+It also records two **separate, labeled** JS-only scaffold tracks, which
+never passed an output-shape check; neither changes the model weights.
 Private tests are scored *after all tracks finish generation*, never fed back
 into candidate selection. The pilot runs no teacher fixes, no search service
 (the isolated docs infrastructure has separate tests), and **no training**.
 
 The completed V1 and V2 runs both scored **0/2 public and 0/2 private** in
-both tracks; see [the measured log](../docs/ADAPTIVE_PILOT_FINDINGS.md). A
-successful workflow run is evidence that the protocol executed, **not** that
-Qwen solved either task. V3 is a new hypothesis until its report is audited.
+both tracks. V3–V6 verified **1/2** on the direct-source protocol (Python
+passes, JavaScript fails); the scaffold variants also did not recover the
+JavaScript task. See [the measured log](../docs/ADAPTIVE_PILOT_FINDINGS.md).
+A successful workflow run is evidence that the protocol executed, **not**
+that Qwen solved either task or generalized to full-stack programming. The
+two-task pilot is now **closed to further tuning** to prevent test overfitting.
 
 On GitHub Actions, `adaptive-qwen-pilot.yml` attempts the measured 0.5B CPU run
 and uploads its report as an artifact. This is a protocol smoke test, **not a
@@ -69,7 +78,7 @@ resource cap must be documented and never replaced with invented scores.
 
 1. **Recheck the live Docker smoke** after each controller change; a boolean `is_isolated` marker is only an interface convention, not a security proof.
 2. Connect the official-documentation search callback to a real source index. The safe fetcher is implemented but does not secretly invent search results; handle unavailable network access explicitly.
-3. Compare both frozen `load_local_qwen()` source protocols under CPU limits and measure actual RAM/CPU, prompts, seeds and model tokens. No other model should be loaded alongside it.
+3. Freeze a genuinely new unseen suite before the next model call; compare frozen `load_local_qwen()` source protocols under CPU limits and measure RAM/CPU, prompts, seeds and model tokens. No other model should be loaded alongside it.
 4. Freeze public and private full-stack tasks before evaluation. Keep private test cases inaccessible to model and selection loops.
 5. Compare frozen model without controller (Track A) versus frozen model with controller (Track B), preserving exact provenance for teacher integration and mechanical scaffolding.
 6. Only after a **separate explicit user authorization** may the planned Track C/D parameter adaptation override the existing training prohibition in `AGENTS.md`.
