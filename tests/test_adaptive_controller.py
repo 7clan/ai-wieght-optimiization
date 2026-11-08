@@ -155,6 +155,31 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual((report.proposals, report.invalid_proposals), (2, 2))
         self.assertEqual(len(sandbox.calls), 0)
 
+    def test_missing_file_contract_is_repaired_before_container_run(self):
+        task = Task("p", "Write solution.py", ("works",), ("solution.py",))
+        model = FakeModel([Proposal({"other.py": "wrong"}, "guess"),
+                           Proposal({"solution.py": "right"}, "fix")])
+        sandbox = FakeSandbox([SandboxResult({"public": True})])
+        report = AgentController(Budget(max_proposals=2)).run(
+            task, model, sandbox, FakeResearcher(),
+        )
+        self.assertEqual(report.invalid_proposals, 1)
+        self.assertEqual(report.evaluations, 1)
+        self.assertEqual(report.status, "public_checks_passed")
+        self.assertIn("required paths", model.contexts[1].strategy)
+
+    def test_private_selection_uses_best_public_candidate(self):
+        model = FakeModel([proposal("partial"), proposal("worse")])
+        sandbox = FakeSandbox([
+            SandboxResult({"a": True, "b": False}, "partial"),
+            SandboxResult({"a": False, "b": False}, "worse"),
+        ])
+        report = AgentController(Budget(max_attempts=2)).run(
+            TASK, model, sandbox, FakeResearcher(),
+        )
+        self.assertEqual(report.selected_files["src/index.js"], "partial")
+        self.assertEqual(len(report.proposal_trace), 2)
+
 
 if __name__ == "__main__":
     unittest.main()
