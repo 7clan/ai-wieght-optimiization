@@ -1,0 +1,33 @@
+[devserver] stopped (up=False)
+model loaded; usage so far: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+
+===== STAGE route-list (src/app/api/items/route.ts) =====
+  [gen r0 k0] seed=7 tok=900 reject=unbalanced brackets (3 unclosed)
+  [gen r0 k1] seed=1013 tok=900 reject=None
+  [gen r0 k2] seed=2026 tok=900 reject=None
+  [gen r0 k3] seed=3039 tok=900 reject=None
+  ACCEPTED r0 k1 (900 tokens)
+
+===== STAGE route-id (src/app/api/items/[id]/route.ts) =====
+  [gen r0 k0] seed=7 tok=900 reject=demo echo: contains 'adoption'
+  [gen r0 k1] seed=1013 tok=900 reject=demo echo: contains 'adoption'
+  [gen r0 k2] seed=2026 tok=900 reject=None
+  [gen r0 k3] seed=3039 tok=900 reject=demo echo: contains 'Adoption'
+  rejected r0 k2: tsc --noEmit reported:
+434: Unexpected keyword or identifier.
+src/app/api/items/[id]/route.ts(36,58): error TS1005: '=' expected.
+src/app/api/items/[id]/route.ts(36,63): error TS1005: ';' expected.
+sr
+  [gen r1 k0] seed=77 tok=900 reject=demo echo: contains 'Adoption'
+  [gen r1 k1] seed=1090 tok=900 reject=demo echo: contains 'adoption'
+  [gen r1 k2] seed=2103 tok=900 reject=demo echo: contains 'Adoption'
+  [gen r1 k3] seed=3116 tok=900 reject=demo echo: contains 'Adoption'
+  [gen r2 k0] seed=154 tok=900 reject=demo echo: contains 'Adoption'
+  [gen r2 k1] seed=1167 tok=900 reject=demo echo: contains 'Adoption'
+  [gen r2 k2] seed=2180 tok=900 reject=demo echo: contains 'Adoption'
+  [gen r2 k3] seed=3193 tok=514 reject=demo echo: contains 'Adoption'
+  STAGE route-id FAILED after 3 rounds — needs integration decision
+
+===== STAGE states (src/components/stockpilot/states.tsx) =====
+  [gen r0 k0] seed=7 tok=700 reject=unbalanced brackets (1 unclosed)
+  [gen r0 k1] seed=1013 tok=700 reject=unbalanced brackets (5 unclosed)

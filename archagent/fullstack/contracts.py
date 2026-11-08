@@ -110,9 +110,9 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ item: { ...row, updatedAt: row.updatedAt.toISOString() } }, { status: 201 })
 }"""
 
-IDROUTE_DEMO = """Example from a DIFFERENT app (a pet shelter), showing
-the ANSWER FORMAT for a one-record route (get/update/delete by id).
-The pet-shelter answer was:
+IDROUTE_DEMO = """Example from a DIFFERENT app (a library), showing
+the ANSWER FORMAT for a one-record route.  That task was "fetch one
+book by id", and the correct answer was:
 
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
@@ -121,32 +121,14 @@ type Params = { params: Promise<{ id: string }> }
 
 export async function GET(_req: NextRequest, { params }: Params) {
   const { id } = await params
-  const row = await db.adoption.findUnique({ where: { id } })
-  if (!row) return NextResponse.json({ error: 'not found' }, { status: 404 })
-  return NextResponse.json({ item: { ...row, updatedAt: row.updatedAt.toISOString() } })
+  const book = await db.book.findUnique({ where: { id } })
+  if (!book) return NextResponse.json({ error: 'not found' }, { status: 404 })
+  return NextResponse.json({ item: book })
 }
 
-export async function PUT(req: NextRequest, { params }: Params) {
-  const { id } = await params
-  const body = await req.json()
-  const age = Number(body.age)
-  if (!Number.isInteger(age) || age < 0 || age > 40) {
-    return NextResponse.json({ error: 'age must be an integer 0-40' }, { status: 400 })
-  }
-  const row = await db.adoption.update({
-    where: { id },
-    data: { name: String(body.name ?? '').trim(), age },
-  }).catch(() => null)
-  if (!row) return NextResponse.json({ error: 'not found' }, { status: 404 })
-  return NextResponse.json({ item: { ...row, updatedAt: row.updatedAt.toISOString() } })
-}
-
-export async function DELETE(_req: NextRequest, { params }: Params) {
-  const { id } = await params
-  const ok = await db.adoption.delete({ where: { id } }).then(() => true).catch(() => false)
-  if (!ok) return NextResponse.json({ error: 'not found' }, { status: 404 })
-  return new NextResponse(null, { status: 204 })
-}"""
+Follow the SAME shape for PUT and DELETE (validation before the db
+call, .catch(() => null) for not-found, 204 with an empty body for
+DELETE)."""
 
 HOOK_DEMO = """Example from a DIFFERENT app (a pet shelter), showing
 the ANSWER FORMAT for a data hook with an inline fetch layer.  That

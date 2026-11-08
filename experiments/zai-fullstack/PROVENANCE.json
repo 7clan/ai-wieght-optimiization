@@ -17,6 +17,15 @@
    "tokens": 550,
    "label": "QWEN-ORIGINAL",
    "note": "accepted on round 0 sample 1"
+  },
+  "src/app/api/items/route.ts": {
+   "contract": "route-list",
+   "round": 0,
+   "k": 1,
+   "seed": 1013,
+   "tokens": 900,
+   "label": "QWEN-ORIGINAL",
+   "note": "accepted on round 0 sample 1"
   }
  },
  "stages": [
@@ -74,11 +83,35 @@
     "total_seconds": 1511.8
    },
    "label": "FAILED"
+  },
+  {
+   "contract": "route-list",
+   "file": "src/app/api/items/route.ts",
+   "accepted": true,
+   "rounds": 1,
+   "usage_delta": {
+    "generations": 4,
+    "total_new_tokens": 3600,
+    "total_seconds": 503.9
+   },
+   "label": "QWEN-ORIGINAL"
+  },
+  {
+   "contract": "route-id",
+   "file": "src/app/api/items/[id]/route.ts",
+   "accepted": false,
+   "rounds": 3,
+   "usage_delta": {
+    "generations": 12,
+    "total_new_tokens": 10414,
+    "total_seconds": 1423.1999999999998
+   },
+   "label": "FAILED"
   }
  ],
  "model_usage_cumulative": {
-  "generations": 40,
-  "total_new_tokens": 25000,
-  "total_seconds": 8667.2
+  "generations": 56,
+  "total_new_tokens": 39014,
+  "total_seconds": 37099.8
  }
 }

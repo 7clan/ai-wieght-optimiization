@@ -33,7 +33,7 @@ GEN = ROOT / "experiments/zai-fullstack/generations"
 DEMO_ECHO = ["Adoption", "adoption", "species", "shelter", "Shelter",
              "pet-", "Pet ", "HealthStatus", "healthOf", "HealthRecord",
              "CareLevel", "careLevelOf", "Animal", "useAnimals",
-             "saveAnimal", "/api/animals"]
+             "saveAnimal", "/api/animals", "book", "Book", "library"]
 
 
 def _looks_like_prose(line: str) -> bool:
@@ -91,7 +91,35 @@ def strip_prompt_echo(text: str, prompt: str) -> str:
             break
     if cut_at is not None:
         lines = lines[:cut_at]
-    # phase 2: trailing strip
+    # phase 2: mid-file pure-prose region removal (blank-line-bounded
+    # runs where >=70% of lines look like prose and none carry code
+    # punctuation beyond the prose-allowed set)
+    regions = []
+    cur: list[str] = []
+    for line in lines:
+        if line.strip() == "":
+            if cur:
+                regions.append(cur)
+                cur = []
+        else:
+            cur.append(line)
+    if cur:
+        regions.append(cur)
+    kept_regions = []
+    for region in regions:
+        prose_lines = sum(1 for ln in region if _looks_like_prose(ln))
+        has_code_punct = any(
+            any(ch in ln for ch in "{}=<>|&*/[]") for ln in region)
+        is_prose_region = (prose_lines / len(region) >= 0.7
+                           and not has_code_punct)
+        if not is_prose_region:
+            kept_regions.append(region)
+    lines = []
+    for region in kept_regions:
+        if lines:
+            lines.append("")
+        lines.extend(region)
+    # phase 3: trailing strip
     popped = 0
     while lines and popped < 200:
         last = lines[-1].strip()
