@@ -7,7 +7,7 @@ from adaptive_agent import (
     AgentController, Budget, ControllerError, DocFinding, Proposal,
     SandboxResult, Task,
 )
-from adaptive_agent.qwen_adapter import (QwenCommonJSScaffoldAdapter,
+from adaptive_agent.qwen_adapter import (QwenCommonJSScaffoldAdapter, QwenFunctionBodyAdapter,
                                          QwenJSONAdapter, QwenSingleFileAdapter)
 from adaptive_agent.controller import _failure_family
 
@@ -149,6 +149,27 @@ class ControllerTests(unittest.TestCase):
                 ModelContext(task, 1, (), (), ""))
         with self.assertRaises(ValueError):
             QwenCommonJSScaffoldAdapter(lambda _: "", "bad; process.exit(1)")
+
+    def test_function_body_track_assembles_only_known_interface(self):
+        from adaptive_agent import ModelContext
+        task = Task("js", "Normalize tags", ("works",), ("solution.cjs",))
+        model = QwenFunctionBodyAdapter(lambda _: "return items.map(x => x.trim());",
+                                        "normalizeTags", ("items",))
+        output = model.propose(ModelContext(task, 1, (), (), ""))
+        self.assertEqual(output.files["solution.cjs"],
+                         "function normalizeTags(items) {\n"
+                         "  return items.map(x => x.trim());\n"
+                         "}\nmodule.exports = { normalizeTags };\n")
+
+    def test_function_body_track_rejects_full_declaration_or_bad_contract(self):
+        from adaptive_agent import ModelContext
+        task = Task("js", "Normalize tags", ("works",), ("solution.cjs",))
+        model = QwenFunctionBodyAdapter(lambda _: "function normalizeTags(items) { return items; }",
+                                        "normalizeTags", ("items",))
+        with self.assertRaises(ControllerError):
+            model.propose(ModelContext(task, 1, (), (), ""))
+        with self.assertRaises(ValueError):
+            QwenFunctionBodyAdapter(lambda _: "", "normalizeTags", ("bad) {",))
 
     def test_repeated_identical_patch_stops_without_reexecuting(self):
         model = FakeModel([proposal("bad"), proposal("bad"), proposal("bad")])
