@@ -18,7 +18,7 @@ import time
 from adaptive_agent import AgentController, Budget, ControllerError, ModelContext, Task
 from adaptive_agent.controller import _validate_proposal
 from adaptive_agent.docker_sandbox import DockerSandbox, PublicFixture, require_docker
-from adaptive_agent.qwen_adapter import (QwenCommonJSScaffoldAdapter,
+from adaptive_agent.qwen_adapter import (QwenCommonJSScaffoldAdapter, QwenFunctionBodyAdapter,
                                          QwenSingleFileAdapter, load_local_qwen)
 
 
@@ -31,6 +31,7 @@ class PilotTask:
     public: PublicFixture
     private: PublicFixture
     commonjs_export: str | None = None
+    commonjs_parameters: tuple[str, ...] = ()
 
 
 PILOT_TASKS = (
@@ -66,6 +67,7 @@ PILOT_TASKS = (
             "assert.deepEqual(normalizeTags(['  ', 'X', ' x ', 'Y']), ['x','y']);\n"
         )),
         "normalizeTags",
+        ("items",),
     ),
 )
 
@@ -133,6 +135,8 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
         direct_seconds = round(time.monotonic() - start, 3)
         scaffold = None
         scaffold_seconds = None
+        body_track = None
+        body_seconds = None
         if spec.commonjs_export:
             start = time.monotonic()
             scaffold = AgentController(Budget(max_attempts=3, max_proposals=4,
@@ -142,12 +146,23 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
                 public_evaluator, NoWebResearch(),
             )
             scaffold_seconds = round(time.monotonic() - start, 3)
+            start = time.monotonic()
+            body_track = AgentController(Budget(max_attempts=3, max_proposals=4,
+                                                max_research=0)).run(
+                spec.contract,
+                QwenFunctionBodyAdapter(model.generate_text, spec.commonjs_export,
+                                        spec.commonjs_parameters),
+                public_evaluator, NoWebResearch(),
+            )
+            body_seconds = round(time.monotonic() - start, 3)
         records.append((spec, solo, assisted, assisted_seconds, direct,
-                        direct_seconds, scaffold, scaffold_seconds))
+                        direct_seconds, scaffold, scaffold_seconds,
+                        body_track, body_seconds))
 
     # The private oracle runs ONLY once all solo and controller generation is over.
     rows = []
-    for spec, solo, assisted, assisted_seconds, direct, direct_seconds, scaffold, scaffold_seconds in records:
+    for (spec, solo, assisted, assisted_seconds, direct, direct_seconds,
+         scaffold, scaffold_seconds, body_track, body_seconds) in records:
         glue = f"\nmodule.exports = {{ {spec.commonjs_export} }};\n" if spec.commonjs_export else ""
         path = spec.contract.required_files[0]
         scaffold_file = scaffold.selected_files.get(path, "") if scaffold else ""
@@ -198,6 +213,20 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
                 ),
                 "proposal_trace": scaffold.proposal_trace,
             },
+            "function_body_controller": None if body_track is None else {
+                "status": body_track.status,
+                "public_pass": body_track.status == "public_checks_passed",
+                "private_pass": private_score(spec, body_track.selected_files),
+                "seconds": body_seconds,
+                "proposals": body_track.proposals,
+                "evaluations": body_track.evaluations,
+                "invalid_proposals": body_track.invalid_proposals,
+                "mechanical_function_declaration": (
+                    f"function {spec.commonjs_export}({', '.join(spec.commonjs_parameters)}) {{ ... }}"
+                ),
+                "mechanical_module_export": glue.strip(),
+                "proposal_trace": body_track.proposal_trace,
+            },
         })
     report = {
         "description": "Exploratory two-task frozen Qwen0.5B protocol smoke; NOT fullstack generalization",
@@ -205,7 +234,8 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
         "model": MODEL_ID, "weights_updated": False, "training": False,
         "teacher_repairs": 0, "docs_search_enabled": False,
         "protocols": ["json_solo", "json_controller", "single_file_controller",
-                       "commonjs_scaffold_controller_js_only"],
+                       "commonjs_scaffold_controller_js_only",
+                       "function_body_controller_js_only"],
         "host_cpu_threads": 2, "max_new_tokens": max_new_tokens,
         "loading_seconds": loading_s,
         "peak_host_rss_kib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
