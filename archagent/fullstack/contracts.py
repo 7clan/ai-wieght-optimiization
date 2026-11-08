@@ -286,6 +286,7 @@ exactly these fields and rules:
 Write the model block only (the datasource is already configured).""",
         anchor="model InventoryItem {\n",
         gates=["prisma"],
+        max_tokens=300,
     ),
     dict(
         id="types", file="src/lib/inventory/types.ts", kind="file",
@@ -303,6 +304,7 @@ exports:
    'low stock' when quantity <= minQuantity (and > 0), else 'in stock'.""",
         anchor="export interface InventoryItem {\n",
         gates=["tsc", "eslint", "types_unit"],
+        max_tokens=550,
     ),
     dict(
         id="client", file="src/lib/inventory/api-client.ts", kind="file",
@@ -324,6 +326,7 @@ when the response is not ok. Include one small non-exported helper
 getJson(res) that does the ok-check and parsing.""",
         anchor="async function getJson(res: Response) {\n",
         gates=["tsc", "eslint"],
+        max_tokens=700,
     ),
     dict(
         id="route-list", file="src/app/api/items/route.ts", kind="file",
@@ -350,6 +353,7 @@ POST /api/items:
   as ISO string)""",
         anchor="import { NextRequest, NextResponse } from 'next/server'\n",
         gates=["tsc", "eslint"],
+        max_tokens=900,
     ),
     dict(
         id="route-id", file="src/app/api/items/[id]/route.ts", kind="file",
@@ -366,6 +370,7 @@ DELETE /api/items/:id -> 204 empty body on success, 404 { error }
 when the id does not exist (catch the Prisma error like the demo).""",
         anchor="import { NextRequest, NextResponse } from 'next/server'\n",
         gates=["tsc", "eslint", "apitest"],
+        max_tokens=900,
     ),
     dict(
         id="states", file="src/components/stockpilot/states.tsx", kind="file",
@@ -389,6 +394,7 @@ Use Card from '@/components/ui/card' and Button from
 '@/components/ui/button'. Center the content with padding.""",
         anchor="'use client'\n",
         gates=["tsc", "eslint"],
+        max_tokens=700,
     ),
     dict(
         id="stats", file="src/components/stockpilot/stats-bar.tsx", kind="file",
@@ -403,6 +409,7 @@ count (quantity = 0). Renders four Cards in a responsive grid
 tabular-nums. Import InventoryItem from '@/lib/inventory/types'.""",
         anchor="'use client'\n\nimport { Card, CardContent } from '@/components/ui/card'\n",
         gates=["tsc", "eslint"],
+        max_tokens=450,
     ),
     dict(
         id="toolbar", file="src/components/stockpilot/toolbar.tsx", kind="file",
@@ -430,6 +437,7 @@ SelectContent, SelectItem from '@/components/ui/select' and Input from
 'flex flex-wrap items-center gap-2'.""",
         anchor="'use client'\n\nimport { Input } from '@/components/ui/input'\n",
         gates=["tsc", "eslint"],
+        max_tokens=800,
     ),
     dict(
         id="table", file="src/components/stockpilot/item-table.tsx", kind="file",
@@ -458,6 +466,7 @@ from '@/components/ui/button', Card/CardContent from
 '@/lib/inventory/types'.""",
         anchor="'use client'\n\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'\n",
         gates=["tsc", "eslint"],
+        max_tokens=1000,
     ),
     dict(
         id="form", file="src/components/stockpilot/item-form.tsx", kind="file",
@@ -485,6 +494,7 @@ from '@/components/ui/dialog', Button, Input, Label like the demo.
 Import InventoryItem, InventoryInput from '@/lib/inventory/types'.""",
         anchor="'use client'\n\nimport { useEffect, useState } from 'react'\n",
         gates=["tsc", "eslint"],
+        max_tokens=1000,
     ),
     dict(
         id="hook", file="src/lib/inventory/use-inventory.ts", kind="file",
@@ -508,6 +518,7 @@ Import listItems and the types from '@/lib/inventory/types' and
 '@/lib/inventory/api-client'. The file starts with 'use client'.""",
         anchor="'use client'\n\nimport { useCallback, useEffect, useState } from 'react'\n",
         gates=["tsc", "eslint"],
+        max_tokens=700,
     ),
     dict(
         id="page", file="src/app/page.tsx", kind="file",
@@ -549,5 +560,6 @@ Imports: Button from '@/components/ui/button', Dialog pieces from
 functions, and the types.""",
         anchor="'use client'\n\nimport { useState } from 'react'\n",
         gates=["tsc", "eslint", "uitest"],
+        max_tokens=1300,
     ),
 ]

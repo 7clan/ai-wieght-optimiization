@@ -58,21 +58,27 @@ def build_prompt(contract: dict, feedback: str | None,
 
 
 def quick_reject(completion: str, anchor: str) -> str | None:
-    """Cheap structural rejections before any gate runs."""
+    """Cheap structural rejections before any gate runs.
+
+    Brace balance is checked on ANCHOR + completion (the anchor opens
+    blocks the completion closes) — the completion alone would always
+    look unbalanced.  (Harness bug #1 of Session 035, fixed with full
+    disclosure: three valid schema samples were wrongly rejected
+    before this fix.)
+    """
     if not completion.strip():
         return "empty completion"
-    low = completion
     for w in DEMO_ECHO:
-        if w in low:
+        if w in completion:
             return f"demo echo: contains {w!r}"
     if len(completion.strip()) < 40:
         return "degenerate: too short"
-    # crude brace balance (tsc gate does the real check)
+    text = anchor + "\n" + completion
     depth = 0
     in_str = None
     i = 0
-    while i < len(completion):
-        c = completion[i]
+    while i < len(text):
+        c = text[i]
         if in_str:
             if c == "\\":
                 i += 2
@@ -81,8 +87,8 @@ def quick_reject(completion: str, anchor: str) -> str | None:
                 in_str = None
         elif c in "\"'`":
             in_str = c
-        elif c == "/" and i + 1 < len(completion) and completion[i + 1] == "/":
-            i = completion.find("\n", i)
+        elif c == "/" and i + 1 < len(text) and text[i + 1] == "/":
+            i = text.find("\n", i)
             if i == -1:
                 break
         elif c in "{([":

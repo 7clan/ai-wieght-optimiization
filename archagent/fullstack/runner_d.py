@@ -30,7 +30,7 @@ from archagent.fullstack.gen_one import build_prompt, quick_reject  # noqa: E402
 
 EXP = ROOT / "experiments/zai-fullstack"
 STAGE = EXP / "staging"
-GEN = EXP / "experiments/zai-fullstack/generations"
+GEN = ROOT / "experiments/zai-fullstack/generations"
 REPORTS = EXP / "reports"
 LEDGER = EXP / "PROVENANCE.json"
 NODE_ENV = dict(
@@ -77,6 +77,27 @@ def run_gates(contract: dict, installed_ok: bool) -> tuple[bool, str]:
     gates = contract.get("gates", [])
     feedback_parts = []
     ok = True
+    if contract["kind"] == "schema":
+        import re as _re
+        text = (install.APP / "prisma/schema.prisma").read_text()
+        m = _re.search(r"model InventoryItem \{.*?\}", text, _re.DOTALL)
+        if not m:
+            ok = False
+            feedback_parts.append("schema: no InventoryItem model block")
+        else:
+            block = m.group(0)
+            for need, why in [
+                (r"sku\s+String\?", "sku must be String? (optional/nullable)"),
+                (r"quantity\s+Int", "quantity must be Int"),
+                (r"minQuantity\s+Int", "minQuantity must be Int"),
+                (r"updatedAt\s+DateTime\s+@updatedAt",
+                 "updatedAt must be DateTime @updatedAt"),
+                (r"id\s+String\s+@id\s+@default\(cuid\(\)\)",
+                 "id must be String @id @default(cuid())"),
+            ]:
+                if not _re.search(need, block):
+                    ok = False
+                    feedback_parts.append("schema: " + why)
     if "prisma" in gates:
         r = install.run_cmd(["bun", "run", "db:push"], install.APP,
                             timeout=180)
@@ -157,9 +178,14 @@ def install_sample(contract: dict, completion: str) -> tuple[bool, str]:
     """Write one sample's file (or merge schema). Returns (ok, path)."""
     body = completion.strip("\n")
     if contract["kind"] == "schema":
-        if "model InventoryItem" not in body:
-            return False, "no InventoryItem model in output"
-        install.merge_schema_block(body)
+        import re as _re
+        # extract exactly the InventoryItem model block (Prisma blocks
+        # do not nest braces; trailing prose/repetition is dropped)
+        m = _re.search(r"(model InventoryItem \{[^}]*\})",
+                       contract["anchor"] + "\n" + body)
+        if not m:
+            return False, "no InventoryItem model block in output"
+        install.merge_schema_block(m.group(1))
         return True, contract["file"]
     target = install.APP / contract["file"]
     target.parent.mkdir(parents=True, exist_ok=True)

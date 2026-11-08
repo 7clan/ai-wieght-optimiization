@@ -1,0 +1,7 @@
+[devserver] stopped (up=False)
+model loaded; usage so far: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+
+===== STAGE schema (prisma/schema.prisma) =====
+  [gen r0 k0] seed=7 tok=700 reject=unbalanced brackets (closes too early)
+  [gen r0 k1] seed=1013 tok=700 reject=unbalanced brackets (closes too early)
+  [gen r0 k2] seed=2026 tok=700 reject=unbalanced brackets (closes too early)
