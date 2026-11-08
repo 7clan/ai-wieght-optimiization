@@ -16,3 +16,4 @@ edits/
 
 # Session034: runtime app state (synthetic seeds)
 apps/*/data/
+node_modules/

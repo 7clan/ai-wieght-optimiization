@@ -1,0 +1,37 @@
+== A. import-only route (Session-035 anchor-only false accept) ==
+  PASS A1 import-only route rejected
+  PASS A2 unexported handler rejected
+  PASS A3 non-function export rejected
+  PASS A4 re-export rejected
+== B. echo false accepts (instruction/spec/comment/strings) ==
+  PASS B1 comment-only expression rejected
+  PASS B2 unreferenced string constant rejected
+  PASS B3 rendered string accepted
+  PASS B4 bulk instruction echo rejected
+== C. unreachable validation logic ==
+  PASS C1 code after return rejected
+  PASS C1a reachability reason recorded
+  PASS C2 if(false) validation rejected
+  PASS C3 reachable validation accepted
+== D. truncation / incompleteness ==
+  PASS D1 truncated body rejected
+  PASS D2 truncated JSX rejected
+  PASS D3 TODO marker rejected
+== E. prisma schema gates ==
+  PASS E1 wrong nullability rejected
+  PASS E2 correct schema accepted
+  PASS E3 comment-only field rejected
+  PASS E4 truncated schema rejected
+== F. types contracts ==
+  PASS F1 correct interface accepted
+  PASS F2 wrong member type rejected
+  PASS F3 missing interface rejected
+== G. REAL archived StockPilot files (false-reject regression) ==
+  PASS G1 real items route accepted
+  PASS G2 real [id] route accepted
+  PASS G3 real types.ts accepted
+  PASS G4 real schema.prisma accepted
+  PASS G5 real states.tsx accepted
+  PASS G6 real page.tsx accepted (page contract, default export)
+
+adversarial suite: 28 passed, 0 failed
