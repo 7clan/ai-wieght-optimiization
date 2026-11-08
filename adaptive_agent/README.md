@@ -12,21 +12,38 @@ This is a **tested controller prototype** for our frozen Qwen2.5-Coder-0.5B rese
 - Structured citations for documentation evidence and experiment reports with artifact hashes.
 - A JSON-only Qwen adapter that can be supplied with the repository's *existing* frozen-model inference function.
 - A sandbox evaluator interface; the controller refuses to invoke a non-isolated evaluator.
+- A **DockerSandbox** adapter with fixed Python/Node runtimes, trusted tests,
+  network-disabled/read-only/non-root containers, memory and CPU bounds.
+- An **OfficialDocsResearch** adapter with HTTPS official-host allowlisting,
+  bounded fetching, no redirects, text extraction and SHA-256 provenance.
 
 ## Run the currently available tests
 
 From the repository root:
 
 ```bash
-python -m unittest -v tests.test_adaptive_controller
+python -m unittest -v tests.test_adaptive_controller tests.test_adaptive_infrastructure
 ```
 
-These tests use deterministic fake models, fake documentation, and a fake evaluator that **never executes generated source**. They demonstrate controller behavior, **not** end-to-end coding ability, real isolation, or benchmark improvement.
+These tests use deterministic fake models, mock documentation and a fake evaluator that **never executes generated source**. They demonstrate controller behavior and Docker command construction, **not** end-to-end coding ability, real isolation, or benchmark improvement.
+
+On a Docker-capable Linux machine where the images have been separately obtained:
+
+```bash
+python -m tests.smoke_adaptive_docker
+```
+
+This executes only author-controlled smoke fixtures via the isolated Docker
+adapter, checking that both correct and incorrect Python/JavaScript solutions
+are scored appropriately. The branch-specific GitHub workflow also runs it.
+No Docker is installed in the initial ChatGPT scratch environment, so real
+container execution must be verified by the hosted workflow before claiming it
+passed. Docker sandboxing is defense in depth, not perfect isolation.
 
 ## Next engineering milestones
 
-1. Build a *real* resource-limited, network-disabled, unprivileged Docker evaluation adapter. A boolean `is_isolated` marker is a programming interface, **not** proof of security; do not connect an arbitrary shell executor.
-2. Connect official documentation retrieval with verifiable URL, content and citation capture, enforce allowed domains for each task, and cap result size.
+1. **Verify the live Docker smoke** on GitHub Actions and debug any environment-specific failures; a boolean `is_isolated` marker is only an interface convention, not a security proof.
+2. Connect the official-documentation search callback to a real source index. The safe fetcher is implemented but does not secretly invent search results; handle unavailable network access explicitly.
 3. Run the optional `load_local_qwen()` adapter only in a suitable environment with a cached 0.5B checkpoint; measure actual RAM/CPU, record prompts, seeds and model tokens. No other model should be loaded alongside it.
 4. Freeze public and private full-stack tasks before evaluation. Keep private test cases inaccessible to model and selection loops.
 5. Compare frozen model without controller (Track A) versus frozen model with controller (Track B), preserving exact provenance for teacher integration and mechanical scaffolding.
