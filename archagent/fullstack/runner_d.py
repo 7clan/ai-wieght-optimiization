@@ -175,18 +175,29 @@ def generate_samples(model, contract: dict, round_no: int,
 
 
 def install_sample(contract: dict, completion: str) -> tuple[bool, str]:
-    """Write one sample's file (or merge schema). Returns (ok, path)."""
-    body = completion.strip("\n")
+    """Write one sample's file (or merge schema). Returns (ok, path).
+
+    File content = ANCHOR + completion (Session-034 convention: the
+    anchor is the file's opening line the model continued from), then
+    mechanically trimmed to the contract's required exports
+    (cut_trailing_prose successor).  No content is altered beyond
+    these structural cuts.
+    """
+    from archagent.fullstack.gen_one import trim_to_exports
+    body = (contract["anchor"].rstrip("\n") + "\n"
+            + completion.strip("\n"))
     if contract["kind"] == "schema":
         import re as _re
         # extract exactly the InventoryItem model block (Prisma blocks
         # do not nest braces; trailing prose/repetition is dropped)
-        m = _re.search(r"(model InventoryItem \{[^}]*\})",
-                       contract["anchor"] + "\n" + body)
+        m = _re.search(r"(model InventoryItem \{[^}]*\})", body)
         if not m:
             return False, "no InventoryItem model block in output"
         install.merge_schema_block(m.group(1))
         return True, contract["file"]
+    required = contract.get("exports") or []
+    if required:
+        body = trim_to_exports(body, required)
     target = install.APP / contract["file"]
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(body + "\n")
@@ -287,7 +298,9 @@ def main() -> None:
     log(f"model loaded; usage so far: {model.usage()}")
 
     try:
-        for contract in CONTRACTS:
+        for idx, contract in enumerate(CONTRACTS, start=1):
+            if idx < start_from:
+                continue
             if only and contract["id"] != only:
                 continue
             rec = run_stage(model, contract, ledger)

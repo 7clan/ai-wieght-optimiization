@@ -40,12 +40,12 @@ export interface AdoptionInput {
   age: number
 }
 
-export type HealthStatus = 'healthy' | 'sick' | 'recovering'
+export type CareLevel = 'easy' | 'moderate' | 'intensive'
 
-export function healthOf(age: number, sickDays: number): HealthStatus {
-  if (sickDays > 3) return 'sick'
-  if (sickDays > 0) return 'recovering'
-  return 'healthy'
+export function careLevelOf(age: number, sickDays: number): CareLevel {
+  if (sickDays > 3) return 'intensive'
+  if (sickDays > 0) return 'moderate'
+  return 'easy'
 }"""
 
 CLIENT_DEMO = """Example from a DIFFERENT app (a pet shelter), showing
@@ -305,6 +305,7 @@ exports:
         anchor="export interface InventoryItem {\n",
         gates=["tsc", "eslint", "types_unit"],
         max_tokens=550,
+        exports=['InventoryItem', 'InventoryInput', 'StockStatus', 'stockStatus'],
     ),
     dict(
         id="client", file="src/lib/inventory/api-client.ts", kind="file",
@@ -327,6 +328,7 @@ getJson(res) that does the ok-check and parsing.""",
         anchor="async function getJson(res: Response) {\n",
         gates=["tsc", "eslint"],
         max_tokens=700,
+        exports=['listItems', 'createItem', 'updateItem', 'deleteItem'],
     ),
     dict(
         id="route-list", file="src/app/api/items/route.ts", kind="file",
@@ -354,6 +356,7 @@ POST /api/items:
         anchor="import { NextRequest, NextResponse } from 'next/server'\n",
         gates=["tsc", "eslint"],
         max_tokens=900,
+        exports=['GET', 'POST'],
     ),
     dict(
         id="route-id", file="src/app/api/items/[id]/route.ts", kind="file",
@@ -371,6 +374,7 @@ when the id does not exist (catch the Prisma error like the demo).""",
         anchor="import { NextRequest, NextResponse } from 'next/server'\n",
         gates=["tsc", "eslint", "apitest"],
         max_tokens=900,
+        exports=['GET', 'PUT', 'DELETE'],
     ),
     dict(
         id="states", file="src/components/stockpilot/states.tsx", kind="file",
@@ -395,6 +399,7 @@ Use Card from '@/components/ui/card' and Button from
         anchor="'use client'\n",
         gates=["tsc", "eslint"],
         max_tokens=700,
+        exports=['EmptyState', 'NoMatchesState', 'ErrorState'],
     ),
     dict(
         id="stats", file="src/components/stockpilot/stats-bar.tsx", kind="file",
@@ -410,6 +415,7 @@ tabular-nums. Import InventoryItem from '@/lib/inventory/types'.""",
         anchor="'use client'\n\nimport { Card, CardContent } from '@/components/ui/card'\n",
         gates=["tsc", "eslint"],
         max_tokens=450,
+        exports=['StatsBar'],
     ),
     dict(
         id="toolbar", file="src/components/stockpilot/toolbar.tsx", kind="file",
@@ -438,6 +444,7 @@ SelectContent, SelectItem from '@/components/ui/select' and Input from
         anchor="'use client'\n\nimport { Input } from '@/components/ui/input'\n",
         gates=["tsc", "eslint"],
         max_tokens=800,
+        exports=['Toolbar'],
     ),
     dict(
         id="table", file="src/components/stockpilot/item-table.tsx", kind="file",
@@ -467,6 +474,7 @@ from '@/components/ui/button', Card/CardContent from
         anchor="'use client'\n\nimport { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'\n",
         gates=["tsc", "eslint"],
         max_tokens=1000,
+        exports=['ItemTable'],
     ),
     dict(
         id="form", file="src/components/stockpilot/item-form.tsx", kind="file",
@@ -495,6 +503,7 @@ Import InventoryItem, InventoryInput from '@/lib/inventory/types'.""",
         anchor="'use client'\n\nimport { useEffect, useState } from 'react'\n",
         gates=["tsc", "eslint"],
         max_tokens=1000,
+        exports=['ItemForm'],
     ),
     dict(
         id="hook", file="src/lib/inventory/use-inventory.ts", kind="file",
@@ -519,6 +528,7 @@ Import listItems and the types from '@/lib/inventory/types' and
         anchor="'use client'\n\nimport { useCallback, useEffect, useState } from 'react'\n",
         gates=["tsc", "eslint"],
         max_tokens=700,
+        exports=['useInventory'],
     ),
     dict(
         id="page", file="src/app/page.tsx", kind="file",
@@ -561,5 +571,6 @@ functions, and the types.""",
         anchor="'use client'\n\nimport { useState } from 'react'\n",
         gates=["tsc", "eslint", "uitest"],
         max_tokens=1300,
+        exports=['default'],
     ),
 ]

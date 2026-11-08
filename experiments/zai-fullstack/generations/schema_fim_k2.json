@@ -1,0 +1,17 @@
+{
+ "kind": "schema-fim",
+ "k": 2,
+ "seed": 2026,
+ "usage": {
+  "tokens": 10,
+  "seconds": 1.49,
+  "seed": 2026,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix": "model InventoryItem {\n  id          String    @id @default(cuid())\n  name        String\n  category    String\n",
+ "suffix": "  quantity    Int\n  minQuantity Int\n  updatedAt   DateTime  @updatedAt\n}",
+ "instructions": "Change the sku field so it is optional (nullable). Keep it unique.",
+ "completion": "\n  createdAt   DateTime  @createdAt\n",
+ "nullable": false
+}

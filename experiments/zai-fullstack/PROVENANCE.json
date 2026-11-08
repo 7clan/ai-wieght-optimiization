@@ -1,0 +1,39 @@
+{
+ "files": {
+  "prisma/schema.prisma": {
+   "contract": "schema",
+   "round": "fim",
+   "k": 1,
+   "seed": 1013,
+   "tokens": 15,
+   "label": "QWEN-REPAIRED",
+   "note": "schema stage failed 3x4 completion rounds on sku nullability; repaired by first FIM micro-patch sample"
+  }
+ },
+ "stages": [
+  {
+   "contract": "schema",
+   "file": "prisma/schema.prisma",
+   "accepted": false,
+   "rounds": 3,
+   "usage_delta": {
+    "generations": 12,
+    "total_new_tokens": 3600,
+    "total_seconds": 456.8
+   },
+   "label": "FAILED"
+  },
+  {
+   "contract": "schema:fim-repair",
+   "accepted": true,
+   "mode": "fim",
+   "k": 1,
+   "seed": 1013
+  }
+ ],
+ "model_usage_cumulative": {
+  "generations": 12,
+  "total_new_tokens": 3600,
+  "total_seconds": 456.8
+ }
+}

@@ -31,7 +31,120 @@ GEN = ROOT / "experiments/zai-fullstack/generations"
 # Demo-domain vocabulary: any completion containing these is a demo
 # echo (the pet-shelter example leaked into target code) -> rejected.
 DEMO_ECHO = ["Adoption", "adoption", "species", "shelter", "Shelter",
-             "pet-", "Pet "]
+             "pet-", "Pet ", "HealthStatus", "healthOf", "HealthRecord",
+             "CareLevel", "careLevelOf"]
+
+
+def trim_to_exports(text: str, required: list[str]) -> str:
+    """Mechanical file trim (Session-034 cut_trailing_prose successor).
+
+    Keeps the leading prefix (imports, 'use client') and the top-level
+    export segments whose names are in `required`, in order; drops
+    everything after the last required export (trailing echoes,
+    duplicated blocks, prose).  Purely structural — no code is written
+    or modified by this function.
+    """
+    import re as _re
+    # scan for top-level 'export <kind> <name>' positions
+    segs: list[tuple[int, str]] = []
+    depth = 0
+    in_str = None
+    i = 0
+    n = len(text)
+    while i < n:
+        c = text[i]
+        if in_str:
+            if c == "\\":
+                i += 2
+                continue
+            if c == in_str:
+                in_str = None
+        elif c in "\"'`":
+            in_str = c
+        elif c == "/" and i + 1 < n and text[i + 1] == "/":
+            j = text.find("\n", i)
+            if j == -1:
+                break
+            i = j
+        elif c == "/" and i + 1 < n and text[i + 1] == "*":
+            j = text.find("*/", i + 2)
+            if j == -1:
+                break
+            i = j + 1
+        elif c in "{([":
+            depth += 1
+        elif c in "})]":
+            depth -= 1
+        elif (depth == 0 and (text.startswith("export ", i)
+                              or text.startswith("'use client'", i))):
+            m = _re.match(
+                r"export\s+(?:default\s+)?(?:async\s+)?"
+                r"(?:function|interface|type|class|const|let|var|enum)\s"
+                r"+(\w+)", text[i:])
+            if m:
+                segs.append((i, m.group(1)))
+        i += 1
+    if not segs or not required:
+        return text
+    prefix = text[:segs[0][0]]
+    pieces = [prefix]
+    kept = 0
+    for idx, (start, name) in enumerate(segs):
+        if name not in required:
+            continue
+        kept += 1
+        if idx + 1 < len(segs):
+            nxt = segs[idx + 1][0]
+        else:
+            nxt = _balanced_end(text, start)
+        pieces.append(text[start:nxt].rstrip() + "\n\n")
+    if kept == 0:
+        return text
+    return "".join(pieces).rstrip() + "\n"
+
+
+def _balanced_end(text: str, start: int) -> int:
+    """End position (exclusive) of the balanced top-level construct
+    beginning at `start` (heuristic: from its first '{' to its match,
+    or to end-of-statement for type aliases without braces)."""
+    depth = 0
+    in_str = None
+    i = start
+    n = len(text)
+    seen_open = False
+    while i < n:
+        c = text[i]
+        if in_str:
+            if c == "\\":
+                i += 2
+                continue
+            if c == in_str:
+                in_str = None
+        elif c in "\"'`":
+            in_str = c
+        elif c == "/" and i + 1 < n and text[i + 1] == "/":
+            j = text.find("\n", i)
+            if j == -1:
+                return n
+            i = j
+        elif c in "{([":
+            depth += 1
+            seen_open = True
+        elif c in "})]":
+            depth -= 1
+            if depth == 0 and seen_open:
+                # consume trailing characters on this line
+                j = text.find("\n", i)
+                return n if j == -1 else j
+        elif not seen_open and c == "\n" and depth == 0:
+            # type alias / import without braces: statement ends at EOL
+            # only if the next line does not continue it (heuristic:
+            # union types span lines with leading '|')
+            nxt = text[i + 1:].lstrip() if i + 1 < n else ""
+            if not nxt.startswith("|") and not nxt.startswith("&"):
+                return i + 1
+        i += 1
+    return n
 
 
 def build_prompt(contract: dict, feedback: str | None,
