@@ -1,0 +1,32 @@
+[devserver] stopped (up=False)
+model loaded; usage so far: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+
+===== STAGE route-id (src/app/api/items/[id]/route.ts) =====
+  [gen r0 k0] seed=7 tok=900 reject=demo echo: contains 'book'
+  [gen r0 k1] seed=1013 tok=900 reject=None
+  [gen r0 k2] seed=2026 tok=900 reject=None
+  [gen r0 k3] seed=3039 tok=900 reject=unbalanced brackets (1 unclosed)
+  rejected r0 k1: tsc --noEmit reported:
+r TS1005: ';' expected.
+src/app/api/items/[id]/route.ts(68,1): error TS1003: Identifier expected.
+src/app/api/items/[id]/route.ts(68,5): error TS1005: ';' expected.
+src/app/api/
+  rejected r0 k2: tsc --noEmit reported:
+ute.ts(29,13): error TS1109: Expression expected.
+src/app/api/items/[id]/route.ts(29,29): error TS1109: Expression expected.
+src/app/api/items/[id]/route.ts(29,35): error TS1005
+  [gen r1 k0] seed=77 tok=900 reject=demo echo: contains 'book'
+  [gen r1 k1] seed=1090 tok=900 reject=demo echo: contains 'book'
+  [gen r1 k2] seed=2103 tok=900 reject=unbalanced brackets (1 unclosed)
+  [gen r1 k3] seed=3116 tok=900 reject=unbalanced brackets (1 unclosed)
+  [gen r2 k0] seed=154 tok=900 reject=demo echo: contains 'book'
+  [gen r2 k1] seed=1167 tok=900 reject=demo echo: contains 'book'
+  [gen r2 k2] seed=2180 tok=900 reject=demo echo: contains 'book'
+  [gen r2 k3] seed=3193 tok=900 reject=None
+  rejected r2 k3: tsc --noEmit reported:
+i/items/[id]/route.ts(72,23): error TS1005: ';' expected.
+src/app/api/items/[id]/route.ts(72,29): error TS1003: Identifier expected.
+src/app/api/items/[id]/route.ts(74,1): error
+  STAGE route-id FAILED after 3 rounds — needs integration decision
+
+===== STAGE states (src/components/stockpilot/states.tsx) =====

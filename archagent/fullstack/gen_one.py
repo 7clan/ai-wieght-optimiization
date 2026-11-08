@@ -44,10 +44,10 @@ def _looks_like_prose(line: str) -> bool:
     if len(s) < 8:
         return False
     words = s.split()
-    if len(words) < 4:
+    if len(words) < 3:
         return False
     import re as _re
-    return bool(_re.fullmatch(r"[A-Za-z0-9 ,.:;'\-\u2019()]+", s))
+    return bool(_re.fullmatch(r"[A-Za-z0-9 ,.:;'\-/\u2019()]+", s))
 
 
 # High-specificity prompt-scaffolding markers: these strings only ever
@@ -64,6 +64,14 @@ _PROMPT_MARKERS = [
     "Fix exactly that.",
     "you already have",
 ]
+
+
+def _is_prose_fragment(s: str) -> bool:
+    """Any line made only of prose characters (even 1-2 words) —
+    trailing continuation fragments like 'error.' must not block the
+    trailing strip."""
+    import re as _re
+    return bool(_re.fullmatch(r"[A-Za-z0-9 ,.:;'\-/\u2019()]+", s.strip()))
 
 
 def strip_prompt_echo(text: str, prompt: str) -> str:
@@ -109,7 +117,7 @@ def strip_prompt_echo(text: str, prompt: str) -> str:
     for region in regions:
         prose_lines = sum(1 for ln in region if _looks_like_prose(ln))
         has_code_punct = any(
-            any(ch in ln for ch in "{}=<>|&*/[]") for ln in region)
+            any(ch in ln for ch in "{}=<>") for ln in region)
         is_prose_region = (prose_lines / len(region) >= 0.7
                            and not has_code_punct)
         if not is_prose_region:
@@ -131,7 +139,7 @@ def strip_prompt_echo(text: str, prompt: str) -> str:
             lines.pop()
             popped += 1
             continue
-        if _looks_like_prose(last):
+        if _looks_like_prose(last) or _is_prose_fragment(last):
             lines.pop()
             popped += 1
             continue

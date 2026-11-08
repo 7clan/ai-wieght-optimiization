@@ -107,11 +107,23 @@
     "total_seconds": 1423.1999999999998
    },
    "label": "FAILED"
+  },
+  {
+   "contract": "route-id",
+   "file": "src/app/api/items/[id]/route.ts",
+   "accepted": false,
+   "rounds": 3,
+   "usage_delta": {
+    "generations": 12,
+    "total_new_tokens": 10800,
+    "total_seconds": 1497.2
+   },
+   "label": "FAILED"
   }
  ],
  "model_usage_cumulative": {
-  "generations": 56,
-  "total_new_tokens": 39014,
-  "total_seconds": 37099.8
+  "generations": 68,
+  "total_new_tokens": 49814,
+  "total_seconds": 75696.8
  }
 }

@@ -340,16 +340,29 @@ POST /api/items:
     dict(
         id="route-id", file="src/app/api/items/[id]/route.ts", kind="file",
         demo=IDROUTE_DEMO,
-        spec="""Write the one-item route (by id) for inventory items,
-Next.js 16 App Router style: params is a Promise you must await
-(see the demo).
-GET /api/items/:id -> 200 { item } or 404 { error: 'not found' }
-PUT /api/items/:id -> validate the body with the SAME frozen rules as
-POST (name 1-80, category 1-40, sku <= 40 or null, quantity integer
-0-1000000, minQuantity integer 0-100000); invalid -> 400 { error };
-unknown id -> 404; success -> 200 { item } (updatedAt ISO string)
-DELETE /api/items/:id -> 204 empty body on success, 404 { error }
-when the id does not exist (catch the Prisma error like the demo).""",
+        spec="""Write the one-item route file with a Params type and
+three exported handlers (Next.js 16: params is a Promise — await it
+exactly like the demo):
+1. type Params = { params: Promise<{ id: string }> }
+2. export async function GET(_req, { params }: Params): const { id }
+   = await params; row = await db.inventoryItem.findUnique({ where:
+   { id } }); if (!row) return 404 { error: 'not found' }; else
+   return 200 { item: { ...row, updatedAt: row.updatedAt.toISOString() } }
+3. export async function PUT(req, { params }: Params): const { id }
+   = await params; const body = await req.json(); validate: name
+   trim 1-80 chars, category trim 1-40 chars, sku trim <= 40 (empty
+   string -> null), quantity integer 0-1000000, minQuantity integer
+   0-100000; any invalid -> 400 { error: '<message>' }; then row =
+   await db.inventoryItem.update({ where: { id }, data: { name,
+   category, sku, quantity, minQuantity } }).catch(() => null); if
+   (!row) 404; else 200 { item } with updatedAt as ISO string
+4. export async function DELETE(_req, { params }: Params): const
+   { id } = await params; ok = await db.inventoryItem.delete({
+   where: { id } }).then(() => true).catch(() => false); if (!ok)
+   404 { error: 'not found' }; else return new NextResponse(null,
+   { status: 204 })
+Import { db } from '@/lib/db'.  Write code only — no documentation
+comments or numbered notes.""",
         anchor="import { NextRequest, NextResponse } from 'next/server'\n",
         gates=["tsc", "eslint", "apitest"],
         max_tokens=900,
