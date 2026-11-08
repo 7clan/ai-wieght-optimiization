@@ -100,6 +100,7 @@ class RunReport:
     evaluations: int = 0
     research_calls: int = 0
     reused_proposals: int = 0
+    invalid_proposals: int = 0
     messages: list[str] = field(default_factory=list)
     accepted_files: dict[str, str] = field(default_factory=dict)
 
@@ -110,6 +111,7 @@ class RunReport:
             "proposals": self.proposals, "evaluations": self.evaluations,
             "research_calls": self.research_calls,
             "reused_proposals": self.reused_proposals,
+            "invalid_proposals": self.invalid_proposals,
             "messages": self.messages,
             "accepted_sha256": {
                 path: sha256(body.encode("utf-8")).hexdigest()
@@ -177,11 +179,21 @@ class AgentController:
 
         while (report.proposals < self.budget.max_proposals
                and report.evaluations < self.budget.max_attempts):
-            proposal = model.propose(ModelContext(
-                task, report.evaluations + 1, tuple(feedback), tuple(findings), strategy,
-            ))
+            try:
+                proposal = model.propose(ModelContext(
+                    task, report.evaluations + 1, tuple(feedback), tuple(findings), strategy,
+                ))
+                _validate_proposal(proposal.files, self.budget.max_file_bytes)
+            except ControllerError as exc:
+                report.proposals += 1
+                report.invalid_proposals += 1
+                # Invalid output is not a public test failure; keep the
+                # generated-program sandbox untouched and give format feedback.
+                strategy = "Strict JSON object with a files map; no prose, fences or unsafe paths."
+                feedback.append(f"Invalid proposal: {str(exc)[:300]}")
+                report.messages.append(f"Model output rejected: {str(exc)[:300]}")
+                continue
             report.proposals += 1
-            _validate_proposal(proposal.files, self.budget.max_file_bytes)
 
             # Consult new documentation before executing an uncertain proposal.
             if proposal.uncertain and report.research_calls < self.budget.max_research:
