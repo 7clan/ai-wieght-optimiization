@@ -1,0 +1,62 @@
+{
+ "source": "Session-035 archived generations (experiments/zai-fullstack/generations)",
+ "n_records_read": 278,
+ "unmatched_kinds": [
+  ""
+ ],
+ "priors": {
+  "syntax": {
+   "body_completion": [
+    0,
+    20
+   ],
+   "fim_micro": [
+    0,
+    7
+   ]
+  },
+  "missing_call": {
+   "body_completion": [
+    6,
+    2
+   ],
+   "fim_micro": [
+    3,
+    0
+   ]
+  },
+  "missing_literal": {
+   "fim_micro": [
+    0,
+    23
+   ],
+   "body_completion": [
+    3,
+    45
+   ]
+  },
+  "wrong_contract": {
+   "fim_micro": [
+    10,
+    15
+   ],
+   "body_completion": [
+    0,
+    6
+   ]
+  },
+  "demo_contamination": {
+   "body_completion": [
+    0,
+    10
+   ]
+  },
+  "missing_export": {
+   "body_completion": [
+    0,
+    47
+   ]
+  }
+ },
+ "note": "priors[cat][strat] = [successes, failures]; strategy-level outcomes only, no task solutions; bandit discounts 50%."
+}

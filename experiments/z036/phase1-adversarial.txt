@@ -33,5 +33,8 @@
   PASS G4 real schema.prisma accepted
   PASS G5 real states.tsx accepted
   PASS G6 real page.tsx accepted (page contract, default export)
+== H. Session-036 self-test false accept (spurious filter rewrite) ==
+  PASS H1 spurious status-branch rewrite rejected by exprs gate
+  PASS H2 correct low-stock filter accepted
 
-adversarial suite: 28 passed, 0 failed
+adversarial suite: 30 passed, 0 failed

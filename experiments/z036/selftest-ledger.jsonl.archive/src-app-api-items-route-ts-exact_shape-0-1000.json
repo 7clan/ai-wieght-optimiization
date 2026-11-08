@@ -1,0 +1,10 @@
+{
+ "file": "src/app/api/items/route.ts",
+ "strategy": "exact_shape",
+ "seed": 1000,
+ "prompt": "You are writing a Next.js 16 inventory app (StockPilot). TypeScript, Prisma+SQLite, NextResponse JSON APIs.\n\n\n\nNow YOUR task.  Write the file src/app/api/items/route.ts for the application.\nWrite the inventory items route: GET lists items with search, category, status filters and sorting; POST validates name, category, quantity, minQuantity integers and optional sku.\n\nWrite the complete file now.  The first line is already written; continue from it:\nimport { NextRequest, NextResponse } from 'next/server'",
+ "candidate": "import { NextRequest, NextResponse } from 'next/server'\n\nimport { prisma } from '@/lib/prisma'\n\nexport const GET = async (request: NextRequest) => {\n  const { q, c, s, sort } = request.query\n\n  // TODO: implement this route\n  const items = await prisma.item.findMany({\n    where: {\n      name: {\n        contains: q,\n      },\n      category: {\n        contains: c,\n      },\n      quantity: {\n        gt: s,\n      },\n    },\n    orderBy: {\n      [sort as string]: sort === 'asc' ? 'asc' : 'desc',\n    },\n  })\n\n  return NextResponse.json(items)\n}\n\nexport const POST = async (request: NextRequest) => {\n  const { name, category, quantity, minQuantity } = await request.json()\n\n  // TODO: implement this route\n  const item = await prisma.item.create({\n    data: {\n      name,\n      category,\n      quantity,\n      minQuantity,\n    },\n  })\n\n  return NextResponse.json(item)\n}",
+ "gate_failures": [
+  "forbidden bare 'a.minQuantity' filter (low-stock must be a.quantity > 0 && a.quantity <= a.minQuantity)"
+ ]
+}

@@ -81,6 +81,15 @@ export function verifyRoute(code, contract, fileName) {
       failures.push(`accesses: '${c}' not found in reachable code`);
     }
   }
+  // 3b. required EXPRESSIONS (normalized, AST binary nodes only —
+  // comments/strings/unreachable regions can never satisfy these)
+  const exprSet = new Set(a.exprs.map(e => e.replace(/\s+/g, '')));
+  for (const e of contract.exprs || []) {
+    const want = e.replace(/\s+/g, '');
+    if (![...exprSet].some(got => got === want || got.includes(want))) {
+      failures.push(`exprs: '${e}' not found as a reachable AST expression`);
+    }
+  }
 
   // 4. unreachable-code rejection
   if (contract.noUnreachable !== false && a.unreachableRanges.length) {

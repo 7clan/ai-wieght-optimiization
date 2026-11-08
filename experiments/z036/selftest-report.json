@@ -1,0 +1,135 @@
+{
+ "model_usage": {
+  "generations": 16,
+  "total_new_tokens": 4074,
+  "total_seconds": 549.2
+ },
+ "results": [
+  {
+   "which": "D1",
+   "file": "src/app/api/items/route.ts",
+   "category": "missing_literal",
+   "mode": "adaptive",
+   "resolved": false,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "doc_lookup",
+    "minimal_diff",
+    "compiler_guided",
+    "contract_split"
+   ],
+   "resolved_by": null,
+   "provenance": null,
+   "seconds": 200.3,
+   "tokens": 1470,
+   "attempt_summaries": [
+    {
+     "strategy": "exact_shape",
+     "outcome": "reject: parse: syntax errors \u2014 Unterminated string literal."
+    },
+    {
+     "strategy": "exact_shape",
+     "outcome": "reject: exports: HTTP handler 'GET' not exported (found: publicProcedure, routes); exports: HTTP handler 'POST' not expo"
+    },
+    {
+     "strategy": "doc_lookup",
+     "outcome": "reject: parse: syntax errors \u2014 Unexpected keyword or identifier. | Unexpected keyword or identifier."
+    },
+    {
+     "strategy": "minimal_diff",
+     "outcome": "reject: reachability: 1 unreachable region(s): statement after unconditional return"
+    },
+    {
+     "strategy": "compiler_guided",
+     "outcome": "reject: parse: syntax errors \u2014 Unexpected keyword or identifier. | Unexpected keyword or identifier."
+    },
+    {
+     "strategy": "contract_split",
+     "outcome": "reject: parse: syntax errors \u2014 Unterminated string literal. | ',' expected."
+    }
+   ]
+  },
+  {
+   "which": "D2",
+   "file": "src/app/api/items/route.ts",
+   "category": "missing_call",
+   "mode": "adaptive",
+   "resolved": true,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "doc_lookup",
+    "minimal_diff"
+   ],
+   "resolved_by": "minimal_diff",
+   "provenance": "L1",
+   "seconds": 148.6,
+   "tokens": 1094,
+   "attempt_summaries": [
+    {
+     "strategy": "exact_shape",
+     "outcome": "reject: calls: 'Number.isInteger' not found as a reachable call expression (comments/strings/unreachable code never sati"
+    },
+    {
+     "strategy": "exact_shape",
+     "outcome": "reject: parse: syntax errors \u2014 Unterminated string literal."
+    },
+    {
+     "strategy": "doc_lookup",
+     "outcome": "reject: calls: 'Number.isInteger' not found as a reachable call expression (comments/strings/unreachable code never sati"
+    },
+    {
+     "strategy": "minimal_diff",
+     "outcome": "structural-pass"
+    }
+   ]
+  },
+  {
+   "which": "D3",
+   "file": "src/app/api/items/route.ts",
+   "category": "wrong_contract",
+   "mode": "adaptive",
+   "resolved": false,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "doc_lookup",
+    "minimal_diff",
+    "compiler_guided",
+    "contract_split"
+   ],
+   "resolved_by": null,
+   "provenance": null,
+   "seconds": 205.1,
+   "tokens": 1510,
+   "attempt_summaries": [
+    {
+     "strategy": "exact_shape",
+     "outcome": "reject: calls: 'Number.isInteger' not found as a reachable call expression (comments/strings/unreachable code never sati"
+    },
+    {
+     "strategy": "exact_shape",
+     "outcome": "reject: parse: syntax errors \u2014 Unterminated string literal."
+    },
+    {
+     "strategy": "doc_lookup",
+     "outcome": "reject: parse: syntax errors \u2014 Unexpected keyword or identifier. | Unexpected keyword or identifier."
+    },
+    {
+     "strategy": "minimal_diff",
+     "outcome": "reject: exprs: 'a.quantity<=a.minQuantity' not found as a reachable AST expression"
+    },
+    {
+     "strategy": "compiler_guided",
+     "outcome": "reject: exprs: 'a.quantity<=a.minQuantity' not found as a reachable AST expression"
+    },
+    {
+     "strategy": "contract_split",
+     "outcome": "reject: parse: syntax errors \u2014 Declaration or statement expected. | Declaration or statement expected."
+    }
+   ]
+  }
+ ],
+ "note": "controller self-test on injected defects; provenance of any successful patch is L1 (Qwen-chosen from diagnosis)"
+}

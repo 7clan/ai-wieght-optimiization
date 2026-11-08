@@ -1,0 +1,426 @@
+{
+ "arms": {
+  "syntax|regen_whole": [
+   1.0,
+   1.0
+  ],
+  "syntax|exact_shape": [
+   1.0,
+   1.0
+  ],
+  "syntax|body_completion": [
+   1.0,
+   1.0
+  ],
+  "syntax|fim_micro": [
+   1.0,
+   1.0
+  ],
+  "syntax|ast_replace": [
+   1.0,
+   1.0
+  ],
+  "syntax|compiler_guided": [
+   1.0,
+   1.0
+  ],
+  "syntax|doc_lookup": [
+   1.0,
+   1.0
+  ],
+  "syntax|contract_split": [
+   1.0,
+   1.0
+  ],
+  "syntax|minimal_diff": [
+   1.0,
+   1.0
+  ],
+  "missing_export|regen_whole": [
+   1.0,
+   1.0
+  ],
+  "missing_export|exact_shape": [
+   1.0,
+   1.0
+  ],
+  "missing_export|body_completion": [
+   1.0,
+   1.0
+  ],
+  "missing_export|fim_micro": [
+   1.0,
+   1.0
+  ],
+  "missing_export|ast_replace": [
+   1.0,
+   1.0
+  ],
+  "missing_export|compiler_guided": [
+   1.0,
+   1.0
+  ],
+  "missing_export|doc_lookup": [
+   1.0,
+   1.0
+  ],
+  "missing_export|contract_split": [
+   1.0,
+   1.0
+  ],
+  "missing_export|minimal_diff": [
+   1.0,
+   1.0
+  ],
+  "missing_literal|regen_whole": [
+   1.0,
+   1.0
+  ],
+  "missing_literal|exact_shape": [
+   1.0,
+   3.0
+  ],
+  "missing_literal|body_completion": [
+   1.0,
+   1.0
+  ],
+  "missing_literal|fim_micro": [
+   1.0,
+   1.0
+  ],
+  "missing_literal|ast_replace": [
+   1.0,
+   1.0
+  ],
+  "missing_literal|compiler_guided": [
+   1.0,
+   2.0
+  ],
+  "missing_literal|doc_lookup": [
+   1.0,
+   2.0
+  ],
+  "missing_literal|contract_split": [
+   1.0,
+   2.0
+  ],
+  "missing_literal|minimal_diff": [
+   1.0,
+   2.0
+  ],
+  "missing_call|regen_whole": [
+   1.0,
+   1.0
+  ],
+  "missing_call|exact_shape": [
+   1.0,
+   3.0
+  ],
+  "missing_call|body_completion": [
+   1.0,
+   1.0
+  ],
+  "missing_call|fim_micro": [
+   1.0,
+   1.0
+  ],
+  "missing_call|ast_replace": [
+   1.0,
+   1.0
+  ],
+  "missing_call|compiler_guided": [
+   1.0,
+   1.0
+  ],
+  "missing_call|doc_lookup": [
+   1.0,
+   2.0
+  ],
+  "missing_call|contract_split": [
+   1.0,
+   1.0
+  ],
+  "missing_call|minimal_diff": [
+   2.0,
+   1.0
+  ],
+  "wrong_contract|regen_whole": [
+   1.0,
+   1.0
+  ],
+  "wrong_contract|exact_shape": [
+   1.0,
+   3.0
+  ],
+  "wrong_contract|body_completion": [
+   1.0,
+   1.0
+  ],
+  "wrong_contract|fim_micro": [
+   1.0,
+   1.0
+  ],
+  "wrong_contract|ast_replace": [
+   1.0,
+   1.0
+  ],
+  "wrong_contract|compiler_guided": [
+   1.0,
+   2.0
+  ],
+  "wrong_contract|doc_lookup": [
+   1.0,
+   2.0
+  ],
+  "wrong_contract|contract_split": [
+   1.0,
+   2.0
+  ],
+  "wrong_contract|minimal_diff": [
+   1.0,
+   2.0
+  ],
+  "demo_contamination|regen_whole": [
+   1.0,
+   1.0
+  ],
+  "demo_contamination|exact_shape": [
+   1.0,
+   1.0
+  ],
+  "demo_contamination|body_completion": [
+   1.0,
+   1.0
+  ],
+  "demo_contamination|fim_micro": [
+   1.0,
+   1.0
+  ],
+  "demo_contamination|ast_replace": [
+   1.0,
+   1.0
+  ],
+  "demo_contamination|compiler_guided": [
+   1.0,
+   1.0
+  ],
+  "demo_contamination|doc_lookup": [
+   1.0,
+   1.0
+  ],
+  "demo_contamination|contract_split": [
+   1.0,
+   1.0
+  ],
+  "demo_contamination|minimal_diff": [
+   1.0,
+   1.0
+  ],
+  "type_error|regen_whole": [
+   1.0,
+   1.0
+  ],
+  "type_error|exact_shape": [
+   1.0,
+   1.0
+  ],
+  "type_error|body_completion": [
+   1.0,
+   1.0
+  ],
+  "type_error|fim_micro": [
+   1.0,
+   1.0
+  ],
+  "type_error|ast_replace": [
+   1.0,
+   1.0
+  ],
+  "type_error|compiler_guided": [
+   1.0,
+   1.0
+  ],
+  "type_error|doc_lookup": [
+   1.0,
+   1.0
+  ],
+  "type_error|contract_split": [
+   1.0,
+   1.0
+  ],
+  "type_error|minimal_diff": [
+   1.0,
+   1.0
+  ],
+  "ui_state|regen_whole": [
+   1.0,
+   1.0
+  ],
+  "ui_state|exact_shape": [
+   1.0,
+   1.0
+  ],
+  "ui_state|body_completion": [
+   1.0,
+   1.0
+  ],
+  "ui_state|fim_micro": [
+   1.0,
+   1.0
+  ],
+  "ui_state|ast_replace": [
+   1.0,
+   1.0
+  ],
+  "ui_state|compiler_guided": [
+   1.0,
+   1.0
+  ],
+  "ui_state|doc_lookup": [
+   1.0,
+   1.0
+  ],
+  "ui_state|contract_split": [
+   1.0,
+   1.0
+  ],
+  "ui_state|minimal_diff": [
+   1.0,
+   1.0
+  ],
+  "interface_mismatch|regen_whole": [
+   1.0,
+   1.0
+  ],
+  "interface_mismatch|exact_shape": [
+   1.0,
+   1.0
+  ],
+  "interface_mismatch|body_completion": [
+   1.0,
+   1.0
+  ],
+  "interface_mismatch|fim_micro": [
+   1.0,
+   1.0
+  ],
+  "interface_mismatch|ast_replace": [
+   1.0,
+   1.0
+  ],
+  "interface_mismatch|compiler_guided": [
+   1.0,
+   1.0
+  ],
+  "interface_mismatch|doc_lookup": [
+   1.0,
+   1.0
+  ],
+  "interface_mismatch|contract_split": [
+   1.0,
+   1.0
+  ],
+  "interface_mismatch|minimal_diff": [
+   1.0,
+   1.0
+  ]
+ },
+ "history": [
+  {
+   "category": "missing_literal",
+   "strategy": "exact_shape",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "missing_literal",
+   "strategy": "exact_shape",
+   "success": false,
+   "posterior_after": 0.25
+  },
+  {
+   "category": "missing_literal",
+   "strategy": "doc_lookup",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "missing_literal",
+   "strategy": "minimal_diff",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "missing_literal",
+   "strategy": "compiler_guided",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "missing_literal",
+   "strategy": "contract_split",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "missing_call",
+   "strategy": "exact_shape",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "missing_call",
+   "strategy": "exact_shape",
+   "success": false,
+   "posterior_after": 0.25
+  },
+  {
+   "category": "missing_call",
+   "strategy": "doc_lookup",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "missing_call",
+   "strategy": "minimal_diff",
+   "success": true,
+   "posterior_after": 0.667
+  },
+  {
+   "category": "wrong_contract",
+   "strategy": "exact_shape",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "wrong_contract",
+   "strategy": "exact_shape",
+   "success": false,
+   "posterior_after": 0.25
+  },
+  {
+   "category": "wrong_contract",
+   "strategy": "doc_lookup",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "wrong_contract",
+   "strategy": "minimal_diff",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "wrong_contract",
+   "strategy": "compiler_guided",
+   "success": false,
+   "posterior_after": 0.333
+  },
+  {
+   "category": "wrong_contract",
+   "strategy": "contract_split",
+   "success": false,
+   "posterior_after": 0.333
+  }
+ ]
+}

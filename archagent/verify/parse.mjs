@@ -72,6 +72,7 @@ export function analyze(sourceFile, code) {
     exports: [],
     callChains: new Set(),
     accessChains: new Set(),
+    exprs: new Set(),
     stringLiterals: [],
     jsxTexts: [],
     comments: [],
@@ -270,6 +271,15 @@ export function analyze(sourceFile, code) {
         const chain = chainName(node);
         if (chain) out.accessChains.add(chain);
       }
+      if (ts.isBinaryExpression(node)) {
+        // normalized comparison/arithmetic expression (no spaces) so
+        // expected semantics like a.quantity<=a.minQuantity are gated
+        // on AST structure, never on substrings
+        try {
+          const norm = node.getText(sf).replace(/\s+/g, '');
+          if (norm.length <= 80) out.exprs.add(norm);
+        } catch { /* positionless node */ }
+      }
       if (ts.isStringLiteral(node)
         || ts.isNoSubstitutionTemplateLiteral(node)) {
         out.stringLiterals.push({ value: node.text, used: isUsedPosition(node) });
@@ -317,6 +327,7 @@ export function analyze(sourceFile, code) {
     exports: out.exports,
     callChains: [...out.callChains],
     accessChains: [...out.accessChains],
+    exprs: [...out.exprs],
     stringLiterals: out.stringLiterals,
     jsxTexts: out.jsxTexts,
     comments: out.comments,

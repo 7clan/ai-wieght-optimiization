@@ -365,5 +365,44 @@ try {
   console.log(`  FAIL G — real-file regression could not run: ${e}`);
 }
 
+console.log('== H. Session-036 self-test false accept (spurious filter rewrite) ==');
+// H1: the exact spurious D3 patch that PASSED the weak contract —
+// status branches 'in'/'ok' with dropped minQuantity semantics.
+const spuriousD3 = `import { NextResponse } from 'next/server';
+import { db } from '@/lib/db';
+
+export async function GET() {
+  let rows = await db.inventoryItem.findMany();
+  if (status === 'in') rows = rows.filter((a) => a.quantity > 0);
+  if (status === 'out') rows = rows.filter((a) => a.quantity === 0);
+  if (status === 'ok') rows = rows.filter((a) => a.quantity > a.minQuantity);
+  return NextResponse.json({ items: rows, total: rows.length });
+}
+`;
+expect('H1 spurious status-branch rewrite rejected by exprs gate',
+  verifyRoute(spuriousD3, {
+    kind: 'route', handlers: ['GET'],
+    calls: ['NextResponse.json'], accesses: ['db.inventoryItem'],
+    exprs: ['a.quantity<=a.minQuantity'],
+  }, 'route.ts'), false);
+
+// H2: the correct filter passes the same contract.
+const correctD3 = `import { NextResponse } from 'next/server';
+import { db } from '@/lib/db';
+
+export async function GET() {
+  let rows = await db.inventoryItem.findMany();
+  if (status === 'low') rows = rows.filter((a) => a.quantity > 0 && a.quantity <= a.minQuantity);
+  if (status === 'out') rows = rows.filter((a) => a.quantity === 0);
+  return NextResponse.json({ items: rows, total: rows.length });
+}
+`;
+expect('H2 correct low-stock filter accepted',
+  verifyRoute(correctD3, {
+    kind: 'route', handlers: ['GET'],
+    calls: ['NextResponse.json'], accesses: ['db.inventoryItem'],
+    exprs: ['a.quantity<=a.minQuantity'],
+  }, 'route.ts'), true);
+
 console.log(`\nadversarial suite: ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
