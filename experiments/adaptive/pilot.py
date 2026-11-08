@@ -18,7 +18,8 @@ import time
 from adaptive_agent import AgentController, Budget, ControllerError, ModelContext, Task
 from adaptive_agent.controller import _validate_proposal
 from adaptive_agent.docker_sandbox import DockerSandbox, PublicFixture, require_docker
-from adaptive_agent.qwen_adapter import QwenSingleFileAdapter, load_local_qwen
+from adaptive_agent.qwen_adapter import (QwenCommonJSScaffoldAdapter,
+                                         QwenSingleFileAdapter, load_local_qwen)
 
 
 MODEL_ID = "Qwen/Qwen2.5-Coder-0.5B-Instruct"
@@ -29,6 +30,7 @@ class PilotTask:
     contract: Task
     public: PublicFixture
     private: PublicFixture
+    commonjs_export: str | None = None
 
 
 PILOT_TASKS = (
@@ -63,6 +65,7 @@ PILOT_TASKS = (
             "assert.deepEqual(normalizeTags([]), []);\n"
             "assert.deepEqual(normalizeTags(['  ', 'X', ' x ', 'Y']), ['x','y']);\n"
         )),
+        "normalizeTags",
     ),
 )
 
@@ -128,11 +131,27 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
             spec.contract, direct_adapter, public_evaluator, NoWebResearch(),
         )
         direct_seconds = round(time.monotonic() - start, 3)
-        records.append((spec, solo, assisted, assisted_seconds, direct, direct_seconds))
+        scaffold = None
+        scaffold_seconds = None
+        if spec.commonjs_export:
+            start = time.monotonic()
+            scaffold = AgentController(Budget(max_attempts=3, max_proposals=4,
+                                              max_research=0)).run(
+                spec.contract,
+                QwenCommonJSScaffoldAdapter(model.generate_text, spec.commonjs_export),
+                public_evaluator, NoWebResearch(),
+            )
+            scaffold_seconds = round(time.monotonic() - start, 3)
+        records.append((spec, solo, assisted, assisted_seconds, direct,
+                        direct_seconds, scaffold, scaffold_seconds))
 
     # The private oracle runs ONLY once all solo and controller generation is over.
     rows = []
-    for spec, solo, assisted, assisted_seconds, direct, direct_seconds in records:
+    for spec, solo, assisted, assisted_seconds, direct, direct_seconds, scaffold, scaffold_seconds in records:
+        glue = f"\nmodule.exports = {{ {spec.commonjs_export} }};\n" if spec.commonjs_export else ""
+        path = spec.contract.required_files[0]
+        scaffold_file = scaffold.selected_files.get(path, "") if scaffold else ""
+        direct_file = direct.selected_files.get(path, "")
         rows.append({
             "task_id": spec.contract.task_id,
             "public_spec_hash": sha256(spec.public.test_source.encode()).hexdigest(),
@@ -164,13 +183,29 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
                 "messages": direct.messages,
                 "proposal_trace": direct.proposal_trace,
             },
+            "commonjs_scaffold_controller": None if scaffold is None else {
+                "status": scaffold.status,
+                "public_pass": scaffold.status == "public_checks_passed",
+                "private_pass": private_score(spec, scaffold.selected_files),
+                "seconds": scaffold_seconds,
+                "proposals": scaffold.proposals,
+                "evaluations": scaffold.evaluations,
+                "invalid_proposals": scaffold.invalid_proposals,
+                "mechanical_export_only": glue.strip(),
+                "model_source_same_as_direct_first_candidate": (
+                    scaffold_file.endswith(glue) and
+                    scaffold_file[:-len(glue)].strip() == direct_file.strip()
+                ),
+                "proposal_trace": scaffold.proposal_trace,
+            },
         })
     report = {
         "description": "Exploratory two-task frozen Qwen0.5B protocol smoke; NOT fullstack generalization",
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "model": MODEL_ID, "weights_updated": False, "training": False,
         "teacher_repairs": 0, "docs_search_enabled": False,
-        "protocols": ["json_solo", "json_controller", "single_file_controller"],
+        "protocols": ["json_solo", "json_controller", "single_file_controller",
+                       "commonjs_scaffold_controller_js_only"],
         "host_cpu_threads": 2, "max_new_tokens": max_new_tokens,
         "loading_seconds": loading_s,
         "peak_host_rss_kib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
