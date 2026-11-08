@@ -155,6 +155,8 @@ def _validate_proposal(files: Mapping[str, str], max_file_bytes: int,
 
 def _failure_family(feedback: str) -> str:
     """General failure *categories*; not an answer cache of solved bugs."""
+    if re.search(r"(?:syntaxerror|indentationerror|unexpected token|unexpected end of input|unterminated|eof while parsing)", feedback, re.I):
+        return "syntax: locate the first parser error and repair the smallest incomplete expression or block"
     if re.search(r"(?:cannot find module|no module named|module not found|importerror)", feedback, re.I):
         return "dependency resolution: verify installed packages and import paths"
     if re.search(r"(?:404|route|endpoint|connection refused|cors)", feedback, re.I):
@@ -254,9 +256,13 @@ class AgentController:
             report.proposal_trace.append({
                 "file_paths": sorted(proposal.files),
                 "artifact_sha256": fingerprint,
+                "file_chars": {path: len(body) for path, body in sorted(proposal.files.items())},
+                "file_lines": {path: len(body.splitlines()) for path, body in sorted(proposal.files.items())},
                 "public_passed_checks": public_count,
                 "public_total_checks": len(outcome.checks),
-                "feedback_preview": outcome.feedback[-280:],
+                # Retain the exception *head*, not only the stack tail; the
+                # previous 280-character suffix hid the actual Node error.
+                "feedback_preview": outcome.feedback[:600],
             })
             if public_count > best_public_checks:
                 best_public_checks = public_count
