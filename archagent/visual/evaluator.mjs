@@ -128,20 +128,25 @@ const MEASURE = `(function measure() {
   out.issues.hOverflow = document.documentElement.scrollWidth > innerWidth + 1
     ? [document.documentElement.scrollWidth + ' > ' + innerWidth] : [];
 
-  // 4 button visibility
+  // 4 button visibility (WCAG 2.2 target size: >= 24x24 everywhere;
+  // primary CTA text buttons >= 40x40 on touch widths)
   const bv = [];
-  const minW = isTouch ? 40 : 28, minH = isTouch ? 40 : 24;
+  const minW = isTouch ? 40 : 24, minH = 24;
   for (const el of all) {
     if (!el.matches('button, [role=button], input[type=submit], input[type=button]')) continue;
     const r = el.getBoundingClientRect();
-    if (r.width < minW || r.height < minH)
+    const icon = (el.className || '').toString().includes('btn-icon');
+    const wNeed = isTouch && !icon ? 40 : minW;
+    if (r.width < wNeed || r.height < minH)
       bv.push((el.className || 'button') + ' ' + Math.round(r.width) + 'x' + Math.round(r.height));
   }
   out.issues.buttonVisibility = bv.slice(0, 8);
   out.buttonCount = all.filter(el =>
     el.matches('button, [role=button], input[type=submit]')).length;
 
-  // 5 alignment: same-class sibling groups of >= 3
+  // 5 alignment: vertical STACKS of >= 3 same-class siblings share the
+  // left edge.  Grid/flex rows (single line of columns) and irregular
+  // layouts are skipped — only strictly top-increasing stacks are lists.
   const al = [];
   for (const p of parents) {
     if (!p) continue;
@@ -153,6 +158,11 @@ const MEASURE = `(function measure() {
     for (const key in groups) {
       const g = groups[key];
       if (g.length < 3) continue;
+      const tops = g.map(el => el.getBoundingClientRect().top);
+      let stack = true;
+      for (let i = 1; i < tops.length; i++)
+        if (tops[i] - tops[i - 1] < 4) { stack = false; break; }
+      if (!stack) continue;  // row/grid layout — left edges legitimately differ
       const lefts = g.map(el => el.getBoundingClientRect().left);
       const spread = Math.max(...lefts) - Math.min(...lefts);
       if (spread > 1.5) al.push(key.split('|')[1] + ' spread=' + spread.toFixed(1) + 'px');

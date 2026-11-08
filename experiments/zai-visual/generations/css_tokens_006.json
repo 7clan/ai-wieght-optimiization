@@ -1,0 +1,29 @@
+{
+ "task": "tokens",
+ "kind": "burst",
+ "sha256": "2bd4a84fcb2da15c04b0b9bd2e7ca5cfbf4a5033cf8f7cd4b1727d55ae69bce1",
+ "prompt_sha256": "e749b5e2c37d712ac0f1208d8238a9f8f25567ca39876edc2dd492f5413fb56b",
+ "usage": {
+  "tokens": 750,
+  "seconds": 93.64,
+  "seed": 0,
+  "stochastic": false
+ },
+ "static_gates": [
+  "braces do not balance",
+  "missing token --sp-6",
+  "missing token --r-1",
+  "missing token --r-2",
+  "missing token --r-3",
+  "missing token --shadow-1",
+  "missing token --t-body",
+  "missing token --t-lg",
+  "missing token --t-xl",
+  "missing token --t-2xl",
+  "missing token --t-3xl",
+  "missing token --font-body",
+  "missing token --font-mono"
+ ],
+ "harness": null,
+ "text": ":root {\n:root {\n  --c-bg: #faf7f2;\n  --c-surface: #ffffff;\n  --c-border: #e5e5e5;\n  --c-text: #26221c;\n  --c-muted: #6b6459;\n  --c-primary: #8a5a2f;\n  --c-on-primary: #8a5a2f;\n  --c-primary-soft: #8a5a2f;\n  --c-danger: #f04d4d;\n  --c-danger-soft: #f04d4d;\n  --c-high: #f04d4d;\n  --c-medium: #f04d4d;\n  --c-low: #f04d4d;\n  --c-done: #f04d4d;\n  --c-todo: #f04d4d;\n  --c-doing: #f04d4d;\n  --c-success: #40d040;\n  --c-success-soft: #40d040;\n  --sp-1: 8px;\n  --sp-2: 12px;\n  --sp-3: 16px;\n  --sp-4: 20px;\n  --sp-5: 24px;\n  --"
+}

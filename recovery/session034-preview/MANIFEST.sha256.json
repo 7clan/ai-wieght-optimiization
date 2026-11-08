@@ -1,0 +1,201 @@
+{
+ "logo.svg": {
+  "sha256": "8506450e8ef647695d218c4b3245ef573f9c6473783f372eef87fdba9bd47eac",
+  "bytes": 1065,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/ORIGIN.json": {
+  "sha256": "e089d6684a32108630788ab849e58c5f4618661d395cc54bdfdf2105740623ea",
+  "bytes": 1908,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/index.html": {
+  "sha256": "146878b4ea4c06808e2d771a6501f17f7f031599860ffbc5dd6d27347d6ffc30",
+  "bytes": 1710,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/js/app.jsx": {
+  "sha256": "4ba95a942e7e297b8d84d09b358ff957e7da8976f65fc0dbc00a85a262a9879e",
+  "bytes": 6813,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/js/components/doc-row-modal.jsx": {
+  "sha256": "eba7948e39734a3ec3cc1f386fb440e5b0b6a7abd5bf4205b613be24c5bb20f0",
+  "bytes": 2105,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/js/lib/search-filter.js": {
+  "sha256": "f15193ce2d4d8a8f8012e6def57c906536bb08f2140d6dc7164c24f429fd11f5",
+  "bytes": 861,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/js/store.js": {
+  "sha256": "64e5b9e29501a114466010942afdf7b75aecb9307a8d8f201d1f884466caa33c",
+  "bytes": 5317,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/js/views/forms.jsx": {
+  "sha256": "aee6970ce5a6a886824f9f8009bdcd50422592419ce527fee3a8f5168bd14b73",
+  "bytes": 4808,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/js/views/vault-view.jsx": {
+  "sha256": "5696e182355dec964e4e7a265363038823e91ea2cb8c68114f5b34ad92aa8c46",
+  "bytes": 2869,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/styles/fixes-v1.css": {
+  "sha256": "832ff157fa5b732032b829994f209a9aaebc03f649de5cc6c197c73d1939d2ad",
+  "bytes": 696,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/styles/layout.css": {
+  "sha256": "9c7f42afcb30181ecb739ec09ced774b4cb99c56b051dc351b5155db59a043e8",
+  "bytes": 5048,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "medivault/styles/tokens.css": {
+  "sha256": "0ffd0be5b4297f3472099a8d5cc629b1cc009afaead0055417febf52959a8778",
+  "bytes": 1071,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "preview-portal-page.tsx": {
+  "sha256": "ebdd5012e4f0122d819c45cfc64ce4f07b691abc78cba436b92dd96ebea503d8",
+  "bytes": 12506,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "shots/medivault-desktop.png": {
+  "sha256": "61f662be08ede0eec1ccde4d7b9387abaf92994c03687270300c8d36cb12eec8",
+  "bytes": 50308,
+  "mtime": "2026-11-08T06:38:48",
+  "png_dimensions": "1440x900"
+ },
+ "shots/medivault-mobile.png": {
+  "sha256": "c75d196b1b4ca124c0c626614e191a46cb5bdc8cdb2d6a2412868c6eb25dbbaf",
+  "bytes": 32466,
+  "mtime": "2026-11-08T06:38:48",
+  "png_dimensions": "390x844"
+ },
+ "shots/taskflow-desktop.png": {
+  "sha256": "d9ed265aa78db8626e7d8be54732a58ea36023b3c8a96f283e95598b75a71c42",
+  "bytes": 51393,
+  "mtime": "2026-11-08T06:38:48",
+  "png_dimensions": "1440x900"
+ },
+ "shots/taskflow-mobile.png": {
+  "sha256": "9c0475c544933db572ae4930d555fa3636dc5e67d7f0e9c43501c7de4b494de5",
+  "bytes": 39087,
+  "mtime": "2026-11-08T06:38:48",
+  "png_dimensions": "390x844"
+ },
+ "taskflow-trackA/index.html": {
+  "sha256": "94f1e3aa5c2ce5f4bc91ab0c398a9aa14fbfa5abc5a5e4a89693e32fb1675a43",
+  "bytes": 7852,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/ORIGIN.json": {
+  "sha256": "ce7fb52b49fbe8f32656d184b6fbb61bf8ba8954332a470a71017468e2cd5877",
+  "bytes": 5548,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/index.html": {
+  "sha256": "ef6267a0e042a4a6ec510d3238fd59a62712aeca0229edf9676152b1ab410780",
+  "bytes": 2837,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/js/app.jsx": {
+  "sha256": "86179e1321981f82377846d983985afd900e58a789ca0033c61b57439ba15a9a",
+  "bytes": 5043,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/js/components/badge-progress.jsx": {
+  "sha256": "fa178b066292520868aba8df37f99571ccac0518d32f58cf28623173a0872b36",
+  "bytes": 869,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/js/components/modal-empty.jsx": {
+  "sha256": "d7e0aa25f1b6d9c73f274f669505998202edbb682098055e90c890a1919f83af",
+  "bytes": 698,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/js/components/sidebar.jsx": {
+  "sha256": "07d7e684936588af5c2f1b255372980325f123c9408c878345bd6001addca65e",
+  "bytes": 733,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/js/components/task-card.jsx": {
+  "sha256": "1430cb33d6f7486e25266a941ae150cee0e278dc8007a7d0d4d3dad55d093b07",
+  "bytes": 869,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/js/lib/filter-tasks.js": {
+  "sha256": "7a3e3927885612f03b3019fe3fb27ebc7d882d35037eb02101f040f4b7afaaa0",
+  "bytes": 594,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/js/store.js": {
+  "sha256": "3d4d438c84511a7b54c1423ba481e9419a49244abeb18839b6b21d759669eb24",
+  "bytes": 4250,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/js/views/modal-forms.jsx": {
+  "sha256": "bf14b861f789c072e08a0302de126f3e5a3050e4ce8f97e79762fbc7af74803f",
+  "bytes": 2463,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/js/views/task-list-view.jsx": {
+  "sha256": "3a65ae05fa83060f200d5521ac08547c45ab37b5394cde7ba57a6f504a3a7cba",
+  "bytes": 2402,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/components.css": {
+  "sha256": "437d049773e2b94db679b0df61ca8fb73f3b4b44a352bd0814143f388be6217f",
+  "bytes": 1889,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/feedback2.css": {
+  "sha256": "7dc004c6b23fa4b937e5d6851eb3d18b77211b4bbed3f12aa9fd140fe688773c",
+  "bytes": 899,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/fixes-v1.css": {
+  "sha256": "27f617545b63f2dfa9469ce78663db752363f48be72c81de8b8a293530d5bb8b",
+  "bytes": 936,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/fixes-v2.css": {
+  "sha256": "3d2a5468dabec58fd716c6c6e3e838ee3820448322c4370651cf80c87e0b06f2",
+  "bytes": 928,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/fixes-v3.css": {
+  "sha256": "fef3d095e15e5ac98f8f8a951e41b244c207a8bff37dd219f1c9151b6ba28ca8",
+  "bytes": 301,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/layout.css": {
+  "sha256": "59001c4c602c3b4f63ff733b9d92d8e578840ce00de5b5327841a532ad72a9cb",
+  "bytes": 1215,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/polish.css": {
+  "sha256": "44e7878df825ba60f328ea9090c4b55c4fd8cb9d906efa2b5753323c6da36f8b",
+  "bytes": 2275,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/scale.css": {
+  "sha256": "4ae55dfbad261463fb3b810c09133df4bc6a345947ef652b33ea15233755ab9f",
+  "bytes": 257,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/status.css": {
+  "sha256": "6dd6ad660b939251ebac2ac420ed67b6f1aacef20e86cc2ae13e0e80e1a53ef5",
+  "bytes": 852,
+  "mtime": "2026-11-08T06:38:48"
+ },
+ "taskflow-v2/styles/tokens.css": {
+  "sha256": "db3a84d201d45b2e2ee0584a2df0e257bb72e4ac7798468d6039be50d35553e4",
+  "bytes": 731,
+  "mtime": "2026-11-08T06:38:48"
+ }
+}

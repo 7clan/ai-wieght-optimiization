@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow</title>
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f8f8;
+            transition: background-color 0.3s ease;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 2em;
+            cursor: pointer;
+        }
+        .sidebar {
+            background-color: #ddd;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+        .card {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .card-title {
+            margin-bottom: 5px;
+        }
+        .card-status {
+            display: flex;
+            justify-content: space-between;
+        }
+        .card-status .todo-badge {
+            background-color: blue;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .card-status .doing-badge {
+            background-color: orange;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .card-status .done-badge {
+            background-color: green;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .new-task-button {
+            margin-bottom: 10px;
+        }
+        .new-project-button {
+            margin-top: 10px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background-color: #ccc;
+            position: relative;
+            bottom: 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TaskFlow</h1>
+    </header>
+    <div id="root"></div>
+    <script src="/vendor/react.production.min.js"></script>
+    <script src="/vendor/react-dom.production.min.js"></script>
+    <script type="text/babel">
+        class TaskFlow extends React.Component {
+            state = {
+                projects: [
+                    { title: 'Website Redesign', status: 'todo' },
+                    { title: 'Mobile App', status: 'todo' },
+                    // Add more projects as needed
+                ],
+                selectedProject: '',
+                tasks: [],
+                progress: 0,
+            };
+
+            componentDidMount() {
+                const storedTasks = localStorage.getItem('taskflow-data');
+                if (storedTasks) {
+                    const data = JSON.parse(storedTasks);
+                    this.setState({
+                        projects: data.projects,
+                        tasks: data.tasks,
+                        progress: data.progress,
+                    });
+                } else {
+                    this.setState({
+                        projects: [
+                            { title: 'Website Redesign', status: 'todo' },
+                            { title: 'Mobile App', status: 'todo' },
+                        ],
+                        tasks: [
+                            { title: 'Sample Task 1', dueDate: new Date('2023-01-01'), status: 'todo' },
+                            { title: 'Sample Task 2', dueDate: new Date('2023-01-15'), status: 'doing' },
+                            { title: 'Sample Task 3', dueDate: new Date('2023-01-20'), status: 'done' },
+                        ],
+                        progress: 0,
+                    });
+                }
+            }
+
+            handleProjectClick = (project) => {
+                this.setState({ selectedProject: project });
+                this.fetchTasks();
+            };
+
+            handleTaskToggle = (taskId, status) => {
+                const tasks = [...this.state.tasks];
+                tasks.find(task => task.id === taskId).status = status;
+                this.setState({ tasks });
+                this.updateProgress();
+            };
+
+            fetchTasks = async () => {
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                this.setState({ tasks: data });
+            };
+
+            updateProgress = () => {
+                const totalTasks = this.state.tasks.length;
+                const doneTasks = this.state.tasks.filter(task => task.status === 'done').length;
+                this.setState({ progress: Math.round((doneTasks / totalTasks) * 100) });
+            };
+
+            render() {
+                return (
+                    <div id="root">
+                        <nav>
+                            <ul>
+                                <li><a href="#" onClick={() => this.handleProjectClick('Website Redesign')}>Website Redesign</a></li>
+                                <li><a href="#" onClick={() => this.handleProjectClick('Mobile App')}>Mobile App</a></li>
+                            </ul>
+                        </nav>
+                        <div className="sidebar">
+                            {this.state.projects.map(project => (
+                                <div key={project.id}>
+                                    <h3>{project.title}</h3>
+                                    <div className="card" style={{ backgroundColor: project.status === 'todo' ? '#FFC400' : project.status === 'doing' ? '#A3FF00' : '#00FF00' }}>
+                                        <span className="card-title">{project.title}</span>
+                                        <span className="card-status">
+                                            <div className="todo-badge" style={{ backgroundColor: project.status === 'todo' ? '#FFC400' : project.status === 'doing' ? '#A3FF00' : '#00FF00' }}></div>
+                                            <div className="doing-badge" style={{ backgroundColor: project.status === 'doing' ? '#FFC400' : project.status === 'done' ? '#A3FF00' : '#00FF00' }}></div>
+                                            <div className="done-badge" style={{ backgroundColor: project.status === 'done' ? '#FFC400' : project.status === 'done' ? '#A3FF00' : '#00FF00' }}></div>
+                                        </span>
+                                        <button onClick={() => this.handleTaskToggle(task.id, 'todo')}>
+                                            <i className="fas fa-tasks"></i>
+                                        </button>
+                                        <button onClick={() => this.handleTaskToggle(task.id, 'doing')}>
+                                            <i className="fas fa-check"></i>
+                                        </button>
+                                        <button onClick={() => this.handleTaskToggle(task.id, 'done')}>
+                                            <i className="fas fa-xmark"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="main-area">
+                            {this.state.tasks.map(task => (
+                                <div key={task.id} className="card" style={{ backgroundColor: task.status === 'todo' ? '#FFC400' : task.status === 'doing' ? '#A

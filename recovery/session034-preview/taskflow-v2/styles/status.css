@@ -1,0 +1,53 @@
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: var(--color-todo);
+  color: white;
+}
+
+.badge-todo {
+  background-color: var(--color-todo);
+}
+
+.badge-doing {
+  background-color: var(--color-doing);
+}
+
+.badge-done {
+  background-color: var(--color-done);
+}
+
+.progress-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.chip-high {
+  color: red;
+  background-color: var(--color-primary);
+  font-size: 11px;
+}
+
+.chip-medium {
+  color: amber;
+  background-color: var(--color-primary);
+  font-size: 11px;
+}
+
+.chip-low {
+  color: grey;
+  background-color: var(--color-primary);
+  font-size: 11px;
+}

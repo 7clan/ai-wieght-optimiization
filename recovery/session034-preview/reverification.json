@@ -1,0 +1,91 @@
+{
+ "when": "2026-11-08T06:53:30.113Z",
+ "evaluator": "this session's independent 10-metric x 5-viewport DOM/computed-style evaluator (archagent/visual/evaluator.mjs), written BEFORE the recovery instruction",
+ "claimed_by_recovered_portal_page": {
+  "taskflow_v2": {
+   "browser": "15/15",
+   "visual": "98%"
+  },
+  "medivault": {
+   "browser": "15/15",
+   "visual": "100%"
+  }
+ },
+ "independently_measured_this_session": {
+  "visual": {
+   "taskflow_v1_session033_baseline": {
+    "score": "6/10",
+    "aggregate": {
+     "text-visibility": "5/5",
+     "no-overlap": "5/5",
+     "no-h-overflow": "5/5",
+     "button-visibility": "0/5 FAIL",
+     "alignment": "5/5",
+     "typography-consistency": "5/5",
+     "contrast": "0/5 FAIL",
+     "interactivity": "0/5 FAIL",
+     "visual-hierarchy": "0/5 FAIL",
+     "responsive-adaptation": "2/2"
+    }
+   },
+   "taskflow_v2_recovered": {
+    "score": "8/10",
+    "aggregate": {
+     "text-visibility": "5/5",
+     "no-overlap": "5/5",
+     "no-h-overflow": "5/5",
+     "button-visibility": "3/5 FAIL",
+     "alignment": "5/5",
+     "typography-consistency": "5/5",
+     "contrast": "5/5",
+     "interactivity": "5/5",
+     "visual-hierarchy": "0/5 FAIL",
+     "responsive-adaptation": "2/2"
+    }
+   },
+   "medivault_recovered": {
+    "score": "9/10",
+    "aggregate": {
+     "text-visibility": "5/5",
+     "no-overlap": "5/5",
+     "no-h-overflow": "5/5",
+     "button-visibility": "0/5 FAIL",
+     "alignment": "5/5",
+     "typography-consistency": "5/5",
+     "contrast": "5/5",
+     "interactivity": "5/5",
+     "visual-hierarchy": "5/5",
+     "responsive-adaptation": "2/2"
+    }
+   }
+  },
+  "functional": {
+   "taskflow_v2_recovered": {
+    "passed": 15,
+    "total": 15,
+    "page_errors": []
+   },
+   "medivault_recovered": {
+    "passed": 10,
+    "total": 10,
+    "page_errors": []
+   }
+  }
+ },
+ "interpretation": {
+  "functional_claims_confirmed": "TaskFlow v2 15/15 reproduced with this session's independent step definitions (adapted to the v2 three-state status cycle); MediVault 10/10 on its own feature checklist (the portal claimed 15/15 for a different, lost step list).",
+  "visual_claims_NOT_reproduced": "The portal's 98%/100% cannot be reproduced: this session's evaluator measures 8/10 (TaskFlow v2) and 9/10 (MediVault). The previous session's scoring tooling is lost, so the difference is attributable to different (unknown) criteria; the honest statement is the itemized per-metric result below, not a single percentage.",
+  "genuine_defects_found": [
+   "TaskFlow v2: h3 (18.72px) renders larger than h2 (18px) \u2014 heading hierarchy inversion (all viewports)",
+   "TaskFlow v2 mobile: menu button 38x36 and icon buttons 24x24 below the 40x40 touch target at 390/320 widths",
+   "MediVault: .btn height 21px (WCAG 2.2 minimum target 24px) on all viewports",
+   "MediVault: doc-name row buttons 18px tall"
+  ],
+  "verified_v1_to_v2_improvement": "Session 033 TaskFlow v1 scores 6/10 vs recovered v2 8/10 on the same evaluator: contrast, interactivity and alignment defects of v1 are gone; hierarchy and touch targets remain."
+ },
+ "display_artifact_note": "An early terminal render showed medivault/js/app.jsx line 9 as 'const odal, setModal]' (apparent corruption). Byte-level inspection (od -c) shows the true source is the valid 'const [modal, setModal]'; Babel 7.26.4 compiles it, the browser runs it with zero page errors, and the SHA-256 matches the recovery manifest. The corruption was an ANSI/escape rendering artifact of the inspection tooling, not a file defect. Recorded here because honest verification requires documenting false alarms.",
+ "manifest": {
+  "files": 39,
+  "note": "see MANIFEST.sha256.json; vendor/ excluded from hash list but copied"
+ }
+}

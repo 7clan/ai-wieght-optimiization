@@ -1,0 +1,26 @@
+{
+ "task": "tokens",
+ "kind": "burst",
+ "sha256": "065891e4d533661c7964ec991fce91fc91491441767769eb465fa956d6d93b43",
+ "prompt_sha256": "e749b5e2c37d712ac0f1208d8238a9f8f25567ca39876edc2dd492f5413fb56b",
+ "usage": {
+  "tokens": 750,
+  "seconds": 104.28,
+  "seed": 1013,
+  "stochastic": true
+ },
+ "static_gates": [
+  "braces do not balance",
+  "missing token --r-3",
+  "missing token --shadow-1",
+  "missing token --t-body",
+  "missing token --t-lg",
+  "missing token --t-xl",
+  "missing token --t-2xl",
+  "missing token --t-3xl",
+  "missing token --font-body",
+  "missing token --font-mono"
+ ],
+ "harness": null,
+ "text": ":root {\nRemember, the design tokens block must include the same line\n:root { --c-bg: #faf7f2; --c-surface: #ffffff; --c-border: #c5c4c4; --c-text: #26221c; --c-muted: #6b6459; --c-primary: #8a5a2f; --c-on-primary: #8a5a2f; --c-primary-soft: #8a5a2f; --c-danger: #e74c3c; --c-danger-soft: #e74c3c; --c-high: #b89c70; --c-medium: #868069; --c-low: #524942; --c-done: #b89c70; --c-todo: #524942; --c-doing: #6b6459; --c-success: #524942; --c-success-soft: #524942; --sp-1: 2px; --sp-2: 4px; --sp-3: 6px; --sp-4: 8px; --sp-5: 10px; --sp-6: 12px; --r-1: 4px; --r-2: 8px; --r-3"
+}

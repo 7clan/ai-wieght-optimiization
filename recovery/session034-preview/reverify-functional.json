@@ -1,0 +1,143 @@
+{
+ "when": "2026-11-08T06:53:30.113Z",
+ "base": "http://127.0.0.1:4195",
+ "taskflow": {
+  "steps": [
+   {
+    "step": "1 open application",
+    "ok": true,
+    "detail": "http://127.0.0.1:4195/taskflow-v2/index.html"
+   },
+   {
+    "step": "2 create project",
+    "ok": true,
+    "detail": "[\"Website Redesign3\",\"Website Redesign3\",\"Mobile App3\",\"Mobile App3\",\"Website Redesign0\",\"Website Redesign0\"]"
+   },
+   {
+    "step": "3 select project",
+    "ok": true,
+    "detail": "h2=Website Redesign"
+   },
+   {
+    "step": "4 add task",
+    "ok": true,
+    "detail": "[\"Design homepage mockup\",\"Implement navigation bar\",\"Write CSS for pricing section\",\"Draft homepage\"]"
+   },
+   {
+    "step": "4b add second task",
+    "ok": true,
+    "detail": "[\"Design homepage mockup\",\"Implement navigation bar\",\"Write CSS for pricing section\",\"Draft homepage\",\"Review colors\"]"
+   },
+   {
+    "step": "5 priority shown",
+    "ok": true,
+    "detail": "[\"high\",\"medium\",\"low\",\"high\",\"low\"]"
+   },
+   {
+    "step": "6 mark complete (status cycle reaches done)",
+    "ok": true,
+    "detail": "badge=Done"
+   },
+   {
+    "step": "7 progress text",
+    "ok": true,
+    "detail": "progress=20%"
+   },
+   {
+    "step": "8 search tasks",
+    "ok": true,
+    "detail": "[\"Draft homepage\"]"
+   },
+   {
+    "step": "9 filter by status",
+    "ok": true,
+    "detail": "done=1 all=5"
+   },
+   {
+    "step": "10 delete task",
+    "ok": true,
+    "detail": "[\"Design homepage mockup\",\"Implement navigation bar\",\"Write CSS for pricing section\",\"Draft homepage\"]"
+   },
+   {
+    "step": "11 updated progress",
+    "ok": true,
+    "detail": "progress=0%"
+   },
+   {
+    "step": "12 persistence after refresh",
+    "ok": true,
+    "detail": "cards=[\"Design homepage mockup\",\"Implement navigation bar\",\"Write CSS for pricing section\",\"Draft homepage\"] nav=6"
+   },
+   {
+    "step": "13 mobile menu",
+    "ok": true,
+    "detail": "sidebar.open visible=true"
+   },
+   {
+    "step": "14 desktop screenshot",
+    "ok": true,
+    "detail": ""
+   }
+  ],
+  "passed": 15,
+  "total": 15,
+  "page_errors": []
+ },
+ "medivault": {
+  "steps": [
+   {
+    "step": "M1 open application",
+    "ok": true,
+    "detail": "http://127.0.0.1:4195/medivault/index.html"
+   },
+   {
+    "step": "M2 create folder",
+    "ok": true,
+    "detail": "[\"Lab Results\",\"Prescriptions\",\"Insurance\",\"Radiology\"] labels=[\"Folder name\"]"
+   },
+   {
+    "step": "M3 upload document",
+    "ok": true,
+    "detail": "[\"mri-report.txtLabA.K.2026-11-081 KB☆👁✎🗑\"]"
+   },
+   {
+    "step": "M4 search",
+    "ok": true,
+    "detail": "[\"mri-report.txtLabA.K.2026-11-081 KB☆👁✎🗑\"]"
+   },
+   {
+    "step": "M5 type filter",
+    "ok": true,
+    "detail": "options=[\"All Types\",\"Lab\",\"Rx\",\"Insurance\",\"Imaging\",\"Consent\"] rows=1"
+   },
+   {
+    "step": "M6 view detail metadata",
+    "ok": true,
+    "detail": "Document Detailsxmri-report.txtLabPatientA.K.Date2026-11-08Size1 KBFolderRadiologyStarredNoMetadata record only - no fil"
+   },
+   {
+    "step": "M7 rename document",
+    "ok": true,
+    "detail": "[\"mri-report-v2LabA.K.2026-11-081 KB☆👁✎🗑\"]"
+   },
+   {
+    "step": "M8 delete document",
+    "ok": true,
+    "detail": "before=1 after=0 target=mri-report-v2"
+   },
+   {
+    "step": "M9 persistence after refresh",
+    "ok": true,
+    "detail": "[\"Lab Results\",\"Prescriptions\",\"Insurance\",\"Radiology\"]"
+   },
+   {
+    "step": "M10 mobile renders",
+    "ok": true,
+    "detail": "no-h-overflow=true"
+   }
+  ],
+  "passed": 10,
+  "total": 10,
+  "page_errors": []
+ }
+}

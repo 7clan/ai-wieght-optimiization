@@ -1,0 +1,404 @@
+{
+ "base": "http://127.0.0.1:4173",
+ "when": "2026-11-08T06:42:08.678Z",
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "page_errors": [],
+   "metrics": {
+    "text-visibility": true,
+    "no-overlap": true,
+    "no-h-overflow": true,
+    "button-visibility": false,
+    "alignment": true,
+    "typography-consistency": true,
+    "contrast": false,
+    "interactivity": false,
+    "visual-hierarchy": false
+   },
+   "details": {
+    "textVisibility": [],
+    "overlap": [],
+    "hOverflow": [],
+    "buttonVisibility": [
+     "project-btn 124x21",
+     "project-btn 124x21",
+     "project-btn 100x21",
+     "project-btn 96x21",
+     "button 83x21",
+     "button 68x21",
+     "filter-all 31x21",
+     "filter-todo 45x21"
+    ],
+    "alignment": [],
+    "typography": [],
+    "contrast": [
+     "filter-all 1.00:1",
+     "filter-todo 2.19:1",
+     "filter-done 1.40:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1"
+    ],
+    "interactivity": [
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "BUTTON cursor=default",
+     "BUTTON cursor=default",
+     "filter-all cursor=default",
+     "filter-todo cursor=default"
+    ],
+    "hierarchy": []
+   },
+   "distinctSizes": [
+    13.5,
+    16
+   ],
+   "bodySize": 16,
+   "headingSizes": {},
+   "hoverRules": 0,
+   "textCount": 56,
+   "belowNeed": 19,
+   "buttonCount": 37,
+   "scrollWidth": 1440,
+   "innerWidth": 1440,
+   "contentWidth": 1424
+  },
+  {
+   "width": 1280,
+   "height": 800,
+   "page_errors": [],
+   "metrics": {
+    "text-visibility": true,
+    "no-overlap": true,
+    "no-h-overflow": true,
+    "button-visibility": false,
+    "alignment": true,
+    "typography-consistency": true,
+    "contrast": false,
+    "interactivity": false,
+    "visual-hierarchy": false
+   },
+   "details": {
+    "textVisibility": [],
+    "overlap": [],
+    "hOverflow": [],
+    "buttonVisibility": [
+     "project-btn 124x21",
+     "project-btn 124x21",
+     "project-btn 100x21",
+     "project-btn 96x21",
+     "button 83x21",
+     "button 68x21",
+     "filter-all 31x21",
+     "filter-todo 45x21"
+    ],
+    "alignment": [],
+    "typography": [],
+    "contrast": [
+     "filter-all 1.00:1",
+     "filter-todo 2.19:1",
+     "filter-done 1.40:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1"
+    ],
+    "interactivity": [
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "BUTTON cursor=default",
+     "BUTTON cursor=default",
+     "filter-all cursor=default",
+     "filter-todo cursor=default"
+    ],
+    "hierarchy": []
+   },
+   "distinctSizes": [
+    13.5,
+    16
+   ],
+   "bodySize": 16,
+   "headingSizes": {},
+   "hoverRules": 0,
+   "textCount": 56,
+   "belowNeed": 19,
+   "buttonCount": 37,
+   "scrollWidth": 1280,
+   "innerWidth": 1280,
+   "contentWidth": 1264
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "page_errors": [],
+   "metrics": {
+    "text-visibility": true,
+    "no-overlap": true,
+    "no-h-overflow": true,
+    "button-visibility": false,
+    "alignment": true,
+    "typography-consistency": true,
+    "contrast": false,
+    "interactivity": false,
+    "visual-hierarchy": false
+   },
+   "details": {
+    "textVisibility": [],
+    "overlap": [],
+    "hOverflow": [],
+    "buttonVisibility": [
+     "project-btn 124x21",
+     "project-btn 124x21",
+     "project-btn 100x21",
+     "project-btn 96x21",
+     "button 83x21",
+     "button 68x21",
+     "filter-all 31x21",
+     "filter-todo 45x21"
+    ],
+    "alignment": [],
+    "typography": [],
+    "contrast": [
+     "filter-all 1.00:1",
+     "filter-todo 2.19:1",
+     "filter-done 1.40:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1"
+    ],
+    "interactivity": [
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "BUTTON cursor=default",
+     "BUTTON cursor=default",
+     "filter-all cursor=default",
+     "filter-todo cursor=default"
+    ],
+    "hierarchy": []
+   },
+   "distinctSizes": [
+    13.5,
+    16
+   ],
+   "bodySize": 16,
+   "headingSizes": {},
+   "hoverRules": 0,
+   "textCount": 56,
+   "belowNeed": 19,
+   "buttonCount": 37,
+   "scrollWidth": 768,
+   "innerWidth": 768,
+   "contentWidth": 752
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "page_errors": [],
+   "metrics": {
+    "text-visibility": true,
+    "no-overlap": true,
+    "no-h-overflow": true,
+    "button-visibility": false,
+    "alignment": true,
+    "typography-consistency": true,
+    "contrast": false,
+    "interactivity": false,
+    "visual-hierarchy": false
+   },
+   "details": {
+    "textVisibility": [],
+    "overlap": [],
+    "hOverflow": [],
+    "buttonVisibility": [
+     "project-btn 124x21",
+     "project-btn 124x21",
+     "project-btn 100x21",
+     "project-btn 96x21",
+     "button 83x21",
+     "button 68x21",
+     "filter-all 31x21",
+     "filter-todo 45x21"
+    ],
+    "alignment": [],
+    "typography": [],
+    "contrast": [
+     "filter-all 1.00:1",
+     "filter-todo 2.19:1",
+     "filter-done 1.40:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1"
+    ],
+    "interactivity": [
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "BUTTON cursor=default",
+     "BUTTON cursor=default",
+     "filter-all cursor=default",
+     "filter-todo cursor=default"
+    ],
+    "hierarchy": []
+   },
+   "distinctSizes": [
+    13.5,
+    16
+   ],
+   "bodySize": 16,
+   "headingSizes": {},
+   "hoverRules": 0,
+   "textCount": 56,
+   "belowNeed": 19,
+   "buttonCount": 37,
+   "scrollWidth": 390,
+   "innerWidth": 390,
+   "contentWidth": 374
+  },
+  {
+   "width": 320,
+   "height": 700,
+   "page_errors": [],
+   "metrics": {
+    "text-visibility": true,
+    "no-overlap": true,
+    "no-h-overflow": true,
+    "button-visibility": false,
+    "alignment": true,
+    "typography-consistency": true,
+    "contrast": false,
+    "interactivity": false,
+    "visual-hierarchy": false
+   },
+   "details": {
+    "textVisibility": [],
+    "overlap": [],
+    "hOverflow": [],
+    "buttonVisibility": [
+     "project-btn 124x21",
+     "project-btn 124x21",
+     "project-btn 100x21",
+     "project-btn 96x21",
+     "button 83x21",
+     "button 68x21",
+     "filter-all 31x21",
+     "filter-todo 45x21"
+    ],
+    "alignment": [],
+    "typography": [],
+    "contrast": [
+     "filter-all 1.00:1",
+     "filter-todo 2.19:1",
+     "filter-done 1.40:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1",
+     "priority-high 2.23:1",
+     "SPAN 1.00:1"
+    ],
+    "interactivity": [
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "project-btn cursor=default",
+     "BUTTON cursor=default",
+     "BUTTON cursor=default",
+     "filter-all cursor=default",
+     "filter-todo cursor=default"
+    ],
+    "hierarchy": []
+   },
+   "distinctSizes": [
+    13.5,
+    16
+   ],
+   "bodySize": 16,
+   "headingSizes": {},
+   "hoverRules": 0,
+   "textCount": 56,
+   "belowNeed": 19,
+   "buttonCount": 37,
+   "scrollWidth": 320,
+   "innerWidth": 320,
+   "contentWidth": 304
+  }
+ ],
+ "aggregate": {
+  "text-visibility": {
+   "pass": true,
+   "passed": 5,
+   "total": 5
+  },
+  "no-overlap": {
+   "pass": true,
+   "passed": 5,
+   "total": 5
+  },
+  "no-h-overflow": {
+   "pass": true,
+   "passed": 5,
+   "total": 5
+  },
+  "button-visibility": {
+   "pass": false,
+   "passed": 0,
+   "total": 5
+  },
+  "alignment": {
+   "pass": true,
+   "passed": 5,
+   "total": 5
+  },
+  "typography-consistency": {
+   "pass": true,
+   "passed": 5,
+   "total": 5
+  },
+  "contrast": {
+   "pass": false,
+   "passed": 0,
+   "total": 5
+  },
+  "interactivity": {
+   "pass": false,
+   "passed": 0,
+   "total": 5
+  },
+  "visual-hierarchy": {
+   "pass": false,
+   "passed": 0,
+   "total": 5
+  },
+  "responsive-adaptation": {
+   "pass": true,
+   "passed": 2,
+   "total": 2,
+   "no_overflow_all_viewports": true,
+   "content_adapts": true
+  }
+ },
+ "responsive": {
+  "noOverflowAllViewports": true,
+  "contentAdapts": true,
+  "wide": 1424,
+  "narrow": 304
+ },
+ "passed_metrics": 6,
+ "total_metrics": 10,
+ "all_passed": false
+}

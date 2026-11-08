@@ -1,0 +1,23 @@
+{
+ "task": "tokens",
+ "kind": "repair",
+ "sha256": "83db6d8f5bcd6eb7cc7f512db139fd6b514a941dbb4339fd2ae1b743323e80cc",
+ "prompt_sha256": "e749b5e2c37d712ac0f1208d8238a9f8f25567ca39876edc2dd492f5413fb56b",
+ "usage": {
+  "tokens": 450,
+  "seconds": 57.8,
+  "seed": 2103,
+  "stochastic": true
+ },
+ "static_gates": [
+  "braces do not balance",
+  "missing token --t-lg",
+  "missing token --t-xl",
+  "missing token --t-2xl",
+  "missing token --t-3xl",
+  "missing token --font-body",
+  "missing token --font-mono"
+ ],
+ "harness": null,
+ "text": ":root {\n:root {\n  --c-bg: #faf7f2;\n  --c-surface: #ffffff;\n  --c-border: #8a5a2f;\n  --c-text: #26221c;\n  --c-muted: #6b6459;\n  --c-primary: #8a5a2f;\n  --c-on-primary: #8a5a2f;\n  --c-primary-soft: #8a5a2f;\n  --c-danger: #b41b00;\n  --c-danger-soft: #b41b00;\n  --c-high: #e4e2e0;\n  --c-medium: #e4e2e0;\n  --c-low: #e4e2e0;\n  --c-done: #e4e2e0;\n  --c-todo: #e4e2e0;\n  --c-doing: #e4e2e0;\n  --c-success: #16a085;\n  --c-success-soft: #16a085;\n  --sp-1: 8px;\n  --sp-2: 12px;\n  --sp-3: 16px;\n  --sp-4: 20px;\n  --sp-5: 24px;\n  --sp-6: 30px;\n  --r-1: 4px;\n  --r-2: 8px;\n  --r-3: 12px;\n  --shadow-1: 4px;\n  --t-body: 14px;"
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow</title>
+  <!-- TRUSTED SCAFFOLDING: loader manifest (CSS/JS file list + app mount).
+       File listing is build infrastructure; all app implementation files
+       (styles, components, store, views) are Qwen-generated - see ORIGIN.json -->
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <link rel="stylesheet" href="styles/scale.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/status.css" />
+  <link rel="stylesheet" href="styles/feedback2.css" />
+  <link rel="stylesheet" href="styles/polish.css" />
+  <link rel="stylesheet" href="styles/fixes-v1.css" />
+  <link rel="stylesheet" href="styles/fixes-v2.css" />
+  <link rel="stylesheet" href="styles/fixes-v3.css" />
+  <script src="/vendor/react.production.min.js"></script>
+  <script src="/vendor/react-dom.production.min.js"></script>
+  <script src="/vendor/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="js/components/badge-progress.jsx"></script>
+  <script type="text/babel" src="js/components/task-card.jsx"></script>
+  <script type="text/babel" src="js/components/modal-empty.jsx"></script>
+  <script type="text/babel" src="js/components/sidebar.jsx"></script>
+  <script type="text/babel" src="js/lib/filter-tasks.js"></script>
+  <script type="text/babel" src="js/views/task-list-view.jsx"></script>
+  <script type="text/babel" src="js/store.js"></script>
+  <script type="text/babel" src="js/views/modal-forms.jsx"></script>
+  <script type="text/babel" src="js/app.jsx"></script>
+  <script>
+    // no-build runtime shim: expose React hooks as globals for generated code
+    window.useState = React.useState;
+    window.useEffect = React.useEffect;
+    window.useRef = React.useRef;
+    window.createContext = React.createContext;
+    // babel-standalone transforms external text/babel scripts via async XHR,
+    // so DOMContentLoaded can fire before all components exist. Poll until
+    // every generated global is defined, then mount.
+    var __needed = ['Badge', 'ProgressBar', 'TaskCard', 'EmptyState', 'Modal',
+                    'Sidebar', 'filterTasks', 'TaskListView', 'TaskFlowStore',
+                    'NewTaskForm', 'NewProjectForm', 'useTaskFlowState', 'App'];
+    var __mountWhenReady = function () {
+      var ready = __needed.every(function (n) { return typeof window[n] !== 'undefined'; });
+      if (ready) {
+        ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(window.App));
+      } else {
+        setTimeout(__mountWhenReady, 50);
+      }
+    };
+    __mountWhenReady();
+  </script>
+</body>
+</html>
