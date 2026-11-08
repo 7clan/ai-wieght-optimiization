@@ -98,5 +98,15 @@ class DocumentationResearchTests(unittest.TestCase):
         self.assertIsNone(OfficialDocsResearch(lambda _: [], lambda _: "").lookup("anything"))
 
 
+class PilotManifestTests(unittest.TestCase):
+    def test_public_and_private_fixtures_differ_by_task(self):
+        from experiments.adaptive.pilot import PILOT_TASKS, private_score
+        self.assertEqual(len(PILOT_TASKS), 2)
+        self.assertEqual({t.public.runtime for t in PILOT_TASKS}, {"python", "javascript"})
+        for spec in PILOT_TASKS:
+            self.assertNotEqual(spec.public.test_source, spec.private.test_source)
+            self.assertIsNone(private_score(spec, None))  # No Docker needed for absent candidate.
+
+
 if __name__ == "__main__":
     unittest.main()
