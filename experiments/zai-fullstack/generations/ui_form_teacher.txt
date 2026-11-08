@@ -1,0 +1,133 @@
+'use client'
+
+// TEACHER-INTEGRATION (Session 035, disclosed): ItemForm failed its
+// 3x4 contract budget (see generations/ui-form_*.json once complete).
+// Frozen interface, labels, validation rules and dialog behavior per
+// SPEC §3 (the API-side rules mirrored client-side).
+
+import { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { InventoryItem, InventoryInput } from '@/lib/inventory/types'
+
+type Errors = Partial<Record<'name' | 'category' | 'sku' | 'quantity' | 'minQuantity', string>>
+
+export function ItemForm({ open, initial, onClose, onSaved }:
+  {
+    open: boolean
+    initial: InventoryItem | null
+    onClose: () => void
+    onSaved: (input: InventoryInput) => void
+  }) {
+  const [name, setName] = useState('')
+  const [category, setCategory] = useState('')
+  const [sku, setSku] = useState('')
+  const [quantity, setQuantity] = useState('0')
+  const [minQuantity, setMinQuantity] = useState('5')
+  const [errors, setErrors] = useState<Errors>({})
+
+  useEffect(() => {
+    if (open) {
+      setName(initial?.name ?? '')
+      setCategory(initial?.category ?? '')
+      setSku(initial?.sku ?? '')
+      setQuantity(String(initial?.quantity ?? 0))
+      setMinQuantity(String(initial?.minQuantity ?? 5))
+      setErrors({})
+    }
+  }, [open, initial])
+
+  function submit() {
+    const errs: Errors = {}
+    const trimmedName = name.trim()
+    const trimmedCategory = category.trim()
+    const trimmedSku = sku.trim()
+    const qty = Number(quantity)
+    const minQty = Number(minQuantity)
+    if (trimmedName.length < 1 || trimmedName.length > 80) {
+      errs.name = 'name is required (1-80 chars)'
+    }
+    if (trimmedCategory.length < 1 || trimmedCategory.length > 40) {
+      errs.category = 'category is required (1-40 chars)'
+    }
+    if (trimmedSku.length > 40) {
+      errs.sku = 'sku must be at most 40 chars'
+    }
+    if (!Number.isInteger(qty) || qty < 0 || qty > 1000000) {
+      errs.quantity = 'quantity must be an integer 0-1000000'
+    }
+    if (!Number.isInteger(minQty) || minQty < 0 || minQty > 100000) {
+      errs.minQuantity = 'minQuantity must be an integer 0-100000'
+    }
+    setErrors(errs)
+    if (Object.keys(errs).length > 0) return
+    onSaved({
+      name: trimmedName,
+      category: trimmedCategory,
+      sku: trimmedSku,
+      quantity: qty,
+      minQuantity: minQty,
+    })
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{initial ? 'Edit item' : 'Add item'}</DialogTitle>
+        </DialogHeader>
+        <div className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="item-name">Name</Label>
+            <Input id="item-name" value={name}
+              onChange={(e) => setName(e.target.value)} />
+            {errors.name && (
+              <p className="text-xs text-destructive">{errors.name}</p>
+            )}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="item-category">Category</Label>
+            <Input id="item-category" value={category}
+              onChange={(e) => setCategory(e.target.value)} />
+            {errors.category && (
+              <p className="text-xs text-destructive">{errors.category}</p>
+            )}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="item-sku">SKU</Label>
+            <Input id="item-sku" value={sku}
+              onChange={(e) => setSku(e.target.value)} />
+            {errors.sku && (
+              <p className="text-xs text-destructive">{errors.sku}</p>
+            )}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="item-quantity">Quantity</Label>
+            <Input id="item-quantity" value={quantity} inputMode="numeric"
+              onChange={(e) => setQuantity(e.target.value)} />
+            {errors.quantity && (
+              <p className="text-xs text-destructive">{errors.quantity}</p>
+            )}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="item-min-quantity">Min quantity</Label>
+            <Input id="item-min-quantity" value={minQuantity}
+              inputMode="numeric"
+              onChange={(e) => setMinQuantity(e.target.value)} />
+            {errors.minQuantity && (
+              <p className="text-xs text-destructive">{errors.minQuantity}</p>
+            )}
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={submit}>Save</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}

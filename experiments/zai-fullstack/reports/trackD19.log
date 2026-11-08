@@ -1,0 +1,79 @@
+states.tsx assembled (2347 bytes, 2 teacher edits)
+src/components/stockpilot/toolbar.tsx: teacher version installed (3546 bytes)
+src/components/stockpilot/stats-bar.tsx: teacher version installed (1718 bytes)
+src/components/stockpilot/item-table.tsx: model version FAILED gates — teacher replaces
+  feedback: tsc --noEmit reported:
+  47): error TS1005: ',' expected.
+  src/components/stockpilot/item-table.tsx(23,51): error TS1005: ',' expected.
+  src/components/stockpilot/item-table.tsx(23,56): error TS1005: ';' expected.
+  src/components/stockpilot/item-table.tsx(23,58): error TS1434: Unexpected keyword or ident
+src/components/stockpilot/item-table.tsx: teacher version installed (4379 bytes)
+src/components/stockpilot/item-form.tsx: teacher version installed (4890 bytes)
+src/lib/inventory/use-inventory.ts: teacher version installed (3318 bytes)
+src/app/page.tsx: model version FAILED gates — teacher replaces
+  feedback: file is missing required export: default
+  tsc --noEmit reported:
+  src/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.
+  src/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stockpilot/states.tsx(3,16): error TS2300: Du
+src/app/page.tsx: teacher version installed (5427 bytes)
+GATES states: ok=False
+  feedback: tsc --noEmit reported:
+  src/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.
+  src/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.
+  src/components/stockpilot/states.tsx(4,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stock
+GATES stats: ok=False
+  feedback: tsc --noEmit reported:
+  src/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.
+  src/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.
+  src/components/stockpilot/states.tsx(4,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stock
+GATES toolbar: ok=False
+  feedback: tsc --noEmit reported:
+  src/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.
+  src/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.
+  src/components/stockpilot/states.tsx(4,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stock
+GATES table: ok=False
+  feedback: tsc --noEmit reported:
+  src/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.
+  src/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.
+  src/components/stockpilot/states.tsx(4,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stock
+GATES form: ok=False
+  feedback: tsc --noEmit reported:
+  src/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.
+  src/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.
+  src/components/stockpilot/states.tsx(4,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stock
+GATES hook: ok=False
+  feedback: tsc --noEmit reported:
+  src/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.
+  src/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.
+  src/components/stockpilot/states.tsx(4,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stock
+GATES page: ok=False
+  feedback: file is missing required export: default
+  tsc --noEmit reported:
+  src/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.
+  src/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.
+  src/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.
+  src/components/stockpilot/states.tsx(4,10): error TS2300: Duplicat
+[devserver] up after 67s
+== uitest (frozen) ==
+
+stderr: isabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-fore…>Add Item</button> aka getByLabel('Items').getByRole('button', { name: 'Add Item' })
+
+Call log:
+    - checking visibility of getByRole('button', { name: 'Add Item' })
+
+    at main (/home/z/s035/experiments/zai-fullstack/uitest.mjs:53:61)
+
+ui-teacher complete in 136s

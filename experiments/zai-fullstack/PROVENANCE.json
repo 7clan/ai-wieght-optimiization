@@ -155,6 +155,78 @@
     ],
     "teacher_bytes": 484
    }
+  },
+  "src/components/stockpilot/states.tsx": {
+   "contract": "states",
+   "label": "MIXED",
+   "provenance": {
+    "note": "mixed provenance per component",
+    "ui-empty": {
+     "label": "QWEN-ORIGINAL (ui-empty)",
+     "src": "ui-empty_r0_k3.json"
+    },
+    "ui-nomatch": {
+     "label": "TEACHER-INTEGRATION",
+     "src": "teacher-ui/nomatch.part.tsx"
+    },
+    "ui-error": {
+     "label": "QWEN-ORIGINAL (ui-error)",
+     "src": "ui-error_r0_k2.json"
+    },
+    "teacher_edits": [
+     {
+      "id": "T-UI-1",
+      "where": "ErrorState",
+      "before": ">Error text<",
+      "after": ">{message}<",
+      "note": "render the message prop (SPEC \u00a73 error state)"
+     },
+     {
+      "id": "T-UI-2",
+      "where": "EmptyState",
+      "before": ">Label text<",
+      "after": ">Add your first item to start tracking stock.<",
+      "note": "inviting sentence (SPEC \u00a73 empty state)"
+     }
+    ]
+   },
+   "note": "EmptyState/ErrorState = unmodified Qwen samples; NoMatchesState = teacher (12/12 contract failures archived)"
+  },
+  "src/components/stockpilot/item-table.tsx": {
+   "contract": "table",
+   "label": "TEACHER-INTEGRATION",
+   "src": "teacher-ui/item-table.tsx",
+   "note": "CORRECTED: ui-round2 recorded QWEN-ORIGINAL from a FALSE ACCEPT \u2014 the sample echoed the spec prose inside the function body (harness lesson #8: substring expects are satisfiable by spec echoes); tsc rejected it and the teacher version was installed; all 12 samples archived"
+  },
+  "src/components/stockpilot/toolbar.tsx": {
+   "contract": "toolbar",
+   "label": "TEACHER-INTEGRATION",
+   "src": "teacher-ui/toolbar.tsx",
+   "note": "3x4 contract budget exhausted; all samples archived in generations/"
+  },
+  "src/components/stockpilot/stats-bar.tsx": {
+   "contract": "stats",
+   "label": "TEACHER-INTEGRATION",
+   "src": "teacher-ui/stats-bar.tsx",
+   "note": "3x4 contract budget exhausted; all samples archived in generations/"
+  },
+  "src/components/stockpilot/item-form.tsx": {
+   "contract": "form",
+   "label": "TEACHER-INTEGRATION",
+   "src": "teacher-ui/item-form.tsx",
+   "note": "3x4 contract budget exhausted; all samples archived in generations/"
+  },
+  "src/lib/inventory/use-inventory.ts": {
+   "contract": "hook",
+   "label": "TEACHER-INTEGRATION",
+   "src": "teacher-ui/use-inventory.ts",
+   "note": "3x4 contract budget exhausted; all samples archived in generations/"
+  },
+  "src/app/page.tsx": {
+   "contract": "page",
+   "label": "TEACHER-INTEGRATION",
+   "src": "teacher-ui/page.tsx",
+   "note": "3x4 contract budget exhausted; all samples archived in generations/"
   }
  },
  "stages": [
@@ -510,11 +582,106 @@
     "total_new_tokens": 303,
     "total_seconds": 49.5
    }
+  },
+  {
+   "contract": "states",
+   "file": "src/components/stockpilot/states.tsx",
+   "accepted": false,
+   "rounds": 3,
+   "usage_delta": {
+    "generations": 12,
+    "total_new_tokens": 8400,
+    "total_seconds": 1157.1
+   },
+   "label": "FAILED"
+  },
+  {
+   "contract": "ui-round2",
+   "gates": {
+    "states": {
+     "ok": false,
+     "feedback": "file is missing required export: NoMatchesState\ntsc --noEmit reported:\n47): error TS1005: ',' expected.\nsrc/components/stockpilot/item-table.tsx(23,51): error TS1005: ',' expected.\nsrc/components/stockpilot/item-table.tsx(23,56): error TS1005: ';' expected.\nsrc/components/stockpilot/item-table.tsx(23,58): error TS1434: Unexpected keyword or identifier.\nsrc/components/stockpilot/item-table.tsx(24,1"
+    },
+    "stats": {
+     "ok": false,
+     "missing": true
+    },
+    "toolbar": {
+     "ok": false,
+     "missing": true
+    },
+    "table": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\n47): error TS1005: ',' expected.\nsrc/components/stockpilot/item-table.tsx(23,51): error TS1005: ',' expected.\nsrc/components/stockpilot/item-table.tsx(23,56): error TS1005: ';' expected.\nsrc/components/stockpilot/item-table.tsx(23,58): error TS1434: Unexpected keyword or identifier.\nsrc/components/stockpilot/item-table.tsx(24,1): error TS1434: Unexpected keyword or identifie"
+    },
+    "form": {
+     "ok": false,
+     "missing": true
+    },
+    "hook": {
+     "ok": false,
+     "missing": true
+    },
+    "page": {
+     "ok": false,
+     "feedback": "file is missing required export: default\ntsc --noEmit reported:\n47): error TS1005: ',' expected.\nsrc/components/stockpilot/item-table.tsx(23,51): error TS1005: ',' expected.\nsrc/components/stockpilot/item-table.tsx(23,56): error TS1005: ';' expected.\nsrc/components/stockpilot/item-table.tsx(23,58): error TS1434: Unexpected keyword or identifier.\nsrc/components/stockpilot/item-table.tsx(24,1): erro"
+    }
+   },
+   "usage_run": {
+    "generations": 80,
+    "total_new_tokens": 67127,
+    "total_seconds": 9345.8
+   },
+   "installed": [
+    "states.tsx",
+    "src/components/stockpilot/item-table.tsx"
+   ],
+   "note": "per-component contracts with neutral-label demos after the whole-file demo-label-trap diagnosis"
+  },
+  {
+   "contract": "ui-teacher",
+   "accepted": false,
+   "gates": {
+    "states": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.\nsrc/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.\nsrc/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.\nsrc/com"
+    },
+    "stats": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.\nsrc/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.\nsrc/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.\nsrc/com"
+    },
+    "toolbar": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.\nsrc/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.\nsrc/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.\nsrc/com"
+    },
+    "table": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.\nsrc/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.\nsrc/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.\nsrc/com"
+    },
+    "form": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.\nsrc/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.\nsrc/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.\nsrc/com"
+    },
+    "hook": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nsrc/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.\nsrc/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.\nsrc/components/stockpilot/states.tsx(3,16): error TS2300: Duplicate identifier 'CardContent'.\nsrc/com"
+    },
+    "page": {
+     "ok": false,
+     "feedback": "file is missing required export: default\ntsc --noEmit reported:\nsrc/components/stockpilot/states.tsx(2,10): error TS2300: Duplicate identifier 'Button'.\nsrc/components/stockpilot/states.tsx(3,10): error TS2300: Duplicate identifier 'Card'.\nsrc/components/stockpilot/states.tsx(3,16): error TS2300: Du"
+    }
+   },
+   "note": "teacher integration after ui-round2 budgets"
+  },
+  {
+   "contract": "ledger-correction",
+   "note": "item-table false-accept label corrected to TEACHER-INTEGRATION"
   }
  ],
  "model_usage_cumulative": {
-  "generations": 196,
-  "total_new_tokens": 100859,
-  "total_seconds": 1219827.5
+  "generations": 278,
+  "total_new_tokens": 155244,
+  "total_seconds": 21678.5,
+  "note": "recomputed from the 278 archived sample JSONs; the earlier cumulative figure (2,440,812 s) was inflated by a double-counting bug in runner_d's finally-block usage accounting \u2014 disclosed, all per-sample records intact"
  }
 }

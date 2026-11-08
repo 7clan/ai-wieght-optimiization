@@ -1,0 +1,127 @@
+{
+  "passed": 20,
+  "total": 20,
+  "pageErrors": 0,
+  "results": [
+    {
+      "n": 1,
+      "name": "1. header shows StockPilot + Add Item button",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 2,
+      "name": "2. empty state: \"No items yet\" + call to action",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 3,
+      "name": "3. Add Item opens form dialog with frozen field labels",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 4,
+      "name": "4. empty submit shows inline validation, dialog stays open",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 5,
+      "name": "5. saved item appears in list (+ success feedback)",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 6,
+      "name": "6. after refresh the item persists",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 7,
+      "name": "7. seeded 11 items all listed",
+      "pass": true,
+      "extra": "rows=12"
+    },
+    {
+      "n": 8,
+      "name": "8. search \"usb\" narrows to 3 items",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 9,
+      "name": "9. cleared search restores full list",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 10,
+      "name": "10. category Electronics -> keyboard/monitor/mouse only",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 11,
+      "name": "11. status Low -> only low-stock rows with badges",
+      "pass": true,
+      "extra": "lowBadges=10"
+    },
+    {
+      "n": 12,
+      "name": "12. sort quantity asc -> first row has quantity 0",
+      "pass": true,
+      "extra": "firstRow=\"Office Chair FUR-CH-01 Furniture 0 Out of stock 11/8/2026 Ed\""
+    },
+    {
+      "n": 13,
+      "name": "13. edit quantity 8 -> 50 saved",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 14,
+      "name": "14. delete Standing Desk: confirm dialog then row gone",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 15,
+      "name": "15. no-match state: \"No items match\" + Clear control",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 16,
+      "name": "16. API outage -> error panel + Retry recovers",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 17,
+      "name": "17. 390px: no horizontal overflow, content reachable",
+      "pass": true,
+      "extra": "overflow=0px"
+    },
+    {
+      "n": 18,
+      "name": "18. 320px: no horizontal overflow, Add Item reachable",
+      "pass": true,
+      "extra": "overflow=0px"
+    },
+    {
+      "n": 19,
+      "name": "19. loading indicator visible during slow fetch",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "n": 20,
+      "name": "20. final refresh: 10 items persist (9 seed + edited cable - desk)",
+      "pass": true,
+      "extra": "rows=11"
+    }
+  ]
+}

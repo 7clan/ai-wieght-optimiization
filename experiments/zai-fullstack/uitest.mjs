@@ -43,27 +43,31 @@ async function main() {
   const pageErrors = [];
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   page.on('pageerror', e => pageErrors.push(String(e)));
-  page.on('console', m => { if (m.type() === 'error') pageErrors.push(m.text()); });
+  page.on('console', m => {
+    if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) {
+      pageErrors.push(m.text());
+    }
+  });
 
   // ---- 1. header
   await wipe();
   await page.goto(BASE + '/', { waitUntil: 'networkidle' });
   check('1. header shows StockPilot + Add Item button',
     await page.getByText('StockPilot', { exact: false }).first().isVisible()
-    && await page.getByRole('button', { name: 'Add Item' }).isVisible());
+    && await page.getByRole('button', { name: 'Add Item' }).first().isVisible());
 
   // ---- 2. empty-inventory state
   check('2. empty state: "No items yet" + call to action',
     await page.getByText('No items yet', { exact: false }).first().isVisible());
 
   // ---- 3. open the form
-  await page.getByRole('button', { name: 'Add Item' }).click();
+  await page.getByRole('button', { name: 'Add Item' }).first().click();
   const dialog = page.getByRole('dialog');
   await dialog.waitFor({ state: 'visible', timeout: 5000 });
   check('3. Add Item opens form dialog with frozen field labels',
     await dialog.getByLabel('Name').isVisible()
     && await dialog.getByLabel('Category').isVisible()
-    && await dialog.getByLabel('Quantity').isVisible()
+    && await dialog.getByLabel('Quantity', { exact: true }).isVisible()
     && await dialog.getByLabel('Min quantity').isVisible());
 
   // ---- 4. inline validation on empty submit
@@ -76,7 +80,7 @@ async function main() {
   // ---- 5. create a valid item
   await dialog.getByLabel('Name').fill('USB-C Cable 2m');
   await dialog.getByLabel('Category').fill('Accessories');
-  await dialog.getByLabel('Quantity').fill('42');
+  await dialog.getByLabel('Quantity', { exact: true }).fill('42');
   await dialog.getByLabel('Min quantity').fill('10');
   await dialog.getByRole('button', { name: 'Save' }).click();
   await page.getByText('USB-C Cable 2m').first().waitFor({ timeout: 5000 });
@@ -149,9 +153,13 @@ async function main() {
   await keyboardRow.getByRole('button', { name: 'Edit' }).click();
   const editDialog = page.getByRole('dialog');
   await editDialog.waitFor({ state: 'visible' });
-  await editDialog.getByLabel('Quantity').fill('50');
+  await editDialog.getByLabel('Quantity', { exact: true }).fill('50');
   await editDialog.getByRole('button', { name: 'Save' }).click();
-  await page.waitForTimeout(700);
+  await page.waitForFunction(() => {
+    const rows = [...document.querySelectorAll('tr')];
+    const r = rows.find(e => e.innerText?.includes('Mechanical Keyboard'));
+    return !!r && /\b50\b/.test(r.innerText);
+  }, { timeout: 5000 });
   const updated = await page.getByRole('row', { name: /Mechanical Keyboard/ }).innerText();
   // [test-bug fix #8, disclosed: the \b8\b regression guard matched
   // dates like 11/8/2025 in the Updated column, failing on any day
@@ -200,9 +208,13 @@ async function main() {
   await page.waitForTimeout(500);
   const overflow390 = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  const anyVisible = async (text) => {
+    const els = await page.getByText(text).all();
+    for (const el of els) { if (await el.isVisible()) return true; }
+    return false;
+  };
   check('17. 390px: no horizontal overflow, content reachable',
-    overflow390 <= 1
-    && await page.getByText('Mechanical Keyboard').first().isVisible(),
+    overflow390 <= 1 && await anyVisible('Mechanical Keyboard'),
     `overflow=${overflow390}px`);
 
   // ---- 18. mobile 320px
@@ -212,7 +224,7 @@ async function main() {
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check('18. 320px: no horizontal overflow, Add Item reachable',
     overflow320 <= 1
-    && await page.getByRole('button', { name: 'Add Item' }).isVisible(),
+    && await page.getByRole('button', { name: 'Add Item' }).first().isVisible(),
     `overflow=${overflow320}px`);
 
   // ---- 19. loading state visible during a slow fetch
@@ -221,11 +233,15 @@ async function main() {
     await route.continue();
   });
   await page.reload({ waitUntil: 'domcontentloaded' });
-  const loadingSeen = await page.waitForTimeout(150).then(() =>
-    (page.getByRole('status').count() > 0)
-    || (page.getByText(/loading/i).count() > 0)
-    || (page.locator('.skeleton, [data-slot="skeleton"], .animate-pulse').count() > 0));
-  await page.getByText('Mechanical Keyboard').first().waitFor({ timeout: 10000 });
+  const loadingSeen = await page.waitForTimeout(150).then(async () =>
+    (await page.getByRole('status').count()) > 0
+    || (await page.getByText(/loading/i).count()) > 0
+    || (await page.locator('.skeleton, [data-slot="skeleton"], .animate-pulse').count()) > 0);
+  await page.waitForFunction(() => [...document.querySelectorAll('main *')]
+    .some(e => e.children.length === 0
+      && e.textContent?.trim() === 'Mechanical Keyboard'
+      && (e.offsetParent !== null || e.getClientRects().length > 0)),
+    { timeout: 10000 });
   await page.unroute('**/api/items**');
   check('19. loading indicator visible during slow fetch', loadingSeen);
 

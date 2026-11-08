@@ -1,0 +1,34 @@
+[devserver] stopped (up=False)
+model loaded; usage so far: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+
+===== STAGE states (src/components/stockpilot/states.tsx) =====
+  [gen r0 k0] seed=7 tok=700 reject=unbalanced brackets (1 unclosed)
+  [gen r0 k1] seed=1013 tok=700 reject=unbalanced brackets (5 unclosed)
+  [gen r0 k2] seed=2026 tok=700 reject=None
+  [gen r0 k3] seed=3039 tok=700 reject=demo echo: contains 'Animal'
+  rejected r0 k2: tsc --noEmit reported:
+ identifier.
+src/components/stockpilot/states.tsx(13,28): error TS1434: Unexpected keyword or identifier.
+src/components/stockpilot/states.tsx(13,44): error TS1005: ';' expected
+  [gen r1 k0] seed=77 tok=700 reject=demo echo: contains 'Animal'
+  [gen r1 k1] seed=1090 tok=700 reject=demo echo: contains 'Animal'
+  [gen r1 k2] seed=2103 tok=700 reject=demo echo: contains 'Animal'
+  [gen r1 k3] seed=3116 tok=700 reject=demo echo: contains 'Animal'
+  [gen r2 k0] seed=154 tok=700 reject=demo echo: contains 'Animal'
+  [gen r2 k1] seed=1167 tok=700 reject=demo echo: contains 'Animal'
+  [gen r2 k2] seed=2180 tok=700 reject=demo echo: contains 'Animal'
+  [gen r2 k3] seed=3193 tok=700 reject=demo echo: contains 'species'
+  STAGE states FAILED after 3 rounds — needs integration decision
+
+===== STAGE stats (src/components/stockpilot/stats-bar.tsx) =====
+  [gen r0 k0] seed=7 tok=450 reject=demo echo: contains 'Animal'
+  [gen r0 k1] seed=1013 tok=325 reject=demo echo: contains 'Animal'
+  [gen r0 k2] seed=2026 tok=450 reject=None
+  [gen r0 k3] seed=3039 tok=450 reject=demo echo: contains 'Animal'
+  rejected r0 k2: tsc --noEmit reported:
+src/components/stockpilot/stats-bar.tsx(9,1): error TS1005: '}' expected.
+
+eslint reported:
+
+/home/z/my-project/src/components/stockpilot/stats-bar.tsx
+  9:0  error  Parsing err

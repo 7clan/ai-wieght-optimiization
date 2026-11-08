@@ -1,0 +1,102 @@
+'use client'
+
+// TEACHER-INTEGRATION (Session 035, disclosed): StatsBar failed its
+// 3x4 contract budget (12/12 samples never produced the four frozen
+// labels together — see generations/ui-stats_*.json).  Frozen
+// interface and strings per SPEC §3; native selects per test-bug
+// fix #9 (see states.tsx note).
+
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+
+export type ToolbarPatch = Partial<{
+  q: string
+  category: string
+  status: string
+  sort: string
+  order: string
+}>
+
+export function Toolbar({ q, category, status, sort, order, categories, onChange }:
+  {
+    q: string
+    category: string
+    status: string
+    sort: string
+    order: string
+    categories: string[]
+    onChange: (patch: ToolbarPatch) => void
+  }) {
+  return (
+    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+      <div className="w-full sm:max-w-xs">
+        <Label htmlFor="toolbar-search" className="sr-only">Search</Label>
+        <Input
+          id="toolbar-search"
+          placeholder="Search items…"
+          value={q}
+          onChange={(e) => onChange({ q: e.target.value })}
+        />
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <div>
+          <Label htmlFor="toolbar-category" className="sr-only">Category</Label>
+          <select
+            id="toolbar-category"
+            aria-label="Category"
+            className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+            value={category}
+            onChange={(e) => onChange({ category: e.target.value })}
+          >
+            <option value="all">All categories</option>
+            {categories.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <Label htmlFor="toolbar-status" className="sr-only">Status</Label>
+          <select
+            id="toolbar-status"
+            aria-label="Status"
+            className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+            value={status}
+            onChange={(e) => onChange({ status: e.target.value })}
+          >
+            <option value="all">All statuses</option>
+            <option value="ok">In stock</option>
+            <option value="low">Low stock</option>
+            <option value="out">Out of stock</option>
+          </select>
+        </div>
+        <div>
+          <Label htmlFor="toolbar-sort" className="sr-only">Sort by</Label>
+          <select
+            id="toolbar-sort"
+            aria-label="Sort by"
+            className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+            value={sort}
+            onChange={(e) => onChange({ sort: e.target.value })}
+          >
+            <option value="updatedAt">Updated</option>
+            <option value="name">Name</option>
+            <option value="quantity">Quantity</option>
+          </select>
+        </div>
+        <div>
+          <Label htmlFor="toolbar-order" className="sr-only">Order</Label>
+          <select
+            id="toolbar-order"
+            aria-label="Order"
+            className="h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+            value={order}
+            onChange={(e) => onChange({ order: e.target.value })}
+          >
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  )
+}

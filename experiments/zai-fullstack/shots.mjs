@@ -18,10 +18,10 @@ const SEED = [
   ['Standing Desk', 'Furniture', 'FUR-DSK-01', 5, 2],
   ['Printer Paper A4', 'Consumables', 'CON-PP-A4', 120, 30],
   ['Ink Cartridge', 'Consumables', 'CON-INK-21', 2, 4],
-  ['Wireless Mouse', 'Electronics', 'ELC-MS-01', 25, 5],
+  ['USB Wireless Mouse', 'Electronics', 'ELC-MS-01', 25, 5],
   ['Desk Lamp', 'Furniture', 'FUR-LP-01', 1, 1],
   ['Sticky Notes', 'Consumables', 'CON-SN-03', 0, 5],
-  ['USB Hub 7-port', 'Accessories', 'ACC-UH-07', 14, 6],
+  ['USB Hub 7-port', 'Accessories', 'ACC-UH-07', 14, 20],
 ];
 
 async function main() {

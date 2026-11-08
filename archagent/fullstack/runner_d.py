@@ -103,6 +103,19 @@ def run_gates(contract: dict, installed_ok: bool) -> tuple[bool, str]:
         import re as _re2
         text = (install.APP / contract["file"]).read_text()
         for name in required:
+            # harness bug #9 (fixed, disclosed): required=['default']
+            # can never match `export default function Name` under the
+            # named-export regex — a default export is checked by its
+            # own pattern instead.
+            if name == "default":
+                if not _re2.search(
+                        r"export\s+default\s+"
+                        r"(?:function|class|const|let|\{|async\s+"
+                        r"function)", text):
+                    ok = False
+                    feedback_parts.append(
+                        "file is missing a default export")
+                continue
             if not _re2.search(
                     rf"export\s+(?:default\s+)?(?:async\s+)?"
                     rf"(?:function|const|interface|type|class)\s+{name}\b",

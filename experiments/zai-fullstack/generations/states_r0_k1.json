@@ -6,7 +6,7 @@
  "anchor": "'use client'\n",
  "usage": {
   "tokens": 700,
-  "seconds": 95.53,
+  "seconds": 88.19,
   "seed": 1013,
   "stochastic": true
  },

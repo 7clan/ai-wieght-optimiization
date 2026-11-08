@@ -58,9 +58,26 @@ const MEASURE = `(function measure() {
     return n > 0;
   }
   function parseColor(s) {
-    const m = s.match(/rgba?\\(([\\d.]+),\\s*([\\d.]+),\\s*([\\d.]+)(?:,\\s*([\\d.]+))?\\)/);
-    if (!m) return null;
-    return [+m[1], +m[2], +m[3], m[4] === undefined ? 1 : +m[4]];
+    if (!s) return null;
+    // [tooling repair #15, disclosed: Tailwind v4 computes colors as
+    // oklch()/lab()/color-mix() which the v3-era rgba-regex parser
+    // could not read (real colors parsed as null -> "transparent" and
+    // 1:1 contrast).  The browser itself converts any CSS color to
+    // sRGB bytes via a 1x1 canvas fill.  No metric changed.]
+    const cv = document.createElement('canvas');
+    cv.width = 1; cv.height = 1;
+    const ctx = cv.getContext('2d', { willReadFrequently: true });
+    ctx.fillStyle = 'rgba(0,0,0,0)';
+    try { ctx.fillStyle = s; } catch (e) { return null; }
+    if (ctx.fillStyle === 'rgba(0, 0, 0, 0)') return null;
+    ctx.fillRect(0, 0, 1, 1);
+    const d = ctx.getImageData(0, 0, 1, 1).data;
+    if (d[3] === 0 && !/rgba\(0,\s*0,\s*0,\s*0\)|transparent/.test(s)) {
+      // fully transparent pixel from an opaque color string: keep the
+      // alpha as parsed (premultiplied edge case)
+      return [d[0], d[1], d[2], 0];
+    }
+    return [d[0], d[1], d[2], d[3] / 255];
   }
   function blend(fg, bg) {  // fg over bg with alpha
     return [0, 1, 2].map(i => fg[3] * fg[i] + (1 - fg[3]) * bg[i]).concat([1]);
@@ -217,12 +234,19 @@ const MEASURE = `(function measure() {
       cur.push((el.className || el.tagName) + ' cursor=' + getComputedStyle(el).cursor);
   }
   let hoverRules = 0;
+  // [tooling repair #15b: Tailwind v4 nests rules inside @layer/@media
+  // grouping rules — the counter must recurse into cssRules]
+  const walkRules = (rules) => {
+    for (const r of rules) {
+      if (r.selectorText && r.selectorText.includes(':hover')) hoverRules++;
+      if (r.cssRules) { try { walkRules(r.cssRules); } catch (e) {} }
+    }
+  };
   try {
     for (const sheet of document.styleSheets) {
       let rules; try { rules = sheet.cssRules; } catch (e) { continue; }
       if (!rules) continue;
-      for (const r of rules)
-        if (r.selectorText && r.selectorText.includes(':hover')) hoverRules++;
+      walkRules(rules);
     }
   } catch (e) {}
   out.hoverRules = hoverRules;

@@ -1,0 +1,123 @@
+[devserver] stopped (up=False)
+model loaded in 17s
+== ui-empty (src/components/stockpilot/states.tsx :: EmptyState) ==
+  [ui-empty r0 k0] seed=7 tok=420 ok=False missing 'export function EmptyState'; missing 'No items yet'; missing 'Add Item'; missing 'onAdd'
+  [ui-empty r0 k1] seed=1013 tok=420 ok=False missing 'export function EmptyState'
+  [ui-empty r0 k2] seed=2026 tok=420 ok=False brace imbalance
+  [ui-empty r0 k3] seed=3039 tok=420 ok=True 
+== ui-nomatch (src/components/stockpilot/states.tsx :: NoMatchesState) ==
+  [ui-nomatch r0 k0] seed=7 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  [ui-nomatch r0 k1] seed=1013 tok=420 ok=False missing 'No items match'
+  [ui-nomatch r0 k2] seed=2026 tok=420 ok=False missing 'No items match'
+  [ui-nomatch r0 k3] seed=3039 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  [ui-nomatch r1 k0] seed=77 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  [ui-nomatch r1 k1] seed=1090 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  [ui-nomatch r1 k2] seed=2103 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  [ui-nomatch r1 k3] seed=3116 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  [ui-nomatch r2 k0] seed=154 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  [ui-nomatch r2 k1] seed=1167 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  [ui-nomatch r2 k2] seed=2180 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  [ui-nomatch r2 k3] seed=3193 tok=420 ok=False missing 'export function NoMatchesState'; missing 'No items match'; missing 'Clear'; missing 'onClear'
+  ui-nomatch FAILED 3x4 — recorded for teacher
+== ui-error (src/components/stockpilot/states.tsx :: ErrorState) ==
+  [ui-error r0 k0] seed=7 tok=420 ok=False missing 'export function ErrorState'; missing 'Retry'; missing 'message'; missing 'onRetry'
+  [ui-error r0 k1] seed=1013 tok=420 ok=False missing 'export function ErrorState'; missing 'Retry'; missing 'message'; missing 'onRetry'
+  [ui-error r0 k2] seed=2026 tok=420 ok=True 
+== ui-stats (src/components/stockpilot/stats-bar.tsx :: StatsBar) ==
+  [ui-stats r0 k0] seed=7 tok=450 ok=False missing 'grid-cols-2'; missing 'sm:grid-cols-4'
+  [ui-stats r0 k1] seed=1013 tok=450 ok=False missing 'grid-cols-2'; missing 'sm:grid-cols-4'
+  [ui-stats r0 k2] seed=2026 tok=431 ok=False missing 'Total items'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'
+  [ui-stats r0 k3] seed=3039 tok=416 ok=False missing 'export function StatsBar'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'; missing 'sm:grid-cols-4'
+  [ui-stats r1 k0] seed=77 tok=450 ok=False missing 'export function StatsBar'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'; missing 'sm:grid-cols-4'
+  [ui-stats r1 k1] seed=1090 tok=450 ok=False missing 'export function StatsBar'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'; missing 'sm:grid-cols-4'
+  [ui-stats r1 k2] seed=2103 tok=450 ok=False missing 'export function StatsBar'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'; missing 'sm:grid-cols-4'
+  [ui-stats r1 k3] seed=3116 tok=450 ok=False missing 'export function StatsBar'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'; missing 'sm:grid-cols-4'
+  [ui-stats r2 k0] seed=154 tok=450 ok=False missing 'export function StatsBar'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'; missing 'sm:grid-cols-4'
+  [ui-stats r2 k1] seed=1167 tok=450 ok=False missing 'Total items'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'; missing 'sm:grid-cols-4'
+  [ui-stats r2 k2] seed=2180 tok=450 ok=False missing 'export function StatsBar'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'; missing 'sm:grid-cols-4'
+  [ui-stats r2 k3] seed=3193 tok=450 ok=False missing 'export function StatsBar'; missing 'Total units'; missing 'Low stock'; missing 'Out of stock'; missing 'sm:grid-cols-4'
+  ui-stats FAILED 3x4 — recorded for teacher
+== ui-toolbar (src/components/stockpilot/toolbar.tsx :: Toolbar) ==
+  [ui-toolbar r0 k0] seed=7 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  [ui-toolbar r0 k1] seed=1013 tok=800 ok=False missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; missing 'Low stock'; missing 'Out of
+  [ui-toolbar r0 k2] seed=2026 tok=800 ok=False missing 'export function Toolbar'; missing 'All statuses'; missing 'In stock'; missing 'Low stock'; missing 'Out of stock'; missin
+  [ui-toolbar r0 k3] seed=3039 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  [ui-toolbar r1 k0] seed=77 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  [ui-toolbar r1 k1] seed=1090 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  [ui-toolbar r1 k2] seed=2103 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  [ui-toolbar r1 k3] seed=3116 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  [ui-toolbar r2 k0] seed=154 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  [ui-toolbar r2 k1] seed=1167 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  [ui-toolbar r2 k2] seed=2180 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  [ui-toolbar r2 k3] seed=3193 tok=800 ok=False missing 'export function Toolbar'; missing 'Search items'; missing 'All categories'; missing 'All statuses'; missing 'In stock'; m
+  ui-toolbar FAILED 3x4 — recorded for teacher
+== ui-table (src/components/stockpilot/item-table.tsx :: ItemTable) ==
+  [ui-table r0 k0] seed=7 tok=1000 ok=True 
+== ui-form (src/components/stockpilot/item-form.tsx :: ItemForm) ==
+  [ui-form r0 k0] seed=7 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r0 k1] seed=1013 tok=1000 ok=False brace imbalance
+  [ui-form r0 k2] seed=2026 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r0 k3] seed=3039 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r1 k0] seed=77 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r1 k1] seed=1090 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r1 k2] seed=2103 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r1 k3] seed=3116 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r2 k0] seed=154 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r2 k1] seed=1167 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r2 k2] seed=2180 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  [ui-form r2 k3] seed=3193 tok=1000 ok=False missing 'export function ItemForm'; missing 'Add item'; missing 'Edit item'; missing "'Name'"; missing "'Category'"; missing "'SKU
+  ui-form FAILED 3x4 — recorded for teacher
+== ui-hook (src/lib/inventory/use-inventory.ts :: useInventory) ==
+  [ui-hook r0 k0] seed=7 tok=1300 ok=False missing '300'
+  [ui-hook r0 k1] seed=1013 tok=1300 ok=False missing '300'
+  [ui-hook r0 k2] seed=2026 tok=1300 ok=False missing 'getJson'; missing '300'
+  [ui-hook r0 k3] seed=3039 tok=1300 ok=False missing 'export function useInventory'; missing 'reloadKey'; missing 'saveItem'; missing '300'
+  [ui-hook r1 k0] seed=77 tok=1300 ok=False missing 'saveItem'; missing '300'
+  [ui-hook r1 k1] seed=1090 tok=1300 ok=False missing '300'
+  [ui-hook r1 k2] seed=2103 tok=1300 ok=False missing 'export function useInventory'; missing 'reloadKey'; missing 'saveItem'; missing '300'
+  [ui-hook r1 k3] seed=3116 tok=1300 ok=False missing 'saveItem'; missing '300'
+  [ui-hook r2 k0] seed=154 tok=1300 ok=False missing 'export function useInventory'; missing 'reloadKey'; missing 'saveItem'; missing '300'
+  [ui-hook r2 k1] seed=1167 tok=1300 ok=False missing 'saveItem'; missing '300'
+  [ui-hook r2 k2] seed=2180 tok=1300 ok=False missing 'reloadKey'; missing '300'
+  [ui-hook r2 k3] seed=3193 tok=1300 ok=False missing 'reloadKey'; missing 'saveItem'; missing '300'
+  ui-hook FAILED 3x4 — recorded for teacher
+== ui-page (src/app/page.tsx :: page) ==
+  [ui-page r0 k0] seed=7 tok=1300 ok=False missing 'Add Item'; missing 'role="status"'
+  [ui-page r0 k1] seed=1013 tok=1300 ok=False missing 'Add Item'; missing 'Toolbar'; missing 'role="status"'
+  [ui-page r0 k2] seed=2026 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemTable'; missing 'ItemForm'; missing 
+  [ui-page r0 k3] seed=3039 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemTable'; missing 'ItemForm'; missing 
+  [ui-page r1 k0] seed=77 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemTable'; missing 'ItemForm'; missing 
+  [ui-page r1 k1] seed=1090 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemTable'; missing 'ItemForm'; missing 
+  [ui-page r1 k2] seed=2103 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemForm'; missing 'Loading'; missing 'r
+  [ui-page r1 k3] seed=3116 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemTable'; missing 'ItemForm'; missing 
+  [ui-page r2 k0] seed=154 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemTable'; missing 'ItemForm'; missing 
+  [ui-page r2 k1] seed=1167 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemTable'; missing 'ItemForm'; missing 
+  [ui-page r2 k2] seed=2180 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemTable'; missing 'ItemForm'; missing 
+  [ui-page r2 k3] seed=3193 tok=1300 ok=False missing 'StockPilot'; missing 'Add Item'; missing 'StatsBar'; missing 'Toolbar'; missing 'ItemTable'; missing 'ItemForm'; missing 
+  ui-page FAILED 3x4 — recorded for teacher
+model usage this run: {'generations': 80, 'total_new_tokens': 67127, 'total_seconds': 9345.8}
+GATES states: ok=False
+  feedback: file is missing required export: NoMatchesState
+  tsc --noEmit reported:
+  47): error TS1005: ',' expected.
+  src/components/stockpilot/item-table.tsx(23,51): error TS1005: ',' expected.
+  src/components/stockpilot/item-table.tsx(23,56): error TS1005: ';' expected.
+  src/components/stockpilot/item-table.tsx(23,58): error TS1434: Unexpected keyword or identifier.
+  src/components/stockpilot/item-table.tsx(24,1
+GATES table: ok=False
+  feedback: tsc --noEmit reported:
+  47): error TS1005: ',' expected.
+  src/components/stockpilot/item-table.tsx(23,51): error TS1005: ',' expected.
+  src/components/stockpilot/item-table.tsx(23,56): error TS1005: ';' expected.
+  src/components/stockpilot/item-table.tsx(23,58): error TS1434: Unexpected keyword or identifier.
+  src/components/stockpilot/item-table.tsx(24,1): error TS1434: Unexpected keyword or identifie
+GATES page: ok=False
+  feedback: file is missing required export: default
+  tsc --noEmit reported:
+  47): error TS1005: ',' expected.
+  src/components/stockpilot/item-table.tsx(23,51): error TS1005: ',' expected.
+  src/components/stockpilot/item-table.tsx(23,56): error TS1005: ';' expected.
+  src/components/stockpilot/item-table.tsx(23,58): error TS1434: Unexpected keyword or identifier.
+  src/components/stockpilot/item-table.tsx(24,1): erro
+[devserver] up after 6s
+ui-round2 complete in 9395s
