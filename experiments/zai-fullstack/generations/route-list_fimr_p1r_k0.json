@@ -1,0 +1,22 @@
+{
+ "kind": "fim-patch",
+ "cid": "route-list",
+ "step": "p1r",
+ "k": 0,
+ "seed": 7,
+ "usage": {
+  "tokens": 160,
+  "seconds": 20.91,
+  "seed": 7,
+  "stochastic": false,
+  "fim": true
+ },
+ "prefix_tail": "import { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n",
+ "suffix_head": "  const rows = await db.inventoryItem.findMany({\n    where: q ? { OR: [{ name: { contains: q } }, { sku: { contains: q } }] } : {},\n    orderBy: { upd",
+ "instructions": "Read category, status, sort and order the same way as q, with defaults 'all', 'all', 'updatedAt', 'desc'.",
+ "completion": "\n  const q = req.nextUrl.searchParams.get('q') || 'all'\n  const sort = req.nextUrl.searchParams.get('sort') || 'updatedAt'\n  const order = req.nextUrl.searchParams.get('order') || 'desc'\n  const page = req.nextUrl.searchParams.get('page') || 1\n  const limit = req.nextUrl.searchParams.get('limit') || 10\n  const skip = (page - 1) * limit\n  const categories = await db.category.findMany()\n  const status = await db.status.findMany()\n  const sortOptions = {\n    name: 'name',\n    sku: 'sku',\n    price: 'price',\n    createdAt: 'createdAt',\n    updatedAt: 'updatedAt',\n  }\n  const",
+ "reject": [
+  "missing \"get('category')\"",
+  "missing \"get('status')\""
+ ]
+}

@@ -7,7 +7,7 @@
  "seed": 1013,
  "usage": {
   "tokens": 450,
-  "seconds": 60.93,
+  "seconds": 65.08,
   "seed": 1013,
   "stochastic": true
  },
@@ -15,6 +15,6 @@
  "completion": "  const name = String(body.name ?? '').trim()\n  const category = String(body.category ?? '').trim()\n  const sku = String(body.sku ?? '').trim()\n  const quantity = Number(body.quantity)\n  const minQuantity = Number(body.minQuantity)\n  const notes = String(body.notes ?? '').trim()\n  if (name.length < 1 || name.length > 60) {\n    return NextResponse.json({ error: 'name is required (1-60 chars)' }, { status: 400 })\n  }\n  if (category.length < 1 || category.length > 60) {\n    return NextResponse.json({ error: 'category is required (1-60 chars)' }, { status: 400 })\n  }\n  if (sku.length < 1 || sku.length > 40) {\n    return NextResponse.json({ error: 'sku is required (1-40 chars)' }, { status: 400 })\n  }\n  if (quantity < 0 || quantity > 1000000) {\n    return NextResponse.json({ error: 'quantity must be 0-100000' }, { status: 400 })\n  }\n  if (!Number.isInteger(quantity) || quantity < 0 || quantity > 1000000) {\n    return NextResponse.json({ error: 'quantity must be 0-100000' }, { status: 400 })\n  }\n  if (!Number.isInteger(minQuantity) || minQuantity < 0 || minQuantity > 1000000) {\n    return NextResponse.json({ error: 'minQuantity must be 0-100000' }, { status: 400 })\n  }\n  const row = await db.inventoryItem.create({\n    data: {\n      name,\n      category,\n      sku: sku || null,\n      quantity,\n      minQuantity,\n      notes: notes || null\n    }\n  })\n  return NextResponse.json({ item: { ...row, updatedAt: row.updatedAt.toISOString() } }, { status: ",
  "processed": "  const body = await req.json()\n  const name = String(body.name ?? '').trim()\n  const category = String(body.category ?? '').trim()\n  const sku = String(body.sku ?? '').trim()\n  const quantity = Number(body.quantity)\n  const minQuantity = Number(body.minQuantity)\n  const notes = String(body.notes ?? '').trim()\n  if (name.length < 1 || name.length > 60) {\n    return NextResponse.json({ error: 'name is required (1-60 chars)' }, { status: 400 })\n  }\n  if (category.length < 1 || category.length > 60) {\n    return NextResponse.json({ error: 'category is required (1-60 chars)' }, { status: 400 })\n  }\n  if (sku.length < 1 || sku.length > 40) {\n    return NextResponse.json({ error: 'sku is required (1-40 chars)' }, { status: 400 })\n  }\n  if (quantity < 0 || quantity > 1000000) {\n    return NextResponse.json({ error: 'quantity must be 0-100000' }, { status: 400 })\n  }\n  if (!Number.isInteger(quantity) || quantity < 0 || quantity > 1000000) {\n    return NextResponse.json({ error: 'quantity must be 0-100000' }, { status: 400 })\n  }\n  if (!Number.isInteger(minQuantity) || minQuantity < 0 || minQuantity > 1000000) {\n    return NextResponse.json({ error: 'minQuantity must be 0-100000' }, { status: 400 })\n  }\n  const row = await db.inventoryItem.create({\n    data: {\n      name,\n      category,\n      sku: sku || null,\n      quantity,\n      minQuantity,\n      notes: notes || null\n    }\n  })\n  return NextResponse.json({ item: { ...row, updatedAt: row.updatedAt.toISOString() } }, { status: ",
  "reject": [
-  "'db.inventoryItem.create' must come before 'if (name.length'"
+  "brace imbalance"
  ]
 }

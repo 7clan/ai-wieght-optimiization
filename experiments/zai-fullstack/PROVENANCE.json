@@ -21,50 +21,36 @@
   "src/app/api/items/route.ts": {
    "contract": "route-list",
    "label": "QWEN-REPAIRED",
-   "base": "route-list_r0_k3 (QWEN-ORIGINAL bytes, mechanical strip+trim)",
-   "patches": {
-    "p4-category-read": {
-     "pid": "p4-category-read",
-     "k": 1,
-     "seed": 1013,
-     "tokens": 60
-    },
-    "p5-category-validate": {
-     "pid": "p5-category-validate",
-     "k": 0,
-     "seed": 7,
-     "tokens": 49
-    },
-    "p6-sku-optional": {
-     "pid": "p6-sku-optional",
-     "k": 0,
-     "seed": 7,
-     "tokens": 49
-    },
-    "p9-create-data": {
-     "pid": "p9-create-data",
-     "k": 0,
-     "seed": 7,
-     "tokens": 39
-    }
+   "base": "route-list_r0_k3 near-miss (round 1)",
+   "post_body": "FAILED-ROUND2",
+   "get_body": {
+    "mode": "body-contract",
+    "round": 0,
+    "k": 0,
+    "seed": 7,
+    "tokens": 500,
+    "src": "route-list_get2_*.json"
    },
-   "missing": [
-    "p1-get-params",
-    "p2-where-orderby",
-    "p3-status-filter",
-    "p7-quantity-integer",
-    "p8-min-integer"
-   ],
-   "note": "9-region micro-FIM ladder; per-patch samples in generations/route-list_fimp_*.json"
+   "note": "round-2 rebuild: POST regenerated as one body contract; GET via fim-ladder or body contract; per-sample evidence in generations/"
   },
   "src/app/api/items/[id]/route.ts": {
    "contract": "route-id",
-   "round": 0,
-   "k": 2,
-   "seed": 2026,
-   "tokens": 900,
-   "label": "QWEN-ORIGINAL",
-   "note": "accepted on round 0 sample 2"
+   "label": "QWEN-REPAIRED",
+   "bodies": {
+    "get": {
+     "src": "body_route-id_get_r0_k1",
+     "cut": "repetition"
+    },
+    "put": {
+     "src": "route-id_put_r1_k1",
+     "note": "right-ordered complete body from round 1"
+    },
+    "delete": {
+     "src": "body_route-id_delete_r0_k1",
+     "cut": "repetition"
+    }
+   },
+   "note": "skeleton lines are disclosed interface scaffolding"
   }
  },
  "stages": [
@@ -230,11 +216,32 @@
     "p7-quantity-integer",
     "p8-min-integer"
    ]
+  },
+  {
+   "contract": "route-round2",
+   "accepted": false,
+   "post_body_ok": false,
+   "get_body_ok": true,
+   "gates": {
+    "route-list": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nxpected.\nsrc/app/api/items/route.ts(28,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(30,1): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(30,7): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(30,11): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(30,16): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(30,43): error TS1005: ',' expected.\nsrc/app/api/items/route.ts(30,46): error TS1005: ',' expected.\nsrc/app/api/items/route.ts(30,51): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(31,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(32,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(33,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(34,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(35,4): error TS1005: ';' expected.\n\neslint reported:\n\n/home/z/my-project/src/app/api/items/[id]/route.ts\n  31:0  error  Parsing error: Unexpected keyword or identifier\n\n/home/z/my-project/src/app/api/items/route.ts\n  23:0  error  Parsing error: Unexpected keyword or identifier\n\n\u2716 2 problems (2 errors, 0 warnings)\n\n"
+    },
+    "route-id": {
+     "ok": false,
+     "feedback": "tsc --noEmit reported:\nxpected.\nsrc/app/api/items/route.ts(28,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(30,1): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(30,7): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(30,11): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(30,16): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(30,43): error TS1005: ',' expected.\nsrc/app/api/items/route.ts(30,46): error TS1005: ',' expected.\nsrc/app/api/items/route.ts(30,51): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(31,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(32,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(33,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(34,4): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(35,4): error TS1005: ';' expected.\n\neslint reported:\n\n/home/z/my-project/src/app/api/items/[id]/route.ts\n  31:0  error  Parsing error: Unexpected keyword or identifier\n\n/home/z/my-project/src/app/api/items/route.ts\n  23:0  error  Parsing error: Unexpected keyword or identifier\n\n\u2716 2 problems (2 errors, 0 warnings)\n\n"
+    }
+   },
+   "usage_run": {
+    "generations": 16,
+    "total_new_tokens": 6380,
+    "total_seconds": 888.6
+   }
   }
  ],
  "model_usage_cumulative": {
-  "generations": 128,
-  "total_new_tokens": 81744,
+  "generations": 144,
+  "total_new_tokens": 88124,
   "total_seconds": 1219827.5
  }
 }

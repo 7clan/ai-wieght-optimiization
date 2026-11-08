@@ -1,0 +1,4 @@
+[devserver] stopped (up=False)
+model loaded in 18s
+== GET body contract, corrected checks ==
+  [get3 r0 k0] seed=7 tok=500 ok=False forbidden 'where.status'; forbidden pattern '(?<![.\\w])minQuantity\\b'

@@ -1,0 +1,24 @@
+{
+ "kind": "fim-patch",
+ "cid": "route-list",
+ "step": "p1r",
+ "k": 1,
+ "seed": 1013,
+ "usage": {
+  "tokens": 160,
+  "seconds": 22.92,
+  "seed": 1013,
+  "stochastic": true,
+  "fim": true
+ },
+ "prefix_tail": "import { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n",
+ "suffix_head": "  const rows = await db.inventoryItem.findMany({\n    where: q ? { OR: [{ name: { contains: q } }, { sku: { contains: q } }] } : {},\n    orderBy: { upd",
+ "instructions": "Read category, status, sort and order the same way as q, with defaults 'all', 'all', 'updatedAt', 'desc'.",
+ "completion": "\n\n  const { limit = 50, skip = 0, q, status, sort, order } = req.query\n\n  if (q && status) {\n    // return NextResponse.json({ error: 'Query parameters cannot be used with status' })\n  }\n  if (q && status) {\n    // return NextResponse.json({ error: 'Query parameters cannot be used with status' })\n  }\n\n  if (q) {\n    // return NextResponse.json({ error: 'Query parameters cannot be used with status' })\n  }\n\n  if (sort && order) {\n    // return NextResponse.json({ error: 'Query parameters cannot be used with status' })\n  }\n\n<|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|><|fim_pad|>",
+ "reject": [
+  "missing \"get('category')\"",
+  "missing \"get('status')\"",
+  "missing \"get('sort')\"",
+  "missing \"get('order')\""
+ ]
+}

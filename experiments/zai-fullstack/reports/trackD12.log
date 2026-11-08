@@ -2,3 +2,71 @@
 model loaded in 16s
 == POST body contract ==
   [post2 r0 k0] seed=7 tok=450 ok=False missing 'Number.isInteger'; missing 'sku: sku || null'
+  [post2 r0 k1] seed=1013 tok=450 ok=False brace imbalance
+  [post2 r0 k2] seed=2026 tok=450 ok=False missing 'db.inventoryItem.create'; missing 'sku: sku || null'
+  [post2 r0 k3] seed=3039 tok=450 ok=False missing 'sku: sku || null'
+  [post2 r1 k0] seed=77 tok=450 ok=False missing 'sku: sku || null'
+  [post2 r1 k1] seed=1090 tok=450 ok=False brace imbalance
+  [post2 r1 k2] seed=2103 tok=450 ok=False missing 'db.inventoryItem.create'; missing 'Number.isInteger'; missing 'sku: sku || null'
+  [post2 r1 k3] seed=3116 tok=450 ok=False demo echo 'adoption'; demo echo 'species'; missing 'db.inventoryItem.create'; missing 'sku: sku || null'; missing 'category'
+  [post2 r2 k0] seed=154 tok=450 ok=False demo echo 'adoption'; demo echo 'species'; missing 'db.inventoryItem.create'; missing 'sku: sku || null'; missing 'category'
+  [post2 r2 k1] seed=1167 tok=450 ok=False missing 'sku: sku || null'
+  [post2 r2 k2] seed=2180 tok=450 ok=False missing 'Number.isInteger'; missing 'sku: sku || null'
+  [post2 r2 k3] seed=3193 tok=450 ok=False demo echo 'adoption'; demo echo 'species'; missing 'db.inventoryItem.create'; missing 'sku: sku || null'; missing 'category'
+== GET: imitation FIM p1' ==
+  [fimr route-list/p1r k0] seed=7 tok=160 ok=False missing "get('category')"; missing "get('status')"
+  [fimr route-list/p1r k1] seed=1013 tok=160 ok=False missing "get('category')"; missing "get('status')"; missing "get('sort')"; missing "get('order')"
+  [fimr route-list/p1r k2] seed=2026 tok=160 ok=False missing "get('category')"; missing "get('status')"; missing "get('sort')"; missing "get('order')"
+== GET body contract (fallback) ==
+  [get2 r0 k0] seed=7 tok=500 ok=True 
+model usage this run: {'generations': 16, 'total_new_tokens': 6380, 'total_seconds': 888.6}
+POST body FAILED — keeping round-1 merged POST (recorded)
+route-list round-2 file installed + archived
+route-id cuts: get 8 lines, delete 6 lines, put 26 lines
+route-id round-2 file installed + archived
+GATES route-list: ok=False
+  feedback: tsc --noEmit reported:
+  xpected.
+  src/app/api/items/route.ts(28,4): error TS1005: ';' expected.
+  src/app/api/items/route.ts(30,1): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/route.ts(30,7): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/route.ts(30,11): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/route.ts(30,16): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/route.ts(30,43): error TS1005: ',' expected.
+  src/app/api/items/route.ts(30,46): error TS1005: ',' expected.
+  src/app/api/items/route.ts(30,51): error TS1005: '
+GATES route-id: ok=False
+  feedback: tsc --noEmit reported:
+  xpected.
+  src/app/api/items/route.ts(28,4): error TS1005: ';' expected.
+  src/app/api/items/route.ts(30,1): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/route.ts(30,7): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/route.ts(30,11): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/route.ts(30,16): error TS1434: Unexpected keyword or identifier.
+  src/app/api/items/route.ts(30,43): error TS1005: ',' expected.
+  src/app/api/items/route.ts(30,46): error TS1005: ',' expected.
+  src/app/api/items/route.ts(30,51): error TS1005: '
+[devserver] up after 6s
+== apitest (frozen, as-committed) ==
+FAIL  1 GET empty list 200 {items:[],total:0}
+FAIL  2 POST valid item 201, echoes fields + id
+FAIL  3 POST missing name 400 {error}
+FAIL  4 POST negative quantity 400
+FAIL  5 POST non-integer quantity 400
+FAIL  6 seed 10 + earlier = 11 items, total matches — total=null
+FAIL  7 GET ?q=usb matches name+sku case-insensitively (3) — total=null
+FAIL  8 GET ?category=Electronics -> 3 items all Electronics
+FAIL  9 GET ?status=low -> 4 items, all genuinely low — total=null
+FAIL 10 GET ?status=out -> 2 items with quantity 0
+FAIL 11 GET ?sort=quantity&order=asc ascending — q=[]
+FAIL 12 GET /:id 200 then 404 for unknown
+FAIL 13 PUT updates and persists (now low stock)
+FAIL 14 PUT invalid 400 / unknown 404
+FAIL 15 DELETE 204 then 404
+FAIL 16 post-delete total is 10 (restart-phase baseline) — total=null
+
+stderr: SUITE ERROR TypeError: Cannot read properties of null (reading 'total')
+    at main (file:///home/z/s035/experiments/zai-fullstack/apitest.mjs:191:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+round-2 complete in 931s
