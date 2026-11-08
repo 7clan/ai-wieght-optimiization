@@ -7,7 +7,7 @@ from adaptive_agent import (
     AgentController, Budget, ControllerError, DocFinding, Proposal,
     SandboxResult, Task,
 )
-from adaptive_agent.qwen_adapter import QwenJSONAdapter
+from adaptive_agent.qwen_adapter import QwenJSONAdapter, QwenSingleFileAdapter
 
 
 TASK = Task("novel-001", "Implement a small inventory endpoint", ("GET returns items",))
@@ -69,6 +69,45 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual(report.evaluations, 2)
         self.assertIn("API contract", model.contexts[1].strategy)
         self.assertIn("404", model.contexts[1].public_feedback[0])
+        self.assertEqual(model.contexts[1].previous_files["src/index.js"], "wrong")
+        self.assertEqual(model.contexts[0].previous_files, {})
+
+    def test_single_file_adapter_uses_source_and_actual_feedback_for_repair(self):
+        seen_prompts = []
+        outputs = iter(["def count_nonempty(items):", "def count_nonempty(items):\n    return 2"])
+
+        def generate(prompt):
+            seen_prompts.append(prompt)
+            return next(outputs)
+
+        model = QwenSingleFileAdapter(generate)
+        task = Task("py", "Write count_nonempty(items)", ("returns 2",), ("solution.py",))
+        sandbox = FakeSandbox([
+            SandboxResult({"public": False}, "IndentationError: expected an indented block"),
+            SandboxResult({"public": True}),
+        ])
+        result = AgentController(Budget(max_attempts=2)).run(task, model, sandbox, FakeResearcher())
+        self.assertEqual(result.status, "public_checks_passed")
+        self.assertEqual([c[1]["solution.py"] for c in sandbox.calls], [
+            "def count_nonempty(items):\n", "def count_nonempty(items):\n    return 2\n",
+        ])
+        self.assertIn("CURRENT SOURCE:", seen_prompts[1])
+        self.assertIn("IndentationError", seen_prompts[1])
+        self.assertNotIn("private", seen_prompts[1].lower())
+
+    def test_single_file_adapter_requires_one_target_and_refuses_empty_generation(self):
+        from adaptive_agent import ModelContext
+        model = QwenSingleFileAdapter(lambda _: "")
+        for task in (TASK, Task("many", "multiple files", ("works",), ("a.py", "b.py"))):
+            with self.assertRaises(ControllerError):
+                model.propose(ModelContext(task, 1, (), (), ""))
+
+    def test_single_file_adapter_strips_fences_without_changing_code(self):
+        from adaptive_agent import ModelContext
+        model = QwenSingleFileAdapter(lambda _: "```javascript\nmodule.exports = { value: 1 };\n```")
+        task = Task("js", "Export value", ("works",), ("solution.cjs",))
+        output = model.propose(ModelContext(task, 1, (), (), ""))
+        self.assertEqual(output.files["solution.cjs"], "module.exports = { value: 1 };\n")
 
     def test_repeated_identical_patch_stops_without_reexecuting(self):
         model = FakeModel([proposal("bad"), proposal("bad"), proposal("bad")])
