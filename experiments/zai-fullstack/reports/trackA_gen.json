@@ -1,0 +1,140 @@
+{
+ "track": "A-gen",
+ "wall_seconds": 1251.4,
+ "model_usage": {
+  "generations": 7,
+  "total_new_tokens": 8400,
+  "total_seconds": 1251.4
+ },
+ "cpu_seconds": 1881.8,
+ "peak_rss_mb": 3258.1,
+ "candidates": [
+  {
+   "id": "trackA_001",
+   "seed": 0,
+   "stochastic": false,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 177.13,
+    "seed": 0,
+    "stochastic": false
+   },
+   "completion_chars": 4914,
+   "completion_lines": 122,
+   "markers_found": [],
+   "first_line": "model Item {",
+   "sha256": "67b812188e086354"
+  },
+  {
+   "id": "trackA_002",
+   "seed": 1013,
+   "stochastic": true,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 175.58,
+    "seed": 1013,
+    "stochastic": true
+   },
+   "completion_chars": 4877,
+   "completion_lines": 143,
+   "markers_found": [
+    "src/app/api/items/[id]/route.ts",
+    "src/app/api/items/route.ts",
+    "src/app/page.tsx"
+   ],
+   "first_line": "model {",
+   "sha256": "1e9b3acf1cbc6442"
+  },
+  {
+   "id": "trackA_003",
+   "seed": 2026,
+   "stochastic": true,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 182.82,
+    "seed": 2026,
+    "stochastic": true
+   },
+   "completion_chars": 4806,
+   "completion_lines": 139,
+   "markers_found": [
+    "src/app/api/items/[id]/route.ts",
+    "src/app/api/items/route.ts",
+    "src/app/page.tsx"
+   ],
+   "first_line": "model User {",
+   "sha256": "c0da5990ca7cf3a7"
+  },
+  {
+   "id": "trackA_004",
+   "seed": 3039,
+   "stochastic": true,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 179.97,
+    "seed": 3039,
+    "stochastic": true
+   },
+   "completion_chars": 4750,
+   "completion_lines": 182,
+   "markers_found": [
+    "src/app/api/items/[id]/route.ts",
+    "src/app/api/items/route.ts",
+    "src/app/page.tsx"
+   ],
+   "first_line": "type Item = {",
+   "sha256": "1bd7c9aaa2d9a3c6"
+  },
+  {
+   "id": "trackA_005",
+   "seed": 4052,
+   "stochastic": true,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 188.82,
+    "seed": 4052,
+    "stochastic": true
+   },
+   "completion_chars": 4447,
+   "completion_lines": 133,
+   "markers_found": [],
+   "first_line": "model \"InventoryItem\" (id) {",
+   "sha256": "5441f93e8d2c7c89"
+  },
+  {
+   "id": "trackA_006",
+   "seed": 5165,
+   "stochastic": true,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 170.67,
+    "seed": 5165,
+    "stochastic": true
+   },
+   "completion_chars": 4548,
+   "completion_lines": 116,
+   "markers_found": [],
+   "first_line": "model User {",
+   "sha256": "f543241336c53c3b"
+  },
+  {
+   "id": "trackA_007",
+   "seed": 6278,
+   "stochastic": true,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 176.36,
+    "seed": 6278,
+    "stochastic": true
+   },
+   "completion_chars": 4764,
+   "completion_lines": 102,
+   "markers_found": [
+    "prisma/schema.prisma",
+    "src/app/api/items/route.ts"
+   ],
+   "first_line": "model Item {",
+   "sha256": "dc797b985a9c9fa1"
+  }
+ ]
+}

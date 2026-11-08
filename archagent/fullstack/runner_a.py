@@ -8,11 +8,17 @@ MECHANICALLY (marker-based file extraction only), gated, and tested
 with the frozen acceptance suites.  Nothing the harness does here
 adds or fixes application bytes.
 
+Two-phase design (RAM constraint): phase `gen` stops the dev server,
+loads the model once, generates all candidates, exits (freeing RAM);
+phase `test` restarts the dev server and installs/gates/tests each
+candidate in order.
+
 All raw completions are archived with full prompt + seed + token
 counts + sha256 under experiments/zai-fullstack/generations/.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import resource
@@ -24,9 +30,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from archagent.fullstack import install  # noqa: E402
+from archagent.fullstack import devserver, install  # noqa: E402
 from archagent.fullstack.prompts import track_a_prompt  # noqa: E402
-from archagent.model import FrozenModel  # noqa: E402
 
 EXP = ROOT / "experiments/zai-fullstack"
 GEN = EXP / "generations"
@@ -41,7 +46,6 @@ MAX_TOKENS = 1200
 
 
 def spec_sections() -> str:
-    """§1–§3 of the frozen SPEC.md, verbatim."""
     text = (EXP / "SPEC.md").read_text()
     m = re.search(r"(## 1\. Data model.*?)\n## 4\.", text, re.DOTALL)
     if not m:
@@ -71,112 +75,126 @@ def wait_dev(path: str = "/", want: int = 200, timeout: float = 90) -> tuple[boo
     return False, last
 
 
-def run_suite(script: str, timeout: int = 420) -> dict:
-    r = subprocess.run(["node", str(EXP / script)],
-                       capture_output=True, text=True, timeout=timeout,
-                       env=NODE_ENV, cwd=str(EXP))
-    tail = (r.stdout + r.stderr).strip().splitlines()
-    return {"exit": r.returncode, "tail": tail[-6:]}
+def run_suite(script: str, timeout: int = 480) -> dict:
+    try:
+        r = subprocess.run(["node", str(EXP / script)],
+                           capture_output=True, text=True, timeout=timeout,
+                           env=NODE_ENV, cwd=str(EXP))
+        tail = (r.stdout + r.stderr).strip().splitlines()
+        return {"exit": r.returncode, "tail": tail[-8:]}
+    except subprocess.TimeoutExpired:
+        return {"exit": 124, "tail": ["TIMEOUT"]}
 
 
-def main() -> None:
+def phase_gen() -> None:
+    from archagent.model import FrozenModel
     GEN.mkdir(parents=True, exist_ok=True)
-    REPORTS.mkdir(parents=True, exist_ok=True)
-
     prompt, anchor = track_a_prompt(spec_sections())
     print(f"prompt: {len(prompt)} chars; anchor: {anchor.splitlines()[0]!r}")
-
-    install.backup_workspace()
-    results = []
+    devserver.stop_dev()
+    time.sleep(2)
     model = FrozenModel(threads=2)
     t_start = time.time()
-
+    meta = []
     for idx, seed in enumerate(SEEDS):
         stochastic = idx != 0
         cand_id = f"trackA_{idx + 1:03d}"
         print(f"\n=== candidate {idx + 1}/7 seed={seed} "
-              f"({'greedy' if not stochastic else 'sampled'}) ===")
+              f"({'greedy' if not stochastic else 'sampled'}) ===", flush=True)
         text, usage = model.generate(prompt, max_tokens=MAX_TOKENS,
                                      seed=seed, stochastic=stochastic)
         files = install.extract_files(text)
-        rec = dict(
-            id=cand_id, seed=seed, stochastic=stochastic, usage=usage,
-            completion_chars=len(text),
-            completion_lines=len(text.splitlines()),
-            markers_found=sorted(files.keys()),
-            first_line=text.splitlines()[0] if text.splitlines() else "",
-            ended_cleanly=text.rstrip().endswith("}") or "===" in text[-80:],
-        )
+        rec = dict(id=cand_id, seed=seed, stochastic=stochastic, usage=usage,
+                   completion_chars=len(text),
+                   completion_lines=len(text.splitlines()),
+                   markers_found=sorted(files.keys()),
+                   first_line=text.splitlines()[0] if text.splitlines() else "",
+                   sha256=hashlib.sha256(text.encode()).hexdigest()[:16])
         (GEN / f"{cand_id}.json").write_text(json.dumps(dict(
             track="A", id=cand_id, prompt=prompt, anchor=anchor,
             completion=text, usage=usage, seed=seed,
             stochastic=stochastic), ensure_ascii=False, indent=1))
+        meta.append(rec)
+        print(json.dumps(rec, indent=1), flush=True)
+    ru = resource.getrusage(resource.RUSAGE_SELF)
+    out = dict(track="A-gen", wall_seconds=round(time.time() - t_start, 1),
+               model_usage=model.usage(),
+               cpu_seconds=round(ru.ru_utime + ru.ru_stime, 1),
+               peak_rss_mb=round(ru.ru_maxrss / 1024, 1),
+               candidates=meta)
+    (REPORTS / "trackA_gen.json").write_text(json.dumps(out, indent=1))
+    print("\nGEN PHASE DONE", json.dumps(
+        {k: out[k] for k in ("wall_seconds", "model_usage", "cpu_seconds",
+                             "peak_rss_mb")}, indent=1))
+    devserver.start_dev()  # bring the preview back up
 
+
+def phase_test() -> None:
+    devserver.start_dev()
+    install.backup_workspace()
+    gen_meta = json.loads((REPORTS / "trackA_gen.json").read_text())
+    results = []
+    t_start = time.time()
+    for rec in gen_meta["candidates"]:
+        cand_id = rec["id"]
+        raw = json.loads((GEN / f"{cand_id}.json").read_text())
+        files = install.extract_files(raw["completion"])
+        tr = dict(id=cand_id, seed=rec["seed"], usage=rec["usage"],
+                  completion_lines=rec["completion_lines"],
+                  markers_found=rec["markers_found"],
+                  installed=[], gates={})
+        print(f"\n=== testing {cand_id}: {sorted(files)} ===", flush=True)
         if files:
             install.restore_workspace()
             written = install.install_files(files)
-            rec["installed"] = written
-            if any("schema.prisma" in w for w in written):
-                block = files[[k for k in files if "schema.prisma" in k][0]]
+            tr["installed"] = written
+            schema_written = [w for w in written if "schema.prisma" in w]
+            if schema_written:
+                block = files[schema_written[0]]
                 if "model InventoryItem" in block:
                     install.merge_schema_block(block)
                     ok, out = install.db_push()
-                    rec["db_push"] = {"ok": ok, "tail": out[-200:]}
-            # gates (scoped to src/ — pre-existing repo errors elsewhere
-            # are excluded; tsconfig.gate.json is TRUSTED-SCAFFOLD)
+                    tr["gates"]["db_push"] = {"ok": ok, "tail": out[-200:]}
             time.sleep(2)
-            lint = install.run_cmd(
-                ["node_modules/.bin/eslint", "src"], install.APP,
-                timeout=300)
-            rec["lint_exit"] = lint["exit"]
+            lint = install.run_cmd(["node_modules/.bin/eslint", "src"],
+                                   install.APP, timeout=300)
+            tr["gates"]["lint_exit"] = lint["exit"]
+            tr["gates"]["lint_tail"] = lint["out"][-300:]
             tsc = install.run_cmd(
-                ["node_modules/.bin/tsc", "--noEmit",
-                 "-p", "tsconfig.gate.json"],
-                install.APP, timeout=300)
-            rec["tsc_exit"] = tsc["exit"]
-            rec["tsc_tail"] = tsc["out"][-400:]
+                ["node_modules/.bin/tsc", "--noEmit", "-p",
+                 "tsconfig.gate.json"], install.APP, timeout=300)
+            tr["gates"]["tsc_exit"] = tsc["exit"]
+            tr["gates"]["tsc_tail"] = tsc["out"][-400:]
             page_ok, page_state = wait_dev("/")
-            rec["page_load"] = page_state
-            api = wait_dev("/api/items", want=200, timeout=45)
-            rec["api_items"] = api[1]
-            if page_ok and api[0]:
-                api_res = run_suite("apitest.mjs")
-                rec["apitest"] = api_res
-                ui_res = run_suite("uitest.mjs", timeout=600)
-                rec["uitest"] = ui_res
-        else:
-            rec["installed"] = []
-        results.append(rec)
-        print(json.dumps({k: rec[k] for k in
-                          ('id', 'completion_lines', 'markers_found',
-                           'installed', 'lint_exit', 'tsc_exit',
-                           'page_load', 'api_items') if k in rec},
-                         indent=1))
-        # stop early if a candidate fully passes (frozen rule)
-        if rec.get("apitest", {}).get("exit") == 0 and \
-           rec.get("uitest", {}).get("exit") == 0:
-            print("Track A candidate PASSED everything — stopping early")
+            tr["gates"]["page_load"] = page_state
+            api_ok, api_state = wait_dev("/api/items", want=200, timeout=60)
+            tr["gates"]["api_items"] = api_state
+            if api_ok:
+                tr["gates"]["apitest"] = run_suite("apitest.mjs")
+                if tr["gates"]["apitest"]["exit"] == 0:
+                    tr["gates"]["uitest"] = run_suite("uitest.mjs", timeout=600)
+        results.append(tr)
+        print(json.dumps({k: tr[k] for k in
+                          ("id", "installed", "gates")}, indent=1)[-1500:],
+              flush=True)
+        if tr.get("gates", {}).get("uitest", {}).get("exit") == 0:
+            print("Track A candidate PASSED everything — keeping it "
+                  "installed and stopping early")
             break
-
-    install.restore_workspace()
-    usage = model.usage()
-    ru = resource.getrusage(resource.RUSAGE_SELF)
-    report = dict(
-        track="A", wall_seconds=round(time.time() - t_start, 1),
-        model_usage=usage,
-        cpu_seconds=round(ru.ru_utime + ru.ru_stime, 1),
-        peak_rss_mb=round(ru.ru_maxrss / 1024, 1),
-        candidates=results,
-    )
-    (REPORTS / "trackA.json").write_text(json.dumps(report, indent=1))
-    print("\n==== Track A summary ====")
-    print(json.dumps({k: report[k] for k in
-                      ('wall_seconds', 'model_usage', 'cpu_seconds',
-                       'peak_rss_mb')}, indent=1))
-    for r in results:
-        print(f"- {r['id']}: {r['completion_lines']} lines, "
-              f"files={r['markers_found']}, installed={r.get('installed')}")
+    else:
+        install.restore_workspace()
+        install.db_push()
+    final = dict(track="A-test", wall_seconds=round(time.time() - t_start, 1),
+                 candidates=results)
+    (REPORTS / "trackA_test.json").write_text(json.dumps(final, indent=1))
+    print("\nTEST PHASE DONE — see trackA_test.json")
 
 
 if __name__ == "__main__":
-    main()
+    phase = sys.argv[1] if len(sys.argv) > 1 else "gen"
+    if phase == "gen":
+        phase_gen()
+    elif phase == "test":
+        phase_test()
+    else:
+        raise SystemExit(f"unknown phase {phase}")

@@ -1,0 +1,162 @@
+{
+ "track": "A-test",
+ "wall_seconds": 551.6,
+ "candidates": [
+  {
+   "id": "trackA_001",
+   "seed": 0,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 177.13,
+    "seed": 0,
+    "stochastic": false
+   },
+   "completion_lines": 122,
+   "markers_found": [],
+   "installed": [],
+   "gates": {}
+  },
+  {
+   "id": "trackA_002",
+   "seed": 1013,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 175.58,
+    "seed": 1013,
+    "stochastic": true
+   },
+   "completion_lines": 143,
+   "markers_found": [
+    "src/app/api/items/[id]/route.ts",
+    "src/app/api/items/route.ts",
+    "src/app/page.tsx"
+   ],
+   "installed": [
+    "src/app/api/items/route.ts",
+    "src/app/api/items/[id]/route.ts",
+    "src/app/page.tsx"
+   ],
+   "gates": {
+    "lint_exit": 1,
+    "lint_tail": "\n/home/z/my-project/src/app/page.tsx\n  74:0  error  Parsing error: ')' expected\n\n\u2716 1 problem (1 error, 0 warnings)\n\n",
+    "tsc_exit": 2,
+    "tsc_tail": "nding closing tag.\nsrc/app/page.tsx(36,14): error TS17008: JSX element 'tbody' has no corresponding closing tag.\nsrc/app/page.tsx(38,18): error TS17008: JSX element 'tr' has no corresponding closing tag.\nsrc/app/page.tsx(45,20): error TS17008: JSX element 'td' has no corresponding closing tag.\nsrc/app/page.tsx(74,1): error TS1005: ')' expected.\nsrc/app/page.tsx(74,1): error TS1005: '</' expected.\n",
+    "page_load": "HTTP 500",
+    "api_items": "HTTP 500"
+   }
+  },
+  {
+   "id": "trackA_003",
+   "seed": 2026,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 182.82,
+    "seed": 2026,
+    "stochastic": true
+   },
+   "completion_lines": 139,
+   "markers_found": [
+    "src/app/api/items/[id]/route.ts",
+    "src/app/api/items/route.ts",
+    "src/app/page.tsx"
+   ],
+   "installed": [
+    "src/app/api/items/route.ts",
+    "src/app/api/items/[id]/route.ts",
+    "src/app/page.tsx"
+   ],
+   "gates": {
+    "lint_exit": 1,
+    "lint_tail": "\n/home/z/my-project/src/app/page.tsx\n  61:0  error  Parsing error: Unterminated string literal\n\n\u2716 1 problem (1 error, 0 warnings)\n\n",
+    "tsc_exit": 2,
+    "tsc_tail": "src/app/page.tsx(59,6): error TS17008: JSX element 'main' has no corresponding closing tag.\nsrc/app/page.tsx(61,1): error TS1002: Unterminated string literal.\nsrc/app/page.tsx(61,1): error TS1005: '</' expected.\n",
+    "page_load": "HTTP 500",
+    "api_items": "HTTP 500"
+   }
+  },
+  {
+   "id": "trackA_004",
+   "seed": 3039,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 179.97,
+    "seed": 3039,
+    "stochastic": true
+   },
+   "completion_lines": 182,
+   "markers_found": [
+    "src/app/api/items/[id]/route.ts",
+    "src/app/api/items/route.ts",
+    "src/app/page.tsx"
+   ],
+   "installed": [
+    "src/app/api/items/route.ts",
+    "src/app/api/items/[id]/route.ts",
+    "src/app/page.tsx"
+   ],
+   "gates": {
+    "lint_exit": 1,
+    "lint_tail": "\n/home/z/my-project/src/app/page.tsx\n  59:0  error  Parsing error: ')' expected\n\n\u2716 1 problem (1 error, 0 warnings)\n\n",
+    "tsc_exit": 2,
+    "tsc_tail": "ding closing tag.\nsrc/app/page.tsx(38,10): error TS17008: JSX element 'div' has no corresponding closing tag.\nsrc/app/page.tsx(39,12): error TS17008: JSX element 'form' has no corresponding closing tag.\nsrc/app/page.tsx(46,14): error TS17008: JSX element 'div' has no corresponding closing tag.\nsrc/app/page.tsx(59,1): error TS1005: ')' expected.\nsrc/app/page.tsx(59,1): error TS1005: '</' expected.\n",
+    "page_load": "HTTP 500",
+    "api_items": "HTTP 405"
+   }
+  },
+  {
+   "id": "trackA_005",
+   "seed": 4052,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 188.82,
+    "seed": 4052,
+    "stochastic": true
+   },
+   "completion_lines": 133,
+   "markers_found": [],
+   "installed": [],
+   "gates": {}
+  },
+  {
+   "id": "trackA_006",
+   "seed": 5165,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 170.67,
+    "seed": 5165,
+    "stochastic": true
+   },
+   "completion_lines": 116,
+   "markers_found": [],
+   "installed": [],
+   "gates": {}
+  },
+  {
+   "id": "trackA_007",
+   "seed": 6278,
+   "usage": {
+    "tokens": 1200,
+    "seconds": 176.36,
+    "seed": 6278,
+    "stochastic": true
+   },
+   "completion_lines": 102,
+   "markers_found": [
+    "prisma/schema.prisma",
+    "src/app/api/items/route.ts"
+   ],
+   "installed": [
+    "prisma/schema.prisma",
+    "src/app/api/items/route.ts"
+   ],
+   "gates": {
+    "lint_exit": 1,
+    "lint_tail": "\n/home/z/my-project/src/app/api/items/route.ts\n  26:0  error  Parsing error: Unexpected keyword or identifier\n\n\u2716 1 problem (1 error, 0 warnings)\n\n",
+    "tsc_exit": 2,
+    "tsc_tail": "src/app/api/items/route.ts(26,1): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(26,5): error TS1434: Unexpected keyword or identifier.\nsrc/app/api/items/route.ts(26,23): error TS1005: ';' expected.\nsrc/app/api/items/route.ts(26,28): error TS1005: ';' expected.\n",
+    "page_load": "HTTP 200",
+    "api_items": "HTTP 500"
+   }
+  }
+ ]
+}
