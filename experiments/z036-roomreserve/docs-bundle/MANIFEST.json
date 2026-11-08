@@ -1,0 +1,12 @@
+{
+ "nextjs-route-handlers.txt": {
+  "url": "https://nextjs.org/docs/app/api-reference/file-conventions/route",
+  "retrieved": "2026-11-08",
+  "page_sha256": "74ed81e398e9a8f7590064dad89d1f47a713cf850e4fa91e639df429e82e9b71"
+ },
+ "prisma-client-api.txt": {
+  "url": "https://www.prisma.io/docs/orm/reference/prisma-client-reference",
+  "retrieved": "2026-11-08",
+  "page_sha256": "8e4ef91511d4ff9b35f15865dcaf5594142e391b376fe606f1da4a3549537e4d"
+ }
+}
