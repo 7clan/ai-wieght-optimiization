@@ -88,7 +88,7 @@ def solo_attempt(model, spec: PilotTask, sandbox: DockerSandbox) -> dict:
         result = sandbox.evaluate(spec.contract, candidate.files)
         output["public_pass"] = result.passed
         if not result.passed:
-            output["error"] = result.feedback[-300:]
+            output["error"] = result.feedback[:600]
     except ControllerError as exc:
         output["error"] = f"{type(exc).__name__}: {str(exc)[:300]}"
     output["seconds"] = round(time.monotonic() - started, 3)
@@ -150,6 +150,7 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
                            "evaluations": assisted.evaluations,
                            "invalid_proposals": assisted.invalid_proposals,
                            "research_calls": assisted.research_calls,
+                           "messages": assisted.messages,
                            "proposal_trace": assisted.proposal_trace},
             "single_file_controller": {
                 "status": direct.status,
@@ -160,6 +161,7 @@ def run(output_path: Path, max_new_tokens: int = 400) -> dict:
                 "evaluations": direct.evaluations,
                 "invalid_proposals": direct.invalid_proposals,
                 "research_calls": direct.research_calls,
+                "messages": direct.messages,
                 "proposal_trace": direct.proposal_trace,
             },
         })
