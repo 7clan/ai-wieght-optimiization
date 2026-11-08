@@ -61,14 +61,38 @@ class QwenJSONAdapter:
         )
 
 
-def load_local_qwen(model_id: str = "Qwen/Qwen2.5-Coder-0.5B-Instruct") -> QwenJSONAdapter:
+def load_local_qwen(model_id: str = "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+                    max_new_tokens: int = 512) -> QwenJSONAdapter:
     """Explicitly load one model; model cache/download requirements are caller's.
 
     The default is the frozen 0.5B Instruct checkpoint. No adapters or edits.
     """
-    from tinycoder.model import generate, load_inference
+    if not (32 <= max_new_tokens <= 1024):
+        raise ValueError("Generation budget must be 32–1024 tokens")
+    import torch
+    from tinycoder.model import load_inference
 
     model, tokenizer, _ = load_inference(model_id, device="cpu")
-    return QwenJSONAdapter(lambda prompt: generate(
-        model, tokenizer, prompt, max_new_tokens=1024, temperature=0,
-    ))
+
+    def produce(prompt: str) -> str:
+        # The shared tinycoder chat system is Python-only; this isolated
+        # adapter must treat Python and JavaScript on equal footing.
+        messages = [
+            {"role": "system", "content": "You are a precise Python and JavaScript code assistant. Reply only with the requested JSON object."},
+            {"role": "user", "content": prompt},
+        ]
+        if getattr(tokenizer, "chat_template", None):
+            ids = tokenizer.apply_chat_template(messages, tokenize=True,
+                                                 add_generation_prompt=True)
+        else:
+            ids = tokenizer("\n".join(m["content"] for m in messages),
+                            add_special_tokens=True)["input_ids"]
+        input_ids = torch.tensor([ids], dtype=torch.long, device="cpu")
+        with torch.inference_mode():
+            output = model.generate(input_ids=input_ids,
+                                    attention_mask=torch.ones_like(input_ids),
+                                    max_new_tokens=max_new_tokens, do_sample=False,
+                                    pad_token_id=tokenizer.eos_token_id)
+        return tokenizer.decode(output[0, input_ids.shape[1]:], skip_special_tokens=True).strip()
+
+    return QwenJSONAdapter(produce)
