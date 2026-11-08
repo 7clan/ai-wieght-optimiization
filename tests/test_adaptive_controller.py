@@ -89,8 +89,11 @@ class ControllerTests(unittest.TestCase):
         for files in ({"../escape.py": "oops"}, {"x.js": "x" * 20}):
             sandbox = FakeSandbox([])
             model = FakeModel([Proposal(files, "unsafe")])
-            with self.assertRaises(ControllerError):
-                AgentController(Budget(max_file_bytes=10)).run(TASK, model, sandbox, FakeResearcher())
+            result = AgentController(Budget(max_file_bytes=10, max_proposals=1)).run(
+                TASK, model, sandbox, FakeResearcher(),
+            )
+            self.assertEqual(result.invalid_proposals, 1)
+            self.assertEqual(result.status, "exhausted")
             self.assertEqual(len(sandbox.calls), 0)
 
     def test_attempt_budget_enforced(self):
@@ -132,6 +135,25 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual(proposal_value.files["main.py"], "print(1)")
         with self.assertRaises(ControllerError):
             QwenJSONAdapter(lambda _: "not json").propose(ModelContext(TASK, 1, (), (), ""))
+
+    def test_bad_json_can_be_repaired_within_proposal_budget(self):
+        responses = iter(["not json", json.dumps({
+            "files": {"main.py": "print('works')"}, "hypothesis": "format repaired",
+        })])
+        model = QwenJSONAdapter(lambda _: next(responses))
+        sandbox = FakeSandbox([SandboxResult({"public": True})])
+        report = AgentController(Budget(max_proposals=3)).run(TASK, model, sandbox, FakeResearcher())
+        self.assertEqual(report.status, "public_checks_passed")
+        self.assertEqual(report.invalid_proposals, 1)
+        self.assertEqual(report.evaluations, 1)
+
+    def test_only_invalid_json_exits_at_budget(self):
+        model = QwenJSONAdapter(lambda _: "not JSON")
+        sandbox = FakeSandbox([])
+        report = AgentController(Budget(max_proposals=2)).run(TASK, model, sandbox, FakeResearcher())
+        self.assertEqual(report.status, "exhausted")
+        self.assertEqual((report.proposals, report.invalid_proposals), (2, 2))
+        self.assertEqual(len(sandbox.calls), 0)
 
 
 if __name__ == "__main__":
