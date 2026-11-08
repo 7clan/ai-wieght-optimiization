@@ -40,6 +40,20 @@ No Docker is installed in the initial ChatGPT scratch environment, so real
 container execution must be verified by the hosted workflow before claiming it
 passed. Docker sandboxing is defense in depth, not perfect isolation.
 
+## Experimental real-Qwen pilot
+
+`experiments/adaptive/pilot.py` compares two exploratory frozen-model tracks on
+one small Python and one JavaScript challenge. Track A uses a single JSON
+proposal. Track B may make up to three proposals and two public evaluations.
+Private tests are scored *after both tracks finish generation*, never fed back
+into candidate selection. The pilot runs no teacher fixes, no search service
+(the isolated docs infrastructure has separate tests), and **no training**.
+
+On GitHub Actions, `adaptive-qwen-pilot.yml` attempts the measured 0.5B CPU run
+and uploads its report as an artifact. This is a protocol smoke test, **not a
+full-stack or independent generalization benchmark**. A failed download or
+resource cap must be documented and never replaced with invented scores.
+
 ## Next engineering milestones
 
 1. **Verify the live Docker smoke** on GitHub Actions and debug any environment-specific failures; a boolean `is_isolated` marker is only an interface convention, not a security proof.
