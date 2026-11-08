@@ -1,0 +1,105 @@
+[devserver] stopped (up=False)
+model loaded; usage so far: {'generations': 0, 'total_new_tokens': 0, 'total_seconds': 0.0}
+
+===== STAGE types (src/lib/inventory/types.ts) =====
+  [gen r0 k0] seed=7 tok=550 reject=unbalanced brackets (1 unclosed)
+  [gen r0 k1] seed=1013 tok=550 reject=None
+  [gen r0 k2] seed=2026 tok=550 reject=demo echo: contains 'Adoption'
+  [gen r0 k3] seed=3039 tok=550 reject=unbalanced brackets (1 unclosed)
+  ACCEPTED r0 k1 (550 tokens)
+
+===== STAGE client (src/lib/inventory/api-client.ts) =====
+  [gen r0 k0] seed=7 tok=700 reject=None
+  [gen r0 k1] seed=1013 tok=700 reject=unbalanced brackets (1 unclosed)
+  [gen r0 k2] seed=2026 tok=700 reject=demo echo: contains 'Adoption'
+  [gen r0 k3] seed=3039 tok=700 reject=None
+  rejected r0 k0: tsc --noEmit reported:
+src/lib/inventory/api-client.ts(9,33): error TS2300: Duplicate identifier 'params'.
+src/lib/inventory/api-client.ts(9,50): error TS2304: Cannot find name 'InventoryRecord'.
+src/
+  rejected r0 k3: tsc --noEmit reported:
+;' expected.
+src/lib/inventory/api-client.ts(76,4): error TS1005: ';' expected.
+src/lib/inventory/api-client.ts(76,51): error TS1144: '{' or ';' expected.
+src/lib/inventory/api-
+  [gen r1 k0] seed=77 tok=700 reject=demo echo: contains 'Adoption'
+  [gen r1 k1] seed=1090 tok=700 reject=unbalanced brackets (1 unclosed)
+  [gen r1 k2] seed=2103 tok=700 reject=None
+  [gen r1 k3] seed=3116 tok=700 reject=None
+  rejected r1 k2: tsc --noEmit reported:
+c/lib/inventory/api-client.ts(82,27): error TS1005: '{' expected.
+src/lib/inventory/api-client.ts(82,31): error TS1434: Unexpected keyword or identifier.
+src/lib/inventory/api-c
+  rejected r1 k3: tsc --noEmit reported:
+expected keyword or identifier.
+src/lib/inventory/api-client.ts(75,31): error TS1434: Unexpected keyword or identifier.
+src/lib/inventory/api-client.ts(75,35): error TS1434: Une
+  [gen r2 k0] seed=154 tok=700 reject=None
+  [gen r2 k1] seed=1167 tok=700 reject=None
+  [gen r2 k2] seed=2180 tok=700 reject=None
+  [gen r2 k3] seed=3193 tok=700 reject=None
+  rejected r2 k0: tsc --noEmit reported:
+src/lib/inventory/api-client.ts(9,58): error TS2304: Cannot find name 'ItemRecord'.
+src/lib/inventory/api-client.ts(19,41): error TS2304: Cannot find name 'InventoryInput'.
+src/
+  rejected r2 k1: tsc --noEmit reported:
+/inventory/api-client.ts(65,39): error TS1005: ';' expected.
+src/lib/inventory/api-client.ts(65,41): error TS1434: Unexpected keyword or identifier.
+src/lib/inventory/api-client
+  rejected r2 k2: tsc --noEmit reported:
+t.ts(74,54): error TS1434: Unexpected keyword or identifier.
+src/lib/inventory/api-client.ts(75,1): error TS1434: Unexpected keyword or identifier.
+src/lib/inventory/api-client.
+  rejected r2 k3: tsc --noEmit reported:
+ient.ts(65,31): error TS1005: ',' expected.
+src/lib/inventory/api-client.ts(65,35): error TS1005: ',' expected.
+src/lib/inventory/api-client.ts(65,40): error TS1005: ',' expecte
+  STAGE client FAILED after 3 rounds — needs integration decision
+
+===== STAGE route-list (src/app/api/items/route.ts) =====
+  [gen r0 k0] seed=7 tok=900 reject=unbalanced brackets (3 unclosed)
+  [gen r0 k1] seed=1013 tok=900 reject=None
+  [gen r0 k2] seed=2026 tok=900 reject=None
+  [gen r0 k3] seed=3039 tok=900 reject=None
+  rejected r0 k1: tsc --noEmit reported:
+.
+src/app/api/items/route.ts(104,11): error TS1434: Unexpected keyword or identifier.
+src/app/api/items/route.ts(104,16): error TS1228: A type predicate is only allowed in retur
+  rejected r0 k2: tsc --noEmit reported:
+;' expected.
+src/app/api/items/route.ts(118,3): error TS1434: Unexpected keyword or identifier.
+src/app/api/items/route.ts(118,5): error TS1434: Unexpected keyword or identifier
+  rejected r0 k3: tsc --noEmit reported:
+src/app/api/items/route.ts(32,47): error TS2322: Type '{ name: string; sku: string; quantity: number; minQuantity: number; }' is not assignable to type '(Without<InventoryItemCr
+  [gen r1 k0] seed=77 tok=900 reject=demo echo: contains 'adoption'
+  [gen r1 k1] seed=1090 tok=900 reject=None
+  [gen r1 k2] seed=2103 tok=900 reject=demo echo: contains 'adoption'
+  [gen r1 k3] seed=3116 tok=900 reject=demo echo: contains 'adoption'
+  rejected r1 k1: tsc --noEmit reported:
+S1434: Unexpected keyword or identifier.
+src/app/api/items/route.ts(58,41): error TS1434: Unexpected keyword or identifier.
+src/app/api/items/route.ts(58,69): error TS1003: Iden
+  [gen r2 k0] seed=154 tok=900 reject=None
+  [gen r2 k1] seed=1167 tok=900 reject=None
+  [gen r2 k2] seed=2180 tok=900 reject=None
+  [gen r2 k3] seed=3193 tok=900 reject=None
+  rejected r2 k0: tsc --noEmit reported:
+: error TS1434: Unexpected keyword or identifier.
+src/app/api/items/route.ts(61,32): error TS1434: Unexpected keyword or identifier.
+src/app/api/items/route.ts(61,35): error TS1
+  rejected r2 k1: tsc --noEmit reported:
+: error TS1434: Unexpected keyword or identifier.
+src/app/api/items/route.ts(61,32): error TS1434: Unexpected keyword or identifier.
+src/app/api/items/route.ts(61,35): error TS1
+  rejected r2 k2: tsc --noEmit reported:
+route.ts(61,12): error TS1005: ';' expected.
+src/app/api/items/route.ts(61,23): error TS1109: Expression expected.
+src/app/api/items/route.ts(61,62): error TS1109: Expression ex
+  rejected r2 k3: tsc --noEmit reported:
+c/app/api/items/route.ts(62,17): error TS1005: '(' expected.
+src/app/api/items/route.ts(62,21): error TS1005: ')' expected.
+src/app/api/items/route.ts(62,36): error TS1005: ';' 
+  STAGE route-list FAILED after 3 rounds — needs integration decision
+
+===== STAGE route-id (src/app/api/items/[id]/route.ts) =====
+  [gen r0 k0] seed=7 tok=900 reject=demo echo: contains 'adoption'

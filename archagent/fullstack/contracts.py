@@ -310,18 +310,23 @@ exports:
     dict(
         id="client", file="src/lib/inventory/api-client.ts", kind="file",
         demo=CLIENT_DEMO,
-        spec="""Write the API client for /api/items with exactly these
-exports (all fetch the same origin, relative URLs):
-1. async function listItems(params): params is an object with optional
-   q, category, status, sort, order (all strings). Build a query
-   string from the defined, non-empty values (skip 'all' / empty).
-   GET /api/items?<params> and return the parsed JSON (has .items).
+        spec="""Import { InventoryItem, InventoryInput } from
+'@/lib/inventory/types' FIRST and use these EXACT names in every
+signature — never invent other type names.  Write the API client for
+/api/items with exactly these exports (all fetch the same origin,
+relative URLs):
+1. async function listItems(params: { q?: string; category?:
+   string; status?: string; sort?: string; order?: string }):
+   Promise<InventoryItem[]>. Build a URLSearchParams from the defined,
+   non-empty values (skip 'all' / empty), append it to '/api/items'
+   with ?, call fetch WITHOUT a body, return the parsed .items.
 2. async function createItem(input: InventoryInput): POST JSON to
    /api/items, return parsed .item.
 3. async function updateItem(id: string, input: InventoryInput): PUT
    JSON to /api/items/:id, return parsed .item.
-4. async function deleteItem(id: string): DELETE /api/items/:id, do
-   not parse a body (204).
+4. async function deleteItem(id: string): Promise<void>. DELETE
+   /api/items/:id, do NOT parse any body (the response is 204 and
+   empty) — just check res.ok and return.
 All functions must throw an Error with the server's .error message
 when the response is not ok. Include one small non-exported helper
 getJson(res) that does the ok-check and parsing.""",

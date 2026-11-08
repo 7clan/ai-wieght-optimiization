@@ -35,6 +35,81 @@ DEMO_ECHO = ["Adoption", "adoption", "species", "shelter", "Shelter",
              "CareLevel", "careLevelOf"]
 
 
+def _looks_like_prose(line: str) -> bool:
+    """Heuristic: natural-language line (spec echo / instruction
+    paraphrase) rather than code.  Prose = >= 4 words, only letters,
+    digits and , . : ; - ' ( ) spaces — no code punctuation."""
+    s = line.strip()
+    if len(s) < 8:
+        return False
+    words = s.split()
+    if len(words) < 4:
+        return False
+    import re as _re
+    return bool(_re.fullmatch(r"[A-Za-z0-9 ,.:;'\-\u2019()]+", s))
+
+
+# High-specificity prompt-scaffolding markers: these strings only ever
+# appear in the harness prompt structure, never in legitimate code.
+_PROMPT_MARKERS = [
+    "tsc --noEmit reported:",
+    "eslint reported:",
+    "The automated checks reported:",
+    "Your previous attempt",
+    "Write the complete file now",
+    "Now YOUR task",
+    "Example from a DIFFERENT app",
+    "The first line is already written",
+    "Fix exactly that.",
+    "you already have",
+]
+
+
+def strip_prompt_echo(text: str, prompt: str) -> str:
+    """Remove prompt-echo regions (harness bug #4 fix).
+
+    The model frequently appends verbatim chunks of its own prompt
+    (feedback blocks, spec bullets, instruction sentences) after
+    otherwise-valid code.  Two-phase mechanical strip:
+    1. CUT at the first mid-file line containing a distinctive
+       prompt-scaffolding marker (feedback echo, instruction echo);
+    2. From the end, drop blank / verbatim-prompt / prose-like lines.
+    (Session-034 strip_prose successor; calibrated on real samples.)
+    """
+    # phase 1: marker cut
+    lines = text.splitlines()
+    cut_at = None
+    for idx, line in enumerate(lines):
+        if idx == 0:
+            continue  # the anchor's own first line never counts
+        for marker in _PROMPT_MARKERS:
+            if marker in line:
+                cut_at = idx
+                break
+        if cut_at is not None:
+            break
+    if cut_at is not None:
+        lines = lines[:cut_at]
+    # phase 2: trailing strip
+    popped = 0
+    while lines and popped < 200:
+        last = lines[-1].strip()
+        if not last:
+            lines.pop()
+            popped += 1
+            continue
+        if len(last) >= 8 and last in prompt:
+            lines.pop()
+            popped += 1
+            continue
+        if _looks_like_prose(last):
+            lines.pop()
+            popped += 1
+            continue
+        break
+    return "\n".join(lines)
+
+
 def trim_to_exports(text: str, required: list[str]) -> str:
     """Mechanical file trim (Session-034 cut_trailing_prose successor).
 

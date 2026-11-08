@@ -8,6 +8,15 @@
    "tokens": 15,
    "label": "QWEN-REPAIRED",
    "note": "schema stage failed 3x4 completion rounds on sku nullability; repaired by first FIM micro-patch sample"
+  },
+  "src/lib/inventory/types.ts": {
+   "contract": "types",
+   "round": 0,
+   "k": 1,
+   "seed": 1013,
+   "tokens": 550,
+   "label": "QWEN-ORIGINAL",
+   "note": "accepted on round 0 sample 1"
   }
  },
  "stages": [
@@ -29,11 +38,47 @@
    "mode": "fim",
    "k": 1,
    "seed": 1013
+  },
+  {
+   "contract": "types",
+   "file": "src/lib/inventory/types.ts",
+   "accepted": true,
+   "rounds": 1,
+   "usage_delta": {
+    "generations": 4,
+    "total_new_tokens": 2200,
+    "total_seconds": 282.3
+   },
+   "label": "QWEN-ORIGINAL"
+  },
+  {
+   "contract": "client",
+   "file": "src/lib/inventory/api-client.ts",
+   "accepted": false,
+   "rounds": 3,
+   "usage_delta": {
+    "generations": 12,
+    "total_new_tokens": 8400,
+    "total_seconds": 1185.9
+   },
+   "label": "FAILED"
+  },
+  {
+   "contract": "route-list",
+   "file": "src/app/api/items/route.ts",
+   "accepted": false,
+   "rounds": 3,
+   "usage_delta": {
+    "generations": 12,
+    "total_new_tokens": 10800,
+    "total_seconds": 1511.8
+   },
+   "label": "FAILED"
   }
  ],
  "model_usage_cumulative": {
-  "generations": 12,
-  "total_new_tokens": 3600,
-  "total_seconds": 456.8
+  "generations": 40,
+  "total_new_tokens": 25000,
+  "total_seconds": 8667.2
  }
 }

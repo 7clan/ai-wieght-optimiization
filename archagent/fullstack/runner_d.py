@@ -149,7 +149,11 @@ def dynamic_gates(names: list[str]) -> dict:
 
 def generate_samples(model, contract: dict, round_no: int,
                      feedback: str | None, own_prev: str | None) -> list[dict]:
-    """Generate up to 4 samples for this round (in-process)."""
+    """Generate up to 4 samples for this round (in-process).
+
+    Stores BOTH the raw completion and the prompt so the installer can
+    strip prompt echoes mechanically.
+    """
     prompt, anchor = build_prompt(contract, feedback, own_prev)
     max_tokens = contract.get("max_tokens", 700)
     samples = []
@@ -161,7 +165,7 @@ def generate_samples(model, contract: dict, round_no: int,
         reason = quick_reject(text, anchor)
         samples.append(dict(k=k, seed=seed, stochastic=stochastic,
                             usage=usage, completion=text,
-                            rejected_reason=reason))
+                            rejected_reason=reason, prompt=prompt))
         log(f"  [gen r{round_no} k{k}] seed={seed} tok={usage['tokens']} "
             f"reject={reason}")
         GEN.mkdir(parents=True, exist_ok=True)
@@ -174,18 +178,20 @@ def generate_samples(model, contract: dict, round_no: int,
     return samples
 
 
-def install_sample(contract: dict, completion: str) -> tuple[bool, str]:
+def install_sample(contract: dict, completion: str,
+                   prompt: str | None = None) -> tuple[bool, str]:
     """Write one sample's file (or merge schema). Returns (ok, path).
 
-    File content = ANCHOR + completion (Session-034 convention: the
-    anchor is the file's opening line the model continued from), then
-    mechanically trimmed to the contract's required exports
-    (cut_trailing_prose successor).  No content is altered beyond
-    these structural cuts.
+    File content = ANCHOR + echo-stripped completion (Session-034
+    convention), mechanically trimmed to the contract's required
+    exports.  No content is altered beyond these structural cuts.
     """
-    from archagent.fullstack.gen_one import trim_to_exports
-    body = (contract["anchor"].rstrip("\n") + "\n"
-            + completion.strip("\n"))
+    from archagent.fullstack.gen_one import (strip_prompt_echo,
+                                             trim_to_exports)
+    comp = completion.strip("\n")
+    if prompt:
+        comp = strip_prompt_echo(comp, prompt)
+    body = contract["anchor"].rstrip("\n") + "\n" + comp
     if contract["kind"] == "schema":
         import re as _re
         # extract exactly the InventoryItem model block (Prisma blocks
@@ -237,7 +243,8 @@ def run_stage(model, contract: dict, ledger: Ledger) -> dict:
                 last_feedback = ("structural rejection: "
                                  + s["rejected_reason"])
                 continue
-            ok, path = install_sample(contract, s["completion"])
+            ok, path = install_sample(contract, s["completion"],
+                                       s.get("prompt"))
             gates_ok, gate_feedback = run_gates(contract, ok)
             last_feedback = gate_feedback or "gates passed"
             if gates_ok:

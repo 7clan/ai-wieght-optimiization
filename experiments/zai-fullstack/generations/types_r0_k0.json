@@ -6,7 +6,7 @@
  "anchor": "export interface InventoryItem {\n",
  "usage": {
   "tokens": 550,
-  "seconds": 72.85,
+  "seconds": 73.17,
   "seed": 7,
   "stochastic": false
  },
