@@ -1,0 +1,34 @@
+{
+ "session": "034-baseline",
+ "when": "2026-11-08T05:50:00Z",
+ "environment": "recycled sandbox (fresh clone, model redownloaded, evalenv rebuilt)",
+ "protocol_tests": "34 passed (tests/test_archagent.py + tests/test_archcircuits_corrections.py)",
+ "build": "node build.mjs -> public/app.js (1.07MB) + public/style.css OK",
+ "server": "127.0.0.1:4173 express, GET /api/projects 200",
+ "browser_test": {
+  "historical_committed": "15/15 (2026-11-07T06:09:28Z)",
+  "rerun_2026_11_08": "15/15 (fresh sandbox, identical steps, only timestamp differs; copy saved as browser_test_2026-11-08_rerun.json)"
+ },
+ "screenshots_committed": {
+  "desktop": "1280x800",
+  "mobile": "390x844"
+ },
+ "current_css_lines": 45,
+ "current_appjsx_lines": 408,
+ "authorship_origins": {
+  "apps/taskflow-qwen/server/logic.py": "QWEN-REPAIRED",
+  "apps/taskflow-qwen/server/store.js": "QWEN-REPAIRED",
+  "apps/taskflow-qwen/server/api.js": "QWEN-REPAIRED",
+  "apps/taskflow-qwen/client/App.jsx": "QWEN-REPAIRED",
+  "apps/taskflow-qwen/client/style.js": "QWEN-REPAIRED"
+ },
+ "contract_fingerprint": "47f0ea4ebabeccb38b75d90b53237cc35adb6d9663ce5255cdd13888f2839cb0",
+ "known_visual_gaps": [
+  "no design tokens (colors hardcoded, mostly #000)",
+  "no typography scale (browser defaults)",
+  "no spacing system (padding 2px 8px)",
+  "no component states (hover/focus/disabled)",
+  "duplicate .priority-row rule",
+  "no professional header/nav structure"
+ ]
+}

@@ -13,3 +13,6 @@ edits/
 .env
 
 !experiments/archcircuits/factors/**/*.safetensors
+
+# Session034: runtime app state (synthetic seeds)
+apps/*/data/
