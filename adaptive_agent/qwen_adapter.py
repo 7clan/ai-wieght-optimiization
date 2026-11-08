@@ -114,6 +114,42 @@ class QwenSingleFileAdapter:
         return Proposal(files={path: source + "\n"}, hypothesis="single-file direct completion/repair")
 
 
+class QwenCommonJSScaffoldAdapter:
+    """Mechanical module-export assembly; only Qwen writes function logic.
+
+    This deliberately labels the export glue as *harness-generated* rather
+    than attributing a complete CommonJS module to the tiny model. The
+    function declaration must already be present in the model's source.
+    """
+
+    def __init__(self, generate_text: Callable[[str], str], symbol: str) -> None:
+        if not re.fullmatch(r"[A-Za-z_$][A-Za-z0-9_$]*", symbol):
+            raise ValueError("Unsafe CommonJS exported symbol")
+        self.single = QwenSingleFileAdapter(generate_text)
+        self.symbol = symbol
+
+    def propose(self, context: ModelContext) -> Proposal:
+        if len(context.task.required_files) != 1 or not context.task.required_files[0].endswith(".cjs"):
+            raise ControllerError("CommonJS scaffolding requires one .cjs target")
+        proposed = self.single.propose(context)
+        path = context.task.required_files[0]
+        body = proposed.files[path]
+        # This is a structural presence check, not an unsafe eval/exec or an
+        # attempt to repair algorithms. Container tests judge the JS semantics.
+        declared = re.search(
+            rf"(?:^|\n)\s*(?:(?:async\s+)?function\s+{re.escape(self.symbol)}\s*\(|(?:const|let|var)\s+{re.escape(self.symbol)}\s*=)",
+            body,
+        )
+        if not declared:
+            raise ControllerError(f"Qwen source did not declare {self.symbol}; cannot mechanically export it")
+        # No non-export code is altered, so the source code remains Qwen's.
+        assembled = body.rstrip() + f"\nmodule.exports = {{ {self.symbol} }};\n"
+        return Proposal(
+            files={path: assembled},
+            hypothesis=f"Qwen implementation + harness-only CommonJS export of {self.symbol}",
+        )
+
+
 def load_local_qwen(model_id: str = "Qwen/Qwen2.5-Coder-0.5B-Instruct",
                     max_new_tokens: int = 512,
                     response_format: str = "json") -> QwenJSONAdapter | QwenSingleFileAdapter:
