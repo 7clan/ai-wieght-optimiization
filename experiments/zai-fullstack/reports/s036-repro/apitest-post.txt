@@ -1,0 +1,4 @@
+PASS  1 after server restart: list still 200
+PASS  2 after server restart: same 10 items (SQLite persisted) — total=10 expected=10
+
+API: 2/2 checks passed (post-restart phase)

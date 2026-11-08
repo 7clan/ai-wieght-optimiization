@@ -1,0 +1,18 @@
+PASS  1 GET empty list 200 {items:[],total:0}
+PASS  2 POST valid item 201, echoes fields + id
+PASS  3 POST missing name 400 {error}
+PASS  4 POST negative quantity 400
+PASS  5 POST non-integer quantity 400
+PASS  6 seed 10 + earlier = 11 items, total matches — total=11
+PASS  7 GET ?q=usb matches name+sku case-insensitively (3) — total=3
+PASS  8 GET ?category=Electronics -> 3 items all Electronics
+PASS  9 GET ?status=low -> 4 items, all genuinely low — total=4
+PASS 10 GET ?status=out -> 2 items with quantity 0
+PASS 11 GET ?sort=quantity&order=asc ascending — q=[0,0,1,2,3,5,8,14,25,42,120]
+PASS 12 GET /:id 200 then 404 for unknown
+PASS 13 PUT updates and persists (now low stock)
+PASS 14 PUT invalid 400 / unknown 404
+PASS 15 DELETE 204 then 404
+PASS 16 post-delete total is 10 (restart-phase baseline) — total=10
+
+API: 16/16 checks passed (pre phase)

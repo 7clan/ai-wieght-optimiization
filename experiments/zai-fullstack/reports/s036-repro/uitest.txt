@@ -1,0 +1,24 @@
+PASS  1 1. header shows StockPilot + Add Item button
+PASS  2 2. empty state: "No items yet" + call to action
+PASS  3 3. Add Item opens form dialog with frozen field labels
+PASS  4 4. empty submit shows inline validation, dialog stays open
+PASS  5 5. saved item appears in list (+ success feedback)
+PASS  6 6. after refresh the item persists
+PASS  7 7. seeded 11 items all listed — rows=12
+PASS  8 8. search "usb" narrows to 3 items
+PASS  9 9. cleared search restores full list
+PASS 10 10. category Electronics -> keyboard/monitor/mouse only
+PASS 11 11. status Low -> only low-stock rows with badges — lowBadges=10
+PASS 12 12. sort quantity asc -> first row has quantity 0 — firstRow="Office Chair FUR-CH-01 Furniture 0 Out of stock 11/8/2026 Ed"
+PASS 13 13. edit quantity 8 -> 50 saved
+PASS 14 14. delete Standing Desk: confirm dialog then row gone
+PASS 15 15. no-match state: "No items match" + Clear control
+PASS 16 16. API outage -> error panel + Retry recovers
+PASS 17 17. 390px: no horizontal overflow, content reachable — overflow=0px
+PASS 18 18. 320px: no horizontal overflow, Add Item reachable — overflow=0px
+PASS 19 19. loading indicator visible during slow fetch
+PASS 20 20. final refresh: 10 items persist (9 seed + edited cable - desk) — rows=11
+
+pageErrors: 0
+
+UI: 20/20 checks passed
