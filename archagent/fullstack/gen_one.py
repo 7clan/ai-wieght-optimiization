@@ -104,14 +104,20 @@ def trim_to_exports(text: str, required: list[str]) -> str:
 
 
 def _balanced_end(text: str, start: int) -> int:
-    """End position (exclusive) of the balanced top-level construct
-    beginning at `start` (heuristic: from its first '{' to its match,
-    or to end-of-statement for type aliases without braces)."""
+    """End position (exclusive) of the top-level construct at `start`.
+
+    Only CURLY BRACES define the construct body (harness bug #3: the
+    first version also counted the signature's parentheses, so every
+    function was truncated at `): ReturnType {`).  Type aliases without
+    braces end at the first line not continuing a union.
+    """
     depth = 0
+    paren = 0  # () and [] nesting — EOL heuristic must not fire
+    # inside multi-line signatures or array literals (harness bug #3b)
     in_str = None
     i = start
     n = len(text)
-    seen_open = False
+    seen_brace = False
     while i < n:
         c = text[i]
         if in_str:
@@ -127,19 +133,24 @@ def _balanced_end(text: str, start: int) -> int:
             if j == -1:
                 return n
             i = j
-        elif c in "{([":
+        elif c == "/" and i + 1 < n and text[i + 1] == "*":
+            j = text.find("*/", i + 2)
+            if j == -1:
+                return n
+            i = j + 1
+        elif c in "( [".replace(" ", ""):
+            paren += 1
+        elif c in ") ]".replace(" ", ""):
+            paren -= 1
+        elif c == "{":
             depth += 1
-            seen_open = True
-        elif c in "})]":
+            seen_brace = True
+        elif c == "}":
             depth -= 1
-            if depth == 0 and seen_open:
-                # consume trailing characters on this line
+            if seen_brace and depth == 0:
                 j = text.find("\n", i)
-                return n if j == -1 else j
-        elif not seen_open and c == "\n" and depth == 0:
-            # type alias / import without braces: statement ends at EOL
-            # only if the next line does not continue it (heuristic:
-            # union types span lines with leading '|')
+                return n if j == -1 else j + 1
+        elif (not seen_brace and paren == 0 and c == "\n"):
             nxt = text[i + 1:].lstrip() if i + 1 < n else ""
             if not nxt.startswith("|") and not nxt.startswith("&"):
                 return i + 1
