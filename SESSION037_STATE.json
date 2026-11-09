@@ -37,7 +37,12 @@
    ]
   },
   "phase1_root_cause": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "taxonomy.py + taxonomy.json (reproducible from archives)",
+    "ROOT_CAUSE.md: 9 questions answered with archived exhibits",
+    "key findings: 53/87 C attempts on degenerate strategies; 46/147 near-empty candidates (early-EOS); overlap predicate PRODUCIBLE (Exhibit E1 rejected on one missing clause); schema relations 0/16 genuine model gap; priors left 7 arms uniform"
+   ]
   },
   "phase2_taskir": {
    "status": "pending"

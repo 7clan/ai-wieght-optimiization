@@ -1,0 +1,151 @@
+{
+ "tracks": {
+  "B": {
+   "contracts": 12,
+   "resolved": 7,
+   "attempts": 60,
+   "archived_candidates": 60,
+   "near_empty_candidates": 20,
+   "near_empty_by_contract": {
+    "src/app/api/reservations/[id]/route.ts": 2,
+    "src/app/api/reservations/route.ts": 5,
+    "src/app/api/rooms/[id]/route.ts": 3,
+    "src/app/api/rooms/route.ts": 6,
+    "src/app/page.tsx": 4
+   },
+   "strategy_totals": {
+    "exact_shape": 60
+   },
+   "parse_rejects_by_strategy": {
+    "exact_shape": 12
+   },
+   "degenerate_strategy_attempts": 0
+  },
+  "C": {
+   "contracts": 12,
+   "resolved": 4,
+   "attempts": 87,
+   "archived_candidates": 87,
+   "near_empty_candidates": 26,
+   "near_empty_by_contract": {
+    "src/app/api/reservations/[id]/route.ts": 4,
+    "src/app/api/reservations/route.ts": 3,
+    "src/app/api/rooms/[id]/route.ts": 1,
+    "src/app/api/rooms/route.ts": 4,
+    "src/app/page.tsx": 3,
+    "src/components/roomreserve/reservation-table.tsx": 1,
+    "src/components/roomreserve/room-panel.tsx": 3,
+    "src/components/roomreserve/states.tsx": 1,
+    "src/lib/roomreserve/types.ts": 4,
+    "src/lib/roomreserve/use-reservations.ts": 2
+   },
+   "strategy_totals": {
+    "ast_replace": 11,
+    "compiler_guided": 11,
+    "contract_split": 10,
+    "doc_lookup": 8,
+    "exact_shape": 12,
+    "minimal_diff": 13,
+    "regen_whole": 14,
+    "fim_micro": 5,
+    "body_completion": 3
+   },
+   "parse_rejects_by_strategy": {
+    "contract_split": 5,
+    "minimal_diff": 9,
+    "ast_replace": 8,
+    "compiler_guided": 7,
+    "doc_lookup": 7,
+    "regen_whole": 5,
+    "exact_shape": 4,
+    "fim_micro": 1,
+    "body_completion": 2
+   },
+   "degenerate_strategy_attempts": 53
+  }
+ },
+ "exhibits": {
+  "adapted_overlap_candidates": [
+   "src-app-api-reservations-route-ts-exact_shape-4-3512.json",
+   "src-app-api-reservations-route-ts-exact_shape-6-3546.json"
+  ],
+  "adapted_overlap_gate_outcome": "rejected: calls 'db.room.findUnique' not found (single missing clause; overlap predicate itself correct)",
+  "schema_both_sides_present": [
+   "prisma-schema-prisma-exact_shape-1-3017.json"
+  ],
+  "schema_both_sides_note": "fragments present but syntactically malformed (bare @relation attribute lines without field name/type; valid pair never produced in 16 attempts)",
+  "types_floor_missing_rejects": 8,
+  "types_floor_wrong_type_rejects": 1,
+  "near_empty_by_anchor_kind": {
+   "import-anchor": 26,
+   "other-anchor": 20
+  },
+  "contract_split_placeholder_prompts": 6,
+  "contract_split_total": 10,
+  "micro_strategy_token_budgets": {
+   "fim_micro": 64,
+   "ast_replace": 96,
+   "minimal_diff": 48,
+   "contract_split": 120
+  },
+  "track_c_strategy_summary": {
+   "ast_replace": {
+    "attempts": 11,
+    "parse_rejects": 8
+   },
+   "body_completion": {
+    "attempts": 3,
+    "parse_rejects": 2
+   },
+   "compiler_guided": {
+    "attempts": 11,
+    "parse_rejects": 7
+   },
+   "contract_split": {
+    "attempts": 10,
+    "parse_rejects": 5
+   },
+   "doc_lookup": {
+    "attempts": 8,
+    "parse_rejects": 7
+   },
+   "exact_shape": {
+    "attempts": 12,
+    "parse_rejects": 4
+   },
+   "fim_micro": {
+    "attempts": 5,
+    "parse_rejects": 1
+   },
+   "minimal_diff": {
+    "attempts": 13,
+    "parse_rejects": 9
+   },
+   "regen_whole": {
+    "attempts": 14,
+    "parse_rejects": 5
+   }
+  }
+ },
+ "failure_sources": {
+  "harness_or_strategy": [
+   "H1 degenerate prompts: ast_replace/compiler_guided/contract_split/minimal_diff/doc_lookup applied to generation contracts produce empty FIM regions and unfilled placeholders (53 attempts)",
+   "H2 _token_from_failures regexes do not match verify message formats ('GET' not exported / Room.floor missing) \u2014 micro strategies token-blind on most categories",
+   "H3 micro strategies token-starved (48-120) for file-sized gaps",
+   "H4 no behavioral probe in the scored loop (probe=None)",
+   "H5 no early-EOS mitigation (near-empty candidates consumed 46 of 147 attempts)"
+  ],
+  "prompt_or_contract": [
+   "P1 14-clause single-shot contracts exceed integration capacity; the overlap predicate itself was producible (Exhibit E1)",
+   "P2 demo shape leakage: 3-member demo interface \u2192 Room.floor dropped (8 rejects) ; relation-free schema demo left no adaptable relation pattern",
+   "P3 raw gate-failure text as feedback did not improve regen success (1 win / 14 attempts vs exact_shape 2/12)",
+   "P4 demo-verbatim copying on near-match specs (desk/spa routes)"
+  ],
+  "model_capability": [
+   "M1 Prisma relation grammar: 0/16 valid relation pairs",
+   "M2 member typing discipline (floor: string vs number; status literal-union leak)",
+   "M3 cross-clause integration (missing clauses when all pieces individually appear)",
+   "M4 prose rambling after code (trailing echo breaks parse)"
+  ]
+ }
+}
