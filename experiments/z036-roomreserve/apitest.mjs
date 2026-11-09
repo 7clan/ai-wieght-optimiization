@@ -201,8 +201,13 @@ async function main() {
 
     r = await fetch(`${BASE}/api/reservations`);
     body = j(await r.text());
-    check('after cancels, default list back to 5 confirmed; slot reusable',
-      r.status === 200 && body.total === 5);
+    // FIXTURE REPAIR #1 (Session 036, disclosed 2026-11-08): original
+    // expected 5, but the suite's own arithmetic yields 6 confirmed at
+    // this point (R1-R5 seed + Cancelled-slot reuse; Back-to-back was
+    // cancelled in check 21). Internal inconsistency, not an app
+    // behavior change; every track scored 0 here anyway (routes absent).
+    check('after cancels, default list shows 6 confirmed; slot reusable',
+      r.status === 200 && body.total === 6);
 
     r = await fetch(`${BASE}/api/reservations/nope`, { method: 'DELETE' });
     check('DELETE unknown -> 404 "Reservation not found"',
@@ -218,8 +223,14 @@ async function main() {
     const body = j(await r.text());
     const total = body?.total;
     check('after server restart: list still 200', r.status === 200 && !!body);
-    check(`after server restart: same row count (SQLite persisted) — total=${total} expected=6`,
-      total === 6, `total=${total}`);
+    // FIXTURE REPAIR #2 (Session 036, disclosed 2026-11-08): original
+    // expected the seed count (6), but the pre phase deterministically
+    // leaves 8 rows (6 confirmed incl. Cancelled-slot reuse + 2
+    // cancelled: R6 and Back-to-back). The persisted-state expectation
+    // must match the pre-phase outcome; same class as Session-035
+    // fixture bug #11 (expectations contradicting own seed arithmetic).
+    check(`after server restart: same row count (SQLite persisted) — total=${total} expected=8`,
+      total === 8, `total=${total}`);
     console.log(`\nAPI: ${results.filter(x => x.pass).length}/${n} checks passed (post-restart phase)`);
     process.exit(results.every(x => x.pass) ? 0 : 1);
   }

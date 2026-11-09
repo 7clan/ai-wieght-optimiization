@@ -1,0 +1,160 @@
+{
+ "experiment": "RoomReserve \u2014 Session 036",
+ "note": "Zero-teacher scores (Tracks A/B/C) are frozen in reports/trackA.json, trackB.json, trackC.json + assembly-B/C.json and are NEVER altered by the assisted completion below. Teacher bytes are listed exhaustively.",
+ "files": [
+  {
+   "file": "prisma/schema.prisma",
+   "label": "TEACHER-INTEGRATION",
+   "why": "schema contract failed 8/8 in BOTH zero-teacher tracks (relation fields reservations Reservation[] / room Room @relation never appeared; start/end typed DateTime 4x)",
+   "track_attempts": "B: 8 gens / C: 8 gens, all archived"
+  },
+  {
+   "file": "src/lib/roomreserve/types.ts",
+   "label": "TEACHER-INTEGRATION",
+   "why": "types contract failed 8/8 in both tracks",
+   "track_attempts": "B: 8 / C: 8"
+  },
+  {
+   "file": "src/app/api/rooms/route.ts",
+   "label": "TEACHER-INTEGRATION",
+   "why": "rooms-list contract failed 8/8 in both tracks",
+   "track_attempts": "B: 8 / C: 8"
+  },
+  {
+   "file": "src/app/api/reservations/route.ts",
+   "label": "TEACHER-INTEGRATION",
+   "why": "the overlap-prevention + validation-order contract failed 8/8 in both tracks \u2014 time-window logic never appeared in zero-teacher samples (Session-035 boundary persists)",
+   "track_attempts": "B: 8 / C: 8",
+   "post_track_fixes": [
+    "q filter extended to organizer (SPEC 2.3, teacher omission caught by frozen apitest check 10)",
+    "malformed-JSON guard -> 400 (caught by held-out H11)"
+   ]
+  },
+  {
+   "file": "src/app/api/reservations/[id]/route.ts",
+   "label": "QWEN-REPAIRED",
+   "origin": "Track B exact_shape sample (7 attempts, 2604 tok)",
+   "teacher_repairs": [
+    "missing return on the DELETE 404 branch (response built then discarded)",
+    "PUT merge: organizer + roomId per SPEC 2.5 (self-excluding overlap check moved to merged room)",
+    "malformed-JSON guard"
+   ]
+  },
+  {
+   "file": "src/app/api/rooms/[id]/route.ts",
+   "label": "QWEN-REPAIRED",
+   "origin": "Track B exact_shape sample (5 attempts, 314 tok)",
+   "teacher_repairs": [
+    "demo contamination: include { bookings } -> { reservations } (the spa-demo relation name)",
+    "Next.js 16 async params signature (params was sync-typed)",
+    "response shape { room } per SPEC 2.2"
+   ]
+  },
+  {
+   "file": "src/components/roomreserve/states.tsx",
+   "label": "QWEN-REPAIRED",
+   "origin": "Track B exact_shape sample (3 attempts, 1135 tok)",
+   "teacher_repairs": [
+    "demo-contaminated button label 'Add Plant' -> 'New Reservation' + button styling (1-string edit)"
+   ]
+  },
+  {
+   "file": "src/components/roomreserve/room-panel.tsx",
+   "label": "QWEN-REPAIRED",
+   "origin": "Track B exact_shape sample (2 attempts, 831 tok)",
+   "teacher_repairs": [
+    "untyped props -> typed (tsc strict)",
+    "availability badge rendered only when the filter is active (SPEC 4)"
+   ]
+  },
+  {
+   "file": "src/components/roomreserve/reservation-table.tsx",
+   "label": "QWEN-REPAIRED",
+   "origin": "Track B exact_shape FIRST SAMPLE (418 tok)",
+   "teacher_repairs": [
+    "Edit/Cancel buttons padded for WCAG 2.2 hit areas (27x20 -> 40px+)"
+   ]
+  },
+  {
+   "file": "src/components/roomreserve/reservation-form.tsx",
+   "label": "MIXED",
+   "origin": "Track B exact_shape first sample (674 tok): field set, label htmlFor ids, Save Reservation button, dialog structure",
+   "teacher_repairs": [
+    "duplicate onClose destructuring (tsc error)",
+    "id types number -> string",
+    "React import (was missing; React.useState used)",
+    "inline empty-field validation per SPEC 4",
+    "Escape-to-close per SPEC 4",
+    "submit no longer auto-closes: page closes only on success so 409 renders inside the dialog",
+    "styling (emerald dialog surface)"
+   ]
+  },
+  {
+   "file": "src/lib/roomreserve/use-reservations.ts",
+   "label": "QWEN-REPAIRED",
+   "origin": "Track B exact_shape first sample (264 tok): state layout, effect shape, reload callback",
+   "teacher_repairs": [
+    "fetch used POST against the list endpoint (SPEC 2.3 is GET+params) \u2014 structural gates passed, behavior wrong",
+    "rooms never fetched/returned",
+    "stale-closure loading guard"
+   ]
+  },
+  {
+   "file": "src/app/page.tsx",
+   "label": "TEACHER-INTEGRATION",
+   "why": "page contract failed 8/8 in both tracks; assembly of filters, availability computation, dialog and cancel flows",
+   "post_freeze_fixes": [
+    "Show cancelled checkbox-label -> button with aria-pressed (frozen uitest targets a button)",
+    "header wraps on mobile (390/320 overflow 74px/144px -> 0px)"
+   ]
+  },
+  {
+   "file": "scripts/reseed-roomreserve.ts",
+   "label": "TRUSTED-SCAFFOLD",
+   "why": "test helper"
+  },
+  {
+   "file": "tsconfig.gate.json",
+   "label": "TRUSTED-SCAFFOLD",
+   "why": "scoped compile gate"
+  }
+ ],
+ "fixture_repairs": [
+  {
+   "id": 1,
+   "suite": "apitest.mjs",
+   "what": "check 23 expected 5 confirmed but the suite's own arithmetic yields 6 (R1-R5 + Cancelled-slot reuse; Back-to-back cancelled in check 21)",
+   "disclosure": "internal inconsistency; all tracks scored 0 here anyway"
+  },
+  {
+   "id": 2,
+   "suite": "apitest.mjs post-restart",
+   "what": "expected seed count 6 but the pre phase deterministically leaves 8 rows (6 confirmed + 2 cancelled)",
+   "disclosure": "persisted-state expectation must equal pre-phase outcome"
+  },
+  {
+   "id": 3,
+   "suite": "uitest.mjs",
+   "what": "check 20 at 320px matched the hidden desktop table cell via .first() (responsive dual-rendering)",
+   "disclosure": "same class as Session-035 uitest defect #14; now filters visible matches"
+  },
+  {
+   "id": 4,
+   "suite": "heldout.mjs",
+   "what": "H6 used Breeze for the different-room check but Breeze has overlapping Standup in the window (409 was correct behavior contradicting fixture intent); moved to Cove; H10 recount 3->2",
+   "disclosure": "same class as Session-035 fixture bug #11"
+  }
+ ],
+ "scores_final": {
+  "apitest_pre": "24/24",
+  "persistence": "2/2",
+  "uitest": "20/20 (0 page errors)",
+  "heldout": "12/12",
+  "visual": "10/10 x 3 viewports"
+ },
+ "scores_zero_teacher": {
+  "trackA": "0 viable candidates / 0 checks reachable (7 candidates, 10,500 tok)",
+  "trackB": "7/12 contracts; assembly 0 functional checks",
+  "trackC": "4/12 contracts; assembly 0 functional checks"
+ }
+}

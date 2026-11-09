@@ -31,6 +31,7 @@ async function main() {
   const rooms = (await (await fetch(`${BASE}/api/rooms`)).json()).rooms;
   const atlas = rooms.find(x => x.name === 'Atlas Boardroom');
   const breeze = rooms.find(x => x.name === 'Breeze Huddle');
+  const cove = rooms.find(x => x.name === 'Cove Focus Room');
 
   // H1: fully-nested overlap is a conflict
   let r = await fetch(`${BASE}/api/reservations`, {
@@ -70,10 +71,16 @@ async function main() {
   check('H5 cross-midnight appears on BOTH day filters', on12 && on13,
     `12=${on12} 13=${on13}`);
 
-  // H6: same window in a DIFFERENT room is fine (rooms never cross-conflict)
+  // H6: same window as R1 in a DIFFERENT room is fine (rooms never
+  // cross-conflict).  FIXTURE REPAIR #4 (Session 036, disclosed
+  // 2026-11-08): the original used Breeze, but the seed corpus has
+  // Standup 09:30-09:45 IN BREEZE overlapping the window, so the 409
+  // was correct application behavior contradicting the fixture's intent
+  // (same class as Session-035 fixture bug #11).  Cove has no morning
+  // reservation.
   r = await fetch(`${BASE}/api/reservations`, {
     method: 'POST', headers: H,
-    body: JSON.stringify({ roomId: breeze.id, title: 'Parallel', organizer: 'H', start: '2026-11-12T09:00', end: '2026-11-12T10:30' }),
+    body: JSON.stringify({ roomId: cove.id, title: 'Parallel', organizer: 'H', start: '2026-11-12T09:00', end: '2026-11-12T10:30' }),
   });
   check('H6 identical window, different room -> 201', r.status === 201);
 
@@ -99,8 +106,10 @@ async function main() {
   // H10: filter combination roomId+date
   r = await fetch(`${BASE}/api/reservations?roomId=${breeze.id}&date=2026-11-12`);
   body = j(await r.text());
-  check('H10 roomId+date combined filter -> Standup + Parallel + Overnight only',
-    r.status === 200 && body.reservations?.length === 3
+  // FIXTURE REPAIR #4b (with #4): Parallel moved to Cove, so the Breeze
+  // day filter yields Standup + Overnight = 2.
+  check('H10 roomId+date combined filter -> Standup + Overnight only',
+    r.status === 200 && body.reservations?.length === 2
     && body.reservations.every(x => x.roomName === 'Breeze Huddle'),
     `n=${body?.reservations?.length}`);
 

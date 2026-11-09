@@ -1,0 +1,38 @@
+{
+ "trackA": {
+  "candidates": 7,
+  "generations": 7,
+  "tokens": 10500,
+  "model_seconds": 1575.8,
+  "peak_model_rss_gb": 2.3
+ },
+ "trackB": {
+  "contracts_resolved": 7,
+  "contracts_total": 12,
+  "generations": 60,
+  "tokens": 15130,
+  "wall_seconds": 2108.8
+ },
+ "trackC": {
+  "contracts_resolved": 4,
+  "contracts_total": 12,
+  "generations": 87,
+  "tokens": 15467,
+  "wall_seconds": 2119.5
+ },
+ "controller_selftest": {
+  "generations": 16,
+  "total_new_tokens": 4074,
+  "total_seconds": 549.2
+ },
+ "total_scored_generations": 170,
+ "total_scored_tokens": 45171,
+ "hardware": {
+  "cpu_threads": 2,
+  "ram_gib": 3.9,
+  "model": "Qwen2.5-Coder-0.5B fp32",
+  "checkpoint_sha256": "aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80",
+  "weights_changed": false
+ },
+ "functional_checks_per_10k_tokens": 12.84
+}

@@ -218,9 +218,15 @@ async function main() {
     () => document.documentElement.scrollWidth
       - document.documentElement.clientWidth);
   await page.reload({ waitUntil: 'networkidle' });
+  // FIXTURE REPAIR #3 (Session 036, disclosed 2026-11-08): at 320px the
+  // desktop table is display:none but precedes the mobile cards in DOM
+  // order, so .first() matched the hidden cell (same class as the
+  // Session-035 uitest defect #14: responsive dual-rendering). The
+  // check now targets a visible match.
   check('20. 320px no overflow + data persists after reload',
     overflow320 <= 0
-    && await page.getByText('Quarterly Review').first().isVisible(),
+    && await page.getByText('Quarterly Review')
+      .filter({ visible: true }).first().isVisible(),
     `overflow=${overflow320}px`);
 
   await browser.close();
