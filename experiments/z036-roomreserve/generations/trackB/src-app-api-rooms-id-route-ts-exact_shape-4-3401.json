@@ -1,0 +1,12 @@
+{
+ "file": "src/app/api/rooms/[id]/route.ts",
+ "strategy": "exact_shape",
+ "seed": 3401,
+ "prompt": "You are writing RoomReserve, a Next.js 16 meeting-room reservation app. TypeScript, Prisma + SQLite, NextResponse JSON APIs. Dates are plain ISO strings 'YYYY-MM-DDTHH:mm' compared lexicographically.\n\n// a library desk detail route (different domain)\nimport { NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(\n  _req: Request,\n  { params }: { params: Promise<{ id: string }> },\n) {\n  const { id } = await params\n  const desk = await db.desk.findUnique({\n    where: { id },\n    include: { bookings: { orderBy: { start: 'desc' } } },\n  })\n  if (!desk) {\n    return NextResponse.json({ error: 'Desk not found' }, { status: 404 })\n  }\n  return NextResponse.json({ desk })\n}\n\n\nNow YOUR task.  Write the file src/app/api/rooms/[id]/route.ts for the application.\nWrite the room detail route. Export GET taking params Promise with id. Await params. Call db.room.findUnique with where id and include reservations ordered by start desc. When the room is missing return NextResponse.json with error 'Room not found' and status 404. Otherwise return NextResponse.json with room.\n\nWrite the complete file now.  The first line is already written; continue from it:\nimport { NextResponse } from 'next/server'",
+ "candidate": "import { NextResponse } from 'next/server'\n\nimport { db } from '@/lib/db'\n\nexport async function GET(\n  req: Request,\n  { params }: { params: { id: string } },\n) {\n  const { id } = params\n  const room = await db.room.findUnique({\n    where: { id },\n    include: { bookings: { orderBy: { start: 'desc' } } },\n  })\n  if (!room) {\n    return NextResponse.json({ error: 'Room not found' }, { status: 404 })\n  }\n  return NextResponse.json(room)\n}",
+ "gate_failures": [
+  "exports: HTTP handler 'GET' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.room.findUnique' not found as a reachable call expression"
+ ]
+}

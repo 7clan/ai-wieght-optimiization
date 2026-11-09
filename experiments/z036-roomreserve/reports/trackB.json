@@ -1,0 +1,334 @@
+{
+ "track": "B",
+ "mode": "fixed-ladder",
+ "budget_per_contract": 8,
+ "contracts": [
+  {
+   "contract": "schema",
+   "file": "prisma/schema.prisma",
+   "category": "wrong_contract",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 2562,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape"
+   ],
+   "seconds": 348.1
+  },
+  {
+   "contract": "types",
+   "file": "src/lib/roomreserve/types.ts",
+   "category": "wrong_contract",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 1273,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape"
+   ],
+   "seconds": 172.1
+  },
+  {
+   "contract": "rooms-route",
+   "file": "src/app/api/rooms/route.ts",
+   "category": "missing_export",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 465,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape"
+   ],
+   "seconds": 74.6
+  },
+  {
+   "contract": "room-id-route",
+   "file": "src/app/api/rooms/[id]/route.ts",
+   "category": "missing_export",
+   "resolved": true,
+   "resolved_by": "exact_shape",
+   "provenance": "L2-diagnosis",
+   "attempts": 5,
+   "tokens": 314,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape"
+   ],
+   "seconds": 46.1
+  },
+  {
+   "contract": "reservations-route",
+   "file": "src/app/api/reservations/route.ts",
+   "category": "missing_export",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 1692,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape"
+   ],
+   "seconds": 262.0
+  },
+  {
+   "contract": "reservation-id-route",
+   "file": "src/app/api/reservations/[id]/route.ts",
+   "category": "missing_export",
+   "resolved": true,
+   "resolved_by": "exact_shape",
+   "provenance": "L2-diagnosis",
+   "attempts": 7,
+   "tokens": 2604,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape"
+   ],
+   "seconds": 367.1
+  },
+  {
+   "contract": "states",
+   "file": "src/components/roomreserve/states.tsx",
+   "category": "missing_literal",
+   "resolved": true,
+   "resolved_by": "exact_shape",
+   "provenance": "L2-diagnosis",
+   "attempts": 3,
+   "tokens": 1135,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "exact_shape"
+   ],
+   "seconds": 152.3
+  },
+  {
+   "contract": "room-panel",
+   "file": "src/components/roomreserve/room-panel.tsx",
+   "category": "missing_literal",
+   "resolved": true,
+   "resolved_by": "exact_shape",
+   "provenance": "L2-diagnosis",
+   "attempts": 2,
+   "tokens": 831,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape"
+   ],
+   "seconds": 112.3
+  },
+  {
+   "contract": "reservation-table",
+   "file": "src/components/roomreserve/reservation-table.tsx",
+   "category": "missing_literal",
+   "resolved": true,
+   "resolved_by": "exact_shape",
+   "provenance": "L2-diagnosis",
+   "attempts": 1,
+   "tokens": 418,
+   "strategy_order": [
+    "exact_shape"
+   ],
+   "seconds": 57.5
+  },
+  {
+   "contract": "reservation-form",
+   "file": "src/components/roomreserve/reservation-form.tsx",
+   "category": "missing_literal",
+   "resolved": true,
+   "resolved_by": "exact_shape",
+   "provenance": "L2-diagnosis",
+   "attempts": 1,
+   "tokens": 674,
+   "strategy_order": [
+    "exact_shape"
+   ],
+   "seconds": 88.8
+  },
+  {
+   "contract": "hook",
+   "file": "src/lib/roomreserve/use-reservations.ts",
+   "category": "missing_call",
+   "resolved": true,
+   "resolved_by": "exact_shape",
+   "provenance": "L2-diagnosis",
+   "attempts": 1,
+   "tokens": 264,
+   "strategy_order": [
+    "exact_shape"
+   ],
+   "seconds": 35.3
+  },
+  {
+   "contract": "page",
+   "file": "src/app/page.tsx",
+   "category": "missing_call",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 2898,
+   "strategy_order": [
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape",
+    "exact_shape"
+   ],
+   "seconds": 392.7
+  }
+ ],
+ "resolved": 7,
+ "total": 12,
+ "generations": 60,
+ "tokens": 15130,
+ "wall_seconds": 2108.8,
+ "model_usage": {
+  "generations": 60,
+  "total_new_tokens": 15130,
+  "total_seconds": 2091.2
+ },
+ "bandit_snapshot": {
+  "syntax": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "missing_export": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.1,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "missing_literal": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.556,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "missing_call": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.182,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "wrong_contract": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.056,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "demo_contamination": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "type_error": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "ui_state": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "interface_mismatch": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  }
+ }
+}

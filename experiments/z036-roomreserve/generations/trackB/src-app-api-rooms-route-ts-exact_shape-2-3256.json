@@ -1,0 +1,13 @@
+{
+ "file": "src/app/api/rooms/route.ts",
+ "strategy": "exact_shape",
+ "seed": 3256,
+ "prompt": "You are writing RoomReserve, a Next.js 16 meeting-room reservation app. TypeScript, Prisma + SQLite, NextResponse JSON APIs. Dates are plain ISO strings 'YYYY-MM-DDTHH:mm' compared lexicographically.\n\n// a library study-desk listing route (different domain)\nimport { NextRequest, NextResponse } from 'next/server'\nimport { db } from '@/lib/db'\n\nexport async function GET(req: NextRequest) {\n  const q = req.nextUrl.searchParams.get('q')?.toLowerCase() ?? ''\n  const minSeats = Number(req.nextUrl.searchParams.get('minSeats') ?? 0)\n  const where: { name?: { contains: string } } = {}\n  if (q) where.name = { contains: q }\n  let rows = await db.desk.findMany({ where, orderBy: { name: 'asc' } })\n  if (minSeats > 0) rows = rows.filter((d) => d.seats >= minSeats)\n  return NextResponse.json({ desks: rows, total: rows.length })\n}\n\n\nNow YOUR task.  Write the file src/app/api/rooms/route.ts for the application.\nWrite the rooms list route. Export GET. Read query params q and minCapacity. Build where object with name contains when q is set. Call db.room.findMany with where and orderBy name asc. Filter rows by capacity at least minCapacity when it is above zero. Return NextResponse.json with rooms and total.\n\nWrite the complete file now.  The first line is already written; continue from it:\nimport { NextRequest, NextResponse } from 'next/server'",
+ "candidate": "import { NextRequest, NextResponse } from 'next/server'\n\nimport { db } from '@/lib/db'\n\nThe next 5 lines are the file's top-level.  If you add more lines here, they will be ignored by the server.",
+ "gate_failures": [
+  "exports: HTTP handler 'GET' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.room.findMany' not found as a reachable call expression",
+  "accesses: 'req.nextUrl.searchParams' not found in reachable code"
+ ]
+}

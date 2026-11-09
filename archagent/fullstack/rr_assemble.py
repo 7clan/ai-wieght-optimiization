@@ -47,6 +47,24 @@ def suite(script: str) -> dict:
     }
 
 
+
+def restart_tolerant() -> None:
+    """Restart dev, tolerating non-200 routes (a track that produced no
+    page still has a live server returning 404 on /)."""
+    devserver.stop_dev()
+    try:
+        devserver.start_dev()
+    except RuntimeError:
+        import urllib.request
+        import urllib.error
+        try:
+            urllib.request.urlopen("http://127.0.0.1:3000/", timeout=10)
+        except urllib.error.HTTPError:
+            print("[assemble] dev up (non-200 route — expected when no "
+                  "page was produced)")
+        else:
+            raise
+
 def main() -> None:
     label = sys.argv[1] if len(sys.argv) > 1 else "unknown"
     report: dict = {"label": label}
@@ -59,8 +77,8 @@ def main() -> None:
     report["tsc_errors"] = len(errs)
     report["tsc_first"] = errs[:3]
 
-    # 2. dev up + reseed
-    devserver.restart_dev()
+    # 2. dev up + reseed (any HTTP response counts as up)
+    restart_tolerant()
     rr = run(["bun", "run", "db:reseed-roomreserve"], timeout=120)
     report["reseed"] = rr.returncode == 0
 
@@ -69,7 +87,7 @@ def main() -> None:
     # note: apitest itself reseeds at start; --phase pre
 
     # 4. restart + persistence
-    devserver.restart_dev()
+    restart_tolerant()
     r = run(["node", str(EXP / "apitest.mjs"), "--phase", "post-restart"])
     m = re.search(r"API: (\d+)/(\d+) checks passed", r.stdout)
     report["apitest_post"] = {

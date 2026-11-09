@@ -1,0 +1,36 @@
+[devserver] stopped (up=False)
+[assemble] dev up (non-200 route — expected when no page was produced)
+[devserver] stopped (up=False)
+[assemble] dev up (non-200 route — expected when no page was produced)
+{
+ "label": "B",
+ "tsc_errors": 1,
+ "reseed": true,
+ "apitest_pre": {
+  "exit": 2,
+  "passed": 0,
+  "total": 0,
+  "page_errors": null,
+  "tail": "FAIL  1 GET /api/rooms 200, 4 seeded rooms, name-ascending \u2014 n=undefined\nFAIL  2 GET /api/rooms?q=cove case-insensitive -> 1 (Cove Focus Room)\nFAIL  3 GET /api/rooms?minCapacity=8 -> Atlas + Dune only\n"
+ },
+ "apitest_post": {
+  "passed": 0,
+  "total": 2,
+  "tail": "FAIL  1 after server restart: list still 200\nFAIL  2 after server restart: same row count (SQLite persisted) \u2014 total=undefined expected=6 \u2014 total=undefined\n\nAPI: 0/2 checks passed (post-restart phase)\n"
+ },
+ "uitest": {
+  "exit": 2,
+  "passed": 0,
+  "total": 0,
+  "page_errors": null,
+  "tail": "FAIL  1 1. header shows RoomReserve + New Reservation button\nFAIL  2 2. rooms panel lists 4 seeded rooms with capacity\nFAIL  3 3. reservation list shows seeded confirmed reservations\n"
+ },
+ "heldout": {
+  "exit": 2,
+  "passed": 0,
+  "total": 0,
+  "page_errors": null,
+  "tail": ""
+ }
+}
+report -> /home/z/ai-research/experiments/z036-roomreserve/reports/assembly-B.json

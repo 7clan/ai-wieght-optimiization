@@ -1,0 +1,17 @@
+[devserver] stopped (up=False)
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:  14%|█▍        | 40/290 [00:00<00:00, 390.40it/s]Loading weights:  31%|███       | 89/290 [00:00<00:00, 439.55it/s]Loading weights:  51%|█████     | 148/290 [00:00<00:00, 506.54it/s]Loading weights:  69%|██████▊   | 199/290 [00:00<00:00, 421.25it/s]Loading weights:  89%|████████▊ | 257/290 [00:00<00:00, 466.84it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 430.88it/s]
+  [B] schema                 FAILED (8 attempts, 2562 tok)
+  [B] types                  FAILED (8 attempts, 1273 tok)
+  [B] rooms-route            FAILED (8 attempts, 465 tok)
+  [B] room-id-route          RESOLVED by exact_shape (5 attempts, 314 tok)
+  [B] reservations-route     FAILED (8 attempts, 1692 tok)
+  [B] reservation-id-route   RESOLVED by exact_shape (7 attempts, 2604 tok)
+  [B] states                 RESOLVED by exact_shape (3 attempts, 1135 tok)
+  [B] room-panel             RESOLVED by exact_shape (2 attempts, 831 tok)
+  [B] reservation-table      RESOLVED by exact_shape (1 attempts, 418 tok)
+  [B] reservation-form       RESOLVED by exact_shape (1 attempts, 674 tok)
+  [B] hook                   RESOLVED by exact_shape (1 attempts, 264 tok)
+  [B] page                   FAILED (8 attempts, 2898 tok)
+
+[B] 7/12 contracts resolved, 60 generations, 15130 tokens, 2108.8s
+report -> /home/z/ai-research/experiments/z036-roomreserve/reports/trackB.json

@@ -1,0 +1,29 @@
+[devserver] stopped (up=False)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/z/ai-research/archagent/fullstack/rr_assemble.py", line 96, in <module>
+    main()
+  File "/home/z/ai-research/archagent/fullstack/rr_assemble.py", line 63, in main
+    devserver.restart_dev()
+  File "/home/z/ai-research/archagent/fullstack/devserver.py", line 72, in restart_dev
+    start_dev()
+  File "/home/z/ai-research/archagent/fullstack/devserver.py", line 67, in start_dev
+    raise RuntimeError("dev server did not come up within 120s")
+RuntimeError: dev server did not come up within 120s
+[devserver] stopped (up=False)
+[assemble] dev up (non-200 route — expected when no page was produced)
+[devserver] stopped (up=False)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/z/ai-research/archagent/fullstack/rr_assemble.py", line 108, in <module>
+    print(json.dumps({k: v for k, v in report.items()
+    ^^^^^^
+  File "/home/z/ai-research/archagent/fullstack/rr_assemble.py", line 84, in main
+    
+  File "/home/z/ai-research/archagent/fullstack/devserver.py", line 72, in restart_dev
+    start_dev()
+  File "/home/z/ai-research/archagent/fullstack/devserver.py", line 67, in start_dev
+    raise RuntimeError("dev server did not come up within 120s")
+RuntimeError: dev server did not come up within 120s

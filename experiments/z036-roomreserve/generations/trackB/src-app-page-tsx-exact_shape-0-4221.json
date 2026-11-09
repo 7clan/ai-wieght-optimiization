@@ -1,0 +1,11 @@
+{
+ "file": "src/app/page.tsx",
+ "strategy": "exact_shape",
+ "seed": 4221,
+ "prompt": "You are writing RoomReserve, a Next.js 16 meeting-room reservation app. TypeScript, Prisma + SQLite, NextResponse JSON APIs. Dates are plain ISO strings 'YYYY-MM-DDTHH:mm' compared lexicographically.\n\n// an assembly page for a bookshelf app (shape reference)\nimport { useBooks } from '@/lib/bookshelf/use-books'\nimport { BookTable } from '@/components/bookshelf/book-table'\n\nexport default function Home() {\n  const { books, loading, error, reload } = useBooks()\n  return (\n    <div className=\"min-h-screen\">\n      <header><h1>Bookshelf</h1></header>\n      <main>{books.length > 0 ? <BookTable rows={books} /> : null}</main>\n      <footer>Library demo</footer>\n    </div>\n  )\n}\n\n\nNow YOUR task.  Write the file src/app/page.tsx for the application.\nWrite the page. Default export component Home. Header with h1 'RoomReserve' and a 'New Reservation' button. Main section using useReservations, rendering the room panel, a date input labelled 'Date' with a 'Clear date' button, time inputs 'Free from' and 'Free to' for availability, a 'Show cancelled' toggle, and the reservation table. Loading, error and empty states from the states file. Footer with 'RoomReserve \u2014 plan and book rooms'.\n\nWrite the complete file now.  The first line is already written; continue from it:\nimport { useReservations } from '@/lib/roomreserve/use-reservations'",
+ "candidate": "import { useReservations } from '@/lib/roomreserve/use-reservations'\n",
+ "gate_failures": [
+  "accesses: 'useReservations' not found in reachable code",
+  "uiStrings: required strings not in used positions"
+ ]
+}
