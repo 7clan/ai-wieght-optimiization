@@ -1,0 +1,7 @@
+{
+ "piece": "rel-opt-plot",
+ "action": "exact_shape",
+ "seed": 40300,
+ "prompt": "A small relational store.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Planting[]\n}\n\nmodel Planting {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String?\n  vet       Vet? @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task: Add the model Plot to the schema file.. field id String @id @default(cuid()). field label String. field area Int. relation field plantings Planting[].\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Plot {  // required fields: id String (@id); label String; area Int; plantings Planting[]\n",
+ "candidate": "model Plot {\n  // required fields: id String (@id); label String; area Int; plantings Planting[]\n  id        String  @id @default(cuid())\n  label     String\n  area      Int\n  plantings Planting[]\n}"
+}

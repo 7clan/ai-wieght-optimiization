@@ -53,7 +53,14 @@ BUDGET_ATTEMPTS = 6
 
 def _rel_demo(child: str, optional: bool = False,
               onDelete: str = "", named: str = "") -> str:
-    """Demo-complete Vet-domain relation pair (never the task's)."""
+    """Demo-complete Vet-domain relation pair (never the task's).
+
+    Field names follow the Session-036 'neutral labels' law: the child
+    uses generic names (id/title/start) so that copying them is safe;
+    only the FK/relation names are domain-specific (vetId/vet), which
+    the model must rename — measured in curriculum A bring-up: with
+    petName/vetId-style names the 0.5B copies the demo child's fields
+    wholesale instead of the spec's."""
     opt = "?" if optional else ""
     cascade = f", onDelete: {onDelete}" if onDelete else ""
     nm = f'"{named}", ' if named else ""
@@ -65,7 +72,8 @@ def _rel_demo(child: str, optional: bool = False,
         "}\n\n"
         f"model {child} {{\n"
         "  id        String  @id @default(cuid())\n"
-        "  petName   String\n"
+        "  title     String\n"
+        "  start     String\n"
         f"  vetId     String{opt}\n"
         f"  vet       Vet{opt} @relation({nm}fields: [vetId], "
         f"references: [id]{cascade})\n"

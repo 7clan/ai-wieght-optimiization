@@ -1,0 +1,4 @@
+{
+ "prompt": "A small relational store.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Planting[]\n}\n\nmodel Planting {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String?\n  vet       Vet? @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task.  Write the file prisma/curriculum-schema.prisma for the application.\nAdd the model Planting to the schema file.. field id String @id @default(cuid()). field crop String. field plantedAt String. field plotId String?. relation field plot Plot? @relation(fields: [plotId], references: [id]).\n\nWrite the complete file now.  The first line is already written; continue from it:\nmodel Planting {",
+ "candidate": "model Planting {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String?\n  vet       Vet? @relation(fields: [vetId], references: [id])\n}"
+}

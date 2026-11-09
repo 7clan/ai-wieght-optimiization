@@ -1,0 +1,7 @@
+{
+ "piece": "rel-two-order",
+ "action": "exact_shape",
+ "seed": 40900,
+ "prompt": "A small relational store.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Pet[]\n}\n\nmodel Pet {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String?\n  vet       Vet? @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task: Add the model Order to the schema file.. field id String @id @default(cuid()). field total Int. field customerId String. field couponId String?. relation field customer Customer @relation(fields: [customerId], references: [id]). relation field coupon Coupon? @relation(fields: [couponId], references: [id]).\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Order {  // required fields: id String (@id); total Int; customerId String; couponId String?; customer Customer (@relation, fields: [customerId]); coupon Coupon? (@relation, fields: [couponId])\n",
+ "candidate": "model Order {\n  // required fields: id String (@id); total Int; customerId String; couponId String?; customer Customer (@relation, fields: [customerId]); coupon Coupon? (@relation, fields: [couponId])\n  id        String  @id @default(cuid())\n  total     Int\n  customerId String?\n  couponId  String?\n  customer  Customer? @relation(fields: [customerId], references: [id])\n  coupon    Coupon? @relation(fields: [couponId], references: [id])\n}"
+}

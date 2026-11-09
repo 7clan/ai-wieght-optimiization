@@ -1,0 +1,7 @@
+{
+ "piece": "rel-req-screen",
+ "action": "exact_shape",
+ "seed": 40600,
+ "prompt": "A small relational store.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Visit[]\n}\n\nmodel Visit {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String\n  vet       Vet @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task: Add the model Screen to the schema file.. field id String @id @default(cuid()). field label String. field seats Int. relation field showings Showing[].\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Screen {  // required fields: id String (@id); label String; seats Int; showings Showing[]\n",
+ "candidate": "model Screen {\n  // required fields: id String (@id); label String; seats Int; showings Showing[]\n  id        String  @id @default(cuid())\n  label     String\n  seats     Int\n  showings  Showing[]\n}"
+}

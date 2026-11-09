@@ -327,7 +327,7 @@ class TaskIR:
             elif r.rel_name:
                 g["attrsIncludes"] = [f'"{r.rel_name}"']
             fields.append(g)
-        return {"name": e.name, "fields": fields}
+        return {"name": e.name, "strictFields": True, "fields": fields}
 
     def _invariant_spec(self, inv: Invariant) -> str:
         return (f"Write the predicate function {inv.signature}. "

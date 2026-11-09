@@ -69,18 +69,60 @@ def validate_demo(piece) -> list[str]:
 
 # -------------------------------------------------------- prompt builder
 
+def checklist_for(piece) -> str:
+    """L-CHECKLIST (measured in curriculum A bring-up): render the
+    piece's required elements as a comment line INSIDE the construct,
+    right after the anchor's opening line.  Information content is
+    IDENTICAL to the spec (no teacher solution added) — only the
+    PLACEMENT changes: the model reads the checklist exactly where it
+    writes, which defeats demo-field copying (6/6 clean vs 0/6 with
+    spec-only placement in the A/B seed test)."""
+    k = piece.kind
+    if k == "prisma-model":
+        items = []
+        for m in piece.gate.get("models", []):
+            for f in m.get("fields", []):
+                desc = f["name"]
+                if f.get("type"):
+                    desc += f" {f['type']}"
+                if f.get("isList"):
+                    desc += "[]"
+                if f.get("optional"):
+                    desc += "?"
+                attrs = f.get("attrsIncludes") or []
+                if attrs:
+                    desc += " (" + ", ".join(attrs) + ")"
+                items.append(desc)
+        if not items:
+            return ""
+        return ("  // required fields: " + "; ".join(items)
+                + "\n")
+    if k == "route-handler":
+        calls = piece.gate.get("calls", [])
+        if not calls:
+            return ""
+        return ("  // required calls: " + ", ".join(calls) + "\n")
+    if k == "invariant":
+        return ""
+    return ""
+
+
 def build_piece_prompt(piece, *, retry: int = 0,
-                       extra_feedback: str = "") -> str:
+                       extra_feedback: str = "",
+                       opening: str = "") -> str:
     """Whole-construct prompt for one piece.
 
     retry=0  canonical form.  retry>=1 adds the failing-check feedback
     (counterexample or gate failure) and a STRONGER continue directive.
+    opening: optional replacement for the domain-diff line (prompt
+    mutation for resample diversity — the Phase-5 variant set).
     """
     concept = piece.ir.concept if piece.ir else ""
     parts = [concept, "", piece.demo, ""]
     parts.append(f"Now YOUR task: {piece.spec}")
-    parts.append("Adapt the example's PATTERNS to this task's names — "
-                 "never copy its domain words.")
+    parts.append(opening or ("Adapt the example's PATTERNS to this "
+                             "task's names — never copy its domain "
+                             "words."))
     if extra_feedback:
         parts.append("")
         parts.append("Your previous attempt had these verified problems:")
@@ -94,7 +136,7 @@ def build_piece_prompt(piece, *, retry: int = 0,
         parts.append("")
         parts.append("Write the corrected complete construct now.  The "
                      "first line is already written; continue from it:")
-    parts.append(piece.anchor)
+    parts.append(piece.anchor + checklist_for(piece))
     return "\n".join(parts)
 
 
@@ -134,6 +176,17 @@ def _with_anchor(piece, anchor: str, retry: int = 1) -> str:
 _PROSE_TAIL = re.compile(
     r"\n\s*(?:\d+\.|-|Note|Notes|Here|This |In |If |The above|Now |"
     r"Explanation|As |Let |We |You )", re.I)
+
+# Prompt-mutation variants for resample diversity (Phase-5 seed set;
+# used when dedup shows the sampler is stuck in one attractor).
+RESAMPLE_OPENINGS = [
+    "Rewrite the example for this task: same structure, different "
+    "domain, every required element present.",
+    "Write this task's version from scratch. List every required "
+    "field first, then write the construct with exactly those fields.",
+    "Use the example only as a shape reference. All names, fields and "
+    "relations come from THIS task's requirements above.",
+]
 
 
 def extract_construct(text: str, kind: str) -> str:
@@ -205,19 +258,51 @@ def braces_balanced(text: str) -> bool:
 
 # ------------------------------------------------------- repair prompts
 
+def _spec_clauses_for(failures: list[str], spec: str) -> list[str]:
+    """Map gate failures back to the spec sentences that declare the
+    missing element (spec material the model already saw — never a
+    teacher-written solution)."""
+    sentences = [s.strip() for s in
+                 re.split(r"(?<=[.;])\s+", spec) if s.strip()]
+    out = []
+    for f in failures[:4]:
+        m = (re.search(r"schema: \w+\.(\w+) missing", f)
+             or re.search(r"schema: \w+\.(\w+) not declared", f)
+             or re.search(r"types: \w+\.(\w+) missing", f)
+             or re.search(r"exports: HTTP handler '(\w+)'", f)
+             or re.search(r"calls: '([\w.]+)'", f)
+             or re.search(r"accesses: '([\w.]+)'", f)
+             or re.search(r"uiStrings: '([^']+)'", f)
+             or re.search(r"invariant: function '(\w+)'", f))
+        if not m:
+            continue
+        token = m.group(1)
+        hits = [s for s in sentences if token in s]
+        if hits:
+            out.append(hits[0])
+        else:
+            out.append(f"add the missing element: {token}")
+    return out
+
+
 def build_repair_prompt(piece, failing_clauses: list[str],
                         counterexample: str = "",
                         code: str = "") -> tuple[str, str, str]:
     """Micro-repair prompt (FIM-shaped).  Returns (prefix, suffix,
     instruction).
 
-    The instruction quotes ONLY the piece's own spec clauses that failed
-    (the model already saw them) plus the observed counterexample — no
-    teacher-written solution (provenance discipline preserved).
+    The instruction quotes the piece's OWN spec clauses that declare
+    the missing element plus the observed counterexample — the model
+    saw all of this at generation time; nothing teacher-written is
+    added (provenance discipline preserved).
     """
+    spec = getattr(piece, "spec", "")
     instr_parts = ["this attempt must additionally satisfy:"]
-    for c in failing_clauses[:3]:
+    for c in _spec_clauses_for(failing_clauses, spec)[:3]:
         instr_parts.append(f"- {c}")
+    if not instr_parts[1:]:
+        for c in failing_clauses[:3]:
+            instr_parts.append(f"- {c}")
     if counterexample:
         instr_parts.append(f"verified failure: {counterexample}")
     instr_parts.append("write the missing logic; do not remove existing "
@@ -230,6 +315,18 @@ def build_repair_prompt(piece, failing_clauses: list[str],
     if not code:
         return "", "", instruction
     lines = code.split("\n")
+    kind = getattr(piece, "kind", "")
+    if kind == "prisma-model":
+        # insert INSIDE the model block: before the closing brace
+        close = None
+        for i in range(len(lines) - 1, -1, -1):
+            if lines[i].strip() == "}":
+                close = i
+                break
+        seam = close if close is not None else len(lines)
+        prefix = "\n".join(lines[:seam])
+        suffix = "\n".join(lines[seam:])
+        return prefix, suffix, instruction
     seam = len(lines)
     for i in range(len(lines) - 1, -1, -1):
         if re.match(r"\s*(const |let |return |await db\.)", lines[i]):

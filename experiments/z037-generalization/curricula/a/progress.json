@@ -1,0 +1,1028 @@
+{
+ "rel-1tm": {
+  "task": "rel-1tm",
+  "label": "one-to-many required FK",
+  "tag": "dev",
+  "pieces": [
+   "rel-1tm-album",
+   "rel-1tm-band"
+  ],
+  "baseline": {
+   "resolved": true,
+   "attempts": 2,
+   "tokens": 600,
+   "validate": true,
+   "validate_failures": [],
+   "per_piece": [
+    {
+     "piece": "rel-1tm-album",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-1tm-band",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  },
+  "engine": {
+   "resolved": true,
+   "attempts": 3,
+   "tokens": 661,
+   "validate": true,
+   "validate_failures": [],
+   "per_piece": [
+    {
+     "piece": "rel-1tm-album",
+     "resolved": true,
+     "attempts": 2,
+     "tokens": 361,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 40000,
+       "tokens": 300,
+       "seconds": 38.85,
+       "prompt_sha": "3980ef078693",
+       "candidate_sha": "2357f97a15de",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Album.id missing",
+         "schema: Album.title missing",
+         "schema: Album.releaseYear missing",
+         "schema: Album.bandId missing",
+         "schema: Album.band missing",
+         "schema: model Album: unparsable line: id: String @id @default(cuid())"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 1,
+       "action": "exact_shape_feedback",
+       "mode": "exact_shape_feedback",
+       "seed": 40031,
+       "tokens": 61,
+       "seconds": 9.3,
+       "prompt_sha": "b8555994b4a1",
+       "candidate_sha": "64b8ab9908fd",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 1 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-1tm-band",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 40000,
+       "tokens": 300,
+       "seconds": 38.32,
+       "prompt_sha": "b90531f8bfe1",
+       "candidate_sha": "efd5e18719c4",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "rel-opt": {
+  "task": "rel-opt",
+  "label": "optional FK",
+  "tag": "dev",
+  "pieces": [
+   "rel-opt-planting",
+   "rel-opt-plot"
+  ],
+  "baseline": {
+   "resolved": false,
+   "attempts": 7,
+   "tokens": 2100,
+   "validate": false,
+   "validate_failures": [
+    "not all pieces resolved"
+   ],
+   "per_piece": [
+    {
+     "piece": "rel-opt-planting",
+     "resolved": false,
+     "attempts": 6,
+     "tokens": 1800,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Planting.title not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.start not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vetId not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vet not declared \u2014 remove fields not in the spec (demo contamination)"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 1,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Planting.title not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.start not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vetId not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vet not declared \u2014 remove fields not in the spec (demo contamination)"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 2,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Planting.title not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.start not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vetId not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vet not declared \u2014 remove fields not in the spec (demo contamination)"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 3,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Planting.title not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.start not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vetId not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vet not declared \u2014 remove fields not in the spec (demo contamination)"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 4,
+       "strat": "regen_whole",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Planting.title not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.start not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.crop missing",
+        "schema: Planting.plantedAt missing"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 5,
+       "strat": "regen_whole",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Planting.title not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.start not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vetId not declared \u2014 remove fields not in the spec (demo contamination)",
+        "schema: Planting.vet not declared \u2014 remove fields not in the spec (demo contamination)"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      }
+     ]
+    },
+    {
+     "piece": "rel-opt-plot",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  },
+  "engine": {
+   "resolved": true,
+   "attempts": 5,
+   "tokens": 941,
+   "validate": true,
+   "validate_failures": [],
+   "per_piece": [
+    {
+     "piece": "rel-opt-planting",
+     "resolved": true,
+     "attempts": 4,
+     "tokens": 641,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 40300,
+       "tokens": 300,
+       "seconds": 37.81,
+       "prompt_sha": "345785368af7",
+       "candidate_sha": "4ea7b23aeaab",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Planting.title not declared \u2014 remove fields not in the spec (demo contamination)",
+         "schema: Planting.start not declared \u2014 remove fields not in the spec (demo contamination)",
+         "schema: Planting.vetId not declared \u2014 remove fields not in the spec (demo contamination)",
+         "schema: Planting.vet not declared \u2014 remove fields not in the spec (demo contamination)",
+         "schema: Planting.crop missing",
+         "schema: Planting.plantedAt missing"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 1,
+       "action": "exact_shape_feedback",
+       "mode": "exact_shape_feedback",
+       "seed": 40331,
+       "tokens": 60,
+       "seconds": 8.07,
+       "prompt_sha": "4967ae5963d7",
+       "candidate_sha": "ac0cd853df89",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Planting.id missing",
+         "schema: Planting.crop missing",
+         "schema: Planting.plantedAt missing",
+         "schema: Planting.plotId missing",
+         "schema: Planting.plot missing",
+         "schema: model Planting: unparsable line: id: String @id @default(cuid())"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "ladder index 1 (kind=prisma-model)",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 2,
+       "action": "exact_shape_resample",
+       "mode": "exact_shape_resample",
+       "seed": 40362,
+       "tokens": 59,
+       "seconds": 7.84,
+       "prompt_sha": "a183d0050431",
+       "candidate_sha": "710633b1a7e7",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Planting.plot attrs  missing @relation,fields: [plotId]"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "ladder index 2 (kind=prisma-model)",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 3,
+       "action": "exact_shape_feedback",
+       "mode": "exact_shape_feedback",
+       "seed": 40393,
+       "tokens": 222,
+       "seconds": 27.37,
+       "prompt_sha": "54be60ec2aaa",
+       "candidate_sha": "4c6f1e44d14e",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "near-miss: 1 missing field(s) \u2014 regeneration with spec-clause feedback",
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-opt-plot",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 40300,
+       "tokens": 300,
+       "seconds": 35.4,
+       "prompt_sha": "f78e57e123eb",
+       "candidate_sha": "6605dc71c447",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "rel-req": {
+  "task": "rel-req",
+  "label": "required FK, new identifiers",
+  "tag": "dev",
+  "pieces": [
+   "rel-req-screen",
+   "rel-req-showing"
+  ],
+  "baseline": {
+   "resolved": true,
+   "attempts": 2,
+   "tokens": 600,
+   "validate": true,
+   "validate_failures": [],
+   "per_piece": [
+    {
+     "piece": "rel-req-screen",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-req-showing",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  },
+  "engine": {
+   "resolved": true,
+   "attempts": 2,
+   "tokens": 600,
+   "validate": true,
+   "validate_failures": [],
+   "per_piece": [
+    {
+     "piece": "rel-req-screen",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 40600,
+       "tokens": 300,
+       "seconds": 32.54,
+       "prompt_sha": "a1d10418a158",
+       "candidate_sha": "2371a58917e7",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-req-showing",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 40600,
+       "tokens": 300,
+       "seconds": 34.0,
+       "prompt_sha": "465f9939fec3",
+       "candidate_sha": "adabcef22e76",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "rel-two": {
+  "task": "rel-two",
+  "label": "two relations on one model",
+  "tag": "dev",
+  "pieces": [
+   "rel-two-coupon",
+   "rel-two-customer",
+   "rel-two-order"
+  ],
+  "baseline": {
+   "resolved": false,
+   "attempts": 8,
+   "tokens": 2400,
+   "validate": false,
+   "validate_failures": [
+    "not all pieces resolved"
+   ],
+   "per_piece": [
+    {
+     "piece": "rel-two-coupon",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-two-customer",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-two-order",
+     "resolved": false,
+     "attempts": 6,
+     "tokens": 1800,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Order.couponId optional=false != true",
+        "schema: Order.customer attrs  missing @relation,fields: [customerId]",
+        "schema: Order.coupon optional=false != true",
+        "schema: Order.coupon attrs  missing @relation,fields: [couponId]"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 1,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Order.couponId optional=false != true",
+        "schema: Order.customer missing",
+        "schema: Order.coupon missing"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 2,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Order.couponId optional=false != true",
+        "schema: Order.customer attrs  missing @relation,fields: [customerId]",
+        "schema: Order.coupon optional=false != true",
+        "schema: Order.coupon attrs  missing @relation,fields: [couponId]"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 3,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Order.customerId optional=true != false",
+        "schema: Order.customer optional=true != false"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 4,
+       "strat": "regen_whole",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Order.customerId optional=true != false",
+        "schema: Order.customer missing"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      },
+      {
+       "i": 5,
+       "strat": "regen_whole",
+       "tokens": 300,
+       "gate_pass": false,
+       "failures": [
+        "schema: Order.customerId optional=true != false",
+        "schema: Order.customer attrs  missing @relation,fields: [customerId]",
+        "schema: Order.coupon optional=false != true",
+        "schema: Order.coupon attrs  missing @relation,fields: [couponId]"
+       ],
+       "near_empty": false,
+       "outcome": "reject"
+      }
+     ]
+    }
+   ]
+  },
+  "engine": {
+   "resolved": false,
+   "attempts": 11,
+   "tokens": 1736,
+   "validate": false,
+   "validate_failures": [
+    "not all pieces resolved"
+   ],
+   "per_piece": [
+    {
+     "piece": "rel-two-coupon",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 40900,
+       "tokens": 300,
+       "seconds": 39.27,
+       "prompt_sha": "240e3d4a2ce8",
+       "candidate_sha": "be2e9034e1fa",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-two-customer",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 40900,
+       "tokens": 300,
+       "seconds": 33.4,
+       "prompt_sha": "b41c593d4853",
+       "candidate_sha": "73b163dac430",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-two-order",
+     "resolved": false,
+     "attempts": 9,
+     "tokens": 1136,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 40900,
+       "tokens": 300,
+       "seconds": 33.51,
+       "prompt_sha": "670ac2f192e6",
+       "candidate_sha": "4fc9df91b242",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Order.customerId optional=true != false",
+         "schema: Order.customer optional=true != false"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 1,
+       "action": "exact_shape_feedback",
+       "mode": "exact_shape_feedback",
+       "seed": 40931,
+       "tokens": 114,
+       "seconds": 14.13,
+       "prompt_sha": "23a490b03e40",
+       "candidate_sha": "154314ce8e2d",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Order.customerId optional=true != false",
+         "schema: Order.coupon optional=false != true"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "near-miss: 2 missing field(s) \u2014 regeneration with spec-clause feedback",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 2,
+       "action": "exact_shape_feedback",
+       "mode": "exact_shape_feedback",
+       "seed": 40962,
+       "tokens": 300,
+       "outcome": "dedup-duplicate"
+      },
+      {
+       "step": 3,
+       "action": "micro_repair",
+       "mode": "micro_repair",
+       "seed": 40993,
+       "tokens": 2,
+       "outcome": "dedup-duplicate"
+      },
+      {
+       "step": 4,
+       "action": "micro_repair",
+       "mode": "micro_repair",
+       "seed": 41024,
+       "tokens": 34,
+       "seconds": 5.43,
+       "prompt_sha": "0e1e9caa48e7",
+       "candidate_sha": "397bb99b5463",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Order.Customer not declared \u2014 remove fields not in the spec (demo contamination)",
+         "schema: Order.Coupon not declared \u2014 remove fields not in the spec (demo contamination)",
+         "schema: Order.customerId optional=true != false",
+         "schema: Order.coupon optional=false != true"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "near-miss: 2 failing clause(s) \u2014 bounded FIM repair",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 5,
+       "action": "exact_shape_resample",
+       "mode": "exact_shape_resample",
+       "seed": 41055,
+       "tokens": 235,
+       "seconds": 33.28,
+       "prompt_sha": "5f0c1b5ecf21",
+       "candidate_sha": "8241f11c6e52",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Order.customerId optional=true != false",
+         "schema: Order.customer missing"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "ladder index 2 (kind=prisma-model)",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 6,
+       "action": "micro_repair",
+       "mode": "micro_repair",
+       "seed": 41086,
+       "tokens": 19,
+       "seconds": 2.94,
+       "prompt_sha": "8d8aaaa17611",
+       "candidate_sha": "cb471442d79a",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Order.customerId optional=true != false",
+         "schema: Order.customer optional=true != false"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "near-miss: 2 failing clause(s) \u2014 bounded FIM repair",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 7,
+       "action": "exact_shape_feedback",
+       "mode": "exact_shape_feedback",
+       "seed": 41117,
+       "tokens": 132,
+       "seconds": 17.59,
+       "prompt_sha": "23a490b03e40",
+       "candidate_sha": "a40004858942",
+       "near_empty": false,
+       "gate": {
+        "pass": false,
+        "failures": [
+         "schema: Order.customer attrs  missing @relation,fields: [customerId]",
+         "schema: Order.coupon optional=false != true",
+         "schema: Order.coupon attrs  missing @relation,fields: [couponId]"
+        ]
+       },
+       "probe": null,
+       "policy_reason": "ladder index 1 (kind=prisma-model)",
+       "outcome": "clause-reject"
+      },
+      {
+       "step": 8,
+       "action": "stop",
+       "reason": "closeness flat with repair budget spent"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "rel-self": {
+  "task": "rel-self",
+  "label": "self-relation",
+  "tag": "dev",
+  "pieces": [
+   "rel-self-category"
+  ],
+  "baseline": {
+   "resolved": true,
+   "attempts": 1,
+   "tokens": 300,
+   "validate": true,
+   "validate_failures": [],
+   "per_piece": [
+    {
+     "piece": "rel-self-category",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  },
+  "engine": {
+   "resolved": true,
+   "attempts": 1,
+   "tokens": 300,
+   "validate": true,
+   "validate_failures": [],
+   "per_piece": [
+    {
+     "piece": "rel-self-category",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 41200,
+       "tokens": 300,
+       "seconds": 32.11,
+       "prompt_sha": "587526c98e25",
+       "candidate_sha": "fe05b1e9f4c8",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "rel-cascade": {
+  "task": "rel-cascade",
+  "label": "TRANSFER: cascade deletion",
+  "tag": "transfer",
+  "pieces": [
+   "rel-cascade-aisle",
+   "rel-cascade-bin"
+  ],
+  "baseline": {
+   "resolved": true,
+   "attempts": 2,
+   "tokens": 600,
+   "validate": true,
+   "validate_failures": [],
+   "per_piece": [
+    {
+     "piece": "rel-cascade-aisle",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-cascade-bin",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "i": 0,
+       "strat": "exact_shape",
+       "tokens": 300,
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  },
+  "engine": {
+   "resolved": true,
+   "attempts": 2,
+   "tokens": 600,
+   "validate": true,
+   "validate_failures": [],
+   "per_piece": [
+    {
+     "piece": "rel-cascade-aisle",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 41500,
+       "tokens": 300,
+       "seconds": 34.81,
+       "prompt_sha": "2d591392b12a",
+       "candidate_sha": "7117d0ffc647",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    },
+    {
+     "piece": "rel-cascade-bin",
+     "resolved": true,
+     "attempts": 1,
+     "tokens": 300,
+     "detail": [
+      {
+       "step": 0,
+       "action": "exact_shape",
+       "mode": "exact_shape",
+       "seed": 41500,
+       "tokens": 300,
+       "seconds": 34.12,
+       "prompt_sha": "1d6b01f826ce",
+       "candidate_sha": "6b3b32674224",
+       "near_empty": false,
+       "gate": {
+        "pass": true,
+        "failures": []
+       },
+       "probe": null,
+       "policy_reason": "ladder index 0 (kind=prisma-model)",
+       "outcome": "accept"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -33,8 +33,9 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
-NEAR_MISS_CLAUSES = 2          # ≤2 failing clauses => micro-repair
+NEAR_MISS_CLAUSES = 2          # ≤2 failing clauses => repair tier
 MAX_MICRO_REPAIRS = 3
+MAX_FEEDBACK_REGENS = 2        # regenerations with spec-clause feedback
 MAX_SAME_SIGNATURE = 3
 MAX_FLAT_CLOSNESS = 2
 
@@ -42,8 +43,11 @@ MAX_FLAT_CLOSNESS = 2
 LADDERS: dict[str, list[str]] = {
     # route/invariant/component pieces: whole-construct first (the only
     # mode whose prompts were valid in 036), then feedback, then
-    # decomposition.
-    "prisma-model":   ["exact_shape", "exact_shape_feedback", "decompose"],
+    # decomposition.  prisma-model pieces NEVER decompose (measured in
+    # curriculum A bring-up: clause-FIM on schemas corrupted the id
+    # field) — they resample instead.
+    "prisma-model":   ["exact_shape", "exact_shape_feedback",
+                       "exact_shape_resample"],
     "type-interface": ["exact_shape", "exact_shape_feedback"],
     "invariant":      ["exact_shape", "exact_shape_feedback", "decompose"],
     "route-handler":  ["exact_shape", "exact_shape_feedback", "decompose"],
@@ -111,6 +115,8 @@ class BudgetPolicy:
         self.state = state or PolicyState()
         self.attempt = 0
         self.repairs = 0
+        self.feedback_regens = 0
+        self.spent_tokens = 0
         self.last_closeness = -1
         self.flat_streak = 0
         self.seen_candidates: set[str] = set()
@@ -122,20 +128,13 @@ class BudgetPolicy:
     def next_action(self, *, near_empty: bool = False,
                     structural_pass: bool = False,
                     failing_clauses: list[str] | None = None,
-                    probe_pass: bool | None = None,
-                    candidate_sha: str = "") -> Decision:
+                    probe_pass: bool | None = None) -> Decision:
         clauses = failing_clauses or []
         closeness = self._closeness(clauses)
 
-        # ---- dedup (never rescore an identical candidate)
-        if candidate_sha and candidate_sha in self.seen_candidates:
-            self.log.append(Decision(
-                self.attempt, "stop", "duplicate candidate (semantic "
-                "dedup) — resample with a new seed instead"))
-            return self.log[-1]
-
-        # ---- stop rules
-        if self.state.tokens_spent + self._est_cost() > self.budget and \
+        # ---- stop rules (per-PIECE spend; the shared state carries
+        # cross-piece amortization but never starves a fresh piece)
+        if self.spent_tokens + self._est_cost() > self.budget and \
                 self.attempt >= 1:
             return self._stop("token budget nearly exhausted")
         if self.same_sig >= MAX_SAME_SIGNATURE:
@@ -172,8 +171,21 @@ class BudgetPolicy:
                              "near-empty candidate (early-EOS) — retry "
                              "with in-construct anchor", cost=self._est_cost())
 
-        # ---- near-miss => micro-repair
+        # ---- near-miss => repair tier, chosen BY FAILURE KIND:
+        # missing FIELDS (schema/types) regenerate with spec-clause
+        # feedback (FIM insertion cannot reliably add fields — measured
+        # in curriculum A bring-up); missing CALLS/handlers and
+        # behavioral counterexamples go to bounded FIM micro-repair.
         if 0 < len(clauses) <= NEAR_MISS_CLAUSES:
+            field_missing = all(
+                c.startswith(("schema:", "types:")) for c in clauses)
+            if field_missing and self.feedback_regens < MAX_FEEDBACK_REGENS:
+                self.feedback_regens += 1
+                return self._act(
+                    "exact_shape_feedback",
+                    f"near-miss: {len(clauses)} missing field(s) — "
+                    f"regeneration with spec-clause feedback",
+                    cost=self._est_cost())
             if self.repairs < MAX_MICRO_REPAIRS:
                 self.repairs += 1
                 return self._act(
@@ -191,17 +203,26 @@ class BudgetPolicy:
         idx = min(self.attempt, len(ladder) - 1)
         strat = ladder[idx]
         if strat == "decompose" and self.piece.kind not in (
-                "route-handler", "invariant", "page", "prisma-model"):
-            strat = "exact_shape_feedback"
+                "route-handler", "invariant", "page"):
+            strat = "exact_shape_resample"
         return self._act(strat, f"ladder index {idx} "
                          f"(kind={self.piece.kind})", cost=self._est_cost())
 
     def observe(self, *, action: str, candidate_sha: str,
                 failing_clauses: list[str], tokens: int,
-                success: bool = False, near_empty: bool = False) -> None:
+                success: bool = False, near_empty: bool = False,
+                duplicate: bool = False) -> None:
         self.attempt += 1
         if candidate_sha:
             self.seen_candidates.add(candidate_sha)
+        self.spent_tokens += tokens
+        if duplicate:
+            # a duplicate is a sampling artifact, not a new failure:
+            # it must not poison the strategy stats, the failure
+            # signature, or the closeness trend (measured death spiral
+            # in curriculum A bring-up)
+            self.state.tokens_spent += tokens
+            return
         sig = tuple(sorted(failing_clauses[:3]))
         if sig == self.last_signature and sig:
             self.same_sig += 1
@@ -230,6 +251,12 @@ class BudgetPolicy:
                     "exports")) + sum(
             len(m.get("fields", [])) for m in g.get("models", [])) + sum(
             len(i.get("members", {})) for i in g.get("interfaces", []))
+
+    def is_duplicate(self, candidate_sha: str) -> bool:
+        """Post-generation dedup check: an EXACT repeat of a previously
+        seen candidate.  The caller regenerates with a fresh seed
+        instead of re-verifying it."""
+        return bool(candidate_sha) and candidate_sha in self.seen_candidates
 
     def _est_cost(self) -> int:
         return 450  # whole-construct generation estimate

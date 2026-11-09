@@ -172,10 +172,11 @@ def _install(piece, code: str, ws: Path) -> str | None:
     target.parent.mkdir(parents=True, exist_ok=True)
     if piece.kind == "prisma-model":
         body = prev if prev else _SCAFFOLD_HEAD
+        import re
         name = piece.gate["models"][0]["name"]
-        if f"model {name} " in body or f"model {name}{{" in body:
-            # replace the existing block (regex to closing brace)
-            import re
+        # declaration check must match `model X {` — never a comment that
+        # merely mentions the model's name
+        if re.search(rf"^model {name}\s*\{{", body, re.M):
             body = re.sub(rf"model {name}\s*\{{[\s\S]*?\n\}}", code, body,
                           count=1)
             target.write_text(body)

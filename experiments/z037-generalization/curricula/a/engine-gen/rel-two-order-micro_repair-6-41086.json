@@ -1,0 +1,7 @@
+{
+ "piece": "rel-two-order",
+ "action": "micro_repair",
+ "seed": 41086,
+ "prompt": "[MICRO] this attempt must additionally satisfy: - field customerId String. write the missing logic; do not remove existing logic",
+ "candidate": "model Order {\n  // required fields: id String (@id); total Int; customerId String; couponId String?; customer Customer (@relation, fields: [customerId]); coupon Coupon? (@relation, fields: [couponId])\n  id        String  @id @default(cuid())\n  total     Int\n  customerId String?\n  couponId  String? // relation field: customer Customer @relation(fields: [customerId], references: [id])\n  coupon    Coupon? @relation(fields: [couponId], references: [id])\n  customer Customer? @relation(fields: [customerId], references: [id])\n}"
+}

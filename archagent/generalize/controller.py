@@ -48,6 +48,7 @@ class PieceController:
         self.ledger_path = ledger_path
         self.archive_dir = archive_dir
         self.seed_base = seed_base
+        self._resample_no = 0
         self.policy = BudgetPolicy(piece, token_budget=token_budget,
                                    state=state)
         self.attempts: list[dict] = []
@@ -68,8 +69,7 @@ class PieceController:
                 near_empty=near_empty,
                 structural_pass=structural_pass,
                 failing_clauses=failing,
-                probe_pass=probe_pass,
-                candidate_sha=_sha(current_construct) if current_construct else "")
+                probe_pass=probe_pass)
             if dec.action == "stop":
                 self._note_stop(dec)
                 break
@@ -92,6 +92,19 @@ class PieceController:
 
             near_empty = prompting.is_near_empty(code)
             candidate_sha = _sha(code)
+            if self.policy.is_duplicate(candidate_sha):
+                # EXACT repeat of a previous candidate: do not re-verify;
+                # advance the ladder with a fresh seed instead
+                self._archive(step, dec.action, seed, prompt, code)
+                self.attempts.append({
+                    "step": step, "action": dec.action, "mode": mode,
+                    "seed": seed, "tokens": usage.get("tokens", 0),
+                    "outcome": "dedup-duplicate"})
+                self.policy.observe(
+                    action=dec.action, candidate_sha=candidate_sha,
+                    failing_clauses=[], tokens=usage.get("tokens", 0),
+                    duplicate=True)
+                continue
             gate = self._structural_gate(code)
             structural_pass = bool(gate["pass"])
             failing = [f for f in gate.get("failures", [])
@@ -164,18 +177,34 @@ class PieceController:
     def _generate(self, action: str, seed: int, failing: list[str],
                   counterexample: str, current_construct: str = ""):
         p = self.piece
-        if action in ("exact_shape", "exact_shape_feedback"):
+        if action in ("exact_shape", "exact_shape_feedback",
+                      "exact_shape_resample"):
             feedback = ""
             if action == "exact_shape_feedback" and failing:
-                feedback = "\n".join(f"- {f}" for f in failing[:5])
+                # quote the spec clauses that declare the missing
+                # elements (spec material, not teacher solutions)
+                clauses = prompting._spec_clauses_for(failing, p.spec)
+                feedback = "\n".join(f"- {c}" for c in
+                                     (clauses or failing[:5]))
+                if p.kind in ("prisma-model", "type-interface"):
+                    feedback += ("\n- the construct must contain ONLY the "
+                                 "listed elements — remove any others "
+                                 "copied from the example")
             prompt = prompting.build_piece_prompt(
                 p, retry=int(action.endswith("feedback")),
-                extra_feedback=feedback)
+                extra_feedback=feedback,
+                opening=(prompting.RESAMPLE_OPENINGS[
+                    (self._resample_no) % len(prompting.RESAMPLE_OPENINGS)]
+                    if action == "exact_shape_resample" else ""))
+            if action == "exact_shape_resample":
+                self._resample_no += 1
+            stochastic = (action == "exact_shape_resample"
+                          or seed % 2 == 1)
             out, usage = self.model.generate(
                 prompt, max_tokens=self._max_tokens(), seed=seed,
-                stochastic=(seed % 2 == 1))
+                stochastic=stochastic)
             code = prompting.extract_construct(
-                p.anchor + out, p.kind)
+                p.anchor + prompting.checklist_for(p) + out, p.kind)
             return code, usage, prompt, action
         if action == "forced_continuation":
             prompt = prompting.forced_continuation_prompt(p)
@@ -288,8 +317,10 @@ class PieceController:
             base = self.ws / self.piece.file
             head = base.read_text() if base.exists() else _SCHEMA_HEAD
             name = _model_name(self.piece)
-            if f"model {name}" in head:
-                # replace the existing block with the new candidate
+            # declaration check must match `model X {` — a substring
+            # check matched COMMENTS like "the model Band must be..."
+            # and silently skipped the append (found in A.1 bring-up)
+            if _re.search(rf"^model {name}\s*\{{", head, _re.M):
                 head = _re.sub(rf"model {name}\s*\{{[\s\S]*?\n\}}",
                                construct, head, count=1)
                 return head

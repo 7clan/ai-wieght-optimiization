@@ -1,0 +1,7 @@
+{
+ "piece": "rel-self-category",
+ "action": "exact_shape",
+ "seed": 41200,
+ "prompt": "A small relational store.\n\nmodel Folder {\n  id        String   @id @default(cuid())\n  name      String\n  parentId  String?\n  parent    Folder?  @relation(\"FolderTree\", fields: [parentId], references: [id])\n  children  Folder[] @relation(\"FolderTree\")\n}\n\nNow YOUR task: Add the model Category to the schema file.. field id String @id @default(cuid()). field name String. field parentId String?. relation field parent Category? @relation(fields: [parentId], references: [id]). relation field children Category[].\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Category {  // required fields: id String (@id); name String; parentId String?; parent Category? (@relation, fields: [parentId]); children Category[]\n",
+ "candidate": "model Category {\n  // required fields: id String (@id); name String; parentId String?; parent Category? (@relation, fields: [parentId]); children Category[]\n  id        String   @id @default(cuid())\n  name      String\n  parentId  String?\n  parent    Category?  @relation(\"CategoryTree\", fields: [parentId], references: [id])\n  children  Category[] @relation(\"CategoryTree\")\n}"
+}

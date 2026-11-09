@@ -91,6 +91,21 @@ export function checkSchema(parsed, expect) {
         Object.keys(parsed.models).join(', ') || 'none'})`);
       continue;
     }
+    // SESSION 037 strict-fields mode: every field in the model must be
+    // declared by the contract.  Demo contamination (fields copied
+    // from the different-domain example, e.g. `vet Vet @relation...`)
+    // passes a required-fields-only gate but is behaviorally fatal —
+    // the referenced demo model does not exist, so prisma rejects the
+    // schema at task level where no repair is possible.
+    if (want.strictFields) {
+      const declared = new Set((want.fields || []).map(f => f.name));
+      for (const gf of got.fields) {
+        if (!declared.has(gf.name)) {
+          failures.push(`schema: ${want.name}.${gf.name} not declared — `
+            + `remove fields not in the spec (demo contamination)`);
+        }
+      }
+    }
     for (const wf of want.fields || []) {
       const gf = got.fields.find(f => f.name === wf.name);
       if (!gf) {

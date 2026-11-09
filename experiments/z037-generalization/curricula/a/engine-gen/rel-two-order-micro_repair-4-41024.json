@@ -1,0 +1,7 @@
+{
+ "piece": "rel-two-order",
+ "action": "micro_repair",
+ "seed": 41024,
+ "prompt": "[MICRO] this attempt must additionally satisfy: - schema: Order.customerId optional=true != false - schema: Order.coupon optional=false != true write the missing logic; do not remove existing logic",
+ "candidate": "model Order {\n  // required fields: id String (@id); total Int; customerId String; couponId String?; customer Customer (@relation, fields: [customerId]); coupon Coupon? (@relation, fields: [couponId])\n  id    String  @id @default(cuid())\n  total Int\n  customerId String?\n  couponId String?\n  customer Customer @relation(fields: [customerId], references: [id])\n  coupon Coupon @relation(fields: [couponId], references: [id])\n  Customer customer @relation(fields: [customerId], references: [id])\n  Coupon coupon @relation(fields: [couponId], references: [id])\n}"
+}

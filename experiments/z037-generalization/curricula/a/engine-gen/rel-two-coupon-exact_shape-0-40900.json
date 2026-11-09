@@ -1,0 +1,7 @@
+{
+ "piece": "rel-two-coupon",
+ "action": "exact_shape",
+ "seed": 40900,
+ "prompt": "A small relational store.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Pet[]\n}\n\nmodel Pet {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String?\n  vet       Vet? @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task: Add the model Coupon to the schema file.. field id String @id @default(cuid()). field code String. relation field orders Order[].\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Coupon {  // required fields: id String (@id); code String; orders Order[]\n",
+ "candidate": "model Coupon {\n  // required fields: id String (@id); code String; orders Order[]\n  id        String  @id @default(cuid())\n  code      String\n  orders    Order[]\n}"
+}

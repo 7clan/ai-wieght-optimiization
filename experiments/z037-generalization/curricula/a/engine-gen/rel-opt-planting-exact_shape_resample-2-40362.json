@@ -1,0 +1,7 @@
+{
+ "piece": "rel-opt-planting",
+ "action": "exact_shape_resample",
+ "seed": 40362,
+ "prompt": "A small relational store.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Planting[]\n}\n\nmodel Planting {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String?\n  vet       Vet? @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task: Add the model Planting to the schema file.. field id String @id @default(cuid()). field crop String. field plantedAt String. field plotId String?. relation field plot Plot? @relation(fields: [plotId], references: [id]).\nRewrite the example for this task: same structure, different domain, every required element present.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Planting {  // required fields: id String (@id); crop String; plantedAt String; plotId String?; plot Plot? (@relation, fields: [plotId])\n",
+ "candidate": "model Planting {\n  // required fields: id String (@id); crop String; plantedAt String; plotId String?; plot Plot? (@relation, fields: [plotId])\n  id String @id @default(cuid()) // required fields: id String\n  crop String\n  plantedAt String\n  plotId String? // required fields: id String\n  plot Plot? // required fields: id String\n}"
+}
