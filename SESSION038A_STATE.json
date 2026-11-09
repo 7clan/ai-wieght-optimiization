@@ -11,8 +11,18 @@
  "session037_baseline_preserved": {
   "branch": "exp/zai-generalization-engine-037",
   "commit": "f0b541f09c8d5c6a329262cd41b02b0fa378bece",
-  "four_track_final": {"A": "4/15", "B": "9/15", "C": "6/15", "D": "6/15"},
-  "tokens": {"A": 21844, "B": 20170, "C": 7078, "D": 6696}
+  "four_track_final": {
+   "A": "4/15",
+   "B": "9/15",
+   "C": "6/15",
+   "D": "6/15"
+  },
+  "tokens": {
+   "A": 21844,
+   "B": 20170,
+   "C": 7078,
+   "D": 6696
+  }
  },
  "model": {
   "id": "Qwen/Qwen2.5-Coder-0.5B",
@@ -47,16 +57,41 @@
  },
  "phases": {
   "phase1_independent_replay": {
-   "status": "in_progress",
-   "plan": "resolve 22 candidates from generation paths + ledger hashes; verify provenance (model-origin only; challenge attribution already confirms gh-plant/gh-watering are pure model bytes); replay under unshare -Urn namespace isolation with structural gates + prisma validate + prisma db push + SQLite relation behavior + invariant case/fuzz probes; dedup by family and normalized code; emit verified/quarantined manifest + dataset card; NO training"
+   "status": "complete",
+   "evidence": [
+    "22/22 INDEPENDENTLY_VERIFIED, 0 quarantined",
+    "3 test-layer defects found+fixed pre-publication (R4 SetNull / FK-aware fills / quoted identifiers), both runs archived",
+    "negative controls: wrong-FK, boundary-violation, optional-vs-required all rejected",
+    "dedup: 12 structures, 7 families; zero routes/types/ui in verified set",
+    "manifest + dataset card committed"
+   ]
   },
-  "phase2_fresh_retest": {"status": "pending"},
-  "phase3_training_plans": {"status": "pending"}
+  "phase2_fresh_retest": {
+   "status": "complete",
+   "evidence": [
+    "new suite orchard/marina/bakery sha ffff91b5 frozen pre-generation",
+    "B 9/15 (15272 tok) vs R 8/15 (13862 tok), 1 discordant, McNemar p=1.0",
+    "invariant-cap hypothesis REFUTED (27-70 token successes; 037 losses were bool(None) + fuzz-masking harness defects)",
+    "or-stage fails both tracks from demo-vocabulary copying",
+    "routes 1/12 both tracks (universal gap persists)",
+    "staging fix disclosed (client regen before route pieces)"
+   ]
+  },
+  "phase3_training_plans": {
+   "status": "complete",
+   "evidence": [
+    "docs/ZAI_SESSION038A_TRAINING_PLANS.md",
+    "LoRA pilot conditional-GO (CPU feasible)",
+    "zero same-prompt preference pairs measured",
+    "holdout policy pre-registered"
+   ]
+  }
  },
  "constraints_confirmed": [
   "no training, no gradients, no LoRA this session (AGENTS.md)",
   "no writes to main or other agent branches",
   "no silent quality-threshold lowering",
   "Docker unavailable: candidate code executes only under disclosed namespace isolation; blocker reported in final report"
- ]
+ ],
+ "final_report": "docs/ZAI_SESSION038A_INDEPENDENT_RETEST.md"
 }
