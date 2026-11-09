@@ -1,0 +1,6 @@
+{
+ "spec_sha256": "0f08f72bbfbfceab1ea36812f650cc7ac63a9646627317e38bd7150f95df9c4e",
+ "frozen_before_generation": true,
+ "frozen_at": "2026-11-09T12:45Z",
+ "note": "probe formats corrected to harness contract before ANY generation; no piece has been generated against this spec"
+}

@@ -1,0 +1,4 @@
+{
+ "prompt": "PermitFlow: a permit-request approval workflow. Requests move draft -> review -> approved or rejected; each request is reviewed by a registered approver.\n\nWrite the invariant for this application: Write the predicate function canAdvanceRequest(current: string, next: string). canAdvanceRequest is true exactly for the valid next steps draft -> review, review -> approved, review -> rejected. Every other transition is invalid, including staying in the same state. The file may hold several such functions; add this one.\n\nWrite the code now.  The first line is already written; continue from it:\nexport function canAdvanceRequest(",
+ "candidate": "export function canAdvanceRequest(\n  current: string,\n  next: string\n): boolean {\n  // Write your code here.\n  return false;\n}"
+}

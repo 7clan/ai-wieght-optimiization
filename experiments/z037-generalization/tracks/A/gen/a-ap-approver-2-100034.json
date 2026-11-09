@@ -1,0 +1,4 @@
+{
+ "prompt": "PermitFlow: a permit-request approval workflow. Requests move draft -> review -> approved or rejected; each request is reviewed by a registered approver.\n\nWrite the prisma-model for this application: Add the model Approver to the schema file.. field id String @id @default(cuid()). field name String. field email String. relation field requests Request[].\n\nWrite the code now.  The first line is already written; continue from it:\nmodel Approver {",
+ "candidate": "model Approver {\n  id: ID!\n  name: String!\n  email: String!\n  requests: [Request]!\n}"
+}
