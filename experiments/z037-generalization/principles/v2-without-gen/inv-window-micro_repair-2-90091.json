@@ -1,0 +1,7 @@
+{
+ "piece": "inv-window",
+ "action": "micro_repair",
+ "seed": 90091,
+ "prompt": "[MICRO] this attempt must additionally satisfy: - invariant: no reachable comparison/logical expression (a predicate must compare or combine booleans) write the missing logic; do not remove existing logic",
+ "candidate": "export function isInsideWindow( start: string, end: string, dayStart: string, dayEnd: string ): boolean {\n  // your code here\n  if ( start === dayStart && end === dayEnd ) { return true; }\n  return true;\n}"
+}

@@ -1,0 +1,4 @@
+{
+ "prompt": "A small logic library.\n\n\n\nNow YOUR task.  Write the file src/lib/curriculumB/invariants.ts for the application.\nWrite the predicate function isSameBookingRef(codeA: string, slotA: string, codeB: string, slotB: string). isSameBookingRef is true exactly when BOTH the reference code and the slot match. The file may hold several such functions; add this one.\n\nWrite the complete file now.  The first line is already written; continue from it:\nexport function isSameBookingRef(",
+ "candidate": "export function isSameBookingRef( codeA: string, slotA: string, codeB: string, slotB: string ): boolean {\n    return codeA == codeB && slotA == slotB;"
+}

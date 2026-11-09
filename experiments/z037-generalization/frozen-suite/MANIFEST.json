@@ -1,0 +1,6 @@
+{
+ "suite_sha256": "1a57852bf28f40f5d26a2ab8627e34bc4123e08938ebbacc8bdecdb846ead017",
+ "n_domains": 3,
+ "n_pieces": 15,
+ "frozen_before_generation": true
+}

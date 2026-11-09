@@ -1,0 +1,4 @@
+{
+ "prompt": "A small logic library.\n\n\n\nNow YOUR task.  Write the file src/lib/curriculumB/invariants.ts for the application.\nWrite the predicate function canHoldBothFlags(paused: boolean, billed: boolean). canHoldBothFlags is false exactly when both flags are true (mutually exclusive; else allowed). The file may hold several such functions; add this one.\n\nWrite the complete file now.  The first line is already written; continue from it:\nexport function canHoldBothFlags(",
+ "candidate": "export function canHoldBothFlags( paused: boolean, billed: boolean ): boolean {\n  return paused && billed;\n}"
+}

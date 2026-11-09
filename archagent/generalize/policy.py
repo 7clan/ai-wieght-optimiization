@@ -156,8 +156,16 @@ class BudgetPolicy:
                 "declared)"))
             return self.log[-1]
 
-        # ---- behavioral failure on structurally-valid code => repair
+        # ---- behavioral failure on structurally-valid code => repair;
+        # whole-construct regeneration with the COUNTEREXAMPLE as
+        # feedback first (measured: FIM insertion cannot rewrite a
+        # wrong predicate body — curriculum B bring-up), then FIM.
         if structural_pass and probe_pass is False:
+            if self.feedback_regens < MAX_FEEDBACK_REGENS:
+                self.feedback_regens += 1
+                return self._act("exact_shape_feedback",
+                                 "behavioral counterexample — regenerate "
+                                 "with the failing case", cost=self._est_cost())
             if self.repairs < MAX_MICRO_REPAIRS:
                 self.repairs += 1
                 return self._act("micro_repair",
@@ -194,14 +202,22 @@ class BudgetPolicy:
                     f"bounded FIM repair", cost=140)
             # repairs spent: fall through to ladder
 
-        # ---- ladder
+        # ---- ladder.  Cross-piece demotion is amortized evidence, but
+        # every piece deserves ONE canonical attempt of the strongest
+        # family (Phase-1 evidence) before demotions apply — measured in
+        # curriculum B: cross-piece demotion pushed fresh pieces onto
+        # the 'corrected construct' feedback variant, whose wording
+        # triggers stub attractors ('// your code here; return true').
         ladder = [s for s in LADDERS.get(self.piece.kind,
                                          ["exact_shape"])
-                  if s not in self.state.demoted(self.piece.kind)]
+                  if self.attempt == 0
+                  or s not in self.state.demoted(self.piece.kind)]
         if not ladder:
             return self._stop("all ladder strategies demoted this run")
         idx = min(self.attempt, len(ladder) - 1)
         strat = ladder[idx]
+        if self.attempt == 0:
+            strat = "exact_shape"
         if strat == "decompose" and self.piece.kind not in (
                 "route-handler", "invariant", "page"):
             strat = "exact_shape_resample"

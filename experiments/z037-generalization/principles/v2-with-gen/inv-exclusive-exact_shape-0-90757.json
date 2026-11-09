@@ -1,0 +1,7 @@
+{
+ "piece": "inv-exclusive",
+ "action": "exact_shape",
+ "seed": 90757,
+ "prompt": "A small logic library.\n\n\n\nNow YOUR task: Write the predicate function canHoldBothFlags(paused: boolean, billed: boolean). canHoldBothFlags is false exactly when both flags are true (mutually exclusive; else allowed). The file may hold several such functions; add this one.\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete invariant now.  The first line is already written; continue from it:\nexport function canHoldBothFlags(\n(PR-TEA-001) Before writing the comparison, list each boundary case from the requirements with its required true/false result; then write the comparison that produces exactly those results.",
+ "candidate": "export function canHoldBothFlags(  Remember that a true/false comparison is a predicate function.  If it is false, the first argument is not true, and the second is not false.  If the first argument is true and the second is true, the result is true."
+}

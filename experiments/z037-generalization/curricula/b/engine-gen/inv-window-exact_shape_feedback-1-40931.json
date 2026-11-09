@@ -1,0 +1,7 @@
+{
+ "piece": "inv-window",
+ "action": "exact_shape_feedback",
+ "seed": 40931,
+ "prompt": "A small logic library.\n\n\n\nNow YOUR task: Write the predicate function isInsideWindow(start: string, end: string, dayStart: string, dayEnd: string). isInsideWindow is true exactly when both the start and the end lie within the bounds (inclusive). The file may hold several such functions; add this one.\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the corrected complete construct now.  The first line is already written; continue from it:\nexport function isInsideWindow(",
+ "candidate": "export function isInsideWindow( start: string, end: string, dayStart: string, dayEnd: string ) { \n  return start <= dayStart && end >= dayEnd;\n}"
+}

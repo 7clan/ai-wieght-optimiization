@@ -263,11 +263,11 @@ CURRICULUM_B: list[dict] = [
      "signature": "isInsideWindow(start: string, end: string, dayStart: string, dayEnd: string)",
      "ref_expr": "dayStart <= start && end <= dayEnd",
      "cases": [
-         {"name": "inside", "inputs": ["T02:00", "T03:00", "T00:00", "T23:59"], "expect": True},
-         {"name": "touching-start", "inputs": ["T00:00", "T05:00", "T00:00", "T23:59"], "expect": True},
-         {"name": "touching-end", "inputs": ["T20:00", "T23:59", "T00:00", "T23:59"], "expect": True},
-         {"name": "starts-before", "inputs": ["T23:00", "T23:30", "T00:00", "T23:59"], "expect": False},
-         {"name": "ends-after", "inputs": ["T01:00", "T01:30", "T00:00", "T23:59"], "expect": False}],
+         {"name": "inside", "inputs": ["T08:00", "T09:00", "T06:00", "T17:00"], "expect": True},
+         {"name": "touching-start", "inputs": ["T06:00", "T10:00", "T06:00", "T17:00"], "expect": True},
+         {"name": "touching-end", "inputs": ["T15:00", "T17:00", "T06:00", "T17:00"], "expect": True},
+         {"name": "starts-before", "inputs": ["T05:00", "T08:00", "T06:00", "T17:00"], "expect": False},
+         {"name": "ends-after", "inputs": ["T16:00", "T18:00", "T06:00", "T17:00"], "expect": False}],
      "demo": ("// broadcast slot containment (different domain)\n"
               "export function slotInside(showStart: string, "
               "showEnd: string,\n"

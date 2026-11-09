@@ -1,0 +1,4 @@
+{
+ "prompt": "A small logic library.\n\n\n\nNow YOUR task.  Write the file src/lib/curriculumB/invariants.ts for the application.\nWrite the predicate function canAdvanceOrder(current: string, next: string). canAdvanceOrder is true exactly for draft -> review -> approved -> shipped. Any other transition is invalid, including same-state or skipping. The file may hold several such functions; add this one.\n\nThe automated checks reported:\nparse: syntax errors \u2014 ';' expected. | Unexpected keyword or identifier.\nFix exactly that.\n\nWrite the complete file now.  The first line is already written; continue from it:\nexport function canAdvanceOrder(",
+ "candidate": "export function canAdvanceOrder( current: string, next: string ): boolean {\n  // TODO: implement this function\n  return false;"
+}

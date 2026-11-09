@@ -1,0 +1,7 @@
+{
+ "piece": "inv-weight",
+ "action": "decompose",
+ "seed": 40062,
+ "prompt": "[DECOMPOSE] 3 clauses",
+ "candidate": "export function isWithinWeightLimit( weight: number ): boolean {\n  return weight >= 0.5 && weight <= 30;\n}\n\nexport function hasOpenSeats(Enrolled: number, Capacity: number): boolean {\n  return Enrolled < Capacity;\n}\n\nexport function isSameBookingRef( codeA: string, slotA: string, codeB: string, slotB: string ): boolean {\n  if (!isWithinWeightLimit(weight)) {\n    return false;\n  }\n...\n  return Enrolled === 0 && slotA === slotB;\n}\n\nexport function hasSameBookingRef( codeA: string, slotA: string, codeB: string, slotB: string ): boolean {\n  if (!isWithinWeightLimit(weight)) {\n    return false;\n  }\n\timplement this requirement here: The file may hold several such functions; add this one....\n  return codeA === codeB && slotA === slotB;\n}\n"
+}

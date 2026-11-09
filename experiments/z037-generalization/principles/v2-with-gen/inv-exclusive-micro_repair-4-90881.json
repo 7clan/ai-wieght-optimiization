@@ -1,0 +1,7 @@
+{
+ "piece": "inv-exclusive",
+ "action": "micro_repair",
+ "seed": 90881,
+ "prompt": "[MICRO] this attempt must additionally satisfy: - Write the predicate function canHoldBothFlags(paused: boolean, billed: boolean). write the missing logic; do not remove existing logic",
+ "candidate": "export function isWithinWeightLimit( weight: number ): boolean {\n  return weight >= 0.5 && weight <= 30;\n}\n\nexport function hasOpenSeats(Enrolled: number, Capacity: number): boolean {.\n  if ( Enrolled === Capacity ) return true;\n  return Enrolled < Capacity;\n}\n\n\nexport function isSameBooking( code: string, slot: string ): boolean {  return code === code && slot === slot;\n}"
+}

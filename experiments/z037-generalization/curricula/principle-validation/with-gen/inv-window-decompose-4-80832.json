@@ -1,0 +1,7 @@
+{
+ "piece": "inv-window",
+ "action": "decompose",
+ "seed": 80832,
+ "prompt": "[DECOMPOSE] 3 clauses",
+ "candidate": "export function isWithinWeightLimit( weight: number ): boolean {\n  return weight >= 0.5 && weight <= 30;\n}\n\nexport function hasOpenSeats(Enrolled: number, Capacity: number): boolean {\n  return Enrolled < Capacity;\n}\n\nexport function isSameBookingRef( codeA: string, slotA: string, codeB: string, slotB: string ): boolean {....}\nexport function areSameBookingRef( codeA: string, slotA: string, codeB: string, slotB: string ): boolean {\n  return codeA === codeB && slotA === slotB;\n}\n"
+}

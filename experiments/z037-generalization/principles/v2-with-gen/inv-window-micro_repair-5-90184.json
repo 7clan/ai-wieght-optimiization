@@ -1,0 +1,7 @@
+{
+ "piece": "inv-window",
+ "action": "micro_repair",
+ "seed": 90184,
+ "prompt": "[MICRO] this attempt must additionally satisfy: - Write the predicate function isInsideWindow(start: string, end: string, dayStart: string, dayEnd: string). write the missing logic; do not remove existing logic",
+ "candidate": "export function isWithinWeightLimit( weight: number ): boolean {\n  return weight >= 0.5 && weight <= 30;\n}\n\nexport function hasOpenSeats(Enrolled: number, Capacity: number): boolean {\n  return Enrolled < Capacity;\n}\n\nexport function isSameBookingRef( codeA: string, slotA: string, codeB: string, slotB: string ): boolean {\n  //Implement this predicate function here.\n  //Implement this predicate function here: isInsideWindow is true exactly when both the start and the end lie within the bounds (inclusive).\n\n  if ( codeA === codeB ) {\n    return true;\n  }.\n  return codeA === codeB && slotA === slotB;\n}\n"
+}

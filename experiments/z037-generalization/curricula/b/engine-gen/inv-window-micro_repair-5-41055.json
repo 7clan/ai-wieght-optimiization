@@ -1,0 +1,7 @@
+{
+ "piece": "inv-window",
+ "action": "micro_repair",
+ "seed": 41055,
+ "prompt": "[MICRO] this attempt must additionally satisfy: verified failure: starts-before: [\"T05:00\",\"T08:00\",\"T06:00\",\"T17:00\"] returned true, expected false | ends-after: [\"T16:00\",\"T18:00\",\"T06:00\",\"T17:00\"] returned true, expected false write the missing logic; do not remove existing logic",
+ "candidate": "export function isInsideWindow( start: string, end: string, dayStart: string, dayEnd: string ): boolean {\n  // your code here\n  // if the range is entirely within the start and end dates, return true\n  if (start <= dayStart && end >= dayEnd) {\n    return true;\n  }\n  // if the range is entirely within the start date, return true\n  if (start <= dayStart) {\n    return true;\n  }\n  // if the range is entirely within the end date, return true\n  if (end >= dayEnd) {\n    return true;\n  }\n  // if the range is entirely outside of the start and end dates, return true\n  if (start > dayEnd || end < dayStart) {\n    return true;\n  }\n  // if the start and end dates are the same, return true\n  if (dayStart === dayEnd) {\n    return true;\n  }\n  // if the start date is the same as the end date, return true\n  if (start === dayEnd) {\n    return true;\n  }\n    return true;\n}"
+}

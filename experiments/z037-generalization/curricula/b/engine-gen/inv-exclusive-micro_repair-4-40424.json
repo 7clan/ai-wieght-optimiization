@@ -1,0 +1,7 @@
+{
+ "piece": "inv-exclusive",
+ "action": "micro_repair",
+ "seed": 40424,
+ "prompt": "[MICRO] this attempt must additionally satisfy: verified failure: both-true: threw TypeError: true is not iterable | first-only: threw TypeError: true is not iterable write the missing logic; do not remove existing logic",
+ "candidate": "export function canHoldBothFlags( [paused, billed]: [boolean, boolean] ): boolean {\n\n}\nexport function canHoldBothFlags( [paused, billed]: [boolean, boolean] ): boolean {\n    return paused && billed;\n}"
+}

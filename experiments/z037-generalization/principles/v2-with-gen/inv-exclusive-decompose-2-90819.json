@@ -1,0 +1,7 @@
+{
+ "piece": "inv-exclusive",
+ "action": "decompose",
+ "seed": 90819,
+ "prompt": "[DECOMPOSE] 3 clauses",
+ "candidate": "export function isWithinWeightLimit( weight: number ): boolean {\n  return weight >= 0.5 && weight <= 30;\n}\n\nexport function hasOpenSeats(Enrolled: number, Capacity: number): boolean {\n  return Enrolled < Capacity;\n}\n\nexport function isSameBookingRef( codeA: string, slotA: string, codeB: string, slotB: string ): boolean {..\n  return codeA === codeB && slotA === slotB && isWithinWeightLimit( Enrolled ) && isWithinWeightLimit( Capacity );\n}\n\nexport function areBookingsSame( codeA: string, slotA: string, codeB: string, slotB: string ): boolean {..\n  return codeA === codeB && slotA === slotB;\n}\n\nexport function areBookingsSame2( codeA: string, slotA: string, codeB: string, slotB: string ): boolean {implement this requirement here: The file may hold several such functions; add this one..\n  return codeA === codeB && slotA === slotB;\n}\n"
+}

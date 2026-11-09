@@ -1,0 +1,7 @@
+{
+ "piece": "inv-window",
+ "action": "micro_repair",
+ "seed": 80863,
+ "prompt": "[MICRO] this attempt must additionally satisfy: - invariant: no reachable comparison/logical expression (a predicate must compare or combine booleans) write the missing logic; do not remove existing logic",
+ "candidate": "export function isInsideWindow( start: string, end: string, dayStart: string, dayEnd: string ): boolean {\n  // your code here\n  if (dayStart && dayEnd && dayStart.length !== dayEnd.length) {\n    return false;\n  }\n\n  const startArray = start.split('-');\n  const endArray = end.split('-');\n\n  const startMonth = +startArray[1];\n  const startDay = +startArray[2];\n  const endMonth = +endArray[1];\n  const endDay = +endArray[2];\n\n  if (startMonth !== endMonth || startDay !== endDay) {\n    return false;\n  }\n\n  return true;\n}"
+}

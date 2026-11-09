@@ -1,0 +1,7 @@
+{
+ "piece": "inv-duplicate",
+ "action": "exact_shape_feedback",
+ "seed": 41231,
+ "prompt": "A small logic library.\n\n\n\nNow YOUR task: Write the predicate function isSameBookingRef(codeA: string, slotA: string, codeB: string, slotB: string). isSameBookingRef is true exactly when BOTH the reference code and the slot match. The file may hold several such functions; add this one.\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the corrected complete construct now.  The first line is already written; continue from it:\nexport function isSameBookingRef(",
+ "candidate": "export function isSameBookingRef(\n  codeA: string, \n  slotA: string,\n  codeB: string, \n  slotB: string\n) {"
+}

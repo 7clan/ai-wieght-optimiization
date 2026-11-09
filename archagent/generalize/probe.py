@@ -130,18 +130,31 @@ if (typeof fn !== 'function') {{
 # ---------------------------------------------------------------- routes
 
 def route_probe(ws: Path, route_file: str, method: str,
-                cases: list[dict]) -> dict:
+                cases: list[dict], seed: list[dict] | None = None,
+                db_url: str | None = None) -> dict:
     """Import the handler and run declared probe cases with a mocked
-    NextRequest against the scratch probe database.
+    NextRequest against the probe database.
 
     cases: [{name, params?, body?, expect_status, json_contains?,
              json_keys?}]
+    seed:  [{model, data}] — records created via the prisma client
+           before the cases run (self-seeding probes).
     """
     PROBE_DIR.mkdir(parents=True, exist_ok=True)
     mod_path = _abs_import(Path("/home/z/my-project"), route_file)
+    db = db_url or ("file:" + str(ws) + "/db/probe.db")
     script = f"""
 const emit = (v) => console.log('PROBE-RESULT ' + JSON.stringify(v));
-process.env.DATABASE_URL = 'file:' + process.cwd() + '/db/probe.db';
+process.env.DATABASE_URL = {json.dumps(db)};
+const dbmod = await import({json.dumps(_abs_import(Path('/home/z/my-project'), 'src/lib/db.ts'))});
+const db = dbmod.db;
+async function seedAll() {{
+  const seed = {json.dumps(seed or [])};
+  for (const s of seed) {{
+    await db[s.model].create({{ data: s.data }});
+  }}
+  return seed.map(s => s.data).filter(d => d.id).map(d => d.id);
+}}
 class FakeURL {{
   constructor(params) {{
     this.searchParams = new URLSearchParams(params || {{}});
@@ -172,10 +185,20 @@ if (typeof handler !== 'function') {{
 }} else {{
   const cases = {json.dumps(cases)};
   const fails = [];
+  let seedIds = [];
+  try {{ seedIds = await seedAll(); }} catch (e) {{
+    emit({{pass: false, class: 'harness', failures: ['seeding failed: ' + String(e).slice(0, 150)]}});
+    process.exit(0);
+  }}
   for (const c of cases) {{
     let res;
     try {{
-      res = await handler(new FakeReq(c.params, c.body));
+      const body = (typeof c.body === 'object' && c.body !== null)
+        ? {{ ...c.body }} : c.body;
+      if (body && seedIds.length && '__SEED_ID__' in body) {{
+        body[c.body.__SEED_ID__] = seedIds[0];
+      }}
+      res = await handler(new FakeReq(c.params, body));
     }} catch (e) {{
       fails.push(c.name + ': handler threw ' + String(e).slice(0, 120));
       continue;

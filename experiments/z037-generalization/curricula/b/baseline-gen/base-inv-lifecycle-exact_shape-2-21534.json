@@ -1,0 +1,4 @@
+{
+ "prompt": "A small logic library.\n\n\n\nNow YOUR task.  Write the file src/lib/curriculumB/invariants.ts for the application.\nWrite the predicate function canAdvanceOrder(current: string, next: string). canAdvanceOrder is true exactly for draft -> review -> approved -> shipped. Any other transition is invalid, including same-state or skipping. The file may hold several such functions; add this one.\n\nWrite the complete file now.  The first line is already written; continue from it:\nexport function canAdvanceOrder(",
+ "candidate": "export function canAdvanceOrder( current: string, next: string ): boolean {\n  // Write your code here.\n  return false; // Replace this line with your code.<|fim_middle|>"
+}

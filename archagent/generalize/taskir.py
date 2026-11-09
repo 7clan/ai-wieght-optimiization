@@ -118,6 +118,8 @@ class RouteHandler:
     demo_domain: str = ""
     uses_invariants: list[str] = field(default_factory=list)
     depends_on: list[str] = field(default_factory=list)
+    probe_cases: list[dict] = field(default_factory=list)
+    probe_seed: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -269,7 +271,9 @@ class TaskIR:
                 gate={"kind": "route", "handlers": [h.method],
                       "calls": h.calls, "file": h.file},
                 oracle={"probe": "route", "method": h.method, "path": h.path,
-                        "responses": [{"status": r.status, "message": r.message}
+                        "cases": h.probe_cases, "seed": h.probe_seed,
+                        "responses": [{"status": r.status,
+                                        "message": r.message}
                                       for r in h.responses]},
                 depends_on=list(h.depends_on)
                 + [f"inv:{u}" for u in h.uses_invariants], ir=self))
@@ -414,7 +418,9 @@ def taskir_from_dict(d: dict) -> TaskIR:
                                                   r.get("responses", [])],
         calls=r.get("calls", []), demo_domain=r.get("demo_domain", ""),
         uses_invariants=r.get("uses_invariants", []),
-        depends_on=r.get("depends_on", [])) for r in d.get("routes", [])]
+        depends_on=r.get("depends_on", []),
+        probe_cases=r.get("probe_cases", []),
+        probe_seed=r.get("probe_seed", [])) for r in d.get("routes", [])]
     ui = [UIPiece(
         pid=u["pid"], kind=u["kind"], file=u["file"], name=u.get("name", ""),
         clauses=u.get("clauses", []), ui_strings=u.get("ui_strings", []),

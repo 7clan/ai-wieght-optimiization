@@ -248,28 +248,31 @@ Principle.de_taskification_pending = _Principle_de_taskification_pending
 
 # --------------------------------------------------- model reflection
 
-PRINCIPLE_REFLECTION_PROMPT = """You wrote code for a task. An automated
-verifier found this mistake:
+PRINCIPLE_REFLECTION_PROMPT = """You wrote code that failed a test. State the general lesson.
 
-{failure}
+Failed code: a hotel booking form used < for the checkout comparison, so a booking ending exactly at checkout time was wrongly rejected.
+Lesson: when a requirement says "at or before" or "no later than", use <= not <, and test the exact boundary.
 
-The corrected code now passes. State the GENERAL lesson: one short
-procedural rule that would prevent this class of mistake in ANY
-application. Do not mention the specific task, its names, or its data.
-Format: RULE: <one sentence>"""
+Failed code: an inventory importer copied the example's field names into the target model, so validation failed on unknown fields.
+Lesson: when adapting a different example, take structure from the example but every name and field from the task's own requirements.
+
+Failed code: {failure}
+Lesson:"""
 
 
 def reflect_principle(model, failure_description: str,
                       correction_summary: str, seed: int = 1234
                       ) -> tuple[str, str]:
     """Ask the frozen model to state the general rule (Phase 5's
-    reflection loop feeds Phase 4).  Returns (rule, raw)."""
+    reflection loop feeds Phase 4).  Few-shot format — the 0.5B echoes
+    placeholder templates without worked examples (measured: zero-shot
+    produced '<another sentence> RULE: <yet another sentence>')."""
     prompt = PRINCIPLE_REFLECTION_PROMPT.format(
         failure=failure_description[:600])
     out, usage = model.generate(prompt, max_tokens=90, seed=seed,
                                 stochastic=False)
     rule = out.strip()
-    m = re.search(r"RULE:\s*(.+)", rule, re.S)
+    m = re.search(r"Lesson:\s*(.+)", rule, re.S)
     if m:
         rule = m.group(1).strip().split("\n")[0]
     rule = rule[:220]

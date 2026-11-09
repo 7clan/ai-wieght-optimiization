@@ -1,0 +1,7 @@
+{
+ "piece": "inv-lifecycle",
+ "action": "exact_shape_feedback",
+ "seed": 41562,
+ "prompt": "A small logic library.\n\n\n\nNow YOUR task: Write the predicate function canAdvanceOrder(current: string, next: string). canAdvanceOrder is true exactly for draft -> review -> approved -> shipped. Any other transition is invalid, including same-state or skipping. The file may hold several such functions; add this one.\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nYour previous attempt had these verified problems:\n- verified failure: skip-step: [\"draft\",\"approved\"] returned true, expected false | backwards: [\"review\",\"draft\"] returned true, expected false\n- fix exactly that behavior\nFix exactly those; keep everything else.\n\nWrite the corrected complete construct now.  The first line is already written; continue from it:\nexport function canAdvanceOrder(",
+ "candidate": "export function canAdvanceOrder( current: string, next: string ): boolean {\n  // your code here\n  return false;\n}"
+}

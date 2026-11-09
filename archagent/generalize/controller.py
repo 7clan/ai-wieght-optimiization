@@ -36,11 +36,17 @@ def _sha(text: str) -> str:
 
 
 class PieceController:
-    """Drives ONE piece to ACCEPT/STOP under the budget."""
+    """Drives ONE piece to ACCEPT/STOP under the budget.
+
+    Track D extension: when a PrincipleEngine is supplied, its promoted
+    addenda are appended to generation prompts for matching piece
+    kinds (bounded: at most 3; every use ledgered).
+    """
 
     def __init__(self, model, ws: Path, piece, state: PolicyState,
                  *, token_budget: int = 3600, ledger_path: Path,
-                 archive_dir: Path, seed_base: int = 7000):
+                 archive_dir: Path, seed_base: int = 7000,
+                 principles=None):
         self.model = model
         self.ws = ws
         self.piece = piece
@@ -49,6 +55,7 @@ class PieceController:
         self.archive_dir = archive_dir
         self.seed_base = seed_base
         self._resample_no = 0
+        self.principles = principles
         self.policy = BudgetPolicy(piece, token_budget=token_budget,
                                    state=state)
         self.attempts: list[dict] = []
@@ -180,22 +187,35 @@ class PieceController:
         if action in ("exact_shape", "exact_shape_feedback",
                       "exact_shape_resample"):
             feedback = ""
-            if action == "exact_shape_feedback" and failing:
-                # quote the spec clauses that declare the missing
-                # elements (spec material, not teacher solutions)
-                clauses = prompting._spec_clauses_for(failing, p.spec)
-                feedback = "\n".join(f"- {c}" for c in
-                                     (clauses or failing[:5]))
-                if p.kind in ("prisma-model", "type-interface"):
-                    feedback += ("\n- the construct must contain ONLY the "
-                                 "listed elements — remove any others "
-                                 "copied from the example")
+            if action == "exact_shape_feedback":
+                if failing:
+                    # quote the spec clauses that declare the missing
+                    # elements (spec material, not teacher solutions)
+                    clauses = prompting._spec_clauses_for(failing, p.spec)
+                    feedback = "\n".join(f"- {c}" for c in
+                                         (clauses or failing[:5]))
+                    if p.kind in ("prisma-model", "type-interface"):
+                        feedback += ("\n- the construct must contain ONLY "
+                                     "the listed elements — remove any "
+                                     "others copied from the example")
+                elif counterexample:
+                    # behavioral repair: the minimal failing case IS the
+                    # feedback (counterexample-guided regeneration)
+                    feedback = (f"- verified failure: {counterexample}\n"
+                                f"- fix exactly that behavior")
             prompt = prompting.build_piece_prompt(
                 p, retry=int(action.endswith("feedback")),
                 extra_feedback=feedback,
                 opening=(prompting.RESAMPLE_OPENINGS[
                     (self._resample_no) % len(prompting.RESAMPLE_OPENINGS)]
                     if action == "exact_shape_resample" else ""))
+            # Track D: promoted reasoning-principle addenda (bounded)
+            if self.principles is not None:
+                addenda = self.principles.addenda_for(
+                    p.kind, self._failure_category(failing))
+                if addenda:
+                    prompt = prompt + "\n" + "\n".join(
+                        f"({pid}) {text}" for pid, text in addenda)
             if action == "exact_shape_resample":
                 self._resample_no += 1
             stochastic = (action == "exact_shape_resample"
@@ -278,7 +298,8 @@ class PieceController:
             keep = self._install_candidate(code)
             try:
                 return probe_mod.route_probe(
-                    self.ws, self.piece.file, o["method"], o["cases"])
+                    self.ws, self.piece.file, o["method"],
+                    o.get("cases", []), seed=o.get("seed"))
             finally:
                 self._restore(keep)
         if o.get("signature"):
@@ -376,6 +397,19 @@ class PieceController:
         # spec sentences (bounded by construction to <=6)
         return [s.strip() + "." for s in
                 self.piece.spec.replace(". ", ".\n").split("\n") if s.strip()]
+
+    @staticmethod
+    def _failure_category(failing: list[str]) -> str:
+        for f in failing:
+            if f.startswith("schema:") or f.startswith("types:"):
+                return "missing_literal"
+            if f.startswith("exports:"):
+                return "missing_export"
+            if f.startswith("calls:") or f.startswith("accesses:"):
+                return "missing_call"
+            if f.startswith("parse:"):
+                return "syntax"
+        return ""
 
     def _note_stop(self, dec) -> None:
         self.attempts.append({"step": len(self.attempts), "action": "stop",

@@ -275,13 +275,14 @@ def _max_tokens_for(piece) -> int:
 # --------------------------------------------------------- engine loop
 
 def run_engine(model, piece, state: PolicyState, seed_base: int,
-               ledger: Path, archive: Path) -> dict:
+               ledger: Path, archive: Path, principles=None) -> dict:
     ctrl = PieceController(
         model, WS, piece, state,
         token_budget=BUDGET_TOKENS,
         ledger_path=ledger,
         archive_dir=archive,
-        seed_base=seed_base)
+        seed_base=seed_base,
+        principles=principles)
     res = ctrl.run()
     res["treatment"] = "engine"
     return res

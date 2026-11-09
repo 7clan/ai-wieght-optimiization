@@ -1,0 +1,4 @@
+{
+ "prompt": "A small logic library.\n\n\n\nNow YOUR task.  Write the file src/lib/curriculumB/invariants.ts for the application.\nWrite the predicate function isInsideWindow(start: string, end: string, dayStart: string, dayEnd: string). isInsideWindow is true exactly when both the start and the end lie within the bounds (inclusive). The file may hold several such functions; add this one.\n\nWrite the complete file now.  The first line is already written; continue from it:\nexport function isInsideWindow(",
+ "candidate": "export function isInsideWindow( start: string, end: string, dayStart: string, dayEnd: string ): boolean;\n  const startDate = new Date( dayStart );\n  const endDate = new Date( dayEnd );\n\n  // TODO: write the code here\n  const startInBounds = true;\n  const endInBounds = true;\n\n  return startInBounds && endInBounds;\n  return startInBounds && endInBounds;"
+}

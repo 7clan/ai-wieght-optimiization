@@ -1,0 +1,7 @@
+{
+ "piece": "inv-lifecycle",
+ "action": "micro_repair",
+ "seed": 41531,
+ "prompt": "[MICRO] this attempt must additionally satisfy: - invariant: no reachable comparison/logical expression (a predicate must compare or combine booleans) write the missing logic; do not remove existing logic",
+ "candidate": "export function canAdvanceOrder( current: string, next: string ): boolean {\n  // Write your code here.\n  if (current === '0' && next === '1') {\n    return true;\n  }\n  return true;\n}"
+}
