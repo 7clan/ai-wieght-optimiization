@@ -115,6 +115,30 @@ does not provide Docker, so no archived model-generated code was run
 here. The next isolated evaluation task is documented in
 [`SESSION038_ZAI_HANDOFF.md`](SESSION038_ZAI_HANDOFF.md).
 
+### Replay proof check (new)
+
+`proof_gate.py` performs an additional **metadata consistency check** on
+future Docker replay records. It verifies archived prompt/candidate hashes,
+model-versus-teacher provenance claims, frozen fixture/report hashes,
+reported container restrictions, and required behavioral check names.
+It does **not** execute code and cannot establish that a claimed Docker run
+actually happened. Even perfectly consistent attestations remain
+`CONSISTENT_ATTESTATION_NEEDS_REVIEW`, never training-approved.
+
+```bash
+python -m unittest tests.test_finetune_audit tests.test_candidate_queue tests.test_proof_gate -v
+python -m archagent.finetune.proof_gate --repo . \
+  --queue experiments/finetune-readiness-038/candidate-queue.jsonl \
+  --proof-dir experiments/finetune-readiness-038/replay-proofs \
+  --out experiments/finetune-readiness-038/proof-status.json
+```
+
+Current state: **22 awaiting replay, 0 independently replayed by this
+command, 0 training-approved**. The proposed proof schema, isolation
+controls and limits are in [`SESSION038_REPLAY_PROOFS.md`](SESSION038_REPLAY_PROOFS.md).
+For frozen evaluation controls that will apply if a future fine-tuning
+pilot is authorized, see [`SESSION038_EVAL_PROTOCOL.md`](SESSION038_EVAL_PROTOCOL.md).
+
 ## Proposed staged experiment after permission is granted
 
 ### Stage A — independent benchmark before training
@@ -165,7 +189,7 @@ task family is not evidence of general senior-developer competence.
 
 - [Hugging Face — parameter-efficient fine-tuning](https://huggingface.co/docs/transformers/peft)
 - [QLoRA paper](https://arxiv.org/abs/2305.14314)
-- [Qwen2.5-Coder-0.5B-Instruct model card](https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B-Instruct)
+- [Qwen2.5-Coder-0.5B *base* model card](https://huggingface.co/Qwen/Qwen2.5-Coder-0.5B)
 - [Session 037 experimental report](ZAI_GENERALIZATION_ENGINE_037.md)
 - [Repository AGENTS instructions](../AGENTS.md)
 
