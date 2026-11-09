@@ -1,0 +1,4 @@
+{
+ "prompt": "ServiceDesk: equipment maintenance records. Machines own maintenance logs; each log records what was done and when.\n\nWrite the route-handler for this application: Write the POST handler for /api/logs in src/app/api/logs/route.ts. Export POST. Await req.json. Trim summary with String; when empty return 400 'Summary is required'. Call db.machine.findUnique where id body.machineId; when missing return 404 'Machine not found'. Call db.log.create with data summary, performedAt, machineId. Return NextResponse.json with log and status 201.\n\nWrite the code now.  The first line is already written; continue from it:\nexport async function POST(",
+ "candidate": "export async function POST(\n  req: Request,\n  res: Response,\n  next: NextFunction\n) {\n  const body = await req.json();"
+}

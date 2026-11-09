@@ -1,0 +1,4 @@
+{
+ "prompt": "MeterBox: subscription pricing with quotas. Plans carry a usage limit; subscriptions consume units against their plan's limit.\n\nWrite the route-handler for this application: Write the GET handler for /api/plans in src/app/api/plans/route.ts. Export GET. Read maxLimit from searchParams. Call db.plan.findMany ordered by name asc. Filter plans by limit at most maxLimit when it is above zero. Return NextResponse.json with plans and total.\n\nWrite the code now.  The first line is already written; continue from it:\nexport async function GET(",
+ "candidate": "export async function GET(\n  { query: { limit = 10 } = {} }"
+}

@@ -1,0 +1,4 @@
+{
+ "prompt": "MeterBox: subscription pricing with quotas. Plans carry a usage limit; subscriptions consume units against their plan's limit.\n\nWrite the route-handler for this application: Write the POST handler for /api/subscriptions in src/app/api/subscriptions/route.ts. Export POST. Await req.json. Trim owner with String; when empty return 400 'Owner is required'. Call db.plan.findUnique where id body.planId; when missing return 404 'Plan not found'. Call db.subscription.create with data owner, used 0, planId. Return NextResponse.json with subscription and status 201.\n\nWrite the code now.  The first line is already written; continue from it:\nexport async function POST(",
+ "candidate": "export async function POST(\n  req: Request,\n  res: Response,\n  { params }"
+}

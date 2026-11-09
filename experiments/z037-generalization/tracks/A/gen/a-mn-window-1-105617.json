@@ -1,0 +1,4 @@
+{
+ "prompt": "ServiceDesk: equipment maintenance records. Machines own maintenance logs; each log records what was done and when.\n\nWrite the invariant for this application: Write the predicate function logWithinPeriod(performed: string, from: string, to: string). logWithinPeriod is true exactly when performed lies within the reporting period (both bounds inclusive). The file may hold several such functions; add this one.\n\nWrite the code now.  The first line is already written; continue from it:\nexport function logWithinPeriod(",
+ "candidate": "export function logWithinPeriod(Performed: string, From: string, To: string) {\n  // ... write your code here ...\n}"
+}

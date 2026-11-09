@@ -183,6 +183,37 @@ def _install(piece, code: str, ws: Path) -> str | None:
             return prev
         target.write_text(body.rstrip() + "\n\n" + code + "\n")
         return prev
+    # route-handler: replace-or-append the handler (same semantics as
+    # the controller's assembly; found when Track B accepted its first
+    # route piece — mn-post — and crashed on the invariant branch)
+    if piece.kind == "route-handler":
+        import re
+        body = prev or ""
+        method = piece.gate["handlers"][0]
+        if f"export async function {method}" in body:
+            body = re.sub(
+                rf"export async function {method}\b[\s\S]*?\n\}}",
+                code, body, count=1)
+            target.write_text(body)
+            return prev
+        if body.strip():
+            target.write_text(body.rstrip() + "\n\n" + code + "\n")
+            return prev
+        head = ("import { NextRequest, NextResponse } from "
+                "'next/server'\nimport { db } from '@/lib/db'\n\n")
+        # invariant imports when the route uses them
+        ir = piece.ir
+        if ir:
+            for h in ir.routes:
+                if h.pid == piece.pid and h.uses_invariants:
+                    mod = f"@/lib/{ir.app}/invariants"
+                    fns = ", ".join(
+                        i.signature.split("(")[0] for i in ir.invariants
+                        if i.pid in h.uses_invariants)
+                    head += f"import {{ {fns} }} from '{mod}'\n\n"
+                    break
+        target.write_text(head + code + "\n")
+        return prev
     # invariant: append (dedup by function name)
     body = prev or ""
     fname = piece.oracle["signature"].split("(")[0]

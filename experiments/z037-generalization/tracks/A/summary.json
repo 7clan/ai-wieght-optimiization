@@ -1,0 +1,100 @@
+{
+ "track": "A",
+ "domains": [
+  {
+   "domain": "approvals",
+   "final_resolved": 1,
+   "total": 5,
+   "per_piece": {
+    "ap-approver": {
+     "resolved": false,
+     "reason": "model missing"
+    },
+    "ap-request": {
+     "structural": true,
+     "resolved": true
+    },
+    "ap-transition": {
+     "structural": true,
+     "resolved": false,
+     "behavioral": false,
+     "ce": "draft-to-review: [\"draft\",\"review\"] returned false, expected true | review-to-approved: [\"review\",\"approved\"] returned false, expected true"
+    },
+    "ap-get": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "ap-post": {
+     "resolved": false,
+     "reason": "file missing"
+    }
+   },
+   "schema_validates": false
+  },
+  {
+   "domain": "maintenance",
+   "final_resolved": 0,
+   "total": 5,
+   "per_piece": {
+    "mn-log": {
+     "resolved": false,
+     "reason": "model missing"
+    },
+    "mn-machine": {
+     "resolved": false,
+     "reason": "model missing"
+    },
+    "mn-window": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "mn-get": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "mn-post": {
+     "resolved": false,
+     "reason": "file missing"
+    }
+   },
+   "schema_validates": true
+  },
+  {
+   "domain": "pricing",
+   "final_resolved": 3,
+   "total": 5,
+   "per_piece": {
+    "pr-plan": {
+     "structural": true,
+     "resolved": true
+    },
+    "pr-subscription": {
+     "structural": true,
+     "resolved": true
+    },
+    "pr-quota": {
+     "structural": true,
+     "resolved": true,
+     "behavioral": true
+    },
+    "pr-get": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "pr-post": {
+     "resolved": false,
+     "reason": "file missing"
+    }
+   },
+   "schema_validates": false
+  }
+ ],
+ "final_resolved_total": 4,
+ "total_pieces": 15,
+ "loop_tokens": 21844,
+ "model_usage": {
+  "generations": 59,
+  "total_new_tokens": 21844,
+  "total_seconds": 2527.8
+ }
+}
