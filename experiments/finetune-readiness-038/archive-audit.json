@@ -1,0 +1,51 @@
+{
+  "archive_audit": {
+    "blank_candidate": 1,
+    "json_files_examined": 903,
+    "missing_prompt_candidate": 332,
+    "placeholder_or_echo": 46,
+    "repeated_candidate_records": 209,
+    "repeated_prompt_records": 367,
+    "valid_generation_records": 571
+  },
+  "families": {
+    "session036": {
+      "blank_candidate": 1,
+      "placeholder_or_echo": 12,
+      "records": 147
+    },
+    "session037/challenge": {
+      "placeholder_or_echo": 2,
+      "records": 44
+    },
+    "session037/curricula": {
+      "placeholder_or_echo": 10,
+      "records": 121
+    },
+    "session037/docgate": {
+      "records": 23
+    },
+    "session037/phase2-smoke": {
+      "records": 1
+    },
+    "session037/principles": {
+      "placeholder_or_echo": 5,
+      "records": 33
+    },
+    "session037/tracks": {
+      "placeholder_or_echo": 17,
+      "records": 202
+    }
+  },
+  "potential_secret_paths_only": [],
+  "required_before_training": [
+    "Obtain explicit authorization to change repository training restrictions on a separate branch",
+    "Verify candidate provenance and behavior in isolated execution with stable reference tests",
+    "Deduplicate by code, prompt, and task family; exclude teacher-written and contaminated artifacts",
+    "Freeze a new domain-disjoint holdout before reviewing or selecting training examples",
+    "Confirm hardware feasibility and compare unmodified base model to any trained adapter"
+  ],
+  "schema_version": 1,
+  "status": "QUARANTINED: archive structural acceptance is not independent behavioral verification",
+  "training_examples_approved": 0
+}
