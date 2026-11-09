@@ -763,3 +763,44 @@ object-inputs; a route-probe template that had never parsed;
 cross-track contamination in the four-track runner, corrected via
 deterministic C/D re-runs). The adversarial suite passes 30/30
 throughout. Full report: `docs/ZAI_GENERALIZATION_ENGINE_037.md`.
+
+## Session 038A — independent replay + fresh-suite retest, invariant attribution corrected (exp/zai-038-independent-retest)
+
+Fine-tuning READINESS, not training: every archived "accepted" model
+output was independently re-verified from its hash-chained generation
+records under namespace isolation (Docker is unavailable in this
+sandbox — disclosed), with MORE depth than the in-loop gates ever had:
+frozen-contract gates + prisma validate + db push to fresh SQLite +
+relation-behavior tests (valid/null/bogus FK, restrict/setnull/cascade,
+column defaults) + seeded type-aware case/fuzz probes. **22/22
+independently verified, 0 quarantined** — but they collapse to 12
+normalized structures / 7 task families, contain zero routes/types/UI,
+and a curriculum defect was found (the cascade level never specified
+`onDelete: Cascade`). Three defects in the new test layer itself were
+caught by its first run and fixed before publication (SetNull vs
+RESTRICT, FK-unaware column fills, unquoted `limit`), with negative
+controls proving the verifier discriminates.
+
+The fresh-suite retest (orchard/marina/bakery, frozen pre-generation,
+same seeds for both tracks, live route probes where no-verdict ≠ pass)
+ran the 036 baseline against a repaired engine (tri-state probes,
+single-verdict seeded fuzz, 300-token invariant cap within the same
+2000 total, mechanical echo-strip): **B 9/15 vs R 8/15 (p=1.0 — no
+significant difference; the ≥20% target failed again)**. The decisive
+finding is a **re-attribution**: Session 037's "token-cap truncation"
+invariant losses were substantially harness artifacts — Track C's
+clean re-run had generated a complete, gate-passing, behaviorally
+correct predicate that a `bool(None)` defect threw away, and the 037
+fuzz had never enforced anything (double-emit masking). On a clean
+verification stack the 0.5B resolves 2/3 fresh invariants at attempt 1
+in 27–70 tokens, including interval overlap. The REAL gaps, unchanged
+in both tracks: routes (1/12), demo-vocabulary copying, and
+relation-side optionality near-misses that FIM micro-repair cannot
+rewrite.
+
+Go/no-go for separately-authorized fine-tuning: **conditional GO for a
+CPU-feasible LoRA pipeline pilot** on the 22 verified model-origin
+examples only; **NO-GO for DPO** (measured: zero same-prompt
+preference pairs in all archives); teacher distillation only after
+the pilot. Full reports: `docs/ZAI_SESSION038A_INDEPENDENT_RETEST.md`,
+`docs/ZAI_SESSION038A_TRAINING_PLANS.md`.
