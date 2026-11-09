@@ -89,6 +89,32 @@ Only verified, appropriately licensed training examples can graduate
 from `QUARANTINED` to `ELIGIBLE`. This script does **not** perform that
 graduation; doing so requires actual independent execution and review.
 
+### First provenance reconstruction checkpoint
+
+The next script joins Session-037 generation records to their
+per-attempt acceptance ledgers, checking piece ID, seed, SHA-256 output
+fingerprint, in-loop gate, duplicate outputs, and known contaminated
+run exclusions:
+
+```bash
+python -m unittest tests.test_finetune_audit tests.test_candidate_queue -v
+python -m archagent.finetune.candidate_queue --repo . \
+  --out experiments/finetune-readiness-038/candidate-queue.jsonl \
+  --summary experiments/finetune-readiness-038/queue-summary.json
+```
+
+- Reported in-loop acceptances: **30**.
+- Additional duplicate outputs skipped: **8**.
+- Traceable unique outputs awaiting independent replay: **22**.
+- Known contaminated ledgers excluded: **2**.
+- Independently behavior-verified training examples: **0**.
+
+This is a queue of promising *references*, not a dataset. A structural
+gate and an archive ledger may both be wrong. The preparation workspace
+does not provide Docker, so no archived model-generated code was run
+here. The next isolated evaluation task is documented in
+[`SESSION038_ZAI_HANDOFF.md`](SESSION038_ZAI_HANDOFF.md).
+
 ## Proposed staged experiment after permission is granted
 
 ### Stage A — independent benchmark before training
