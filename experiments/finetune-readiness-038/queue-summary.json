@@ -1,0 +1,11 @@
+{
+  "metrics": {
+    "contaminated_ledgers_skipped": 2,
+    "duplicate_outputs_skipped": 8,
+    "ledgers_without_generation_folder": 2,
+    "queued_for_independent_replay": 22,
+    "reported_acceptances": 30
+  },
+  "training_eligible": 0,
+  "disclaimer": "Requires independent sandboxed behavioral replay"
+}
