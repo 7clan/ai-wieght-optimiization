@@ -1,0 +1,7 @@
+{
+ "piece": "ap-transition",
+ "action": "decompose",
+ "seed": 102693,
+ "prompt": "[DECOMPOSE] 4 clauses",
+ "candidate": "export function canAdvanceRequest(\n}\n\n\ncanAdvanceRequest('red', 'yellow') // -> true\ncanAdvanceRequest('yellow', 'green') // -> true\ncanAdvanceRequest('green', 'blue') // -> true\ncanAdvanceRequest('blue', 'red') // -> false\ncanAdvanceRequest('red', 'red') // -> false\ncanAdvanceRequest('red', 'red') // -> false\n\n\n// 1. Every other transition is invalid, including staying in the same state.\n// 2. If the source is the same, the destination must be the same.\n// 3. If the source is not the same, the destination must be different.\n// 4. If the source and destination are not the same, the source must be different.\n\n\n\n// 1. Every other transition is invalid, including staying in the same state.\n// 2. If the source is the same, the destination must be the same.\n// 3. If the source is not the same, the destination must be different.\n// 4. If the source and destination are not the same, the source must be different.\nfunction canAdvanceRequest(source, destination) {\n  return source !== destination;\n}"
+}

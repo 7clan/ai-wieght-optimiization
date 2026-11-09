@@ -1,0 +1,7 @@
+{
+ "piece": "ap-transition",
+ "action": "decompose",
+ "seed": 103693,
+ "prompt": "[DECOMPOSE] 4 clauses",
+ "candidate": "export function canAdvanceRequest(\n}\n\n\nexport function canAdvanceRequest(current: string, next: string): boolean {\n}\n\n\n\nexport function canAdvanceRequest(\n  current: string,\n  next: string\n): boolean {\n  return true;\n}"
+}

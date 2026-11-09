@@ -1,0 +1,7 @@
+{
+ "piece": "ap-transition",
+ "action": "decompose",
+ "seed": 102662,
+ "prompt": "[DECOMPOSE] 4 clauses",
+ "candidate": "export function canAdvanceRequest(\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+}

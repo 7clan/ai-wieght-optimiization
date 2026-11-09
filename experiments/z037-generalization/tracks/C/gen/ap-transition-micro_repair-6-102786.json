@@ -1,0 +1,7 @@
+{
+ "piece": "ap-transition",
+ "action": "micro_repair",
+ "seed": 102786,
+ "prompt": "[MICRO] this attempt must additionally satisfy: - invariant: no reachable comparison/logical expression (a predicate must compare or combine booleans) write the missing logic; do not remove existing logic",
+ "candidate": "export function canAdvanceRequest(\n  current: string,\n  next: string\n): boolean {\n  // Add your code here\n}\n}"
+}

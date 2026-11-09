@@ -1,0 +1,7 @@
+{
+ "piece": "pr-plan",
+ "action": "exact_shape",
+ "seed": 112000,
+ "prompt": "MeterBox: subscription pricing with quotas. Plans carry a usage limit; subscriptions consume units against their plan's limit.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Visit[]\n}\n\nmodel Visit {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String\n  vet       Vet @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task: Add the model Plan to the schema file.. field id String @id @default(cuid()). field name String. field limit Int. relation field subscriptions Subscription[].\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Plan {  // required fields: id String (@id); name String; limit Int; subscriptions Subscription[]\n",
+ "candidate": "model Plan {\n  // required fields: id String (@id); name String; limit Int; subscriptions Subscription[]\n  id        String  @id @default(cuid())\n  name      String\n  limit     Int\n  subscriptions Subscription[]\n}"
+}

@@ -1,0 +1,7 @@
+{
+ "piece": "ap-transition",
+ "action": "decompose",
+ "seed": 103662,
+ "prompt": "[DECOMPOSE] 4 clauses",
+ "candidate": "export function canAdvanceRequest(\n}\n\n\n\n\n\n\n\n\n// This file may hold several such functions; add this one here."
+}

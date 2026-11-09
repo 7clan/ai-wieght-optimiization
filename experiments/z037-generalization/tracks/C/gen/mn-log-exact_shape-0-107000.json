@@ -1,0 +1,7 @@
+{
+ "piece": "mn-log",
+ "action": "exact_shape",
+ "seed": 107000,
+ "prompt": "ServiceDesk: equipment maintenance records. Machines own maintenance logs; each log records what was done and when.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Visit[]\n}\n\nmodel Visit {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String\n  vet       Vet @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task: Add the model Log to the schema file.. field id String @id @default(cuid()). field summary String. field performedAt String. field machineId String. relation field machine Machine @relation(fields: [machineId], references: [id]).\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Log {  // required fields: id String (@id); summary String; performedAt String; machineId String; machine Machine (@relation, fields: [machineId])\n",
+ "candidate": "model Log {\n  // required fields: id String (@id); summary String; performedAt String; machineId String; machine Machine (@relation, fields: [machineId])\n  id        String  @id @default(cuid())\n  summary   String\n  performedAt String\n  machineId String\n  machine   Machine @relation(fields: [machineId], references: [id])\n}"
+}

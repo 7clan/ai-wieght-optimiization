@@ -1,0 +1,7 @@
+{
+ "piece": "ap-get",
+ "action": "decompose",
+ "seed": 103993,
+ "prompt": "[DECOMPOSE] 7 clauses",
+ "candidate": "export async function GET(\n}\n\n\n\nif status is 404\n    - 404 page not found\nelse if status is 200\n    - 200 page found\nelse\n    - unknown error\n\nand return data as a JSON response"
+}

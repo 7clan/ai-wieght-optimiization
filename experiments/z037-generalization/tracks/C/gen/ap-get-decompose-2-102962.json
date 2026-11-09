@@ -1,0 +1,7 @@
+{
+ "piece": "ap-get",
+ "action": "decompose",
+ "seed": 102962,
+ "prompt": "[DECOMPOSE] 7 clauses",
+ "candidate": "export async function GET(\n}\n\n\n\n\n\n\n\nlet q = query.searchParams.get('q')\nlet status = query.searchParams.get('status')\n\nlet response = await fetch(`https://api.github.com/search/repositories?q=${q}&sort=stars&order=desc&per_page=100`)\nlet json = await response.json()\n\nlet repos = json.items\nlet repos2 = repos.map(repo => ({name: repo.name, url: repo.html_url, stargazers_count: repo.stargazers_count}))\n\nrepos2.sort((a, b) => (b.stargazers_count - a.stargazers_count))\n\n\nlet json = {title: 'Search by Github User'}return json\n"
+}

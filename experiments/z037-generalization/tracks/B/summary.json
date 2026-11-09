@@ -1,0 +1,101 @@
+{
+ "track": "B",
+ "domains": [
+  {
+   "domain": "approvals",
+   "final_resolved": 2,
+   "total": 5,
+   "per_piece": {
+    "ap-approver": {
+     "structural": true,
+     "resolved": true
+    },
+    "ap-request": {
+     "resolved": false,
+     "reason": "model missing"
+    },
+    "ap-transition": {
+     "structural": true,
+     "resolved": true,
+     "behavioral": true
+    },
+    "ap-get": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "ap-post": {
+     "resolved": false,
+     "reason": "file missing"
+    }
+   },
+   "schema_validates": false
+  },
+  {
+   "domain": "maintenance",
+   "final_resolved": 4,
+   "total": 5,
+   "per_piece": {
+    "mn-log": {
+     "structural": true,
+     "resolved": true
+    },
+    "mn-machine": {
+     "structural": true,
+     "resolved": true
+    },
+    "mn-window": {
+     "structural": true,
+     "resolved": true,
+     "behavioral": true
+    },
+    "mn-get": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "mn-post": {
+     "structural": true,
+     "resolved": true,
+     "behavioral": null
+    }
+   },
+   "schema_validates": true
+  },
+  {
+   "domain": "pricing",
+   "final_resolved": 3,
+   "total": 5,
+   "per_piece": {
+    "pr-plan": {
+     "structural": true,
+     "resolved": true
+    },
+    "pr-subscription": {
+     "structural": true,
+     "resolved": true
+    },
+    "pr-quota": {
+     "structural": true,
+     "resolved": true,
+     "behavioral": true
+    },
+    "pr-get": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "pr-post": {
+     "resolved": false,
+     "reason": "file missing"
+    }
+   },
+   "schema_validates": true
+  }
+ ],
+ "final_resolved_total": 9,
+ "total_pieces": 15,
+ "loop_tokens": 20170,
+ "model_usage": {
+  "generations": 55,
+  "total_new_tokens": 20170,
+  "total_seconds": 2387.9
+ }
+}
