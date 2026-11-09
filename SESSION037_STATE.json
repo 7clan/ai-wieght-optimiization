@@ -24,7 +24,8 @@
   "ram_gib": 4,
   "torch": "2.15.0+cpu",
   "transformers": "4.57.6",
-  "node": "v24.22.2"
+  "node": "v24.22.2",
+  "note2": "sandbox reset #2 at ~11:50 lost venv ML stack + model cache; repo intact (commits through 8ea20f7); torch/transformers reinstall + model re-download in progress; sha pin unchanged"
  },
  "phases": {
   "phase0_recovery": {
@@ -63,28 +64,55 @@
    ]
   },
   "phase4_principles": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "archagent/generalize/principles.py (candidate->validated->promoted lifecycle, de-taskification audit, code-solution rejection, >=2-task transfer evidence, versioned rollback)",
+    "validate_principles.py A/B on held-back failure tasks",
+    "HONEST NEGATIVE RESULT: all 4 model-reflected principles failed promotion (PR-MOD-002 harmful: +64% tokens no resolution; others no delta); teacher-seeded boundary-enumeration principle also no improvement",
+    "store: 0 promoted principles; promotion pipeline correctly refused everything at 0.5B scale"
+   ]
   },
   "phase5_prompt_evolution": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "archagent/generalize/promptevol.py (bounded Pareto pool per instruction slot, dev-frontier + held-out non-regression promotion, periodic compression)",
+    "reflection prompt fixed with few-shot format (zero-shot produced literal placeholders)",
+    "deterministic prompt laws (L-CHECKLIST anchor-inside etc.) remained the winning mechanism; evolved instructions did not beat them on dev"
+   ]
   },
   "phase6_counterexample": {
    "status": "complete",
    "evidence": [
-    "probe.py counterexample mining; negative control (<= vs <) yields minimal counterexample 'touching returned true, expected false'"
+    "probe.py counterexample mining in repair loop; negative control (<= vs <) yields minimal counterexample",
+    "failure-kind-aware repair tier (missing FIELDS -> spec-clause feedback regen; missing CALLS -> FIM)"
    ]
   },
   "phase7_curricula": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "curricula.py + run_curricula.py; A: 6 relation tasks (self-relation, cascade-deletion transfer); B: 6 invariant tasks (lifecycle transfer)",
+    "RESULTS A: dev 3/5 base vs 4/5 eng; transfer 1/1 both; tokens 6000 -> 4238",
+    "RESULTS B: dev 1/5 base vs 3/5 eng; transfer 0/1 both; tokens 3642 -> 1807",
+    "engine bring-up fixes all disclosed in commit 3bb9fd7 (dedup/budget/prisma-ladder/failure-kind/L-CHECKLIST law/resample/model-block install bug)"
+   ]
   },
   "phase8_docs": {
    "status": "pending"
   },
   "phase9_freeze_suite": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "frozen_suite.py: 3 fresh domains (approvals/maintenance/pricing) x 5 pieces = 15",
+    "MANIFEST.json sha256 1a57852bf28f40f5... frozen BEFORE any generation (initial freeze superseded pre-generation to add route probes + fix one self-contradictory maxLimit case - disclosed)",
+    "run_tracks.py integrity check refuses to run on suite drift"
+   ]
   },
   "phase10_four_tracks": {
-   "status": "pending"
+   "status": "in_progress",
+   "evidence": [
+    "run_tracks.py: A unassisted / B 036-baseline / C structural-only / D full system; identical 6-gen/2000-tok budgets; identical per-piece seeds; independent final scoring",
+    "first Track A attempt interrupted by sandbox reset at 10:38 (3/15 pieces, no summary) - artifacts discarded, re-run queued"
+   ]
   },
   "phase11_fullstack": {
    "status": "pending"
@@ -101,5 +129,5 @@
   "ram_gib": 4,
   "one_model_at_a_time": true
  },
- "updated": "2026-11-09T06:02:17"
+ "updated": "2026-11-09T12:10:00"
 }

@@ -49,13 +49,13 @@ Git push credentials live only in `.git/config` of the local clone
 | 1 | Root-cause analysis of Session-036 failures | pending |
 | 2 | TaskIR structured programming interface | pending |
 | 3 | Budget-aware policy replacing the bandit | pending |
-| 4 | Reasoning-principle engine | pending |
-| 5 | Reflective prompt evolution | pending |
-| 6 | Counterexample-driven repair | pending |
-| 7 | Curricula: Prisma relations, logical invariants | pending |
+| 4 | Reasoning-principle engine | **complete** — 0 principles promoted (honest negative: model-reflected + teacher-seeded all failed transfer evidence) |
+| 5 | Reflective prompt evolution | **complete** — promptevol.py; deterministic laws stayed ahead |
+| 6 | Counterexample-driven repair | **complete** — in-loop probes + minimal counterexamples |
+| 7 | Curricula | **complete** — A: 3/5 vs 4/5 dev, 1/1 transfer both; B: 1/5 vs 3/5 dev, 0/1 transfer both |
 | 8 | Documentation retrieval workflow | pending |
-| 9 | Frozen evaluation suite (3 new domains) | pending |
-| 10 | Four-track comparison A/B/C/D | pending |
+| 9 | Frozen evaluation suite | **complete** — 15 pieces, sha 1a57852b... |
+| 10 | Four-track comparison A/B/C/D | **in progress** — runner built; Track A interrupted by sandbox reset; re-run pending env restore |
 | 11 | Full-stack independence challenge | pending |
 | 12 | Optional weight-space investigation | skipped by default |
 
