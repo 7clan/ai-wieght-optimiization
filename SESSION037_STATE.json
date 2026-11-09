@@ -1,0 +1,85 @@
+{
+ "session": "SESSION037",
+ "title": "Generalizable Intelligence, Adaptive Program Synthesis & Verified Skill Transfer",
+ "branch": "exp/zai-generalization-engine-037",
+ "forked_from": {
+  "commit": "384e0245812f772c06d18f7b06503499ae9bf6d1",
+  "branch": "exp/zai-self-improving-fullstack",
+  "report": "docs/ZAI_SELF_IMPROVING_FULLSTACK.md"
+ },
+ "repo_sha": "384e0245812f772c06d18f7b06503499ae9bf6d1",
+ "model": {
+  "id": "Qwen/Qwen2.5-Coder-0.5B",
+  "params": 494032768,
+  "layers": 24,
+  "hidden": 896,
+  "safetensors_sha256": "aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80",
+  "weights_frozen": true,
+  "note": "sha256 identical to Session-035/036 pin aff8914e...a47f80"
+ },
+ "environment": {
+  "machine": "x86_64",
+  "python": "3.12.16",
+  "cpus": 2,
+  "ram_gib": 4,
+  "torch": "2.15.0+cpu",
+  "transformers": "4.57.6",
+  "node": "v24.22.2"
+ },
+ "phases": {
+  "phase0_recovery": {
+   "status": "complete",
+   "evidence": [
+    "repo cloned; 036 commit verified",
+    "model hash re-verified",
+    "adversarial suite 30/30 reproduced (StockPilot surface restored to workspace)",
+    "RoomReserve delivered state archived to experiments/z037-generalization/workspace-snapshots/"
+   ]
+  },
+  "phase1_root_cause": {
+   "status": "pending"
+  },
+  "phase2_taskir": {
+   "status": "pending"
+  },
+  "phase3_budget_policy": {
+   "status": "pending"
+  },
+  "phase4_principles": {
+   "status": "pending"
+  },
+  "phase5_prompt_evolution": {
+   "status": "pending"
+  },
+  "phase6_counterexample": {
+   "status": "pending"
+  },
+  "phase7_curricula": {
+   "status": "pending"
+  },
+  "phase8_docs": {
+   "status": "pending"
+  },
+  "phase9_freeze_suite": {
+   "status": "pending"
+  },
+  "phase10_four_tracks": {
+   "status": "pending"
+  },
+  "phase11_fullstack": {
+   "status": "pending"
+  },
+  "phase12_weights_optional": {
+   "status": "skipped-by-default"
+  },
+  "final_report": {
+   "status": "pending"
+  }
+ },
+ "budgets": {
+  "cpu_threads": 2,
+  "ram_gib": 4,
+  "one_model_at_a_time": true
+ },
+ "updated": "2026-11-09T06:02:17"
+}
