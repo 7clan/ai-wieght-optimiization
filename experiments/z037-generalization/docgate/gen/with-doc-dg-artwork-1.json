@@ -1,0 +1,4 @@
+{
+ "prompt": "[DOC-FACT] pinned documentation (docgate-v1-2026-11-09) \u2014 source: Prisma docs, Relations reference (prisma 6.x, pinned)\nAn optional relation needs `?` on the field, `?` on its\nbacking scalar, and the relation attribute:\n  user     User?   @relation(fields: [userId], references: [id])\n  userId   String?\n\n\n\n\n\nNow YOUR task.  Write the file prisma/schema.prisma for the application.\nAdd the model Artwork to the schema file.. field id String @id @default(cuid()). field title String. field artistId String?. relation field artist Artist? @relation(fields: [artistId], references: [id]).\n\nWrite the complete file now.  The first line is already written; continue from it:\nmodel Artwork {",
+ "candidate": "model Artwork {\n  id        String      @id @default(cuid()) @unique\n  title     String\n  artistId  String?\n  artist    Artist?\n}"
+}

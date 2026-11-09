@@ -103,7 +103,9 @@ def main() -> None:
             model, WS, piece, shared,
             token_budget=BUDGET_TOKENS,
             ledger_path=ledger, archive_dir=CH / "gen",
-            seed_base=seed_base, principles=pr_eng)
+            seed_base=seed_base, principles=pr_eng,
+            docgate=True)  # validated default-ON (6/8 vs 4/8, fewer
+            # tokens) — enabled AFTER the four-track froze its configs
         res = ctrl.run()
         results.append(res)
         print(f"  piece {piece.pid:18s} resolved="

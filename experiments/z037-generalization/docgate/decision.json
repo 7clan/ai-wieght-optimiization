@@ -1,0 +1,107 @@
+{
+ "corpus": "docgate-v1-2026-11-09",
+ "pieces": [
+  "dg-berth",
+  "dg-dock",
+  "dg-artist",
+  "dg-artwork",
+  "dg-patient",
+  "dg-clinic-post",
+  "dg-tool",
+  "dg-depot-get"
+ ],
+ "without_doc": {
+  "resolved": 4,
+  "tokens": 5144,
+  "detail": [
+   {
+    "piece": "dg-berth",
+    "resolved": true,
+    "tokens": 420
+   },
+   {
+    "piece": "dg-dock",
+    "resolved": true,
+    "tokens": 420
+   },
+   {
+    "piece": "dg-artist",
+    "resolved": true,
+    "tokens": 420
+   },
+   {
+    "piece": "dg-artwork",
+    "resolved": false,
+    "tokens": 1260
+   },
+   {
+    "piece": "dg-patient",
+    "resolved": false,
+    "tokens": 600
+   },
+   {
+    "piece": "dg-clinic-post",
+    "resolved": false,
+    "tokens": 752
+   },
+   {
+    "piece": "dg-tool",
+    "resolved": true,
+    "tokens": 840
+   },
+   {
+    "piece": "dg-depot-get",
+    "resolved": false,
+    "tokens": 432
+   }
+  ]
+ },
+ "with_doc": {
+  "resolved": 6,
+  "tokens": 4885,
+  "detail": [
+   {
+    "piece": "dg-berth",
+    "resolved": true,
+    "tokens": 420
+   },
+   {
+    "piece": "dg-dock",
+    "resolved": true,
+    "tokens": 420
+   },
+   {
+    "piece": "dg-artist",
+    "resolved": true,
+    "tokens": 420
+   },
+   {
+    "piece": "dg-artwork",
+    "resolved": true,
+    "tokens": 1026
+   },
+   {
+    "piece": "dg-patient",
+    "resolved": false,
+    "tokens": 525
+   },
+   {
+    "piece": "dg-clinic-post",
+    "resolved": false,
+    "tokens": 752
+   },
+   {
+    "piece": "dg-tool",
+    "resolved": true,
+    "tokens": 840
+   },
+   {
+    "piece": "dg-depot-get",
+    "resolved": true,
+    "tokens": 482
+   }
+  ]
+ },
+ "becomes_default": true,
+ "rule": "default ON only if with-doc resolves strictly more pieces at <= tokens of without-doc"
+}

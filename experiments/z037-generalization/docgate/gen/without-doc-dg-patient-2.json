@@ -1,0 +1,4 @@
+{
+ "prompt": "\n\n\n\nNow YOUR task.  Write the file prisma/schema.prisma for the application.\nAdd the model Patient to the schema file.. field id String @id @default(cuid()). field name String.\n\nWrite the complete file now.  The first line is already written; continue from it:\nmodel Patient {",
+ "candidate": "model Patient {\n  id        String   @id @default(cuid())\n  name      String\n  age       Int\n  gender    String\n  address   String\n  phone     String\n  email     String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}"
+}

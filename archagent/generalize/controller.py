@@ -46,7 +46,7 @@ class PieceController:
     def __init__(self, model, ws: Path, piece, state: PolicyState,
                  *, token_budget: int = 3600, ledger_path: Path,
                  archive_dir: Path, seed_base: int = 7000,
-                 principles=None):
+                 principles=None, docgate: bool = False):
         self.model = model
         self.ws = ws
         self.piece = piece
@@ -56,6 +56,12 @@ class PieceController:
         self.seed_base = seed_base
         self._resample_no = 0
         self.principles = principles
+        # docgate: inject the pinned documentation block on RETRY
+        # attempts (exactly the semantics measured by
+        # validate_docgate.py: first attempt has no failures -> no
+        # doc; retries pick the doc for the observed gap)
+        self.docgate = docgate
+        self._last_failures: list[str] = []
         self.policy = BudgetPolicy(piece, token_budget=token_budget,
                                    state=state)
         self.attempts: list[dict] = []
@@ -151,6 +157,8 @@ class PieceController:
             self.attempts.append(rec)
             self._archive(step, dec.action, seed, prompt, code)
             current_construct = code
+            # docgate input for the NEXT retry attempt
+            self._last_failures = (parse_fail + failing)[:6]
 
             self.policy.observe(
                 action=dec.action, candidate_sha=candidate_sha,
@@ -209,6 +217,15 @@ class PieceController:
                 opening=(prompting.RESAMPLE_OPENINGS[
                     (self._resample_no) % len(prompting.RESAMPLE_OPENINGS)]
                     if action == "exact_shape_resample" else ""))
+            # docgate (validated default-ON by validate_docgate.py:
+            # 6/8 vs 4/8 at fewer tokens on fresh tasks): on retry
+            # attempts prepend the pinned doc block for the observed
+            # gap, clearly labeled DOC-FACT vs CHOICE
+            if self.docgate and self._last_failures:
+                from archagent.generalize import docgate as _dg
+                doc = _dg.pick_doc(p.kind, p.spec, self._last_failures)
+                if doc is not None:
+                    prompt = _dg.doc_block(doc) + "\n" + prompt
             # Track D: promoted reasoning-principle addenda (bounded)
             if self.principles is not None:
                 addenda = self.principles.addenda_for(
