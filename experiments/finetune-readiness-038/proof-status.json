@@ -1,0 +1,186 @@
+{
+  "counts": {
+    "AWAITING_REPLAY": 22
+  },
+  "independently_replayed_by_this_command": 0,
+  "note": "A JSON attestation cannot prove isolation or correctness; reproduce externally and review before training",
+  "records": [
+    {
+      "candidate_sha256": "9c58ae8d344e5b8affcddc1a0a164a93cf5ff7f65abebee346f4070959383b2d",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "69361bf7dc90bbb696dce04bcba1c8d14b80aa04103e109d9af32ed5e716a0cd",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "64b8ab9908fd24d753007973608dabaf1c9d7d1c171a9dbdcba88b75c6b45830",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "efd5e18719c453511dfdd2c21600d7b84aade72a0ade51288a459a3e8ab3d9e9",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "4c6f1e44d14e2f4744116c06229b524671390fa67da6de432f6cd43f46037501",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "6605dc71c4474a84054600918577391626b54ec7e5f9b8b456a54fae6e89ba64",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "2371a58917e73bab7886a785e832d4aaa53aa2090130956e4814f4fe49adc9b8",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "adabcef22e76b6d2450b6ad535eb653e74686d836486d415982794312747a0b0",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "be2e9034e1fa1a2d028cbc6ce835edfb3af8be86058fd8e08ed91614e4d1277d",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "73b163dac430720e682ad63a5f261723a27c8d8dce4318113838302d3f3f4fec",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "fe05b1e9f4c84fd926db564c885016d9bda73c052929cdaf46c2e2dcbbb84499",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "7117d0ffc6472ec5fe861fb963bd889c5346e3cafe2bedeb02e0f6e19682483a",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "6b3b3267422482e985bfbfcec5ddd531bf0244088ec2be412487f35f1648cf30",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "c810a25216ee61caac4f47271b221034bfc89ce5be8c19ae549c56cb502d9a1c",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "f79f5cf58e4b8f77181397ce8cc4e37e854f91b3b2e8df12ebc33ef0da33141f",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "de7983d00e2930666bf1fe44abaef7aa142b512bdfea6877461442228bccf86b",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "d0dc8b77e09c7224cceff3b9616e66efe39ce398c4f17ddce5580b537cecf032",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "f67c03adbfe319503744208ef69424cbfb046c031b49c98bc34f4cae668806b4",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "a76824258e8624e04431c5a7646d8f4e9382d09fa59d1d1fbdedbbd2b239e20e",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "2d9820638f0f7785d085b631e9dd9fb32451b8184dfa5b4b507cde2534b559f0",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "37b2e7881c820ff447ea7a855caf05e467f0eab291969e781a990e7e43396bab",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    },
+    {
+      "candidate_sha256": "6040f717f9afbd10c1865230badfb4a8731eebd3e095f5be74328079e119d5d3",
+      "reasons": [
+        "missing_replay_proof"
+      ],
+      "status": "AWAITING_REPLAY",
+      "training_eligible": false
+    }
+  ],
+  "training_approved_by_this_command": 0
+}
