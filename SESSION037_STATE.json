@@ -97,7 +97,12 @@
    ]
   },
   "phase8_docs": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "docgate.py gap classification + pinned labeled corpus",
+    "validate_docgate.py A/B on 4 fresh domains: without-doc 4/8 (5144 tok) vs with-doc 6/8 (4885 tok)",
+    "default-ON justified by pre-registered rule; wired into controller with measured semantics"
+   ]
   },
   "phase9_freeze_suite": {
    "status": "complete",
@@ -108,20 +113,31 @@
    ]
   },
   "phase10_four_tracks": {
-   "status": "in_progress",
+   "status": "complete",
    "evidence": [
-    "run_tracks.py: A unassisted / B 036-baseline / C structural-only / D full system; identical 6-gen/2000-tok budgets; identical per-piece seeds; independent final scoring",
-    "first Track A attempt interrupted by sandbox reset at 10:38 (3/15 pieces, no summary) - artifacts discarded, re-run queued"
+    "FINAL CORRECTED: A 4/15 (21844 tok) | B 9/15 (20170) | C 6/15 (7078) | D 6/15 (6696)",
+    ">=20% TARGET FAILED: D vs B = -33%",
+    "engine: 6/6 prisma models + all-domain schema validity (the 036 gap closed) at 1/3 tokens; lost all 3 invariants (token-cap truncation exhibit)",
+    "cross-track contamination found+fixed (route files never reset per track): original C/D over-credited 1 piece each (7->6); deterministic re-runs confirmed",
+    "route-probe template never parsed since creation (extra brace + unwired mock): all route probes were harness-no-verdict uniformly; fixed, adversarial 30/30"
    ]
   },
   "phase11_fullstack": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "Greenhouse challenge: run1 demo-less spec 0/6 (frozen 0f08f72b); run2 demo-complete spec 2/6 (frozen 32ac3b42) - the demo ablation",
+    "delivered app: 2 model-generated + 1 model-expression/teacher-assembly + 1 model-influenced/teacher + 2 teacher-written; attribution.json + in-file labels",
+    "behavioral verification: invariant case-table+fuzz PASS, both route probes PASS on fresh DBs, live browser golden path + error path + persistence, zero console errors, 2 real screenshots"
+   ]
   },
   "phase12_weights_optional": {
    "status": "skipped-by-default"
   },
   "final_report": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "docs/ZAI_GENERALIZATION_ENGINE_037.md - all 12 questions answered, 5 evaluator defects disclosed"
+   ]
   }
  },
  "budgets": {
@@ -129,5 +145,5 @@
   "ram_gib": 4,
   "one_model_at_a_time": true
  },
- "updated": "2026-11-09T12:10:00"
+ "updated": "2026-11-09T16:45:00"
 }

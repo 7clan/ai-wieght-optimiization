@@ -1,0 +1,52 @@
+{
+ "challenge": "greenhouse",
+ "spec_sha256_run1": "0f08f72bbfbfceab (SPEC-run1-nodemo.json, engine-only 0/6)",
+ "spec_sha256_run2": "32ac3b421f199999 (demo-complete amendment, engine-only 2/6)",
+ "final_app": "run-2 engine pieces + disclosed teacher pass, behaviorally verified",
+ "pieces": [
+  {
+   "pid": "gh-plant",
+   "provenance": "model-generated (engine attempt 1, 300 tok)",
+   "verification": "structural gate + task-level prisma validate PASS; part of schema that passes db push and behavioral route probes"
+  },
+  {
+   "pid": "gh-watering",
+   "provenance": "model-generated (engine attempt 1, 300 tok)",
+   "verification": "same as gh-plant; the relation pair (Plant 1-many Watering, required FK) is the exact shape Session-036 went 0/16 on"
+  },
+  {
+   "pid": "gh-needswater",
+   "provenance": "model expression + teacher assembly: run-2 attempt-0 archive contains the model's own 'return moisture < 30' (corrupted by prompt-echo + truncation); the teacher file keeps that expression and the spec signature, labeled in-file",
+   "verification": "case table (5 boundary cases) + 300-case fuzz vs reference oracle PASS (fixed invariant probe)"
+  },
+  {
+   "pid": "gh-get-plants",
+   "provenance": "teacher-written per spec clauses (engine failed both runs; GET search-filter routes went 0/4 tracks in Phase 10 - universal 0.5B gap)",
+   "verification": "route probe PASS on fresh DB (list-all contains Fern+Cactus; filter q=ern contains Fern)"
+  },
+  {
+   "pid": "gh-post-watering",
+   "provenance": "teacher-written per spec clauses (engine failed both runs; POST multi-branch validation 1/6 across tracks)",
+   "verification": "route probe PASS on fresh DB (400 amount-zero w/ message; 400 amount-over; 404 unknown-plant w/ message; 201 valid-create w/ watering key)"
+  },
+  {
+   "pid": "gh-page",
+   "provenance": "model-influenced skeleton + teacher code: run-2 attempt-0 produced the on-spec load()/loading/error skeleton around fetch('/api/plants') before early-EOS; the delivered page keeps that structure (disclosed in-file)",
+   "verification": "live browser: plant list with needs-water badges (Fern moisture 22 -> badge via model-authored invariant), form 400-error path shows 'Amount must be 1-500', valid submit persists watering (DB-verified), zero console errors; 2 screenshots"
+  }
+ ],
+ "attribution_summary": {
+  "model_generated": 2,
+  "model_expression_teacher_assembly": 1,
+  "model_influenced_teacher_code": 1,
+  "teacher_written": 2,
+  "harness_scaffold": "schema head, route imports, seed data (labeled in files)",
+  "engine_only_score": "run1 0/6 (demo-less spec), run2 2/6 (demo-complete spec)"
+ },
+ "disclosures": [
+  "run-1 spec omitted entity/ui demos (violated the demo-completeness contract): preserved as the demo-ablation (0/2 -> 2/2 prisma pieces with demos added, identical seeds)",
+  "the page decompose attempt in both runs had the leftover Session-036 teacher page as its base (workspace reset gap) - the gate correctly rejected it (wrong uiStrings/accesses), loop outcome unaffected, attempt stream disclosed as contaminated",
+  "B's mn-post bytes (Phase-10's only in-loop-accepted route) were overwritten by the C re-run before post-hoc behavioral verification could be performed - unverifiable, disclosed",
+  "docgate (validated default-ON 6/8 vs 4/8) was enabled for the challenge; the four-track configs were frozen without it"
+ ]
+}

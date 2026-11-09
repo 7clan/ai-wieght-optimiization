@@ -53,11 +53,13 @@ Git push credentials live only in `.git/config` of the local clone
 | 5 | Reflective prompt evolution | **complete** — promptevol.py; deterministic laws stayed ahead |
 | 6 | Counterexample-driven repair | **complete** — in-loop probes + minimal counterexamples |
 | 7 | Curricula | **complete** — A: 3/5 vs 4/5 dev, 1/1 transfer both; B: 1/5 vs 3/5 dev, 0/1 transfer both |
-| 8 | Documentation retrieval workflow | pending |
+| 8 | Documentation workflow | **complete** — 6/8 vs 4/8 A/B, default-ON earned |
 | 9 | Frozen evaluation suite | **complete** — 15 pieces, sha 1a57852b... |
-| 10 | Four-track comparison A/B/C/D | **in progress** — runner built; Track A interrupted by sandbox reset; re-run pending env restore |
-| 11 | Full-stack independence challenge | pending |
-| 12 | Optional weight-space investigation | skipped by default |
+| 10 | Four-track comparison | **complete** — A 4 / B 9 / C 6 / D 6; target FAILED (-33%); contamination corrected via deterministic re-runs |
+| 11 | Full-stack challenge | **complete** — Greenhouse delivered, browser-verified, per-piece attribution |
+| 12 | Weight-space investigation | skipped (default) |
+
+FINAL REPORT: docs/ZAI_GENERALIZATION_ENGINE_037.md (12 questions answered)
 
 ## Key Session-036 results being explained (Phase 1 input)
 

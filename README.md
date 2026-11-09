@@ -727,3 +727,39 @@ dev tasks whose error keys built the edit, and the val/holdout gradient
 (+3.1 pp → 0 pp) shows a construction-set effect rather than a transferable
 skill. No claim of improved general coding ability is made.
 <!-- ARCHCIRCUITS-RESULTS-END -->
+
+## Session 037 — generalization engine, four-track evaluation, honest negatives (exp/zai-generalization-engine-037)
+
+The frozen Qwen2.5-Coder-0.5B gets a full adaptive program-synthesis
+rewrite — TaskIR decomposition with validated pieces, deterministic
+prompt laws (anchor-inside, demo-completeness, L-CHECKLIST), a
+budget-aware conservative policy replacing the failed 036 bandit,
+in-loop behavioral probes with minimal-counterexample repair, a
+reasoning-principle engine with a strict promotion gate, reflective
+prompt evolution, two capability curricula, a pinned documentation
+workflow that must prove itself before going default, and a frozen
+15-piece three-domain evaluation suite — then everything is measured
+on four tracks at identical budgets and seeds.
+
+**The headline is honest: the ≥20% target failed.** 036-baseline 9/15
+vs engine-full 6/15 (−33%). The engine closed Session-036's
+schema-relation gap completely (6/6 models, all-domain schema
+validity, ⅓ the tokens) but lost every invariant to a token-cap
+truncation exhibit (the model wrote a correct predicate twice and was
+cut at 200 tokens) and shares the baseline's universal route gaps
+(GET search-filter, POST multi-branch validation: 0/4 tracks each).
+Zero reasoning principles were promoted — the pipeline refused them
+all, correctly. Prompt evolution never beat the deterministic laws.
+The docgate A/B (6/8 vs 4/8 on fresh tasks) is the only add-on that
+earned default-ON. The full-stack challenge delivered a
+browser-verified Greenhouse app with per-piece attribution (2
+model-generated, 1 model-expression + teacher assembly, 1
+model-influenced, 2 teacher-written) and a demo-completeness ablation
+(0/6 without demos → 2/6 with, identical seeds).
+
+Five evaluator defects were found, fixed and disclosed during the
+session (036 false-reject re-score; same-line prisma fields; invariant
+object-inputs; a route-probe template that had never parsed;
+cross-track contamination in the four-track runner, corrected via
+deterministic C/D re-runs). The adversarial suite passes 30/30
+throughout. Full report: `docs/ZAI_GENERALIZATION_ENGINE_037.md`.

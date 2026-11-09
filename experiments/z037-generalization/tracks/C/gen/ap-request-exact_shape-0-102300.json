@@ -1,0 +1,7 @@
+{
+ "piece": "ap-request",
+ "action": "exact_shape",
+ "seed": 102300,
+ "prompt": "PermitFlow: a permit-request approval workflow. Requests move draft -> review -> approved or rejected; each request is reviewed by a registered approver.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Visit[]\n}\n\nmodel Visit {\n  id        String  @id @default(cuid())\n  title     String\n  start     String\n  vetId     String\n  vet       Vet @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task: Add the model Request to the schema file.. field id String @id @default(cuid()). field title String. field status String @default(\"draft\"). field approverId String. relation field approver Approver @relation(fields: [approverId], references: [id]).\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Request {  // required fields: id String (@id); title String; status String; approverId String; approver Approver (@relation, fields: [approverId])\n",
+ "candidate": "model Request {\n  // required fields: id String (@id); title String; status String; approverId String; approver Approver (@relation, fields: [approverId])\n  id        String  @id @default(cuid())\n  title     String\n  status    String @default(\"draft\")\n  approverId String\n  approver  Approver @relation(fields: [approverId], references: [id])\n}"
+}
