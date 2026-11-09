@@ -1,0 +1,5 @@
+{
+ "prompt": "[MICRO] this attempt must additionally satisfy: verified failure: growing-to-ripe: [\"growing\",\"ripe\"] -> false want true | ripe-to-picked: [\"ripe\",\"picked\"] -> false want true write the missing logic; do not remove existing logic",
+ "candidate": "export function canMoveStage(\n  current: string,\n  next: string\n) {\n  const { grow, ripe, picked } = [current, next].filter(Boolean) as [string, string]\n  return grow === 'growing' && ripe === 'ripe' && picked === 'picked'\n}",
+ "raw_model_output": "export function canMoveStage(\n  current: string,\n  next: string\n) {\n  const { grow, ripe, picked } = [current, next].filter(Boolean) as [string, string]\n  return grow === 'growing' && ripe === 'ripe' && picked === 'picked'\n}"
+}

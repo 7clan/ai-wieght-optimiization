@@ -1,0 +1,7 @@
+{
+ "suite_sha256": "ffff91b557c3032c42effff45dbd26cfa963db1f20ba0625db52bab29c3d7f07",
+ "n_domains": 3,
+ "n_pieces": 15,
+ "frozen_before_generation": true,
+ "frozen_at_commit": "SESSION038A Phase 2a"
+}

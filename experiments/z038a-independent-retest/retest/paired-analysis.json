@@ -1,0 +1,50 @@
+{
+ "families": {
+  "relations-child": {
+   "B": 2,
+   "R": 2,
+   "n": 2
+  },
+  "relations-parent": {
+   "B": 3,
+   "R": 3,
+   "n": 3
+  },
+  "invariant-state": {
+   "B": 0,
+   "R": 0,
+   "n": 1
+  },
+  "route-get": {
+   "B": 1,
+   "R": 1,
+   "n": 3
+  },
+  "route-post": {
+   "B": 0,
+   "R": 0,
+   "n": 3
+  },
+  "relations-child-optional": {
+   "B": 1,
+   "R": 0,
+   "n": 1
+  },
+  "invariant-interval": {
+   "B": 1,
+   "R": 1,
+   "n": 1
+  },
+  "invariant-numeric": {
+   "B": 1,
+   "R": 1,
+   "n": 1
+  }
+ },
+ "paired": [
+  {
+   "piece": "ma-booking",
+   "winner": "B"
+  }
+ ]
+}

@@ -1,0 +1,5 @@
+{
+ "prompt": "KneadOps: wholesale bakery batch tracking. Ovens are recorded with a maximum load; batches start in the proofing stage and must fit the oven's capacity.\n\n// ferry crossing capacity check (different domain)\nexport function ferryHasRoom(current: number, capacity: number) {\n  return current < capacity\n}\n\n\nNow YOUR task: Write the predicate function isProofTempOk(celsius: number). isProofTempOk is true exactly when celsius is at least 18 and at most 26 (both inclusive). The file may hold several such functions; add this one.\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete invariant now.  The first line is already written; continue from it:\nexport function isProofTempOk(",
+ "candidate": "export function isProofTempOk(temperature: number): boolean {\n  return temperature >= 18 && temperature <= 26\n}",
+ "raw_model_output": "export function isProofTempOk(temperature: number): boolean {\n  return temperature >= 18 && temperature <= 26\n}"
+}

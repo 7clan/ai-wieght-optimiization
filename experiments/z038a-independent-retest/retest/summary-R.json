@@ -1,0 +1,181 @@
+{
+ "track": "R",
+ "wall_seconds": 1970.7,
+ "domains": [
+  {
+   "domain": "orchard",
+   "schema_validates": true,
+   "final_resolved": 3,
+   "total": 5,
+   "per_piece": {
+    "or-harvest": {
+     "structural": true,
+     "resolved": true
+    },
+    "or-tree": {
+     "structural": true,
+     "resolved": true
+    },
+    "or-stage": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "or-get": {
+     "structural": true,
+     "resolved": true,
+     "behavioral": true
+    },
+    "or-post": {
+     "resolved": false,
+     "reason": "file missing"
+    }
+   },
+   "loop": [
+    {
+     "piece": "or-harvest",
+     "resolved": true,
+     "tokens": 300
+    },
+    {
+     "piece": "or-tree",
+     "resolved": true,
+     "tokens": 300
+    },
+    {
+     "piece": "or-stage",
+     "resolved": false,
+     "tokens": 1484
+    },
+    {
+     "piece": "or-get",
+     "resolved": true,
+     "tokens": 520
+    },
+    {
+     "piece": "or-post",
+     "resolved": false,
+     "tokens": 1815
+    }
+   ],
+   "loop_tokens": 4419
+  },
+  {
+   "domain": "marina",
+   "schema_validates": false,
+   "final_resolved": 2,
+   "total": 5,
+   "per_piece": {
+    "ma-berth": {
+     "structural": true,
+     "resolved": true
+    },
+    "ma-booking": {
+     "resolved": false,
+     "reason": "model missing"
+    },
+    "ma-overlap": {
+     "structural": true,
+     "resolved": true,
+     "behavioral": true
+    },
+    "ma-get": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "ma-post": {
+     "resolved": false,
+     "reason": "file missing"
+    }
+   },
+   "loop": [
+    {
+     "piece": "ma-berth",
+     "resolved": true,
+     "tokens": 300
+    },
+    {
+     "piece": "ma-booking",
+     "resolved": false,
+     "tokens": 917
+    },
+    {
+     "piece": "ma-overlap",
+     "resolved": true,
+     "tokens": 300
+    },
+    {
+     "piece": "ma-get",
+     "resolved": false,
+     "tokens": 1943
+    },
+    {
+     "piece": "ma-post",
+     "resolved": false,
+     "tokens": 1692
+    }
+   ],
+   "loop_tokens": 5152
+  },
+  {
+   "domain": "bakery",
+   "schema_validates": true,
+   "final_resolved": 3,
+   "total": 5,
+   "per_piece": {
+    "ba-batch": {
+     "structural": true,
+     "resolved": true
+    },
+    "ba-oven": {
+     "structural": true,
+     "resolved": true
+    },
+    "ba-proof": {
+     "structural": true,
+     "resolved": true,
+     "behavioral": true
+    },
+    "ba-get": {
+     "resolved": false,
+     "reason": "file missing"
+    },
+    "ba-post": {
+     "resolved": false,
+     "reason": "file missing"
+    }
+   },
+   "loop": [
+    {
+     "piece": "ba-batch",
+     "resolved": true,
+     "tokens": 300
+    },
+    {
+     "piece": "ba-oven",
+     "resolved": true,
+     "tokens": 300
+    },
+    {
+     "piece": "ba-proof",
+     "resolved": true,
+     "tokens": 300
+    },
+    {
+     "piece": "ba-get",
+     "resolved": false,
+     "tokens": 1700
+    },
+    {
+     "piece": "ba-post",
+     "resolved": false,
+     "tokens": 1691
+    }
+   ],
+   "loop_tokens": 4291
+  }
+ ],
+ "final_total": 8,
+ "n_pieces": 15,
+ "loop_tokens": 13862,
+ "peak_rss_kib": 2628496
+}
