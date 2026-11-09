@@ -166,6 +166,12 @@ def extract_construct(text: str, kind: str) -> str:
         m = re.search(r"^model\s+\w+\s*\{[^}]*\}", t, re.M | re.S)
         if m:
             t = m.group(0)
+        # MECHANICAL NORMALIZATION (discovered via the prisma-validate
+        # behavioral probe): the prisma grammar does not accept a field
+        # on the same line as the opening brace — `model Band {  id
+        # String` parses as a model WITHOUT the id field.  Anchor-based
+        # assembly (anchor + continuation) produces exactly that shape.
+        t = re.sub(r"^(\s*model\s+\w+\s*\{)[ \t]+(\S)", r"\1\n  \2", t)
     return t.rstrip()
 
 

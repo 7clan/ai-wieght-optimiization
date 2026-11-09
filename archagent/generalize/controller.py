@@ -284,10 +284,15 @@ class PieceController:
         """Deterministic scaffold + construct (HARNESS-SCAFFOLD labeled)."""
         k = self.piece.kind
         if k == "prisma-model":
-            base = self.ws / "prisma/schema.prisma"
+            import re as _re
+            base = self.ws / self.piece.file
             head = base.read_text() if base.exists() else _SCHEMA_HEAD
-            if "model " + _model_name(self.piece) in head:
-                return head  # already installed (merge on accept only)
+            name = _model_name(self.piece)
+            if f"model {name}" in head:
+                # replace the existing block with the new candidate
+                head = _re.sub(rf"model {name}\s*\{{[\s\S]*?\n\}}",
+                               construct, head, count=1)
+                return head
             return head.rstrip() + "\n\n" + construct + "\n"
         if k == "invariant":
             target = self.ws / self.piece.file

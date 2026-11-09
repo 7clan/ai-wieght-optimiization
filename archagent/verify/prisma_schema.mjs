@@ -46,6 +46,10 @@ export function parsePrismaSchema(text) {
           optional: fa[4] === '?',
           isList: !!fa[3],
           attrs: (fa[5].match(/@\w+/g) || []),
+          // SESSION 037: full attribute text (e.g. "@relation(fields: [x],
+          // references: [id], onDelete: Cascade)") so expectation
+          // substrings like 'onDelete: Cascade' can be gated.
+          attrsFull: (fa[5].match(/@\w+\([^)]*\)/g) || []),
         });
         continue;
       }
@@ -93,16 +97,27 @@ export function checkSchema(parsed, expect) {
         failures.push(`schema: ${want.name}.${wf.name} missing`);
         continue;
       }
-      if (wf.type && gf.type !== wf.type) {
-        failures.push(`schema: ${want.name}.${wf.name} type ${gf.type} != ${wf.type}`);
+      // SESSION 037 FIX (false-reject bug found in the 036 archives):
+      // the parser stores the list marker INSIDE type ("Album[]"),
+      // while the contract format expresses lists as {type:'Album',
+      // isList:true}.  Session 036 compared verbatim, so every
+      // correctly-typed list relation field was rejected with
+      // "type Album[] != Album" — visible in the archived ledgers
+      // (trackB/trackC schema attempts, 2 such rejects each).
+      // Normalize before comparing.
+      const gotType = String(gf.type).replace(/\[\]$/, '');
+      const gotIsList = String(gf.type).endsWith('[]');
+      if (wf.type && gotType !== wf.type) {
+        failures.push(`schema: ${want.name}.${wf.name} type ${gotType} != ${wf.type}`);
       }
       if (wf.optional !== undefined && gf.optional !== wf.optional) {
         failures.push(`schema: ${want.name}.${wf.name} optional=${gf.optional} != ${wf.optional}`);
       }
-      if (wf.isList !== undefined && gf.isList !== wf.isList) {
+      if (wf.isList !== undefined && gotIsList !== wf.isList) {
         failures.push(`schema: ${want.name}.${wf.name} isList mismatch`);
       }
-      if (wf.attrsIncludes && !wf.attrsIncludes.every(a => gf.attrs.includes(a))) {
+      if (wf.attrsIncludes && !wf.attrsIncludes.every(a => gf.attrs.includes(a)
+        || (gf.attrsFull || []).some(f => f.includes(a)))) {
         failures.push(`schema: ${want.name}.${wf.name} attrs ${gf.attrs} missing ${wf.attrsIncludes}`);
       }
     }

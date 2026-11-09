@@ -74,6 +74,7 @@ class Field:
     name: str
     type: str
     attrs: list[str] = field(default_factory=list)
+    optional: bool = False
 
 
 @dataclass
@@ -84,6 +85,8 @@ class Relation:
     is_list: bool
     fk_field: str = ""          # scalar FK on the many side
     optional: bool = False
+    rel_name: str = ""          # named relation (self-relations)
+    onDelete: str = ""          # e.g. "Cascade"
 
 
 @dataclass
@@ -287,24 +290,43 @@ class TaskIR:
         lines = [f"Add the model {e.name} to the schema file."]
         for f in e.fields:
             attrs = " ".join(f.attrs)
-            lines.append(f"field {f.name} {f.type}" + (f" {attrs}" if attrs else ""))
+            opt = "?" if getattr(f, "optional", False) else ""
+            lines.append(f"field {f.name} {f.type}{opt}"
+                         + (f" {attrs}" if attrs else ""))
         for r in e.relations:
             if r.kind == "many-to-one":
                 opt = "?" if r.optional else ""
+                nm = f'"{r.rel_name}", ' if r.rel_name else ""
+                casc = f", onDelete: {r.onDelete}" if r.onDelete else ""
                 lines.append(
                     f"relation field {r.name} {r.target}{opt} "
-                    f"@relation(fields: [{r.fk_field}], references: [id])")
+                    f"@relation({nm}fields: [{r.fk_field}], "
+                    f"references: [id]{casc})")
             else:
-                lines.append(f"relation field {r.name} {r.target}[]")
+                nm = f'"{r.rel_name}", ' if r.rel_name else ""
+                lines.append(f"relation field {r.name} {r.target}[]"
+                             + (f" @relation({nm})" if nm else ""))
         return ". ".join(lines) + "."
 
     def _model_gate(self, e: Entity) -> dict:
         fields = [{"name": f.name, "type": f.type,
-                   "attrsIncludes": [a for a in f.attrs if a.startswith("@")]}
+                   "optional": bool(getattr(f, "optional", False)),
+                   "attrsIncludes": [a for a in f.attrs
+                                     if a.startswith("@") and "(" not in a]}
                   for f in e.fields]
         for r in e.relations:
-            fields.append({"name": r.name, "type": r.target,
-                           "isList": r.is_list})
+            g = {"name": r.name, "type": r.target, "isList": r.is_list,
+                 "optional": r.optional}
+            if r.kind == "many-to-one":
+                want = ["@relation"]
+                if r.onDelete:
+                    want.append(f"onDelete: {r.onDelete}")
+                if r.fk_field:
+                    want.append(f"fields: [{r.fk_field}]")
+                g["attrsIncludes"] = want
+            elif r.rel_name:
+                g["attrsIncludes"] = [f'"{r.rel_name}"']
+            fields.append(g)
         return {"name": e.name, "fields": fields}
 
     def _invariant_spec(self, inv: Invariant) -> str:

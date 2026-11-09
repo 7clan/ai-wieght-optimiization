@@ -1,0 +1,4 @@
+{
+ "prompt": "A small relational store.\n\nmodel Vet {\n  id        String  @id @default(cuid())\n  name      String\n  visits    Album[]\n}\n\nmodel Album {\n  id        String  @id @default(cuid())\n  petName   String\n  vetId     String\n  vet       Vet @relation(fields: [vetId], references: [id])\n}\n\nNow YOUR task.  Write the file prisma/curriculum-schema.prisma for the application.\nAdd the model Band to the schema file.. field id String @id @default(cuid()). field name String. field genre String. relation field albums Album[].\n\nThe automated checks reported:\nschema: Band.albums type Album[] != Album\nFix exactly that.\n\nWrite the complete file now.  The first line is already written; continue from it:\nmodel Band {",
+ "candidate": "model Band {  id        String  @id @default(cuid())\n  name      String\n  genre     String\n  albums    Album[]\n}"
+}
