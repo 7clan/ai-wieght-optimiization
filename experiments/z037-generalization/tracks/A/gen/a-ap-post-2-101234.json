@@ -1,0 +1,4 @@
+{
+ "prompt": "PermitFlow: a permit-request approval workflow. Requests move draft -> review -> approved or rejected; each request is reviewed by a registered approver.\n\nWrite the route-handler for this application: Write the POST handler for /api/requests in src/app/api/requests/route.ts. Export POST. Await req.json. Trim title with String; when empty return 400 'Title is required'. Call db.approver.findUnique where id body.approverId; when missing return 404 'Approver not found'. When body.status is set and canAdvanceRequest('draft', body.status) is false return 400 'Invalid status'. Call db.request.create with data title, status 'draft', approverId. Return NextResponse.json with request and status 201.\n\nWrite the code now.  The first line is already written; continue from it:\nexport async function POST(",
+ "candidate": "export async function POST(\n  req: Request,\n  res: Response,\n  { params }"
+}
