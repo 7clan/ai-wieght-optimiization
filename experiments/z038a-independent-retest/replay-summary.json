@@ -1,0 +1,16 @@
+{
+  "stats": {
+    "resolved": 22,
+    "hash_chain_failures": 0,
+    "content_flagged": 0,
+    "structural_fail": 0,
+    "prisma_fail": 0,
+    "behavior_fail": 0,
+    "probe_fail": 0,
+    "verified": 22,
+    "quarantined": 0,
+    "wall_seconds": 52.6
+  },
+  "isolation": "unshare -Urn user+network namespaces; prisma/bun/sqlite run inside; trusted gates on host; Docker unavailable in sandbox (disclosed)",
+  "training_eligible": 0
+}
