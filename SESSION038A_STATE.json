@@ -1,0 +1,62 @@
+{
+ "session": "SESSION038A",
+ "title": "Independent Replay and Fresh Generalization Retest",
+ "branch": "exp/zai-038-independent-retest",
+ "forked_from": {
+  "branch": "exp/qwen-finetune-readiness-038",
+  "head_commit": "2e9ebd8",
+  "handoff": "docs/SESSION038_ZAI_HANDOFF.md",
+  "readiness": "docs/SESSION038_READINESS.md"
+ },
+ "session037_baseline_preserved": {
+  "branch": "exp/zai-generalization-engine-037",
+  "commit": "f0b541f09c8d5c6a329262cd41b02b0fa378bece",
+  "four_track_final": {"A": "4/15", "B": "9/15", "C": "6/15", "D": "6/15"},
+  "tokens": {"A": 21844, "B": 20170, "C": 7078, "D": 6696}
+ },
+ "model": {
+  "id": "Qwen/Qwen2.5-Coder-0.5B",
+  "safetensors_sha256": "aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80",
+  "model_dir": "/home/z/models/qwen25-coder-05b",
+  "sha_verified_this_session": true,
+  "smoke_test": "loaded 11.1s; 8 tokens in 1.13s; coherent completion",
+  "weights_frozen": true
+ },
+ "environment": {
+  "machine": "x86_64",
+  "python": "3.12.16",
+  "cpus": 2,
+  "ram_reported_gib": 3,
+  "torch": "2.15.0+cpu",
+  "transformers": "4.57.6",
+  "node": "v24.22.2",
+  "docker": "UNAVAILABLE (command not found; no sudo)",
+  "isolation_available": "unshare -Urn (user+network namespaces) + Node vm realms + python3 -I -B, per Session-031/033 ARCHAGENT_LOCAL_EVAL disclosed precedent",
+  "note": "sandbox reset #3 before this session: torch/transformers reinstalled, model re-downloaded, StockPilot surface re-restored from repo (byte-identical to schema-stockpilot-backup.prisma)"
+ },
+ "phase0_recovery": {
+  "status": "complete",
+  "evidence": [
+   "tests.test_finetune_audit + tests.test_candidate_queue: 8/8 OK",
+   "archive audit reproduced byte-identical: 571 records, 0 training-approved",
+   "candidate queue reproduced byte-identical: 22 queued, 0 eligible (30 acceptances - 8 dup - 2 contaminated-ledger)",
+   "adversarial suite 30/30 after StockPilot surface restore",
+   "model sha256 re-verified == session-037 pin",
+   "model loads + generates (smoke)"
+  ]
+ },
+ "phases": {
+  "phase1_independent_replay": {
+   "status": "in_progress",
+   "plan": "resolve 22 candidates from generation paths + ledger hashes; verify provenance (model-origin only; challenge attribution already confirms gh-plant/gh-watering are pure model bytes); replay under unshare -Urn namespace isolation with structural gates + prisma validate + prisma db push + SQLite relation behavior + invariant case/fuzz probes; dedup by family and normalized code; emit verified/quarantined manifest + dataset card; NO training"
+  },
+  "phase2_fresh_retest": {"status": "pending"},
+  "phase3_training_plans": {"status": "pending"}
+ },
+ "constraints_confirmed": [
+  "no training, no gradients, no LoRA this session (AGENTS.md)",
+  "no writes to main or other agent branches",
+  "no silent quality-threshold lowering",
+  "Docker unavailable: candidate code executes only under disclosed namespace isolation; blocker reported in final report"
+ ]
+}
