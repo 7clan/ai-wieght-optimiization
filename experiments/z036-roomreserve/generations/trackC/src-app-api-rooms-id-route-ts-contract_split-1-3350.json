@@ -1,0 +1,12 @@
+{
+ "file": "src/app/api/rooms/[id]/route.ts",
+ "strategy": "contract_split",
+ "seed": 3350,
+ "prompt": "Write only the single piece described below for src/app/api/rooms/[id]/route.ts.\nPiece: NextResponse.json.\nWrite nothing else \u2014 just that piece.\n\nContext (code before):\nimport { NextResponse } from 'next/server'",
+ "candidate": "import { NextResponse } from 'next/server'\nimport type { NextRequest } from 'next/server'\nimport type { Room } from '../$types'\n\nexport const GET = async (request: NextRequest) => {\n  const { id } = request.url\n  const room = await db.rooms.findUnique({\n    where: { id: Number(id) }\n  })\n\n  if (!room) {\n    return NextResponse.json({ error: 'Room not found' }, { status: 404 })\n  }\n\n  return NextResponse.json(room)\n}\n",
+ "gate_failures": [
+  "exports: HTTP handler 'GET' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.room.findUnique' not found as a reachable call expression"
+ ]
+}

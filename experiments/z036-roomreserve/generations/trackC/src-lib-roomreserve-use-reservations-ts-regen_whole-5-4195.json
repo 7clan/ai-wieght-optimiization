@@ -1,0 +1,13 @@
+{
+ "file": "src/lib/roomreserve/use-reservations.ts",
+ "strategy": "regen_whole",
+ "seed": 4195,
+ "prompt": "You are writing RoomReserve, a Next.js 16 meeting-room reservation app. TypeScript, Prisma + SQLite, NextResponse JSON APIs. Dates are plain ISO strings 'YYYY-MM-DDTHH:mm' compared lexicographically.\n\n// a live-feed data hook for a cycling club (different domain)\n'use client'\nimport { useCallback, useEffect, useState } from 'react'\n\nexport function useRides() {\n  const [rides, setRides] = useState([])\n  const [loading, setLoading] = useState(true)\n  const [error, setError] = useState('')\n  const [reloadKey, setReloadKey] = useState(0)\n\n  useEffect(() => {\n    let alive = true\n    setLoading(true)\n    fetch('/api/rides')\n      .then((r) => (r.ok ? r.json() : Promise.reject('load failed')))\n      .then((d) => { if (alive) { setRides(d.rides ?? []); setError('') } })\n      .catch(() => { if (alive) setError('Could not load rides') })\n      .finally(() => { if (alive) setLoading(false) })\n    return () => { alive = false }\n  }, [reloadKey])\n\n  const reload = useCallback(() => setReloadKey((k) => k + 1), [])\n  return { rides, loading, error, reload }\n}\n\n\nNow YOUR task.  Write the file src/lib/roomreserve/use-reservations.ts for the application.\nWrite the data hook. Export useReservations taking a params object with date string, roomId string, includeCancelled boolean. State: reservations array, rooms array, loading boolean, error string, reloadKey number. Effect on reloadKey and params: set loading true, fetch '/api/rooms' and '/api/reservations' with URLSearchParams of the params, set state from the JSON responses, on failure set error 'Could not load reservations', finally set loading false with an alive guard. Expose reload with useCallback incrementing reloadKey. Return object with rooms, reservations, loading, error, reload.\n\nThe automated checks reported:\ncalls: 'fetch' not found as a reachable call expression\ncalls: 'useEffect' not found as a reachable call expression\ncalls: 'useState' not found as a reachable call expression\ncalls: 'useCallback' not found as a reachable call expression\nFix exactly that.\n\nWrite the complete file now.  The first line is already written; continue from it:\n'use client'",
+ "candidate": "'use client'\n",
+ "gate_failures": [
+  "calls: 'fetch' not found as a reachable call expression",
+  "calls: 'useEffect' not found as a reachable call expression",
+  "calls: 'useState' not found as a reachable call expression",
+  "calls: 'useCallback' not found as a reachable call expression"
+ ]
+}

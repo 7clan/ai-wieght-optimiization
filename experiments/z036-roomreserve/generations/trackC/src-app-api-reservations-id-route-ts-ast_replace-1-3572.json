@@ -1,0 +1,15 @@
+{
+ "file": "src/app/api/reservations/[id]/route.ts",
+ "strategy": "ast_replace",
+ "seed": 3572,
+ "prompt": "[AST-REPLACE] rewrite this one statement to satisfy: exports: HTTP handler 'PUT' not exported\nexports: HTTP handler 'DELETE' not exported\ncalls: 'NextResponse.json' not found as a reachable call expression\ncalls: 'db.reservation.findUnique' not found as",
+ "candidate": " a reachable call expression\n",
+ "gate_failures": [
+  "exports: HTTP handler 'PUT' not exported",
+  "exports: HTTP handler 'DELETE' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.reservation.findUnique' not found as a reachable call expression",
+  "calls: 'db.reservation.findFirst' not found as a reachable call expression",
+  "calls: 'db.reservation.update' not found as a reachable call expression"
+ ]
+}

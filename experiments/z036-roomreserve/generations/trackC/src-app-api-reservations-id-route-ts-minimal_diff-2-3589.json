@@ -1,0 +1,15 @@
+{
+ "file": "src/app/api/reservations/[id]/route.ts",
+ "strategy": "minimal_diff",
+ "seed": 3589,
+ "prompt": "[MIN-DIFF] rewrite only this line correctly: exports: HTTP handler 'PUT' not exported\nexports: HTTP handler 'DELETE' not exported\ncalls: 'NextResponse.json' not found as a reachable call expression\ncalls: ",
+ "candidate": "'NextResponse.json' not found as a reachable call expression",
+ "gate_failures": [
+  "exports: HTTP handler 'PUT' not exported",
+  "exports: HTTP handler 'DELETE' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.reservation.findUnique' not found as a reachable call expression",
+  "calls: 'db.reservation.findFirst' not found as a reachable call expression",
+  "calls: 'db.reservation.update' not found as a reachable call expression"
+ ]
+}

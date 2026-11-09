@@ -1,0 +1,8 @@
+{
+ "file": "src/lib/roomreserve/types.ts",
+ "strategy": "minimal_diff",
+ "seed": 3179,
+ "prompt": "[MIN-DIFF] rewrite only this line correctly: ",
+ "candidate": "\n  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -",
+ "gate_failures": []
+}

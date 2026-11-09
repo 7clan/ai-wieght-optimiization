@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/reservation-table.tsx",
+ "strategy": "ast_replace",
+ "seed": 3939,
+ "prompt": "[AST-REPLACE] rewrite this one statement to satisfy: uiStrings: required strings not in used positions",
+ "candidate": "\nuiStrings: required strings not in used positions\n",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

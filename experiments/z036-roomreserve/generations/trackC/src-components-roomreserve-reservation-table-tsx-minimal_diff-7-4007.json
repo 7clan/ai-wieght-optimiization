@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/reservation-table.tsx",
+ "strategy": "minimal_diff",
+ "seed": 4007,
+ "prompt": "[MIN-DIFF] rewrite only this line correctly: uiStrings: required strings not in used positions",
+ "candidate": "\n  \"requiredStrings\": [\n    \"UIStrings\"\n  ],\n  \"usedPositions\": [\n    \"header\",\n    \"text\",\n    \"headerText\",\n    \"icon\",\n    \"iconText\",\n    \"icon",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

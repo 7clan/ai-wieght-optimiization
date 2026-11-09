@@ -1,0 +1,13 @@
+{
+ "file": "src/app/api/rooms/route.ts",
+ "strategy": "minimal_diff",
+ "seed": 3341,
+ "prompt": "[MIN-DIFF] rewrite only this line correctly: exports: HTTP handler 'GET' not exported\ncalls: 'NextResponse.json' not found as a reachable call expression\ncalls: 'db.room.findMany' not found as a reachable ",
+ "candidate": "call expression\ncalls: 'db.room.count' not found as a reachable call expression\n",
+ "gate_failures": [
+  "exports: HTTP handler 'GET' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.room.findMany' not found as a reachable call expression",
+  "accesses: 'req.nextUrl.searchParams' not found in reachable code"
+ ]
+}

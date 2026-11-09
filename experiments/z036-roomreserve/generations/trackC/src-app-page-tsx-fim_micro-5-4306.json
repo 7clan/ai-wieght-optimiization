@@ -1,0 +1,11 @@
+{
+ "file": "src/app/page.tsx",
+ "strategy": "fim_micro",
+ "seed": 4306,
+ "prompt": "[FIM] call useReservations here",
+ "candidate": "\n\nuseReservations()\n\n// Use this function to call the reservation API.\n// It takes an array of reservations and sends them as a request to the reservation API.\n// It then calls the handleReservations function, which processes the reservations and sends them to the store.\n// This function is used to handle",
+ "gate_failures": [
+  "accesses: 'useReservations' not found in reachable code",
+  "uiStrings: required strings not in used positions"
+ ]
+}

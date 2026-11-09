@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/reservation-table.tsx",
+ "strategy": "compiler_guided",
+ "seed": 3990,
+ "prompt": "[FIM] fix this region",
+ "candidate": "\n# -*- coding: utf-8 -*-\n\"\"\"\nCreated on Sat Jan 16 19:59:38 2018\n\n@author: Administrator\n\"\"\"\n\n\n\n\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport math\n\ndef get_gaussian(k,mu",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

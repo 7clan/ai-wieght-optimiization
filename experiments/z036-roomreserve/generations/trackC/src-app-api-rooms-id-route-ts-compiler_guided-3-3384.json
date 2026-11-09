@@ -1,0 +1,12 @@
+{
+ "file": "src/app/api/rooms/[id]/route.ts",
+ "strategy": "compiler_guided",
+ "seed": 3384,
+ "prompt": "[FIM] export the handler here",
+ "candidate": "\nimport { PrismaClient } from \"@prisma/client\";\nconst prisma = new PrismaClient();\nexport const handler = async (event: any) => {\n  try {\n    const { username, password } = event.queryStringParameters;\n    const user = await prisma.user.findUnique({\n      where:",
+ "gate_failures": [
+  "exports: HTTP handler 'GET' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.room.findUnique' not found as a reachable call expression"
+ ]
+}

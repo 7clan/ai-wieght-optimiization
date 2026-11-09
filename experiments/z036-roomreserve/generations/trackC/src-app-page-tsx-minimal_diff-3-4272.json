@@ -1,0 +1,11 @@
+{
+ "file": "src/app/page.tsx",
+ "strategy": "minimal_diff",
+ "seed": 4272,
+ "prompt": "[MIN-DIFF] rewrite only this line correctly: accesses: 'useReservations' not found in reachable code\nuiStrings: required strings not in used positions",
+ "candidate": "\n",
+ "gate_failures": [
+  "accesses: 'useReservations' not found in reachable code",
+  "uiStrings: required strings not in used positions"
+ ]
+}

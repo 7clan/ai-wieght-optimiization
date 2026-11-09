@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/states.tsx",
+ "strategy": "compiler_guided",
+ "seed": 3751,
+ "prompt": "[FIM] fix this region",
+ "candidate": "\nfrom itertools import product\nfrom itertools import permutations\nfrom itertools import combinations\n\n# define the functions to be used\ndef sum_1_2():\n    sum1 = 1\n    sum2 = 2\n    while sum1 < 1000:\n        if sum1 % 3",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

@@ -1,0 +1,8 @@
+{
+ "file": "src/lib/roomreserve/types.ts",
+ "strategy": "compiler_guided",
+ "seed": 3128,
+ "prompt": "[FIM] fix this region",
+ "candidate": "\nvar a = 1;\nfunction foo(){\n    var a = 2;\n    function bar(){\n        var a = 3;\n    }\n}\nbar();\nconsole.log(a);",
+ "gate_failures": []
+}

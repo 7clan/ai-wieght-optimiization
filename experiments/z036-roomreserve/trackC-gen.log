@@ -1,1 +1,17 @@
 [devserver] stopped (up=False)
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<01:33,  3.10it/s]Loading weights:  42%|████▏     | 123/290 [00:00<00:00, 369.13it/s]Loading weights:  66%|██████▌   | 191/290 [00:00<00:00, 381.59it/s]Loading weights:  85%|████████▍ | 246/290 [00:00<00:00, 348.18it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 341.70it/s]
+  [C] schema                 FAILED (8 attempts, 1103 tok)
+  [C] types                  FAILED (8 attempts, 490 tok)
+  [C] rooms-route            FAILED (8 attempts, 321 tok)
+  [C] room-id-route          RESOLVED by exact_shape (8 attempts, 1174 tok)
+  [C] reservations-route     FAILED (8 attempts, 2324 tok)
+  [C] reservation-id-route   RESOLVED by exact_shape (7 attempts, 598 tok)
+  [C] states                 FAILED (8 attempts, 1473 tok)
+  [C] room-panel             FAILED (8 attempts, 1873 tok)
+  [C] reservation-table      FAILED (8 attempts, 2920 tok)
+  [C] reservation-form       RESOLVED by regen_whole (1 attempts, 281 tok)
+  [C] hook                   RESOLVED by body_completion (7 attempts, 1423 tok)
+  [C] page                   FAILED (8 attempts, 1487 tok)
+
+[C] 4/12 contracts resolved, 87 generations, 15467 tokens, 2119.5s
+report -> /home/z/ai-research/experiments/z036-roomreserve/reports/trackC.json

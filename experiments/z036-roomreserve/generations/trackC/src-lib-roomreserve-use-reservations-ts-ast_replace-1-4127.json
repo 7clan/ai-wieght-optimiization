@@ -1,0 +1,13 @@
+{
+ "file": "src/lib/roomreserve/use-reservations.ts",
+ "strategy": "ast_replace",
+ "seed": 4127,
+ "prompt": "[AST-REPLACE] rewrite this one statement to satisfy: calls: 'fetch' not found as a reachable call expression\ncalls: 'useEffect' not found as a reachable call expression\ncalls: 'useState' not found as a reachable call expression\ncalls: 'useCallback' not ",
+ "candidate": "found as a reachable call expression",
+ "gate_failures": [
+  "calls: 'fetch' not found as a reachable call expression",
+  "calls: 'useEffect' not found as a reachable call expression",
+  "calls: 'useState' not found as a reachable call expression",
+  "calls: 'useCallback' not found as a reachable call expression"
+ ]
+}

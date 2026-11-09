@@ -1,0 +1,13 @@
+{
+ "file": "src/lib/roomreserve/use-reservations.ts",
+ "strategy": "fim_micro",
+ "seed": 4110,
+ "prompt": "[FIM] call fetch here",
+ "candidate": "\nvar fetch = require('node-fetch');\n\nfetch('https://api.github.com/users/ashwinbhat1981')\n    .then(response => response.json())\n    .then(data => console.log(data));",
+ "gate_failures": [
+  "calls: 'fetch' not found as a reachable call expression",
+  "calls: 'useEffect' not found as a reachable call expression",
+  "calls: 'useState' not found as a reachable call expression",
+  "calls: 'useCallback' not found as a reachable call expression"
+ ]
+}

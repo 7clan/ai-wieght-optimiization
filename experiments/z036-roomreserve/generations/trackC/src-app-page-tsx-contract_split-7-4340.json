@@ -1,0 +1,11 @@
+{
+ "file": "src/app/page.tsx",
+ "strategy": "contract_split",
+ "seed": 4340,
+ "prompt": "Write only the single piece described below for src/app/page.tsx.\nPiece: useReservations.\nWrite nothing else \u2014 just that piece.\n\nContext (code before):\nimport { useReservations } from '@/lib/roomreserve/use-reservations'",
+ "candidate": "import { useReservations } from '@/lib/roomreserve/use-reservations'\nimport { useQuery } from '@tanstack/react-query'\nimport { useSearchParams } from 'next/navigation'\nimport { useState, useEffect } from 'react'\n\nconst useReservations = () => {\n  const params = useSearchParams()\n  const reservations = useQuery(['reservations'], () => {\n    const id = params?.get('id')\n    if (!id) return []\n    return id === 'all' ? reservations.all() : reservations.byId(id)\n  })\n  const [show, setShow] = useState(false)\n  const [selected, setSelected] = useState(null\n",
+ "gate_failures": [
+  "accesses: 'useReservations' not found in reachable code",
+  "uiStrings: required strings not in used positions"
+ ]
+}

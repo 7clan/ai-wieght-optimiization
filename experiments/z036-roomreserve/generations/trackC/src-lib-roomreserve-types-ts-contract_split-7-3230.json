@@ -1,0 +1,8 @@
+{
+ "file": "src/lib/roomreserve/types.ts",
+ "strategy": "contract_split",
+ "seed": 3230,
+ "prompt": "Write only the single piece described below for src/lib/roomreserve/types.ts.\nPiece: the required element.\nWrite nothing else \u2014 just that piece.\n\nContext (code before):\nexport interface Room {",
+ "candidate": "export interface Room {\nid: string;\n    type: string;\n    title: string;\n    description: string;\n    location: string;\n    start: string;\n    end: string;\n    creator: string;\n    creatorId: string;\n    created: string;\n    updated: string;\n    updatedBy: string;\n    createdAt: string;\n    updatedAt: string;\n    deleted: boolean;\n    deletedBy: string;\n    deletedAt: string;\n}\n",
+ "gate_failures": []
+}

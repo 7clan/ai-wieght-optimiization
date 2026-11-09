@@ -1,0 +1,16 @@
+{
+ "file": "src/app/api/reservations/route.ts",
+ "strategy": "compiler_guided",
+ "seed": 3546,
+ "prompt": "[FIM] export the handler here",
+ "candidate": "\nexport const handler = async (event: any) => {\n  console.log('Hello from Lambda!');\n  return {\n    statusCode: 200,\n    body: JSON.stringify({\n      message: 'Hello from Lambda!',\n    }),\n  };\n};\n",
+ "gate_failures": [
+  "exports: HTTP handler 'GET' not exported",
+  "exports: HTTP handler 'POST' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.reservation.findMany' not found as a reachable call expression",
+  "calls: 'db.reservation.findFirst' not found as a reachable call expression",
+  "calls: 'db.reservation.create' not found as a reachable call expression",
+  "calls: 'db.room.findUnique' not found as a reachable call expression"
+ ]
+}

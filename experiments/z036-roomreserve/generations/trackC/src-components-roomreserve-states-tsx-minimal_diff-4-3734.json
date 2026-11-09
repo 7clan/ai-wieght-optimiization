@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/states.tsx",
+ "strategy": "minimal_diff",
+ "seed": 3734,
+ "prompt": "[MIN-DIFF] rewrite only this line correctly: uiStrings: required strings not in used positions",
+ "candidate": "\n*/\n\n// This is a list of the strings used by your UI strings in this project. If you add new strings to this file, we recommend adding your string in the translation .po file\n// in the next release. See also",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

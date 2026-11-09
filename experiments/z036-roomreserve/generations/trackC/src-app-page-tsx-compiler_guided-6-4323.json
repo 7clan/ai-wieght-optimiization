@@ -1,0 +1,11 @@
+{
+ "file": "src/app/page.tsx",
+ "strategy": "compiler_guided",
+ "seed": 4323,
+ "prompt": "[FIM] call useReservations here",
+ "candidate": "\n\nuseReservations(\n  \"id\" => \"123\",\n  \"userId\" => \"123\"\n)\n",
+ "gate_failures": [
+  "accesses: 'useReservations' not found in reachable code",
+  "uiStrings: required strings not in used positions"
+ ]
+}

@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/states.tsx",
+ "strategy": "contract_split",
+ "seed": 3683,
+ "prompt": "Write only the single piece described below for src/components/roomreserve/states.tsx.\nPiece: the required element.\nWrite nothing else \u2014 just that piece.\n\nContext (code before):\nexport function EmptyState(",
+ "candidate": "export function EmptyState(\n{ children }: { children: React.ReactNode } ): JSX.Element {\n  return <div className={classes.EmptyState}>{children}</div>;\n}\n\nContext (code after):\nexport function EmptyState( { children }: { children: React.ReactNode } ): JSX.Element {\n  return <div className={classes.EmptyState}>{children}</div>;\n}\n",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

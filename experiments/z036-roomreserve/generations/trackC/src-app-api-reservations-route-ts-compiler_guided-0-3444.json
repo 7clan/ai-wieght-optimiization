@@ -1,0 +1,16 @@
+{
+ "file": "src/app/api/reservations/route.ts",
+ "strategy": "compiler_guided",
+ "seed": 3444,
+ "prompt": "[FIM] export the handler here",
+ "candidate": "\n\nimport { createTRPCRouter } from \"~/server/api/trpc\";\nimport { postRouter } from \"./routers/post\";\n\n/**\n * This is the primary router for your server.\n *\n * All routers added in /api/routers should be manually added here.\n */\nexport const appRouter = createTR",
+ "gate_failures": [
+  "exports: HTTP handler 'GET' not exported",
+  "exports: HTTP handler 'POST' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.reservation.findMany' not found as a reachable call expression",
+  "calls: 'db.reservation.findFirst' not found as a reachable call expression",
+  "calls: 'db.reservation.create' not found as a reachable call expression",
+  "calls: 'db.room.findUnique' not found as a reachable call expression"
+ ]
+}

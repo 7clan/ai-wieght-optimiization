@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/room-panel.tsx",
+ "strategy": "minimal_diff",
+ "seed": 3828,
+ "prompt": "[MIN-DIFF] rewrite only this line correctly: uiStrings: required strings not in used positions",
+ "candidate": "\n\nif (typeof uiStrings !== 'undefined') {\n  // This is the correct way to initialize a variable\n  uiStrings = {};\n}\n",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

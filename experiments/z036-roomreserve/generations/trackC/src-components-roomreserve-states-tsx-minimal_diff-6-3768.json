@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/states.tsx",
+ "strategy": "minimal_diff",
+ "seed": 3768,
+ "prompt": "[MIN-DIFF] rewrite only this line correctly: uiStrings: required strings not in used positions",
+ "candidate": "\n```\nconst { uiStrings: { requiredStrings, usedPositions } } = require('./string-constants.js')\n```",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

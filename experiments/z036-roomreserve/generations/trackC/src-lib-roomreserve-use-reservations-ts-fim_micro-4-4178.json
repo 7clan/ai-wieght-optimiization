@@ -1,0 +1,13 @@
+{
+ "file": "src/lib/roomreserve/use-reservations.ts",
+ "strategy": "fim_micro",
+ "seed": 4178,
+ "prompt": "[FIM] call fetch here",
+ "candidate": "\nfunction fetch() {\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      // this is the time we're waiting to fetch\n      resolve(\"This is my data!\");\n    }, 3000);\n  });\n}\n\n// here's how we use it\nfetch()\n  .",
+ "gate_failures": [
+  "calls: 'fetch' not found as a reachable call expression",
+  "calls: 'useEffect' not found as a reachable call expression",
+  "calls: 'useState' not found as a reachable call expression",
+  "calls: 'useCallback' not found as a reachable call expression"
+ ]
+}

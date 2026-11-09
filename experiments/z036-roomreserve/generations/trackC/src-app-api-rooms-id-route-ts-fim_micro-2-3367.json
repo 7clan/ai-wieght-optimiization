@@ -1,0 +1,12 @@
+{
+ "file": "src/app/api/rooms/[id]/route.ts",
+ "strategy": "fim_micro",
+ "seed": 3367,
+ "prompt": "[FIM] export the handler here",
+ "candidate": "\nexport const handler = async (req, res) => {\n  // code that handles the request\n}\n",
+ "gate_failures": [
+  "exports: HTTP handler 'GET' not exported",
+  "calls: 'NextResponse.json' not found as a reachable call expression",
+  "calls: 'db.room.findUnique' not found as a reachable call expression"
+ ]
+}

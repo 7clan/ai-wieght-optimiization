@@ -1,0 +1,361 @@
+{
+ "track": "C",
+ "mode": "adaptive",
+ "budget_per_contract": 8,
+ "contracts": [
+  {
+   "contract": "schema",
+   "file": "prisma/schema.prisma",
+   "category": "wrong_contract",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 1103,
+   "strategy_order": [
+    "exact_shape",
+    "minimal_diff",
+    "contract_split",
+    "compiler_guided",
+    "regen_whole",
+    "ast_replace",
+    "doc_lookup",
+    "ast_replace"
+   ],
+   "seconds": 151.7
+  },
+  {
+   "contract": "types",
+   "file": "src/lib/roomreserve/types.ts",
+   "category": "wrong_contract",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 490,
+   "strategy_order": [
+    "ast_replace",
+    "compiler_guided",
+    "contract_split",
+    "regen_whole",
+    "minimal_diff",
+    "minimal_diff",
+    "regen_whole",
+    "contract_split"
+   ],
+   "seconds": 66.3
+  },
+  {
+   "contract": "rooms-route",
+   "file": "src/app/api/rooms/route.ts",
+   "category": "missing_export",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 321,
+   "strategy_order": [
+    "exact_shape",
+    "ast_replace",
+    "compiler_guided",
+    "minimal_diff",
+    "regen_whole",
+    "contract_split",
+    "regen_whole",
+    "minimal_diff"
+   ],
+   "seconds": 48.7
+  },
+  {
+   "contract": "room-id-route",
+   "file": "src/app/api/rooms/[id]/route.ts",
+   "category": "missing_export",
+   "resolved": true,
+   "resolved_by": "exact_shape",
+   "provenance": "L2-diagnosis",
+   "attempts": 8,
+   "tokens": 1174,
+   "strategy_order": [
+    "doc_lookup",
+    "contract_split",
+    "fim_micro",
+    "compiler_guided",
+    "fim_micro",
+    "doc_lookup",
+    "regen_whole",
+    "exact_shape"
+   ],
+   "seconds": 158.8
+  },
+  {
+   "contract": "reservations-route",
+   "file": "src/app/api/reservations/route.ts",
+   "category": "missing_export",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 2324,
+   "strategy_order": [
+    "compiler_guided",
+    "doc_lookup",
+    "exact_shape",
+    "regen_whole",
+    "ast_replace",
+    "exact_shape",
+    "compiler_guided",
+    "ast_replace"
+   ],
+   "seconds": 330.6
+  },
+  {
+   "contract": "reservation-id-route",
+   "file": "src/app/api/reservations/[id]/route.ts",
+   "category": "missing_export",
+   "resolved": true,
+   "resolved_by": "exact_shape",
+   "provenance": "L2-diagnosis",
+   "attempts": 7,
+   "tokens": 598,
+   "strategy_order": [
+    "minimal_diff",
+    "ast_replace",
+    "minimal_diff",
+    "contract_split",
+    "exact_shape",
+    "regen_whole",
+    "exact_shape"
+   ],
+   "seconds": 91.8
+  },
+  {
+   "contract": "states",
+   "file": "src/components/roomreserve/states.tsx",
+   "category": "missing_literal",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 1473,
+   "strategy_order": [
+    "exact_shape",
+    "contract_split",
+    "doc_lookup",
+    "compiler_guided",
+    "minimal_diff",
+    "compiler_guided",
+    "minimal_diff",
+    "regen_whole"
+   ],
+   "seconds": 198.3
+  },
+  {
+   "contract": "room-panel",
+   "file": "src/components/roomreserve/room-panel.tsx",
+   "category": "missing_literal",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 1873,
+   "strategy_order": [
+    "exact_shape",
+    "compiler_guided",
+    "ast_replace",
+    "minimal_diff",
+    "ast_replace",
+    "contract_split",
+    "doc_lookup",
+    "exact_shape"
+   ],
+   "seconds": 252.1
+  },
+  {
+   "contract": "reservation-table",
+   "file": "src/components/roomreserve/reservation-table.tsx",
+   "category": "missing_literal",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 2920,
+   "strategy_order": [
+    "regen_whole",
+    "regen_whole",
+    "contract_split",
+    "ast_replace",
+    "exact_shape",
+    "regen_whole",
+    "compiler_guided",
+    "minimal_diff"
+   ],
+   "seconds": 399.8
+  },
+  {
+   "contract": "reservation-form",
+   "file": "src/components/roomreserve/reservation-form.tsx",
+   "category": "missing_literal",
+   "resolved": true,
+   "resolved_by": "regen_whole",
+   "provenance": "L2-diagnosis",
+   "attempts": 1,
+   "tokens": 281,
+   "strategy_order": [
+    "regen_whole"
+   ],
+   "seconds": 37.9
+  },
+  {
+   "contract": "hook",
+   "file": "src/lib/roomreserve/use-reservations.ts",
+   "category": "missing_call",
+   "resolved": true,
+   "resolved_by": "body_completion",
+   "provenance": "L2-diagnosis",
+   "attempts": 7,
+   "tokens": 1423,
+   "strategy_order": [
+    "fim_micro",
+    "ast_replace",
+    "exact_shape",
+    "doc_lookup",
+    "fim_micro",
+    "regen_whole",
+    "body_completion"
+   ],
+   "seconds": 189.4
+  },
+  {
+   "contract": "page",
+   "file": "src/app/page.tsx",
+   "category": "missing_call",
+   "resolved": false,
+   "resolved_by": null,
+   "provenance": null,
+   "attempts": 8,
+   "tokens": 1487,
+   "strategy_order": [
+    "doc_lookup",
+    "body_completion",
+    "body_completion",
+    "minimal_diff",
+    "minimal_diff",
+    "fim_micro",
+    "compiler_guided",
+    "contract_split"
+   ],
+   "seconds": 194.2
+  }
+ ],
+ "resolved": 4,
+ "total": 12,
+ "generations": 87,
+ "tokens": 15467,
+ "wall_seconds": 2119.5,
+ "model_usage": {
+  "generations": 87,
+  "total_new_tokens": 15467,
+  "total_seconds": 2093.7
+ },
+ "bandit_snapshot": {
+  "syntax": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.083,
+   "fim_micro": 0.182,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "missing_export": {
+   "regen_whole": 0.143,
+   "exact_shape": 0.375,
+   "body_completion": 0.039,
+   "fim_micro": 0.25,
+   "ast_replace": 0.167,
+   "compiler_guided": 0.167,
+   "doc_lookup": 0.2,
+   "contract_split": 0.2,
+   "minimal_diff": 0.167
+  },
+  "missing_literal": {
+   "regen_whole": 0.286,
+   "exact_shape": 0.167,
+   "body_completion": 0.096,
+   "fim_micro": 0.074,
+   "ast_replace": 0.2,
+   "compiler_guided": 0.167,
+   "doc_lookup": 0.25,
+   "contract_split": 0.2,
+   "minimal_diff": 0.167
+  },
+  "missing_call": {
+   "regen_whole": 0.333,
+   "exact_shape": 0.333,
+   "body_completion": 0.556,
+   "fim_micro": 0.385,
+   "ast_replace": 0.333,
+   "compiler_guided": 0.333,
+   "doc_lookup": 0.25,
+   "contract_split": 0.333,
+   "minimal_diff": 0.25
+  },
+  "wrong_contract": {
+   "regen_whole": 0.2,
+   "exact_shape": 0.333,
+   "body_completion": 0.2,
+   "fim_micro": 0.414,
+   "ast_replace": 0.2,
+   "compiler_guided": 0.25,
+   "doc_lookup": 0.333,
+   "contract_split": 0.2,
+   "minimal_diff": 0.2
+  },
+  "demo_contamination": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.143,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "type_error": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "ui_state": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  },
+  "interface_mismatch": {
+   "regen_whole": 0.5,
+   "exact_shape": 0.5,
+   "body_completion": 0.5,
+   "fim_micro": 0.5,
+   "ast_replace": 0.5,
+   "compiler_guided": 0.5,
+   "doc_lookup": 0.5,
+   "contract_split": 0.5,
+   "minimal_diff": 0.5
+  }
+ }
+}

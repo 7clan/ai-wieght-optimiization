@@ -1,0 +1,8 @@
+{
+ "file": "src/lib/roomreserve/types.ts",
+ "strategy": "regen_whole",
+ "seed": 3162,
+ "prompt": "You are writing RoomReserve, a Next.js 16 meeting-room reservation app. TypeScript, Prisma + SQLite, NextResponse JSON APIs. Dates are plain ISO strings 'YYYY-MM-DDTHH:mm' compared lexicographically.\n\n// types for a gym booking board\nexport interface Court {\n  id: string\n  name: string\n  capacity: number\n}\n\nexport interface Lesson {\n  id: string\n  courtId: string\n  coach: string\n  start: string\n  end: string\n  status: 'booked' | 'waitlist'\n  courtName: string\n}\n\n\nNow YOUR task.  Write the file src/lib/roomreserve/types.ts for the application.\nWrite the file with two exported interfaces. Interface Room: members id string, name string, capacity number, floor number. Interface Reservation: members id string, roomId string, title string, organizer string, start string, end string, status string, roomName string.\n\nWrite the complete file now.  The first line is already written; continue from it:\nexport interface Room {",
+ "candidate": "export interface Room {\n id: string; name: string; capacity: number; }\nexport interface Reservation { id: string; roomId: string; title: string; organizer: string; start: string; end: string; status: 'booked' | 'waitlist'; roomName: string; }\n\ninterface RoomReserve {\n  room: Room\n  reservation: Reservation\n}",
+ "gate_failures": []
+}

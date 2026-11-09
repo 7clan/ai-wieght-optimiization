@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/states.tsx",
+ "strategy": "compiler_guided",
+ "seed": 3717,
+ "prompt": "[FIM] fix this region",
+ "candidate": "\n# Given an array of non-negative integers, you are initially positioned at the first index of the array.\n#\n# Each element in the array represents your maximum jump length at that position.\n#\n# Determine if you are able to reach the last index.\n\n# O(n^2) time complexity\ndef canJump(self",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

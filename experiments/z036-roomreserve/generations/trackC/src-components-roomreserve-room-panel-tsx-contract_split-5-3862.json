@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/room-panel.tsx",
+ "strategy": "contract_split",
+ "seed": 3862,
+ "prompt": "Write only the single piece described below for src/components/roomreserve/room-panel.tsx.\nPiece: the required element.\nWrite nothing else \u2014 just that piece.\n\nContext (code before):\nexport function RoomPanel(",
+ "candidate": "export function RoomPanel(\n{ room }: { room: any }) {\n  return (\n    <div className=\"roomPanel\">\n      <h3>{room.name}</h3>\n      <ul>\n        {room.reservations.map((reservation) => {\n          return (\n            <li key={reservation.id}>\n              {reservation.room.name} - {reservation.room.capacity}\n            </li>\n          );\n        })}\n      </ul>\n    </div>\n  );\n}\n",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

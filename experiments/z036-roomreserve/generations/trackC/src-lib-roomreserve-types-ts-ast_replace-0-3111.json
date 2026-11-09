@@ -1,0 +1,8 @@
+{
+ "file": "src/lib/roomreserve/types.ts",
+ "strategy": "ast_replace",
+ "seed": 3111,
+ "prompt": "[AST-REPLACE] rewrite this one statement to satisfy: ",
+ "candidate": "\n\"if 1 == 1 and 2 == 1, then return true; else return false.\"",
+ "gate_failures": []
+}

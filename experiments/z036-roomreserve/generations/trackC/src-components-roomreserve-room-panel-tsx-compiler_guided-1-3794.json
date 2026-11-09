@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/room-panel.tsx",
+ "strategy": "compiler_guided",
+ "seed": 3794,
+ "prompt": "[FIM] fix this region",
+ "candidate": "\n\nfunction myFunction() {\n  var x = document.getElementById(\"myCanvas\").getContext(\"2d\");\n  x.beginPath();\n  x.moveTo(100, 100);\n  x.lineTo(200, 100);\n  x.lineTo(150, 200",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}

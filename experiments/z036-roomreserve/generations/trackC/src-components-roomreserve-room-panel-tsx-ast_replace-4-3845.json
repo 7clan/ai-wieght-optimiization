@@ -1,0 +1,10 @@
+{
+ "file": "src/components/roomreserve/room-panel.tsx",
+ "strategy": "ast_replace",
+ "seed": 3845,
+ "prompt": "[AST-REPLACE] rewrite this one statement to satisfy: uiStrings: required strings not in used positions",
+ "candidate": "\nfrom uiStrings import *",
+ "gate_failures": [
+  "uiStrings: required strings not in used positions"
+ ]
+}
