@@ -45,10 +45,22 @@
    ]
   },
   "phase2_taskir": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "archagent/generalize/taskir.py (validated IR: entities+relations w/ referential integrity, invariants w/ case tables, routes w/ <=6 clauses, UI; toposorted pieces)",
+    "archagent/generalize/prompting.py (5 prompt laws: anchor-inside, demo-completeness, bounded clauses, domain-diff, early-EOS retry)",
+    "archagent/generalize/controller.py (piece loop w/ provenance-labeled assembly)",
+    "archagent/generalize/probe.py (invariant case-table + 300-case fuzz vs reference oracle; route probes w/ mocked NextRequest + scratch DB; negative control verified)",
+    "archagent/generalize/policy.py (budget-aware conservative state machine)",
+    "verify/gates.mjs: new invariant gate kind (adversarial suite still 30/30)",
+    "smoke: courier windowsOverlap invariant resolved attempt-1/200 tokens (Session-036 overlap failed 16/16)"
+   ]
   },
   "phase3_budget_policy": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "policy.py deterministic conservative ladder + near-miss escalation + dedup + stop rules"
+   ]
   },
   "phase4_principles": {
    "status": "pending"
@@ -57,7 +69,10 @@
    "status": "pending"
   },
   "phase6_counterexample": {
-   "status": "pending"
+   "status": "complete",
+   "evidence": [
+    "probe.py counterexample mining; negative control (<= vs <) yields minimal counterexample 'touching returned true, expected false'"
+   ]
   },
   "phase7_curricula": {
    "status": "pending"

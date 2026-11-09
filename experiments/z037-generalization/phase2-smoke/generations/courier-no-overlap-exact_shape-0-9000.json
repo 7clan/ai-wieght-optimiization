@@ -1,0 +1,7 @@
+{
+ "piece": "courier-no-overlap",
+ "action": "exact_shape",
+ "seed": 9000,
+ "prompt": "CourierWin: a courier delivery-window scheduler. Deliveries are parcels with a pickup window and a dropoff window; a courier cannot have two dropoffs whose windows overlap.\n\n// gym class double-booking check (different domain)\nexport function slotsClash(aFrom: string, aTo: string,\n                            bFrom: string, bTo: string) {\n  return aFrom < bTo && bFrom < aTo\n}\n\n\nNow YOUR task: Write the predicate function windowsOverlap(aStart: string, aEnd: string, bStart: string, bEnd: string). windowsOverlap is true exactly when one window starts strictly before the other ends AND the other starts strictly before the first ends (touching endpoints do NOT overlap). The file may hold several such functions; add this one.\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete invariant now.  The first line is already written; continue from it:\nexport function windowsOverlap(",
+ "candidate": "export function windowsOverlap( aStart: string, aEnd: string, bStart: string, bEnd: string) {\n  return aStart < bEnd && bStart < aEnd\n}"
+}

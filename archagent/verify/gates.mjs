@@ -289,6 +289,43 @@ export function verifyPrisma(schemaText, contract) {
   return { pass: failures.length === 0, failures, parsed };
 }
 
+// SESSION 037 — invariant predicate gate (structural pre-filter; the
+// behavioral oracle in archagent/generalize/probe.py does the semantic
+// work).  A comment/string can never satisfy the exprs check because
+// exprs are collected from AST binary nodes in reachable positions only.
+export function verifyInvariant(code, contract, fileName) {
+  const failures = [];
+  const { ok, syntaxErrors, analysis } = parseAndAnalyze(code, fileName);
+  if (!ok) {
+    return { pass: false, failures: ['parse: syntax errors — '
+      + syntaxErrors.slice(0, 2).map(e => e.message.slice(0, 100)).join(' | ')] };
+  }
+  const a = analysis;
+  const name = contract.function;
+  const ex = a.exports.find(e => e.name === name);
+  if (!ex) {
+    failures.push(`invariant: function '${name}' not exported (found: ${
+      a.exports.map(e => e.name).join(', ') || 'none'})`);
+  } else if (!ex.functionLike) {
+    failures.push(`invariant: '${name}' is not function-like (${ex.kind})`);
+  }
+  // at least one comparison/logical binary expression (reachable AST)
+  const hasBoolish = [...a.exprs].some(e =>
+    /(<=|>=|<|>|&&|\|\||===|!==)/.test(e));
+  if (!hasBoolish) {
+    failures.push("invariant: no reachable comparison/logical expression "
+      + '(a predicate must compare or combine booleans)');
+  }
+  if (a.unreachableRanges.length) {
+    failures.push(`reachability: ${a.unreachableRanges.length} unreachable `
+      + `region(s): ${a.unreachableRanges[0].reason}`);
+  }
+  if (a.hasTodo && contract.rejectTodo !== false) {
+    failures.push('incomplete: TODO/FIXME marker present');
+  }
+  return { pass: failures.length === 0, failures };
+}
+
 // ---------------------------------------------------------------- dispatch
 
 export function verifyFile(code, contract, fileName) {
@@ -309,6 +346,7 @@ export function verifyFile(code, contract, fileName) {
       return r;
     }
     case 'prisma': return verifyPrisma(code, contract);
+    case 'invariant': return verifyInvariant(code, contract, fileName);
     default:
       return { pass: false, failures: [`unknown contract kind ${contract.kind}`] };
   }
