@@ -288,6 +288,16 @@ def run_track(track: str, model, gates: _GateRunner) -> dict:
         inv = WS / INV_FILE.format(app=dom["app"])
         if inv.exists():
             inv.unlink()
+        # fresh route files per domain AND PER TRACK (found in
+        # post-analysis: C/D's failed route loops were final-scored
+        # against Track-B's still-installed bytes — cross-track
+        # contamination; every piece must be scored on its own
+        # track's installed files only)
+        for p in pieces:
+            if p.kind == "route-handler":
+                t = WS / p.file
+                if t.exists():
+                    t.unlink()
 
         dom_results = []
         for pi, piece in enumerate(pieces):

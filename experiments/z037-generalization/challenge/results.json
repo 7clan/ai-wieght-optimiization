@@ -1,0 +1,81 @@
+{
+ "spec_sha256": "32ac3b421f1999996d86489f2363af2ad3089f9962b3b6e7ab2a9bb67615ecbd",
+ "engine_only": {
+  "pieces": [
+   {
+    "pid": "gh-plant",
+    "resolved": true,
+    "tokens": 300
+   },
+   {
+    "pid": "gh-watering",
+    "resolved": true,
+    "tokens": 300
+   },
+   {
+    "pid": "gh-needswater",
+    "resolved": false,
+    "tokens": 845
+   },
+   {
+    "pid": "gh-get-plants",
+    "resolved": false,
+    "tokens": 1611
+   },
+   {
+    "pid": "gh-post-watering",
+    "resolved": false,
+    "tokens": 1040
+   },
+   {
+    "pid": "gh-page",
+    "resolved": false,
+    "tokens": 1560
+   }
+  ],
+  "resolved": 2,
+  "total": 6,
+  "tokens": 5656
+ },
+ "schema_validates": {
+  "pass": true
+ },
+ "final": {
+  "gh-plant": {
+   "structural": true,
+   "resolved": true
+  },
+  "gh-watering": {
+   "structural": true,
+   "resolved": true
+  },
+  "gh-needswater": {
+   "resolved": false,
+   "reason": "file missing"
+  },
+  "gh-get-plants": {
+   "resolved": false,
+   "reason": "file missing"
+  },
+  "gh-post-watering": {
+   "resolved": false,
+   "reason": "file missing"
+  },
+  "gh-page": {
+   "structural": false,
+   "resolved": false,
+   "failures": [
+    "uiStrings: 'Plants' not found in a used string/JSX position (comments and unreferenced constants never satisfy this gate)",
+    "uiStrings: 'Add watering' not found in a used string/JSX position (comments and unreferenced constants never satisfy this gate)",
+    "uiStrings: 'Amount' not found in a used string/JSX position (comments and unreferenced constants never satisfy this gate)",
+    "uiStrings: 'needs water' not found in a used string/JSX position (comments and unreferenced constants never satisfy this gate)"
+   ]
+  }
+ },
+ "wall_seconds": 906.0,
+ "model_usage": {
+  "generations": 37,
+  "total_new_tokens": 6822,
+  "total_seconds": 897.7
+ }
+}

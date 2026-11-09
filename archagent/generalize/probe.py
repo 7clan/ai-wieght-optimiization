@@ -107,7 +107,15 @@ if (typeof fn !== 'function') {{
   const fails = [];
   for (const c of cases) {{
     let got;
-    try {{ got = fn(...c.inputs); }} catch (e) {{
+    // inputs may be a positional ARRAY (suite convention) or an
+    // OBJECT keyed by parameter name (spec convention) — objects are
+    // mapped to positional args in signature order.  Found when the
+    // Phase-11 challenge spec used object inputs and the spread
+    // threw a non-iterable TypeError mislabeled class 'app'.
+    const args = Array.isArray(c.inputs)
+      ? c.inputs
+      : {json.dumps(pnames)}.map((k) => c.inputs[k]);
+    try {{ got = fn(...args); }} catch (e) {{
       fails.push(c.name + ': threw ' + String(e).slice(0, 80)); continue; }}
     if (got !== c.expect) {{
       fails.push(c.name + ': ' + JSON.stringify(c.inputs) + ' returned ' +
@@ -163,6 +171,8 @@ class FakeURL {{
 class FakeReq {{
   constructor(params, body) {{
     this.nextUrl = new FakeURL(params);
+    this.url = 'http://localhost' +
+      (params ? '?' + new URLSearchParams(params).toString() : '');
     this._body = body ?? null;
   }}
   async json() {{
@@ -171,13 +181,6 @@ class FakeReq {{
     return this._body;
   }}
 }}
-const NS = {{
-  json: (payload, init) => ({{
-    status: init?.status ?? 200,
-    json: payload,
-    __nextResponse: true,
-  }}),
-}};
 const mod = await import({json.dumps(mod_path)});
 const handler = mod[{json.dumps(method)}];
 if (typeof handler !== 'function') {{
@@ -192,6 +195,7 @@ if (typeof handler !== 'function') {{
   }}
   for (const c of cases) {{
     let res;
+    let payload = null;
     try {{
       const body = (typeof c.body === 'object' && c.body !== null)
         ? {{ ...c.body }} : c.body;
@@ -199,26 +203,34 @@ if (typeof handler !== 'function') {{
         body[c.body.__SEED_ID__] = seedIds[0];
       }}
       res = await handler(new FakeReq(c.params, body));
+      // accept REAL NextResponse.json() results (Response with .status
+      // and async .json()) as well as plain objects — the old
+      // __nextResponse marker mock was never wired to the import, so
+      // every route probe historically returned no-verdict (harness)
+      if (!res || typeof res.status !== 'number') {{
+        fails.push(c.name + ': handler returned a non-Response');
+        continue;
+      }}
+      payload = await Promise.resolve(
+        typeof res.json === 'function' ? res.json() : res.json);
     }} catch (e) {{
       fails.push(c.name + ': handler threw ' + String(e).slice(0, 120));
       continue;
     }}
-    if (!res || !res.__nextResponse) {{
-      fails.push(c.name + ': handler returned a non-NextResponse'); continue; }}
     if (res.status !== c.expect_status) {{
       fails.push(c.name + ': status ' + res.status + ' != expected ' +
                  c.expect_status); continue; }}
     if (c.json_contains) {{
-      const s = JSON.stringify(res.json ?? {{}});
+      const s = JSON.stringify(payload ?? {{}});
       for (const frag of c.json_contains) {{
         if (!s.includes(frag)) {{
           fails.push(c.name + ': response missing ' + JSON.stringify(frag));
         }}}}}}
     if (c.json_keys) {{
-      const keys = Object.keys(res.json ?? {{}});
+      const keys = Object.keys(payload ?? {{}});
       for (const k of c.json_keys) {{
         if (!keys.includes(k)) fails.push(c.name + ': response lacks key ' + k);
-      }}}}}}
+      }}}}
   }}
   emit({{pass: fails.length === 0, class: 'app', failures: fails}});
 }}
