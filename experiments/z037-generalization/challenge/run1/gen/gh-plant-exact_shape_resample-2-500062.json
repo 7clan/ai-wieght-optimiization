@@ -1,0 +1,7 @@
+{
+ "piece": "gh-plant",
+ "action": "exact_shape_resample",
+ "seed": 500062,
+ "prompt": "[DOC-FACT] pinned documentation (docgate-v1-2026-11-09) \u2014 source: Prisma docs, Relations reference (prisma 6.x, pinned)\nThe 'many' side of a relation is a list field with no backing\nscalar; the 'one' side carries the attribute:\n  posts    Post[]\n  author   User    @relation(fields: [authorId], references: [id])\n  authorId String\n\nGreenhouse: a plant-care tracker.  Staff record plants with a\nmoisture reading and log waterings; the page shows which plants need\nwater and lets staff add a watering.\n\n\n\nNow YOUR task: Add the model Plant to the schema file.. field id String @id @default(cuid()). field name String. field moisture Int. field room String. relation field waterings Watering[].\nRewrite the example for this task: same structure, different domain, every required element present.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Plant {  // required fields: id String (@id); name String; moisture Int; room String; waterings Watering[]\n",
+ "candidate": "model Plant {\n  // required fields: id String (@id); name String; moisture Int; room String; waterings Watering[]\n}"
+}

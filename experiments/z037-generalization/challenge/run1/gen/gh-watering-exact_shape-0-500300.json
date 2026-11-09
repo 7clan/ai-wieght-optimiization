@@ -1,0 +1,7 @@
+{
+ "piece": "gh-watering",
+ "action": "exact_shape",
+ "seed": 500300,
+ "prompt": "Greenhouse: a plant-care tracker.  Staff record plants with a\nmoisture reading and log waterings; the page shows which plants need\nwater and lets staff add a watering.\n\n\n\nNow YOUR task: Add the model Watering to the schema file.. field id String @id @default(cuid()). field amount Int. field plantId String. relation field plant Plant @relation(fields: [plantId], references: [id]).\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Watering {  // required fields: id String (@id); amount Int; plantId String; plant Plant (@relation, fields: [plantId])\n",
+ "candidate": "model Watering {\n  // required fields: id String (@id); amount Int; plantId String; plant Plant (@relation, fields: [plantId])\n}"
+}

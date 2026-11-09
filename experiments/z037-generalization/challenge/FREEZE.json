@@ -1,6 +1,8 @@
 {
- "spec_sha256": "0f08f72bbfbfceab1ea36812f650cc7ac63a9646627317e38bd7150f95df9c4e",
+ "spec_sha256": "32ac3b421f1999996d86489f2363af2ad3089f9962b3b6e7ab2a9bb67615ecbd",
  "frozen_before_generation": true,
- "frozen_at": "2026-11-09T12:45Z",
- "note": "probe formats corrected to harness contract before ANY generation; no piece has been generated against this spec"
+ "frozen_at": "2026-11-09T15:45Z",
+ "variant": "run-2 demo-complete amendment",
+ "disclosure": "run-1 spec (archived as SPEC-run1-nodemo.json, sha 0f08f72b...) omitted demo_domain on entities and the ui piece - a violation of the engine demo-completeness contract; run-1 scored 0/6 engine-only (archives + results preserved). This amendment adds ONLY different-domain demos (Stable/Pen one-to-many pair; Library reading-list page). Gates, oracles, cases, clauses, ui_strings, accesses are byte-identical to run-1.",
+ "run1_sha256": "0f08f72bbfbfceab"
 }

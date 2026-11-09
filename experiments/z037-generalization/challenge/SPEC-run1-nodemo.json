@@ -1,0 +1,120 @@
+{
+  "app": "greenhouse",
+  "concept": "Greenhouse: a plant-care tracker.  Staff record plants with a\nmoisture reading and log waterings; the page shows which plants need\nwater and lets staff add a watering.",
+  "entities": [
+    {
+      "pid": "gh-plant",
+      "name": "Plant",
+      "fields": [
+        {"name": "id", "type": "String", "attrs": ["@id", "@default(cuid())"]},
+        {"name": "name", "type": "String"},
+        {"name": "moisture", "type": "Int"},
+        {"name": "room", "type": "String"}
+      ],
+      "relations": [
+        {"name": "waterings", "target": "Watering", "kind": "one-to-many", "is_list": true}
+      ]
+    },
+    {
+      "pid": "gh-watering",
+      "name": "Watering",
+      "fields": [
+        {"name": "id", "type": "String", "attrs": ["@id", "@default(cuid())"]},
+        {"name": "amount", "type": "Int"},
+        {"name": "plantId", "type": "String"}
+      ],
+      "relations": [
+        {"name": "plant", "target": "Plant", "kind": "many-to-one", "is_list": false, "fk_field": "plantId"}
+      ]
+    }
+  ],
+  "invariants": [
+    {
+      "pid": "gh-needswater",
+      "statement": "needsWater(moisture) is true exactly when the moisture reading is below 30 (30 itself is healthy).",
+      "signature": "needsWater(moisture: number): boolean",
+      "ref_expr": "(moisture) => moisture < 30",
+      "cases": [
+        {"name": "zero", "inputs": {"moisture": 0}, "expect": true},
+        {"name": "just-below", "inputs": {"moisture": 29}, "expect": true},
+        {"name": "boundary", "inputs": {"moisture": 30}, "expect": false},
+        {"name": "mid", "inputs": {"moisture": 55}, "expect": false},
+        {"name": "full", "inputs": {"moisture": 100}, "expect": false}
+      ],
+      "demo_domain": "// a kiln temperature monitor (different domain)\n// below 800 degrees the kiln needs a boost\nexport function needsBoost(temp: number): boolean {\n  return temp < 800;\n}"
+    }
+  ],
+  "routes": [
+    {
+      "pid": "gh-post-watering",
+      "method": "POST",
+      "path": "/api/waterings",
+      "file": "src/app/api/waterings/route.ts",
+      "clauses": [
+        "Export POST. Await request.json.",
+        "Read amount with Number; when not an integer in 1..500 return 400 'Amount must be 1-500'.",
+        "Call db.plant.findUnique where id body.plantId; when missing return 404 'Plant not found'.",
+        "Call db.watering.create with data amount, plantId.",
+        "Return NextResponse.json with watering and status 201."
+      ],
+      "responses": [
+        {"status": 400, "message": "Amount must be 1-500", "shape": {}},
+        {"status": 404, "message": "Plant not found", "shape": {}},
+        {"status": 201, "shape": {"watering": "Watering"}}
+      ],
+      "calls": ["db.plant.findUnique", "db.watering.create", "NextResponse.json"],
+      "uses_invariants": [],
+      "probe_seed": [
+        {"model": "plant", "data": {"id": "seed-plant-1", "name": "Fern", "moisture": 22, "room": "Front"}},
+        {"model": "plant", "data": {"id": "seed-plant-2", "name": "Cactus", "moisture": 65, "room": "Back"}}
+      ],
+      "probe_cases": [
+        {"name": "amount-zero", "body": {"amount": 0, "plantId": "seed-plant-1"}, "expect_status": 400, "json_contains": ["Amount must be 1-500"]},
+        {"name": "amount-over", "body": {"amount": 501, "plantId": "seed-plant-1"}, "expect_status": 400},
+        {"name": "unknown-plant", "body": {"amount": 100, "plantId": "no-such-id"}, "expect_status": 404, "json_contains": ["Plant not found"]},
+        {"name": "valid-create", "body": {"amount": 250, "plantId": "seed-plant-1"}, "expect_status": 201, "json_keys": ["watering"]}
+      ]
+    },
+    {
+      "pid": "gh-get-plants",
+      "method": "GET",
+      "path": "/api/plants",
+      "file": "src/app/api/plants/route.ts",
+      "clauses": [
+        "Export GET. Read searchParams from new URL(request.url).",
+        "Read q from searchParams get 'q'.",
+        "Call db.plant.findMany where name contains q (when q is null no where filter).",
+        "Return NextResponse.json with plants."
+      ],
+      "responses": [{"status": 200, "shape": {"plants": "Plant[]"}}],
+      "calls": ["db.plant.findMany", "NextResponse.json"],
+      "uses_invariants": [],
+      "probe_seed": [
+        {"model": "plant", "data": {"id": "seed-plant-1", "name": "Fern", "moisture": 22, "room": "Front"}},
+        {"model": "plant", "data": {"id": "seed-plant-2", "name": "Cactus", "moisture": 65, "room": "Back"}}
+      ],
+      "probe_cases": [
+        {"name": "list-all", "expect_status": 200, "json_keys": ["plants"], "json_contains": ["Fern", "Cactus"]},
+        {"name": "filter-q", "params": {"q": "ern"}, "expect_status": 200, "json_contains": ["Fern"]}
+      ]
+    }
+  ],
+  "ui": [
+    {
+      "pid": "gh-page",
+      "kind": "page",
+      "file": "src/app/page.tsx",
+      "name": "GreenhousePage",
+      "clauses": [
+        "A 'use client' page that fetches plants from /api/plants on mount and keeps them in state.",
+        "Renders each plant's name, room, moisture and a needs-water badge from needsWater(moisture).",
+        "A watering form: a plant picker, an amount input, and an 'Add watering' button that POSTs to /api/waterings.",
+        "On 4xx responses show the error message from the body; on success refresh the plant list.",
+        "Show 'Loading…' while fetching and an error retry button when the initial fetch fails."
+      ],
+      "ui_strings": ["Plants", "Add watering", "Amount", "Loading", "needs water"],
+      "accesses": ["/api/plants", "/api/waterings", "needsWater"],
+      "depends_on": ["gh-needswater"]
+    }
+  ]
+}

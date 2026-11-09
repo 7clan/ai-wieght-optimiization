@@ -1,0 +1,7 @@
+{
+ "piece": "gh-get-plants",
+ "action": "decompose",
+ "seed": 500993,
+ "prompt": "[DECOMPOSE] 6 clauses",
+ "candidate": "export async function GET(\n}\n\n\n\n\n// - if you have the correct data, respond with a 200 status code and the data in the response body.\n\n// - if you don't have the correct data, respond with a 400 status code and a message indicating that the search query is not valid.\n// - if the search query is valid, you should return the data with a 200 status code and the data in the response body.\n\nif (q === '') {\n  return new Response('Invalid search query', { status: 400 });\n}\n\n\n\n// - if the search query is valid, you should return a 200 status code and the data in the response body.\n// - if the search query is invalid, you should return a 400 status code and a message indicating that the search query is invalid.\n"
+}

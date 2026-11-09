@@ -1,0 +1,7 @@
+{
+ "piece": "gh-needswater",
+ "action": "decompose",
+ "seed": 500693,
+ "prompt": "[DECOMPOSE] 3 clauses",
+ "candidate": "export function needsWater(\n}\n\n\n\n\n\nfunction needsWater(height: number, width: number): boolean {\n\n}"
+}

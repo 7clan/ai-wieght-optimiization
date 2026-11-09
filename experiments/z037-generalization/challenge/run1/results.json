@@ -1,0 +1,87 @@
+{
+ "spec_sha256": "0f08f72bbfbfceab1ea36812f650cc7ac63a9646627317e38bd7150f95df9c4e",
+ "engine_only": {
+  "pieces": [
+   {
+    "pid": "gh-plant",
+    "resolved": false,
+    "tokens": 1771
+   },
+   {
+    "pid": "gh-watering",
+    "resolved": false,
+    "tokens": 41
+   },
+   {
+    "pid": "gh-needswater",
+    "resolved": false,
+    "tokens": 845
+   },
+   {
+    "pid": "gh-get-plants",
+    "resolved": false,
+    "tokens": 1611
+   },
+   {
+    "pid": "gh-post-watering",
+    "resolved": false,
+    "tokens": 1040
+   },
+   {
+    "pid": "gh-page",
+    "resolved": false,
+    "tokens": 1560
+   }
+  ],
+  "resolved": 0,
+  "total": 6,
+  "tokens": 6868
+ },
+ "schema_validates": {
+  "pass": true
+ },
+ "final": {
+  "gh-plant": {
+   "structural": false,
+   "resolved": false,
+   "failures": [
+    "schema: model 'Plant' missing (found: none)"
+   ]
+  },
+  "gh-watering": {
+   "structural": false,
+   "resolved": false,
+   "failures": [
+    "schema: model 'Watering' missing (found: none)"
+   ]
+  },
+  "gh-needswater": {
+   "resolved": false,
+   "reason": "file missing"
+  },
+  "gh-get-plants": {
+   "resolved": false,
+   "reason": "file missing"
+  },
+  "gh-post-watering": {
+   "resolved": false,
+   "reason": "file missing"
+  },
+  "gh-page": {
+   "structural": false,
+   "resolved": false,
+   "failures": [
+    "uiStrings: 'Plants' not found in a used string/JSX position (comments and unreferenced constants never satisfy this gate)",
+    "uiStrings: 'Add watering' not found in a used string/JSX position (comments and unreferenced constants never satisfy this gate)",
+    "uiStrings: 'Amount' not found in a used string/JSX position (comments and unreferenced constants never satisfy this gate)",
+    "uiStrings: 'needs water' not found in a used string/JSX position (comments and unreferenced constants never satisfy this gate)"
+   ]
+  }
+ },
+ "wall_seconds": 1063.1,
+ "model_usage": {
+  "generations": 45,
+  "total_new_tokens": 8034,
+  "total_seconds": 1053.0
+ }
+}

@@ -1,0 +1,7 @@
+{
+ "piece": "gh-plant",
+ "action": "exact_shape_resample",
+ "seed": 500093,
+ "prompt": "Greenhouse: a plant-care tracker.  Staff record plants with a\nmoisture reading and log waterings; the page shows which plants need\nwater and lets staff add a watering.\n\n\n\nNow YOUR task: Add the model Plant to the schema file.. field id String @id @default(cuid()). field name String. field moisture Int. field room String. relation field waterings Watering[].\nWrite this task's version from scratch. List every required field first, then write the construct with exactly those fields.\n\nWrite the complete prisma-model now.  The first line is already written; continue from it:\nmodel Plant {  // required fields: id String (@id); name String; moisture Int; room String; waterings Watering[]\n",
+ "candidate": "model Plant {\n  // required fields: id String (@id); name String; moisture Int; room String; waterings Watering[]\n  id: ID DEFAULT cuid() @id\n  name: String\n  moisture: Int\n  room: String\n  waterings: [Watering!] @relation(name: \"WateringPlant\")\n}"
+}

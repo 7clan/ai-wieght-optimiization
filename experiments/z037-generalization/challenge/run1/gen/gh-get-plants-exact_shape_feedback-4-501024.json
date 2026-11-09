@@ -1,0 +1,7 @@
+{
+ "piece": "gh-get-plants",
+ "action": "exact_shape_feedback",
+ "seed": 501024,
+ "prompt": "Greenhouse: a plant-care tracker.  Staff record plants with a\nmoisture reading and log waterings; the page shows which plants need\nwater and lets staff add a watering.\n\n\n\nNow YOUR task: Write the GET handler for /api/plants in src/app/api/plants/route.ts. Export GET. Read searchParams from new URL(request.url). Read q from searchParams get 'q'. Call db.plant.findMany where name contains q (when q is null no where filter). Return NextResponse.json with plants.\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the corrected complete construct now.  The first line is already written; continue from it:\nexport async function GET(  // required calls: db.plant.findMany, NextResponse.json\n",
+ "candidate": "export async function GET(  // required calls: db.plant.findMany, NextResponse.json\n  request: Request,\n  { params }"
+}

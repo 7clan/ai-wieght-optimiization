@@ -1,0 +1,7 @@
+{
+ "piece": "gh-post-watering",
+ "action": "exact_shape_feedback",
+ "seed": 501231,
+ "prompt": "Greenhouse: a plant-care tracker.  Staff record plants with a\nmoisture reading and log waterings; the page shows which plants need\nwater and lets staff add a watering.\n\n\n\nNow YOUR task: Write the POST handler for /api/waterings in src/app/api/waterings/route.ts. Export POST. Await request.json. Read amount with Number; when not an integer in 1..500 return 400 'Amount must be 1-500'. Call db.plant.findUnique where id body.plantId; when missing return 404 'Plant not found'. Call db.watering.create with data amount, plantId. Return NextResponse.json with watering and status 201.\nAdapt the example's PATTERNS to this task's names \u2014 never copy its domain words.\n\nWrite the corrected complete construct now.  The first line is already written; continue from it:\nexport async function POST(  // required calls: db.plant.findUnique, db.watering.create, NextResponse.json\n",
+ "candidate": "export async function POST(  // required calls: db.plant.findUnique, db.watering.create, NextResponse.json\n  req: Request,\n  res: Response,\n  { params }"
+}
