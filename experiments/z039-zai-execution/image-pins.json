@@ -1,0 +1,36 @@
+{
+  "recorded_utc": "2026-11-10T01:30:00Z",
+  "purpose": "Static vetting groundwork for the Session-039B Docker-only execution path. Digests were resolved over the public Docker Hub registry API without executing or pulling anything. Floating tags move; any approved environment MUST re-resolve, pull, inspect and re-verify before use, then pin the BUILT evaluation image by its own immutable digest.",
+  "base_image": {
+    "reference": "node:24",
+    "registry": "registry-1.docker.io/library/node",
+    "tag_index_digest": "sha256:8fa96264f302f58bbb13aa7339c541547b56975766ce956c875da149452a3e40",
+    "linux_amd64_manifest_digest": "sha256:6b9d4ea31e614e29f364bf75758458731eb1e105b80c99667438dd6b3fe262e0",
+    "image_config": {
+      "NODE_VERSION": "24.22.2",
+      "created": "2026-11-05T09:18:11.532038393Z"
+    },
+    "verification_performed_here": [
+      "Docker Hub auth token scoped to repository:library/node:pull",
+      "HEAD manifest request returned Docker-Content-Digest for the multi-arch index",
+      "amd64 manifest digest extracted from the OCI index",
+      "config blob decoded to confirm NODE_VERSION=24.22.2"
+    ],
+    "not_performed_here": [
+      "image pull",
+      "layer/content inspection",
+      "vulnerability scan",
+      "running any container"
+    ]
+  },
+  "planned_evaluation_image": {
+    "build_recipe": "docker/s039-route-eval.Dockerfile in this branch",
+    "contents": "node:24 pinned base + globally installed prisma CLI and @prisma/client 6.16.2 with bundled query/migration engines (downloaded at image build time so eval containers need no network)",
+    "pinning_rule": "Build only inside an approved image workflow; record the resulting image@sha256 digest and pass that exact digest to archagent.s039 evaluators. The evaluators refuse floating tags and never pull."
+  },
+  "security_notes": [
+    "The route evaluator container needs an exec-permitted tmpfs workspace solely because the trusted Prisma query-engine library must be loadable from a writable location; nosuid is retained, the image root stays read-only, all capabilities are dropped and the network is disabled.",
+    "The invariant evaluator keeps the stricter noexec tmpfs.",
+    "Candidate code never receives repo credentials; CI checkout happens outside the candidate container and only the candidate directory plus the trusted harness directory are bind-mounted read-only."
+  ]
+}

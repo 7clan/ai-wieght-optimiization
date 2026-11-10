@@ -1,0 +1,504 @@
+{
+  "all_oracles_validated": true,
+  "captured_utc": "2026-11-10T01:33:15.332939+00:00",
+  "controls": {
+    "get-async-hang-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "export-GET-present",
+          "passed": true
+        },
+        {
+          "name": "trusted-db-model-present",
+          "passed": true
+        },
+        {
+          "name": "list-all",
+          "passed": false
+        },
+        {
+          "name": "filter-one",
+          "passed": false
+        },
+        {
+          "name": "case-insensitive",
+          "passed": false
+        },
+        {
+          "name": "filter-by-parent",
+          "passed": false
+        },
+        {
+          "name": "no-matches",
+          "passed": false
+        },
+        {
+          "name": "combined-filter",
+          "passed": false
+        }
+      ],
+      "control": "get-async-hang-control.ts",
+      "expected_pass": false,
+      "host_smoke": true,
+      "kind": "api-get-filter",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": false,
+      "reported_checks": 8,
+      "returncode": 0,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "here the warning was created)\n(node:3846) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/s039-route-control-jec1xkdv/work/lib/db.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to /tmp/s039-route-control-jec1xkdv/work/package.json.",
+      "task_id": "radiostation:api-get-filter",
+      "verdict": "CONTROL_FAIL"
+    },
+    "get-negative-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "export-GET-present",
+          "passed": true
+        },
+        {
+          "name": "trusted-db-model-present",
+          "passed": true
+        },
+        {
+          "name": "list-all",
+          "passed": true
+        },
+        {
+          "name": "filter-one",
+          "passed": false
+        },
+        {
+          "name": "case-insensitive",
+          "passed": false
+        },
+        {
+          "name": "filter-by-parent",
+          "passed": false
+        },
+        {
+          "name": "no-matches",
+          "passed": false
+        },
+        {
+          "name": "combined-filter",
+          "passed": false
+        }
+      ],
+      "control": "get-negative-control.ts",
+      "expected_pass": false,
+      "host_smoke": true,
+      "kind": "api-get-filter",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": false,
+      "reported_checks": 8,
+      "returncode": 0,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "here the warning was created)\n(node:3550) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/s039-route-control-1qkcp8l0/work/lib/db.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to /tmp/s039-route-control-1qkcp8l0/work/package.json.",
+      "task_id": "radiostation:api-get-filter",
+      "verdict": "CONTROL_FAIL"
+    },
+    "get-partial-order-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "export-GET-present",
+          "passed": true
+        },
+        {
+          "name": "trusted-db-model-present",
+          "passed": true
+        },
+        {
+          "name": "list-all",
+          "passed": false
+        },
+        {
+          "name": "filter-one",
+          "passed": true
+        },
+        {
+          "name": "case-insensitive",
+          "passed": true
+        },
+        {
+          "name": "filter-by-parent",
+          "passed": true
+        },
+        {
+          "name": "no-matches",
+          "passed": true
+        },
+        {
+          "name": "combined-filter",
+          "passed": true
+        }
+      ],
+      "control": "get-partial-order-control.ts",
+      "expected_pass": false,
+      "host_smoke": true,
+      "kind": "api-get-filter",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": false,
+      "reported_checks": 8,
+      "returncode": 0,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "here the warning was created)\n(node:3697) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/s039-route-control-6_b2ys2j/work/lib/db.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to /tmp/s039-route-control-6_b2ys2j/work/package.json.",
+      "task_id": "radiostation:api-get-filter",
+      "verdict": "CONTROL_FAIL"
+    },
+    "get-positive-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "export-GET-present",
+          "passed": true
+        },
+        {
+          "name": "trusted-db-model-present",
+          "passed": true
+        },
+        {
+          "name": "list-all",
+          "passed": true
+        },
+        {
+          "name": "filter-one",
+          "passed": true
+        },
+        {
+          "name": "case-insensitive",
+          "passed": true
+        },
+        {
+          "name": "filter-by-parent",
+          "passed": true
+        },
+        {
+          "name": "no-matches",
+          "passed": true
+        },
+        {
+          "name": "combined-filter",
+          "passed": true
+        }
+      ],
+      "control": "get-positive-control.ts",
+      "expected_pass": true,
+      "host_smoke": true,
+      "kind": "api-get-filter",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": true,
+      "reported_checks": 8,
+      "returncode": 0,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "here the warning was created)\n(node:3405) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/s039-route-control-xyacwiaj/work/lib/db.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to /tmp/s039-route-control-xyacwiaj/work/package.json.",
+      "task_id": "radiostation:api-get-filter",
+      "verdict": "CONTROL_PASS"
+    },
+    "invariant-invalid-ts-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "runtime-or-fixture-error",
+          "passed": false
+        }
+      ],
+      "control": "invariant-invalid-ts-control.ts",
+      "expected_pass": false,
+      "host_smoke": true,
+      "kind": "invariant",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": false,
+      "reported_checks": 1,
+      "returncode": 1,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "",
+      "task_id": "radiostation:state-invariant",
+      "verdict": "CONTROL_FAIL"
+    },
+    "invariant-missing-export-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "export-present",
+          "passed": false
+        }
+      ],
+      "control": "invariant-missing-export-control.ts",
+      "expected_pass": false,
+      "host_smoke": true,
+      "kind": "invariant",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": false,
+      "reported_checks": 1,
+      "returncode": 0,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "ch/aiwo/experiments/z039-zai-execution/controls/.invariant-missing-export-control-staged/output.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to /home/z/my-project/package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)",
+      "task_id": "radiostation:state-invariant",
+      "verdict": "CONTROL_FAIL"
+    },
+    "invariant-negative-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "export-present",
+          "passed": true
+        },
+        {
+          "name": "first-transition",
+          "passed": false
+        },
+        {
+          "name": "second-transition",
+          "passed": false
+        },
+        {
+          "name": "same-state",
+          "passed": true
+        },
+        {
+          "name": "skip-state",
+          "passed": true
+        },
+        {
+          "name": "reverse-state",
+          "passed": true
+        },
+        {
+          "name": "unknown-state",
+          "passed": true
+        },
+        {
+          "name": "demo-vocabulary-copy",
+          "passed": false
+        }
+      ],
+      "control": "invariant-negative-control.ts",
+      "expected_pass": false,
+      "host_smoke": true,
+      "kind": "invariant",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": false,
+      "reported_checks": 8,
+      "returncode": 0,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "research/aiwo/experiments/z039-zai-execution/controls/.invariant-negative-control-staged/output.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to /home/z/my-project/package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)",
+      "task_id": "radiostation:state-invariant",
+      "verdict": "CONTROL_FAIL"
+    },
+    "invariant-positive-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "export-present",
+          "passed": true
+        },
+        {
+          "name": "first-transition",
+          "passed": true
+        },
+        {
+          "name": "second-transition",
+          "passed": true
+        },
+        {
+          "name": "same-state",
+          "passed": true
+        },
+        {
+          "name": "skip-state",
+          "passed": true
+        },
+        {
+          "name": "reverse-state",
+          "passed": true
+        },
+        {
+          "name": "unknown-state",
+          "passed": true
+        },
+        {
+          "name": "demo-vocabulary-copy",
+          "passed": true
+        }
+      ],
+      "control": "invariant-positive-control.ts",
+      "expected_pass": true,
+      "host_smoke": true,
+      "kind": "invariant",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": true,
+      "reported_checks": 8,
+      "returncode": 0,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "research/aiwo/experiments/z039-zai-execution/controls/.invariant-positive-control-staged/output.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to /home/z/my-project/package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)",
+      "task_id": "radiostation:state-invariant",
+      "verdict": "CONTROL_PASS"
+    },
+    "post-negative-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "export-POST-present",
+          "passed": true
+        },
+        {
+          "name": "trusted-db-model-present",
+          "passed": true
+        },
+        {
+          "name": "min-boundary",
+          "passed": false
+        },
+        {
+          "name": "max-boundary",
+          "passed": false
+        },
+        {
+          "name": "empty-title",
+          "passed": false
+        },
+        {
+          "name": "not-a-number",
+          "passed": false
+        },
+        {
+          "name": "non-integer",
+          "passed": false
+        },
+        {
+          "name": "below-min",
+          "passed": false
+        },
+        {
+          "name": "above-max",
+          "passed": false
+        },
+        {
+          "name": "unknown-parent",
+          "passed": false
+        },
+        {
+          "name": "duplicate-title",
+          "passed": false
+        },
+        {
+          "name": "parent-null",
+          "passed": false
+        }
+      ],
+      "control": "post-negative-control.ts",
+      "expected_pass": false,
+      "host_smoke": true,
+      "kind": "api-post-validation",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": false,
+      "reported_checks": 12,
+      "returncode": 0,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "here the warning was created)\n(node:4143) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/s039-route-control-v_3pw9s7/work/lib/db.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to /tmp/s039-route-control-v_3pw9s7/work/package.json.",
+      "task_id": "radiostation:api-post-validation",
+      "verdict": "CONTROL_FAIL"
+    },
+    "post-positive-control.ts": {
+      "candidate_executed": false,
+      "checks": [
+        {
+          "name": "export-POST-present",
+          "passed": true
+        },
+        {
+          "name": "trusted-db-model-present",
+          "passed": true
+        },
+        {
+          "name": "min-boundary",
+          "passed": true
+        },
+        {
+          "name": "max-boundary",
+          "passed": true
+        },
+        {
+          "name": "empty-title",
+          "passed": true
+        },
+        {
+          "name": "not-a-number",
+          "passed": true
+        },
+        {
+          "name": "non-integer",
+          "passed": true
+        },
+        {
+          "name": "below-min",
+          "passed": true
+        },
+        {
+          "name": "above-max",
+          "passed": true
+        },
+        {
+          "name": "unknown-parent",
+          "passed": true
+        },
+        {
+          "name": "duplicate-title",
+          "passed": true
+        },
+        {
+          "name": "parent-null",
+          "passed": true
+        }
+      ],
+      "control": "post-positive-control.ts",
+      "expected_pass": true,
+      "host_smoke": true,
+      "kind": "api-post-validation",
+      "oracle_validated": true,
+      "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE",
+      "passed": true,
+      "reported_checks": 12,
+      "returncode": 0,
+      "status": "HOST_SMOKE_EXECUTED_TRUSTED_CONTROL_ONLY",
+      "stderr_tail": "here the warning was created)\n(node:3995) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///tmp/s039-route-control-4f3259q_/work/lib/db.ts is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to /tmp/s039-route-control-4f3259q_/work/package.json.",
+      "task_id": "radiostation:api-post-validation",
+      "verdict": "CONTROL_PASS"
+    }
+  },
+  "discrimination_evidence": {
+    "async_hang_control": "every query case fails within the 10s per-probe bound; no unbounded hang",
+    "invalid_ts_control": "fail-closed runtime-or-fixture-error verdict, harness did not crash",
+    "missing_export_control": "export-present=false, fail closed",
+    "negative_route_controls": "fixture-copying and write-before-validate both rejected",
+    "partial_order_control": "fails exactly the order-sensitive list-all case and passes the other seven checks",
+    "positive_controls": "spec-faithful implementations pass every frozen case"
+  },
+  "environment": {
+    "node": "v24.22.2",
+    "os": "linux",
+    "prisma": "prisma                  : 6.19.3",
+    "python": "3.12.16",
+    "scratch_dir": "/tmp/s039-smoke (outside the repository; prisma installed from npm registry)"
+  },
+  "limitations": [
+    "Host smoke test executed TRUSTED control code only; zero model-generated code ran.",
+    "This is not Docker-tier evidence: image-level properties (global prisma install, non-root UID 10001 file access, read-only root, network namespace, capability drop, tmpfs sizes, engine exec from /work) remain unverified until the same controls run inside the pinned container.",
+    "Prisma SQLite does not support mode:insensitive; the trusted positive control implements case-insensitive search in SQL via LOWER()-based filtering and the same convention must be required in future model prompts."
+  ],
+  "mode": "HOST_SMOKE_TRUSTED_CONTROLS_ONLY",
+  "model_generated_code_executed": false
+}

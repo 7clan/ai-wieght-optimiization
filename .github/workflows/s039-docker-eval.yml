@@ -1,0 +1,94 @@
+# Session 039B — Docker-only candidate execution (MANUAL DISPATCH ONLY).
+#
+# This workflow NEVER runs automatically. It exists because the Z.ai sandbox
+# has no Docker binary (documented blocker in
+# docs/ZAI_SESSION039_DOCKER_EXECUTION.md) and the Session-039 boundary
+# forbids executing model-generated code on the host or substituting
+# unshare. Per the assignment, a reviewed GitHub Actions Docker job is the
+# proposed compliant path, and it must only be started after explicit user
+# approval.
+#
+# Stage 1 (build-and-controls, dispatch without run_candidates):
+#   builds the pinned evaluation image, records its digest, and runs the
+#   ten trusted teacher controls (positive/negative/failure-mode) inside
+#   the same restricted container settings used for candidates. No
+#   model-generated code is involved.
+#
+# Stage 2 (candidate execution, dispatch with run_candidates=true AND the
+#   digest recorded from a stage-1 run): runs Qwen-generated candidates.
+#   It should only be dispatched after stage 1 reports all_oracles_validated
+#   and the user has separately approved candidate execution.
+name: s039-docker-eval
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_candidates:
+        description: "Run model-generated candidates (requires a prior stage-1 control run)"
+        type: boolean
+        default: false
+      image_digest:
+        description: "Image digest recorded from a prior stage-1 run (image@sha256:...)"
+        type: string
+        default: ""
+      branch:
+        description: "Branch holding candidates (default: exp/zai-039-docker-execution)"
+        type: string
+        default: exp/zai-039-docker-execution
+
+permissions:
+  contents: read
+
+jobs:
+  controls:
+    name: Build pinned image and run trusted controls
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || 'exp/zai-039-docker-execution' }}
+      - name: Build the pinned evaluation image
+        run: |
+          docker build -f docker/s039-route-eval.Dockerfile -t s039-route-eval:ci .
+          DIGEST="$(docker image inspect --format '{{index .RepoDigests 0}}' s039-route-eval:ci 2>/dev/null || docker image inspect --format '{{.Id}}' s039-route-eval:ci)"
+          echo "image_reference=$DIGEST" >> "$GITHUB_OUTPUT"
+          echo "Recorded evaluation image: $DIGEST" | tee -a "$GITHUB_STEP_SUMMARY"
+        id: build
+      - name: Run the ten trusted teacher controls
+        run: |
+          python -m archagent.s039.control_run \
+            --repo . \
+            --image "${{ steps.build.outputs.image_reference }}" \
+            --out experiments/z039-zai-execution/docker-controls.json
+      - name: Upload control evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s039-docker-controls
+          path: experiments/z039-zai-execution/docker-controls.json
+          if-no-files-found: error
+
+  candidates:
+    name: Run Qwen candidates (requires explicit approval)
+    needs: controls
+    if: ${{ github.event.inputs.run_candidates == 'true' && github.event.inputs.image_digest != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || 'exp/zai-039-docker-execution' }}
+      - name: Run every staged candidate through the restricted evaluators
+        run: |
+          python -m archagent.s039.control_run --help >/dev/null  # sanity import
+          python experiments/z039-zai-execution/run_ci_candidates.py \
+            --repo . --image "${{ github.event.inputs.image_digest }}" \
+            --out experiments/z039-zai-execution/docker-candidates.json
+      - name: Upload candidate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s039-docker-candidates
+          path: experiments/z039-zai-execution/docker-candidates.json
+          if-no-files-found: error
