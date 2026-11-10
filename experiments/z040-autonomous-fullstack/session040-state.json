@@ -1,0 +1,52 @@
+{
+  "agent": "Z.ai",
+  "branch": "exp/zai-040-autonomous-fullstack",
+  "session": "040",
+  "source_commit": "f0604c9e765f7d1b5571fac5a2eac1514df0a824",
+  "captured_utc": "2026-11-10T03:30:00+00:00",
+  "mission": "Move Qwen2.5-Coder-0.5B toward autonomous full-stack generation via real experiments (Tracks A-D), completed evaluators (react + integration), and a real demonstrable application; prepare (but do not run) future fine-tuning.",
+  "execution_boundary": {
+    "docker": "unavailable in sandbox (re-verified 2026-11-10: no docker/podman/nerdctl binaries)",
+    "model_code_execution": "restricted containers only; in-sandbox fallback is the AGENTS.md-documented ARCHAGENT_LOCAL_EVAL=1 disclosed local-eval precedent using unshare user+network namespaces with rlimits/read-only binds/tmpfs/uid drop (Sessions 031/032/033/038A precedent), to be implemented in archagent/s040/exec.py with an equivalent Docker argv for CI parity; every evidence record labels its execution tier",
+    "training": "FORBIDDEN this session (no gradients/LoRA/checkpoints); Phase 8 prepares a proposal only",
+    "holdout": "24 sealed v2 tasks remain sealed until evaluation procedure and predictions are finalized"
+  },
+  "phase_status": {
+    "phase1_ci_registration": {
+      "status": "COMPLETE",
+      "workflow_on_main_verified_absent": true,
+      "pr": "https://github.com/7clan/ai-wieght-optimiization/pull/3 (NOT merged; awaiting maintainer approval)",
+      "pr_branch": "pr/s040-register-s039-eval-workflow (off origin/main 1868a8d, one file, byte-identical to 821cc89 copy)",
+      "security_review": "docs/ZAI_SESSION040_WORKFLOW_SECURITY_REVIEW.md (digests VERIFIED, permissions VERIFIED, cleanup analyzed with retention guidance, no blocking findings)",
+      "ci_dispatched": false,
+      "packages_created": false
+    },
+    "phase2_evaluators": {
+      "status": "IN_PROGRESS",
+      "existing": "state-invariant + GET/POST route evaluators (039B), host-smoke 10/10 re-verified after PATH repair",
+      "to_build": ["dual-backend exec layer", "react-interaction evaluator", "fullstack-integration evaluator"]
+    },
+    "phase3_research": {"status": "DRAFTED", "doc": "docs/ZAI_SESSION040_CODING_PROCESS_RESEARCH.md (subagent draft; pending lead review)"},
+    "phase4_experiments": {"status": "PENDING", "tracks": ["A unassisted baseline", "B contract-first", "C execution-feedback repair", "D decomposition"], "sample": "paired train/dev tasks from frozen v2 curriculum only"},
+    "phase5_app": {"status": "PENDING", "note": "spec frozen BEFORE generation; app lives in the sandbox Next.js project (the previewable surface) and is archived to the repo with per-file attribution"},
+    "phase6_demo": {"status": "PENDING", "deliverables": ["interactive preview", "desktop+mobile screenshots", "source", "attribution breakdown", "browser interaction tests", "known-broken list"]},
+    "phase7_evaluation": {"status": "PENDING"},
+    "phase8_training_prep": {"status": "PENDING", "training_performed": false}
+  },
+  "environment": {
+    "node": "v24.22.2",
+    "python": "3.12.16 (/home/z/.venv)",
+    "cpus": 2,
+    "ram_mb_total": 4041,
+    "torch": "reinstalling in background (/home/z/s040-model-setup.log)",
+    "model_cache": "re-downloading; pin Qwen/Qwen2.5-Coder-0.5B safetensors sha256 aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80 to be re-verified"
+  },
+  "harness_repairs_this_session": [
+    "control_run._host_smoke: after the environment reset the prisma CLI existed only in /home/z/my-project/node_modules/.bin and was not on PATH, so the two positive route controls failed; the trusted host-smoke wiring now prepends that bin dir (Docker tier unaffected; host-smoke 10/10 re-verified)"
+  ],
+  "tests_at_checkpoint": {
+    "unittest_5file": "57/57 OK",
+    "adversarial_mjs": "30/30",
+    "host_smoke_controls": "10/10 (after PATH repair)"
+  }
+}

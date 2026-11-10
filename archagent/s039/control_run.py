@@ -98,6 +98,14 @@ def run_route_control(repo: Path, control_name: str, task_id: str, image: str | 
 def _host_smoke(harness: Path, control_dir: Path, *, work: str | None = None) -> dict:
     """Run the trusted runner with host Node; candidate path is ALWAYS a control."""
     env = dict(os.environ)
+    # Host-smoke environment wiring (trusted tier only; the Docker tier gets
+    # prisma from the vetted image): the route runner shells out to `prisma`,
+    # which after a sandbox reset may exist only in the sandbox project's
+    # node_modules/.bin rather than on the default PATH. Prepend every known
+    # trusted location that actually provides the binary.
+    for bin_dir in ("/home/z/my-project/node_modules/.bin",):
+        if (Path(bin_dir) / "prisma").exists():
+            env["PATH"] = f"{bin_dir}{os.pathsep}{env.get('PATH', '')}"
     env["S039_HARNESS"] = str(harness)
     env["S039_CANDIDATE"] = str(control_dir / "output.ts")
     if work:
