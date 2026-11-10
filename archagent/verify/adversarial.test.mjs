@@ -16,7 +16,13 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const root = '/home/z/my-project';
+// Session 040 fix: the archived StockPilot surface now lives in this repo
+// (apps/stockpilot). The previous hardcoded sandbox path
+// (/home/z/my-project) is MUTABLE — the live sandbox app is replaced by
+// Session-040 Phase 5 — which silently broke G4 once already (039B had to
+// restore the schema by hand). Reading the archived bytes keeps the exact
+// same assertions on the same archived content.
+const root = new URL('../../apps/stockpilot/', import.meta.url).pathname;
 let pass = 0, fail = 0;
 function expect(name, verdict, wantPass, extra) {
   const ok = verdict.pass === wantPass

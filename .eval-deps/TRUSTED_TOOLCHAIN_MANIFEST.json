@@ -1,0 +1,13 @@
+{
+  "files": {
+    ".eval-deps/package-lock.json": "f4e4bcef27452ef91adbbbd54dc789905c555f01fa7a70166706f828d4fc962d",
+    ".eval-deps/package.json": "4d5c2e577d6b85f8dcd1c70a0b58f8cc8fb512c44a42e1f17f8bb737645cbdb8"
+  },
+  "node_modules_tree": {
+    "aggregate_sha256": "50f9e18f3c2490360a7f3aa3403415e9172d44cff0aa9d56fd880ea18c62a340",
+    "files": 6825,
+    "note": "aggregate hash-of-hashes over node_modules; recompute to detect drift"
+  },
+  "note": "SHA-256 of every tracked file under .eval-deps (node_modules excluded by hash-tree below)",
+  "recorded_utc": "2026-11-10"
+}

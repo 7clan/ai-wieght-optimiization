@@ -18,3 +18,4 @@ edits/
 apps/*/data/
 node_modules/
 experiments/z037-generalization/workspace-snapshots/*.tar.gz
+.eval-deps/node_modules/

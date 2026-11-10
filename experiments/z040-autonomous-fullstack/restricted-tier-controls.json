@@ -1,0 +1,145 @@
+{
+  "all_oracles_validated": true,
+  "backend": "unshare",
+  "controls": {
+    "integration-hang-control.tsx": {
+      "candidate_executed": true,
+      "exit_code": -5,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "status": "EXECUTION_FAILED",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-invalid-ts-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 1,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-missing-export-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 1,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-no-error-display.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-phantom.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-positive-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": true,
+      "oracle_validated": true,
+      "passed": true,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_PASS",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-wrong-path.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-hang-control.tsx": {
+      "candidate_executed": true,
+      "exit_code": -11,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "status": "EXECUTION_FAILED",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-invalid-ts-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 1,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-missing-export-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 1,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-no-clear-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-positive-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": true,
+      "oracle_validated": true,
+      "passed": true,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_PASS",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-search-ignored-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-status-ignored-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-unlabeled-control.tsx": {
+      "candidate_executed": true,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    }
+  },
+  "elapsed_seconds": 49.7,
+  "mode": "RESTRICTED_TIER_TRUSTED_CONTROLS_ONLY",
+  "model_generated_code_executed": false,
+  "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE"
+}
