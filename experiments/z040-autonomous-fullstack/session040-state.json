@@ -32,8 +32,9 @@
       "schema_evaluator_added": "archagent/s040/schema_eval.py + schema_probes + 3 schema controls (prisma-validate inside restricted tier)"
     },
     "phase3_research": {
-      "status": "COMPLETE (lead-reviewed; appendix with implementation-status annotations pending Phase 7 report)",
-      "doc": "docs/ZAI_SESSION040_CODING_PROCESS_RESEARCH.md (subagent draft; pending lead review)"
+      "status": "COMPLETE",
+      "doc": "docs/ZAI_SESSION040_CODING_PROCESS_RESEARCH.md",
+      "lead_review": "appendix added post-experiment: implementation-status annotations, per-technique verdicts from the measured tracks, lesson #9 (empty feedback channel)"
     },
     "phase4_experiments": {
       "status": "COMPLETE",
@@ -79,11 +80,14 @@
       "preview": "sandbox Next.js / route (dev server port 3000)"
     },
     "phase7_evaluation": {
-      "status": "PENDING"
+      "status": "COMPLETE",
+      "report": "docs/ZAI_SESSION040_EVALUATION_REPORT.md",
+      "headline": "A 0/18, B 1/18, C 1/18 (0/17 feedback conversions with verified channel), D 0/6; failure taxonomy: demo-vocabulary copying 11/17, crashes 5/17; costs logged per track",
+      "integrity_event": "empty-feedback harness defect found/fixed/superseded/re-run; unit suite 231 OK incl. new FeedbackChannelTests"
     },
     "phase8_training_prep": {
-      "status": "PENDING",
-      "training_performed": false
+      "status": "COMPLETE (preparation only; NO training)",
+      "package": "experiments/z040-autonomous-fullstack/training-prep/ (DATASET_CARD.md, candidate-queue-040.jsonl x3 verified, contrastive-pairs-040.jsonl x6 leads, TRAINING_PROPOSAL.md with frozen eval plan and pre-declared success criteria)"
     }
   },
   "environment": {

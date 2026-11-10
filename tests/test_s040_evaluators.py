@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+from unittest import mock
 
 from archagent.s040 import exec as s040exec
 from archagent.s040 import control_run, integration_fixtures, react_fixtures
@@ -164,6 +165,59 @@ class EvidenceFileTests(unittest.TestCase):
         for name, outcome in data["controls"].items():
             self.assertTrue(outcome["oracle_validated"], name)
             self.assertIn(outcome.get("tier"), ("UNSHARE_USERNS_DISCLOSED",), name)
+
+
+class FeedbackChannelTests(unittest.TestCase):
+    """Lesson #9 (empty feedback channel): the feedback path is part of the
+    Track-C treatment and must be asserted on, not just the verdict."""
+
+    def test_verdict_carries_sanitized_checks(self):
+        stdout = ('S040-RESULT {"pass": false, "checks": ['
+                  '{"name": "probe-a", "passed": false, "detail": "boom"}, '
+                  '{"name": "probe-b", "passed": true}]}\n')
+        verdict = s040exec._parse_verdict(stdout)
+        self.assertEqual(verdict["status"], "BEHAVIOR_FAIL")
+        checks = verdict.get("checks")
+        self.assertIsInstance(checks, list, "verdict must carry the checks table")
+        self.assertEqual(len(checks), 2)
+        self.assertEqual(checks[0]["name"], "probe-a")
+        self.assertFalse(checks[0]["passed"])
+        self.assertEqual(checks[0]["detail"], "boom")
+
+    def test_execution_failure_carries_synthetic_check(self):
+        stdout = "S040-RESULT {\"pass\": true, \"checks\": []}\n"  # never parsed: rc != 0
+        with mock.patch.object(s040exec.subprocess, "Popen") as popen, \
+                tempfile.TemporaryDirectory() as a, tempfile.TemporaryDirectory() as b, \
+                tempfile.TemporaryDirectory() as c:
+            for d in (a, b, c):
+                Path(d, "placeholder").write_text("x", encoding="utf-8")
+            Path(a, "output.ts").write_text("x", encoding="utf-8")
+            Path(b, "parse_gate.mjs").write_text("x", encoding="utf-8")
+            Path(c, "node_modules").mkdir()
+            proc = popen.return_value
+            proc.communicate.return_value = (stdout, "")
+            proc.returncode = 1
+            result = s040exec.run(Path(a), Path(b), Path(c),
+                                  runner="parse_gate.mjs", tier="invariant",
+                                  backend="unshare")
+        self.assertEqual(result["status"], "EXECUTION_FAILED")
+        self.assertTrue(result["checks"], "execution failures must carry a synthetic check")
+        self.assertEqual(result["checks"][0]["name"], "exited-cleanly")
+
+    def test_repair_prompt_quotes_failing_checks(self):
+        from archagent.s040 import prompts as s040prompts
+        entry = {"skill": "state-invariant", "id": "t:x", "domain": "x",
+                 "entities": {"parent": "P", "child": "C", "foreign_key": "pId",
+                              "foreign_key_mode": "required"},
+                 "fields": {"label": "label", "amount": "n", "min_inclusive": 0,
+                            "max_inclusive": 10},
+                 "workflow": ["a", "b", "c"], "user_story": "s",
+                 "requirements": ["r1"]}
+        failing = [{"name": "case-1", "passed": False, "detail": "expected false, got true"}]
+        prompt = s040prompts.build_track_c_repair(entry, 1, failing)
+        head = prompt.split("Fix exactly those problems")[0]
+        self.assertIn("- case-1: expected false, got true", head,
+                      "repair prompts must quote the failing checks (empty-feedback defect)")
 
 
 if __name__ == "__main__":

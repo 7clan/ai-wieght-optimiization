@@ -159,3 +159,50 @@ All tracks: identical total budget per piece (2,000 tokens / 6 attempts, the 038
 ---
 
 *No training, no weight edits, no candidate execution, and no git operations occurred in the production of this document. Evidence citations refer to Sessions 033–039 artifacts in this repository; external works are named for research basis only and described conservatively where attribution was uncertain.*
+
+---
+
+## Appendix (lead review, post-experiment — added 2026-11-10 after Phases 4–7)
+
+This appendix records the lead review of the subagent draft against what
+Session 040 actually built and measured. The eight technique sections stand
+as written; the annotations below supersede any design detail that moved
+during implementation.
+
+**Implementation status of the designs.** The z040 track protocol
+(`archagent/s040/`: `exec.py` dual backend, `prompts.py`, `experiments.py`,
+six evaluator families, 15+3 controls) implements §§1–7's measurement plans
+with three disclosed deviations: (i) paths live in `archagent/s040/` (not
+`z040/`); (ii) the budget is per-piece single-shot caps (278–900 tokens by
+skill) plus ≤ 3 Track-C repairs, not the 2,000/6 ladder — the ladder was an
+038A carry-over that the v2 single-shot gates made redundant; (iii) §5's
+`diagnosis.py` triage cascade was folded into the evaluators' fail-closed
+check tables (the classified feedback §4 needed) rather than a separate
+module — the empty-feedback defect (§ below) proved the seam mattered more
+than the shape.
+
+**What the measurements decided.** §1 (contract-first): the v2 result
+(B 1/18 vs A 0/18) does not reproduce the 037/038A v1 effect size — the
+technique remains the baseline but its ceiling on v2-difficulty contracts
+is ~0; the shortlist's "LARGE" rating is suite-relative and should not be
+quoted without that qualifier. §4 (execution-feedback repair): cleanly
+falsified at this scale in both regimes — 038A's null (R 8/15, p=1.0) and
+040's information-rich 0/17 conversions with counterexamples quoted — the
+doc's "MEDIUM on near-miss conversion" hypothesis is rejected for this
+checkpoint. §2 (decomposition): D 0/6 replicates the 037 engine-track
+caution (token economy without passes). §7 (evaluators): built and
+validated (15/15 restricted-tier controls; the react/integration families
+now have oracles — the doc's "mandatory work" item). §6 (retrieval) and §8
+(memory) were not separately ablated this session; the demo-vocabulary
+dominance (11/17) makes §6's vocabulary lock the natural instrument for any
+future run. §3 (FIM) stayed restricted as designed (no scaffold-fill use).
+
+**Harness-defect addendum to the failure-mode list (new lesson #9).** The
+empty feedback channel: the verdict sanitizer dropped the check list, so
+Track-C repair prompts quoted no problems (51/51 attempts) — found by
+reading a Phase-5 app repair prompt, not by any test. Fix + supersession +
+re-run are documented in `tracks-superseded-empty-feedback/README.md` and
+the Phase-7 report §4. Lesson: **the feedback path is part of the
+treatment and must be asserted on, not just the verdict** — a new
+assertion now exists (evidence spot-checks verify the quoted-checks section
+is non-empty when the verdict has failed checks).
