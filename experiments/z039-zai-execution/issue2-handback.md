@@ -1,0 +1,33 @@
+## Session 039B hand-back — Z.ai
+
+**Branch:** [`exp/zai-039-docker-execution`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/zai-039-docker-execution) (created from the required source commit `0228364`; all other branches untouched)
+**Final commit:** https://github.com/7clan/ai-wieght-optimiization/commit/e70f265d28d625f31670ac5f5847af01886d3ed2
+**Full report:** [`docs/ZAI_SESSION039_DOCKER_EXECUTION.md`](https://github.com/7clan/ai-wieght-optimiization/blob/exp/zai-039-docker-execution/docs/ZAI_SESSION039_DOCKER_EXECUTION.md) · machine-readable state: `experiments/z039-zai-execution/session039b-state.json`
+
+### 1. Starting-point verification — reproduced
+- Unit tests **35/35** (all four preparation modules), curriculum v1+v2 freeze checks and scenarios-v2 train/dev checks all reproduce with zero drift; `reconcile_038a` re-run → 22 claims / 12 structures / 7 families / 0 training-eligible / 0 errors.
+- The 96-contract corpus and 038A archives were **not** regenerated or modified. All 24 v2 holdout contracts remain **sealed** (SHA reference intact, never loaded).
+
+### 2. Docker — BLOCKED (the honest headline)
+No Docker-capable execution environment exists in this sandbox: no `docker`/`podman`/`nerdctl`/`dockerd`/`containerd`/`runc` binaries, no socket, and the sandbox is **itself an unprivileged Docker container** (`/.dockerenv`). Rootless-Docker prerequisites are absent (no setuid `newuidmap`/`newgidmap`, no `slirp4netns`, no `fuse-overlayfs`, password-gated `sudo`, read-only cgroups). `unshare -Urn` works but the Session-039 boundary **explicitly forbids substituting it** — it was not used. Full survey: `experiments/z039-zai-execution/phase0-verification.json`. No metered CI job was started; approval is requested below.
+
+### 3. Image pinning — groundwork recorded, not built
+`node:24` linux/amd64 manifest digest **`sha256:6b9d4ea31e614e29f364bf75758458731eb1e105b80c99667438dd6b3fe262e0`** (NODE_VERSION 24.22.2) resolved via the registry API without pulling (`experiments/z039-zai-execution/image-pins.json`). A vetted image recipe exists (`docker/s039-route-eval.Dockerfile`: pinned base + `prisma@6.19.3`, engines fetched at build time so eval containers need no network). The **built evaluation image digest does not exist yet** because building requires an approved environment.
+
+### 4. Controls — implemented and validated at the disclosed host tier; Docker tier NOT run
+A **ten-control trusted teacher matrix** (3 spec-faithful positives; 7 known-bad: demo-vocabulary copier, fixture-copying GET, write-before-validate POST, invalid TypeScript, missing export, partial-order, async-hang) was run through the real harness code with host Node in a trusted-code-only smoke mode — the "candidate" path is always a trusted control, never model output. **10/10 oracles validated**, including exact-case discrimination (the partial implementation fails exactly the order-sensitive `list-all` case; import/export failures fail closed; hangs are bounded). Evidence: `experiments/z039-zai-execution/host-smoke-controls.json`. The smoke run itself caught two real harness defects (hardcoded runner paths; a stdout spoof/suppress vector in both runners) which were fixed before publication. **The same controls have not run inside the actual restricted container** — that is the missing Docker-tier proof.
+
+### 5. GET/POST behavioral evaluation — implemented
+Genuine Prisma+SQLite route evaluation now exists (`archagent/s039/route_eval.py` + `harness/route_runner.mjs`): trusted fixtures derived from the frozen v2 contracts (route path and envelope extraction verified across **all 24 train+dev GET/POST contracts**), offline `prisma db push/generate/seed`, import redirection that never edits candidate bytes, GET status/envelope/ordering/total probes, POST status + per-case-reseeded persistence-delta probes, per-probe 10 s timeouts, single fail-closed verdict, restricted-container settings (network none, read-only root, UID 10001, cap-drop ALL, no-new-privileges, pids/cpu/memory caps, digest pin, `--pull never`) with one disclosed deviation: the `/work` tmpfs allows exec (nosuid kept) solely for the trusted Prisma engine. **React-interaction and integrated e2e evaluators are NOT implemented** — they remain next work. 53/53 unit tests (18 new, all Docker-mocked).
+
+### 6. Qwen candidates — zero, by design
+**0 candidates generated, 0 executed.** The work order sequences generation after the verifier passes controls *in Docker*; that gate is unmet, so no prompts were spent and no budget consumed (the model cache was also lost to an environment reset and must be re-downloaded + SHA-256 re-verified first). Consequently: no per-family pass counts, no model-only vs controller metrics, no token/CPU/RAM/time accounting, **no interactive preview or screenshot** — none of these exist and none are claimed.
+
+### 7. Integrity accounting
+Model weights **unchanged** (no gradients, LoRA, fine-tuning or checkpoints). Model-written bytes: **0**; every harness/control byte is teacher-authored and labeled `TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE`. `main` and all prior branches untouched; no force pushes. No working app and no trained model is claimed.
+
+### 8. Requested decisions (blocking)
+1. **Approve dispatching the stage-1 control job**: `.github/workflows/s039-docker-eval.yml` (manual `workflow_dispatch` only — it never runs on push; stage 1 builds the pinned image and runs the ten controls with zero model code; stage 2 requires a separate dispatch with the recorded digest). The repo is public so standard runners should be unmetered, but per the assignment nothing was dispatched without approval.
+2. Alternatively, **provide a Docker-capable environment** and run the reproduction commands at the end of the report.
+
+Once stage-1 controls pass in-container and candidate generation is approved, the Phase-2 balanced sample (2 train + 2 dev, one invariant + one GET/POST) and the React/integration executors are the immediate next steps.
