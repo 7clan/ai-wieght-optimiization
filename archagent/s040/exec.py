@@ -60,7 +60,7 @@ RESULT_MARKER = "S040-RESULT "
 IMAGE_RE = re.compile(r"^[a-z0-9][a-z0-9._/:-]*@sha256:[a-f0-9]{64}$")
 
 RUNNERS = ("react_runner.mjs", "integration_runner.mjs", "schema_runner.mjs",
-           "runner.mjs", "route_runner.mjs")
+           "runner.mjs", "route_runner.mjs", "parse_gate.mjs")
 
 # Session-039 trusted runners executed through this tier (compat mode): they
 # are env-parameterized (S039_*) and emit their own S039-RESULT marker.

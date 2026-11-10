@@ -1,0 +1,147 @@
+{
+  "spec_version": 1,
+  "frozen_utc": "2026-11-10T18:00:00+00:00",
+  "session": "040",
+  "phase": "5",
+  "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+  "app": {
+    "name": "GearHut",
+    "tagline": "Gear locker maintenance log",
+    "domain": "gearhut",
+    "domain_disjointness": "gearhut is not among the 12 known v2 curriculum domains (train: aquarium artmarket filmset foodbank landregistry makerspace observatory recycling wildlife; dev: radiostation sportsarena tailorshop). The 24 holdout domains are sealed and unread; the app is a demonstration (not an evaluation), so holdout disjointness is not required for validity - recorded for transparency.",
+    "user_story": "Manage GearItem records linked to GearLocker in the GearHut maintenance service.",
+    "crud_surface": "Create (POST), Read (GET with filters), Update (PATCH advance-status via the state invariant), Delete (DELETE by id)"
+  },
+  "entities": {
+    "parent": "GearLocker",
+    "child": "GearItem",
+    "foreign_key": "lockerId",
+    "foreign_key_mode": "required"
+  },
+  "fields": {
+    "label": "label",
+    "amount": "usageHours",
+    "min_inclusive": 0,
+    "max_inclusive": 2000
+  },
+  "workflow": ["stashed", "inspected", "retired"],
+  "schema_contract": {
+    "requirements": [
+      "Write the Prisma models for GearLocker and GearItem, with correct one-to-many relation sides.",
+      "The GearItem.lockerId foreign key is required; its relation field must have matching nullability.",
+      "Use String @id @default(cuid()) primary keys and a usageHours Int field.",
+      "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.",
+      "The child model also stores status String @default(\"stashed\"), persisted for UI/API workflows.",
+      "GearLocker also has an optional name String? field."
+    ],
+    "trusted_scaffold": "datasource db { provider = \"sqlite\", url = env(\"DATABASE_URL\") } + generator client { provider = \"prisma-client-js\" } is teacher-provided Next.js boilerplate (TRUSTED-SCAFFOLD); the model bytes are the generation target.",
+    "probe_plan": ["parent-create", "child-required-fields-present", "child-create-valid-fk", "fk-nullability-matches-contract", "bogus-fk-rejected", "on-delete-semantics", "status-default"]
+  },
+  "invariant_contract": {
+    "export": "canAdvanceGearItem(record, locker)",
+    "requirements": [
+      "Export a pure predicate canAdvanceGearItem(record, locker) returning a boolean; it must never mutate its arguments.",
+      "When record.status is \"stashed\": return true exactly when locker is not null.",
+      "When record.status is \"inspected\": return true exactly when record.usageHours is between 1 and 2000 inclusive.",
+      "When record.status is \"retired\" or any unrecognized status: return false.",
+      "No filesystem, network or database access."
+    ],
+    "cases": [
+      { "name": "stashed-with-locker", "inputs": [{ "status": "stashed", "usageHours": 5 }, { "id": "l1" }], "expected": true },
+      { "name": "stashed-null-locker", "inputs": [{ "status": "stashed", "usageHours": 5 }, null], "expected": false },
+      { "name": "inspected-in-range", "inputs": [{ "status": "inspected", "usageHours": 100 }, { "id": "l1" }], "expected": true },
+      { "name": "inspected-below-range", "inputs": [{ "status": "inspected", "usageHours": 0 }, { "id": "l1" }], "expected": false },
+      { "name": "inspected-above-range", "inputs": [{ "status": "inspected", "usageHours": 2001 }, { "id": "l1" }], "expected": false },
+      { "name": "retired-terminal", "inputs": [{ "status": "retired", "usageHours": 10 }, { "id": "l1" }], "expected": false },
+      { "name": "unknown-status", "inputs": [{ "status": "flying", "usageHours": 10 }, { "id": "l1" }], "expected": false }
+    ]
+  },
+  "route_contract": {
+    "route_path": "/api/gearhut-items",
+    "envelope_key": "gear",
+    "get_requirements": [
+      "GET /api/gearhut-items returns Response.json({ gear: rows, total }) where rows match the filters.",
+      "Query parameter search (optional): case-insensitive substring match on label; filter in the database with Prisma contains + LOWER().",
+      "Query parameter status (optional): exact status match; the value \"all\" or empty means no status filter.",
+      "total equals the number of FILTERED rows.",
+      "Order rows by label ascending.",
+      "Import db from \"@/lib/db\" and use the global Response.json (no next/server import)."
+    ],
+    "post_requirements": [
+      "POST /api/gearhut-items creates a GearItem from a JSON body { label, usageHours, lockerId }.",
+      "400 with { error } when label is missing, not a string, or blank after trim.",
+      "400 with { error } when usageHours is not an integer between 0 and 2000.",
+      "404 with { error } when lockerId does not reference an existing GearLocker.",
+      "409 with { error } when a GearItem with the same label already exists.",
+      "On success persist with status \"stashed\" and return 201 with the created record as JSON."
+    ],
+    "teacher_extensions": {
+      "patch": "PATCH /api/gearhut-items/[id] { status } advances the item only when canAdvanceGearItem(current, locker) is true (200 + updated row); otherwise 409 with the invariant reason. TEACHER-CORRECTED code that makes the QWEN-generated invariant load-bearing.",
+      "delete": "DELETE /api/gearhut-items/[id] removes the item (204). TEACHER-CORRECTED."
+    }
+  },
+  "ui_contract": {
+    "react_requirements": [
+      "Default-export a GearItemList({ data }) component that renders every row it receives through the data prop (no fetch).",
+      "A labeled search input filters rows by label case-insensitively.",
+      "A labeled status select offers all/stashed/inspected/retired and filters by exact status.",
+      "A Clear filters button resets both filters.",
+      "When no rows match, render an explicit empty state with data-testid=\"empty-state\".",
+      "Render label, usageHours and status for each row."
+    ],
+    "integration_requirements": [
+      "Default-export a GearItemManager({ lockers }) component that GETs /api/gearhut-items on mount and reads { gear, total }.",
+      "A create form with labeled label text input, usageHours number input and Locker select (options from the lockers prop, defaulting to the first) POSTs JSON { label, usageHours, lockerId }.",
+      "On 201 the visible list and total update without a page reload.",
+      "On failure the error message is visible (role=\"alert\") and the form keeps its values.",
+      "Display the total number of items.",
+      "The list shows label, usageHours and status for each row."
+    ],
+    "teacher_assembly": "src/app/page.tsx (server component) loads lockers from the database, wraps the generated manager in the shadcn/theme chrome (responsive, sticky footer) and is TEACHER-INTEGRATED; per-row advance/delete actions are teacher-added wiring around the generated core, disclosed in ATTRIBUTION.md."
+  },
+  "generation_protocol": {
+    "model": "Qwen/Qwen2.5-Coder-0.5B (frozen, sha256 aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80)",
+    "decoding": "greedy, deterministic seed per piece (seed_for('APP', piece_id))",
+    "prompt": "Track-B contract-first template from archagent/s040/prompts.py, reused verbatim with the app entry (concept + greenhouse demo + bounded spec + domain-diff + checklist + anchor)",
+    "extraction": "L-TRIM brace balance (experiments.extract_construct); schemas keep full text",
+    "repair": "<= 2 full-context regenerations with failing gate checks quoted back (build_track_c_repair)",
+    "gates": {
+      "schema-relationship": "restricted-tier schema_runner with this app task spec (7 behavioral probes against a database built from the candidate's own schema); trusted datasource/generator scaffold prepended before staging",
+      "state-invariant": "restricted-tier s039 runner with this app case table (7 boolean cases)",
+      "api-get-filter / api-post-validation / react-interaction / fullstack-integration": "restricted-tier parse gate (esbuild transform; syntax-level) + Phase-6 app-level behavioral tests (apitest.mjs + browser)"
+    },
+    "tier": "UNSHARE_USERNS_DISCLOSED locally; Docker argv parity preserved for CI",
+    "attribution_labels": ["QWEN_GENERATED", "QWEN-REPAIRED", "TEACHER-CORRECTED", "TRUSTED-SCAFFOLD", "TEACHER-INTEGRATED"],
+    "holdout": "untouched by this app work"
+  },
+  "test_plan_phase6": {
+    "api": [
+      "GET no params: 200, gear array non-empty after seed, total matches",
+      "GET ?search=: case-insensitive label substring only",
+      "GET ?status=: exact match; all/empty = no filter",
+      "GET combined search+status",
+      "GET no match: empty array + total 0",
+      "POST valid: 201, status stashed, persisted (survives GET)",
+      "POST missing/blank label: 400",
+      "POST usageHours out of range or non-integer: 400",
+      "POST bogus lockerId: 404",
+      "POST duplicate label: 409",
+      "PATCH legal advance (stashed->inspected): 200 + updated status",
+      "PATCH illegal advance (retired->stashed): 409 with invariant reason",
+      "DELETE: 204, row gone from GET"
+    ],
+    "ui_browser": [
+      "initial render shows seeded items and total",
+      "search filters the visible list",
+      "status filter works; combined filters work",
+      "clear resets filters",
+      "empty state visible on no match",
+      "create valid item: appears without page reload, total increments",
+      "create duplicate: error visible, form values preserved",
+      "advance action moves status through the workflow",
+      "delete action removes the row",
+      "responsive at 320px; footer sticks to bottom on short pages"
+    ],
+    "invariant_unit": "the 7-case table from invariant_contract, run against the integrated src/lib/gear-invariant.ts"
+  }
+}
