@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from archagent.finetune import reconcile_038a
-from archagent.s039 import curriculum, scenarios
+from archagent.s039 import curriculum, curriculum_v2, scenarios, docker_only, invariant_eval
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -136,6 +136,85 @@ class ScenarioPlanTests(unittest.TestCase):
             scenarios.write(ROOT, split, target, check=True)
             with self.assertRaises(FileExistsError):
                 scenarios.write(ROOT, split, target, check=False)
+
+    def test_version_two_repairs_status_requirement_without_rewriting_v1(self):
+        v1_file = ROOT / "experiments/z039-generalization-learning/suite/MANIFEST.json"
+        before = v1_file.read_bytes()
+        directory = ROOT / "experiments/z039-generalization-learning/suite-v2"
+        curriculum_v2.freeze(directory, check=True)
+        self.assertEqual(before, v1_file.read_bytes())
+        amended = curriculum_v2.build("dev")
+        schema = next(x for x in amended["tasks"] if x["skill"] == "schema-relationship")
+        self.assertTrue(any("status String" in req for req in schema["requirements"]))
+        self.assertEqual(schema["contract_version"], 2)
+
+    def test_version_two_scenario_export_and_heldout_lock(self):
+        for split in ("train", "dev"):
+            target = ROOT / "experiments/z039-generalization-learning/scenarios-v2" / f"{split}.json"
+            scenarios.write(ROOT, split, target, check=True, suite_version=2)
+        with self.assertRaises(PermissionError):
+            scenarios.build(ROOT, "holdout", suite_version=2)
+
+
+class DockerOnlyHarnessTests(unittest.TestCase):
+    IMAGE = "s039-eval@sha256:" + "a" * 64
+
+    def test_docker_command_pins_image_and_constrains_capabilities(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            cand, harness = root / "candidate", root / "harness"
+            cand.mkdir(); harness.mkdir()
+            (harness / "runner.mjs").write_text("// trusted fixture", encoding="utf-8")
+            args = docker_only.command(self.IMAGE, cand, harness)
+            self.assertIn("none", args)
+            self.assertIn("--read-only", args)
+            self.assertIn("--cap-drop", args)
+            self.assertIn("no-new-privileges", args)
+            self.assertIn("readonly", " ".join(args))
+            self.assertIn(self.IMAGE, args)
+            with self.assertRaises(ValueError):
+                docker_only.command("node:latest", cand, harness)
+
+    def test_missing_docker_is_hard_block_and_no_fallback(self):
+        with patch.object(docker_only.shutil, "which", return_value=None):
+            result = docker_only.run(self.IMAGE, Path("/nonexistent"), Path("/nonexistent"))
+        self.assertEqual(result["status"], "BLOCKED_NO_DOCKER")
+        self.assertFalse(result["candidate_executed"])
+
+    def test_ambiguous_candidate_stdout_is_rejected(self):
+        from subprocess import CompletedProcess
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); cand = root / "candidate"; harness = root / "harness"
+            cand.mkdir(); harness.mkdir(); (harness / "runner.mjs").write_text("// fixture", encoding="utf-8")
+            verdict = 'S039-RESULT {"pass":true,"checks":[{"name":"x","passed":true}]}\n'
+            with patch.object(docker_only.shutil, "which", return_value="/usr/bin/docker"), \
+                 patch.object(docker_only.subprocess, "run", return_value=CompletedProcess([], 0, verdict * 2, "")):
+                result = docker_only.run(self.IMAGE, cand, harness)
+            self.assertEqual(result["status"], "NO_UNAMBIGUOUS_VERDICT")
+            self.assertFalse(result["passed"])
+
+    def test_single_valid_mocked_verdict_is_parsed_not_executed(self):
+        from subprocess import CompletedProcess
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); cand = root / "candidate"; harness = root / "harness"
+            cand.mkdir(); harness.mkdir(); (harness / "runner.mjs").write_text("// fixture", encoding="utf-8")
+            verdict = 'S039-RESULT {"pass":true,"checks":[{"name":"transition","passed":true}]}\n'
+            with patch.object(docker_only.shutil, "which", return_value="/usr/bin/docker"), \
+                 patch.object(docker_only.subprocess, "run", return_value=CompletedProcess([], 0, verdict, "")) as mocked:
+                result = docker_only.run(self.IMAGE, cand, harness)
+            self.assertTrue(result["passed"])
+            self.assertEqual(result["status"], "BEHAVIOR_PASS")
+            args = mocked.call_args.args[0]
+            self.assertIn("--network", args)
+            self.assertIn("none", args)
+            self.assertEqual(mocked.call_count, 1)
+
+    def test_trusted_invariant_fixture_uses_amended_suite(self):
+        record = invariant_eval.task_fixture(ROOT, "dev", "radiostation:state-invariant")
+        self.assertEqual(record["export_name"], "canAdvanceBroadcast")
+        self.assertGreaterEqual(len(record["cases"]), 6)
+        with self.assertRaises(ValueError):
+            invariant_eval.task_fixture(ROOT, "dev", "radiostation:api-post-validation")
 
 
 if __name__ == "__main__":

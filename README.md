@@ -821,3 +821,9 @@ Train/dev black-box scenario plans now specify independent fixtures and
 positive/negative cases without executing any candidate; holdout scenarios
 remain sealed. The v1 cross-module status-field ambiguity is disclosed,
 not silently patched into the frozen suite.
+
+An explicitly versioned `suite-v2/` and `scenarios-v2/` now repair that
+status-field mismatch while keeping v1 immutable. A fail-closed Docker-only
+state-invariant evaluator has been implemented and unit-tested, but cannot
+execute candidates in this Docker-less workspace; API/React executors are
+still pending. See `docs/SESSION039_EXECUTION_BOUNDARY.md`.

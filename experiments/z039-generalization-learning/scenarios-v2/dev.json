@@ -1,0 +1,1813 @@
+{
+  "candidate_execution_count": 0,
+  "origin": "TRUSTED_ORACLE_PLAN_NOT_QWEN_CODE",
+  "session": "039",
+  "split": "dev",
+  "suite_version": 2,
+  "tasks": [
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "transmitterId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "transmitterId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "transmitterId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "set-null",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "airtimeMin": 1,
+            "id": "sample-a",
+            "status": "drafted",
+            "title": "Amber",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 2,
+            "id": "sample-b",
+            "status": "cleared",
+            "title": "Cobalt",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 3,
+            "id": "sample-c",
+            "status": "aired",
+            "title": "Beacon",
+            "transmitterId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "radiostation:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "transmitterId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "q": "beacon",
+            "transmitterId": "parent-a"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "airtimeMin": 1,
+            "id": "sample-a",
+            "status": "drafted",
+            "title": "Amber",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 2,
+            "id": "sample-b",
+            "status": "cleared",
+            "title": "Cobalt",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 3,
+            "id": "sample-c",
+            "status": "aired",
+            "title": "Beacon",
+            "transmitterId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "radiostation:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "airtimeMin": 1,
+            "title": "New item",
+            "transmitterId": "parent-a"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "airtimeMin": 360,
+            "title": "New item",
+            "transmitterId": "parent-a"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "airtimeMin": 1,
+            "title": "  ",
+            "transmitterId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "airtimeMin": "abc",
+            "title": "New item",
+            "transmitterId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "airtimeMin": 1.25,
+            "title": "New item",
+            "transmitterId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "airtimeMin": 0,
+            "title": "New item",
+            "transmitterId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "airtimeMin": 361,
+            "title": "New item",
+            "transmitterId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "airtimeMin": 1,
+            "title": "New item",
+            "transmitterId": "missing"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "airtimeMin": 1,
+            "title": "Amber",
+            "transmitterId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "airtimeMin": 1,
+            "title": "New item",
+            "transmitterId": null
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "airtimeMin": 1,
+            "id": "sample-a",
+            "status": "drafted",
+            "title": "Amber",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 2,
+            "id": "sample-b",
+            "status": "cleared",
+            "title": "Cobalt",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 3,
+            "id": "sample-c",
+            "status": "aired",
+            "title": "Beacon",
+            "transmitterId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "radiostation:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "drafted",
+            "cleared"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "cleared",
+            "aired"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "drafted",
+            "drafted"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "drafted",
+            "aired"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "aired",
+            "cleared"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "cleared"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "airtimeMin": 1,
+            "id": "sample-a",
+            "status": "drafted",
+            "title": "Amber",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 2,
+            "id": "sample-b",
+            "status": "cleared",
+            "title": "Cobalt",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 3,
+            "id": "sample-c",
+            "status": "aired",
+            "title": "Beacon",
+            "transmitterId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "radiostation:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "cleared"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "aired"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "airtimeMin": 1,
+            "id": "sample-a",
+            "status": "drafted",
+            "title": "Amber",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 2,
+            "id": "sample-b",
+            "status": "cleared",
+            "title": "Cobalt",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 3,
+            "id": "sample-c",
+            "status": "aired",
+            "title": "Beacon",
+            "transmitterId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "radiostation:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "airtimeMin": 1,
+            "title": "New item",
+            "transmitterId": "parent-a"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "airtimeMin": 1,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "airtimeMin": 1,
+            "title": "Valid",
+            "transmitterId": "missing"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "airtimeMin": 1,
+            "id": "sample-a",
+            "status": "drafted",
+            "title": "Amber",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 2,
+            "id": "sample-b",
+            "status": "cleared",
+            "title": "Cobalt",
+            "transmitterId": "parent-a"
+          },
+          {
+            "airtimeMin": 3,
+            "id": "sample-c",
+            "status": "aired",
+            "title": "Beacon",
+            "transmitterId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "radiostation:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "worktableId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "worktableId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "not-null-reject",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "worktableId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "restrict",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "fabricCm": 10,
+            "id": "sample-a",
+            "status": "measured",
+            "title": "Amber",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 11,
+            "id": "sample-b",
+            "status": "stitched",
+            "title": "Cobalt",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 12,
+            "id": "sample-c",
+            "status": "fitted",
+            "title": "Beacon",
+            "worktableId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "tailorshop:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "worktableId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "q": "beacon",
+            "worktableId": "parent-a"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "fabricCm": 10,
+            "id": "sample-a",
+            "status": "measured",
+            "title": "Amber",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 11,
+            "id": "sample-b",
+            "status": "stitched",
+            "title": "Cobalt",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 12,
+            "id": "sample-c",
+            "status": "fitted",
+            "title": "Beacon",
+            "worktableId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "tailorshop:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "fabricCm": 10,
+            "title": "New item",
+            "worktableId": "parent-a"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "fabricCm": 2000,
+            "title": "New item",
+            "worktableId": "parent-a"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "fabricCm": 10,
+            "title": "  ",
+            "worktableId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "fabricCm": "abc",
+            "title": "New item",
+            "worktableId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "fabricCm": 10.25,
+            "title": "New item",
+            "worktableId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "fabricCm": 9,
+            "title": "New item",
+            "worktableId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "fabricCm": 2001,
+            "title": "New item",
+            "worktableId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "fabricCm": 10,
+            "title": "New item",
+            "worktableId": "missing"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "fabricCm": 10,
+            "title": "Amber",
+            "worktableId": "parent-a"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "fabricCm": 10,
+            "title": "New item",
+            "worktableId": null
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "fabricCm": 10,
+            "id": "sample-a",
+            "status": "measured",
+            "title": "Amber",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 11,
+            "id": "sample-b",
+            "status": "stitched",
+            "title": "Cobalt",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 12,
+            "id": "sample-c",
+            "status": "fitted",
+            "title": "Beacon",
+            "worktableId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "tailorshop:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "measured",
+            "stitched"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "stitched",
+            "fitted"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "measured",
+            "measured"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "measured",
+            "fitted"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "fitted",
+            "stitched"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "stitched"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "fabricCm": 10,
+            "id": "sample-a",
+            "status": "measured",
+            "title": "Amber",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 11,
+            "id": "sample-b",
+            "status": "stitched",
+            "title": "Cobalt",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 12,
+            "id": "sample-c",
+            "status": "fitted",
+            "title": "Beacon",
+            "worktableId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "tailorshop:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "stitched"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "fitted"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "fabricCm": 10,
+            "id": "sample-a",
+            "status": "measured",
+            "title": "Amber",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 11,
+            "id": "sample-b",
+            "status": "stitched",
+            "title": "Cobalt",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 12,
+            "id": "sample-c",
+            "status": "fitted",
+            "title": "Beacon",
+            "worktableId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "tailorshop:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "fabricCm": 10,
+            "title": "New item",
+            "worktableId": "parent-a"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "fabricCm": 10,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "fabricCm": 10,
+            "title": "Valid",
+            "worktableId": "missing"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "fabricCm": 10,
+            "id": "sample-a",
+            "status": "measured",
+            "title": "Amber",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 11,
+            "id": "sample-b",
+            "status": "stitched",
+            "title": "Cobalt",
+            "worktableId": "parent-a"
+          },
+          {
+            "fabricCm": 12,
+            "id": "sample-c",
+            "status": "fitted",
+            "title": "Beacon",
+            "worktableId": "parent-b"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "tailorshop:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "courtId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "courtId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "courtId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "set-null",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "courtId": "parent-a",
+            "id": "sample-a",
+            "participants": 2,
+            "status": "registered",
+            "title": "Amber"
+          },
+          {
+            "courtId": "parent-a",
+            "id": "sample-b",
+            "participants": 3,
+            "status": "confirmed",
+            "title": "Cobalt"
+          },
+          {
+            "courtId": "parent-b",
+            "id": "sample-c",
+            "participants": 4,
+            "status": "completed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "sportsarena:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "courtId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "courtId": "parent-a",
+            "q": "beacon"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "courtId": "parent-a",
+            "id": "sample-a",
+            "participants": 2,
+            "status": "registered",
+            "title": "Amber"
+          },
+          {
+            "courtId": "parent-a",
+            "id": "sample-b",
+            "participants": 3,
+            "status": "confirmed",
+            "title": "Cobalt"
+          },
+          {
+            "courtId": "parent-b",
+            "id": "sample-c",
+            "participants": 4,
+            "status": "completed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "sportsarena:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "courtId": "parent-a",
+            "participants": 2,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "courtId": "parent-a",
+            "participants": 100,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "courtId": "parent-a",
+            "participants": 2,
+            "title": "  "
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "courtId": "parent-a",
+            "participants": "abc",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "courtId": "parent-a",
+            "participants": 2.25,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "courtId": "parent-a",
+            "participants": 1,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "courtId": "parent-a",
+            "participants": 101,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "courtId": "missing",
+            "participants": 2,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "courtId": "parent-a",
+            "participants": 2,
+            "title": "Amber"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "courtId": null,
+            "participants": 2,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "courtId": "parent-a",
+            "id": "sample-a",
+            "participants": 2,
+            "status": "registered",
+            "title": "Amber"
+          },
+          {
+            "courtId": "parent-a",
+            "id": "sample-b",
+            "participants": 3,
+            "status": "confirmed",
+            "title": "Cobalt"
+          },
+          {
+            "courtId": "parent-b",
+            "id": "sample-c",
+            "participants": 4,
+            "status": "completed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "sportsarena:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "registered",
+            "confirmed"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "confirmed",
+            "completed"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "registered",
+            "registered"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "registered",
+            "completed"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "completed",
+            "confirmed"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "confirmed"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "courtId": "parent-a",
+            "id": "sample-a",
+            "participants": 2,
+            "status": "registered",
+            "title": "Amber"
+          },
+          {
+            "courtId": "parent-a",
+            "id": "sample-b",
+            "participants": 3,
+            "status": "confirmed",
+            "title": "Cobalt"
+          },
+          {
+            "courtId": "parent-b",
+            "id": "sample-c",
+            "participants": 4,
+            "status": "completed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "sportsarena:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "confirmed"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "completed"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "courtId": "parent-a",
+            "id": "sample-a",
+            "participants": 2,
+            "status": "registered",
+            "title": "Amber"
+          },
+          {
+            "courtId": "parent-a",
+            "id": "sample-b",
+            "participants": 3,
+            "status": "confirmed",
+            "title": "Cobalt"
+          },
+          {
+            "courtId": "parent-b",
+            "id": "sample-c",
+            "participants": 4,
+            "status": "completed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "sportsarena:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "courtId": "parent-a",
+            "participants": 2,
+            "title": "New item"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "participants": 2,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "courtId": "missing",
+            "participants": 2,
+            "title": "Valid"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "courtId": "parent-a",
+            "id": "sample-a",
+            "participants": 2,
+            "status": "registered",
+            "title": "Amber"
+          },
+          {
+            "courtId": "parent-a",
+            "id": "sample-b",
+            "participants": 3,
+            "status": "confirmed",
+            "title": "Cobalt"
+          },
+          {
+            "courtId": "parent-b",
+            "id": "sample-c",
+            "participants": 4,
+            "status": "completed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "sportsarena:fullstack-integration"
+    }
+  ],
+  "training_eligible": 0
+}

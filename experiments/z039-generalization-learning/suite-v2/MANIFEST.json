@@ -1,0 +1,23 @@
+{
+  "freeze_version": 2,
+  "holdout_rule": "Never load holdout contracts or scenarios in model generation, tuning or feedback; only after final choices locked",
+  "immutable_parent": "experiments/z039-generalization-learning/suite/MANIFEST.json",
+  "inference_on_any_version_at_freeze": 0,
+  "session": "039",
+  "splits": {
+    "dev": {
+      "sha256": "7a18de7831ff6a99ce15208331b19aa2eb4ca7db3cfa8c742427eab65e664436",
+      "task_count": 18
+    },
+    "holdout": {
+      "sha256": "cbec9be5bf6785e380f0cbd370b2a93dc35be6732be25356799dfc11238b2d3a",
+      "task_count": 24
+    },
+    "train": {
+      "sha256": "6de39941009a9dc9a6acd59113f32094b835503ae1dacca6697ae30200a092c8",
+      "task_count": 54
+    }
+  },
+  "training_eligible": 0,
+  "versioned_reason": "Persisted workflow status must exist in schema and APIs; v1 remains preserved"
+}

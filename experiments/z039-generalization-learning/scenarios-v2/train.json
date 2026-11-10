@@ -1,0 +1,5419 @@
+{
+  "candidate_execution_count": 0,
+  "origin": "TRUSTED_ORACLE_PLAN_NOT_QWEN_CODE",
+  "session": "039",
+  "split": "train",
+  "suite_version": 2,
+  "tasks": [
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "tankId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "tankId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "not-null-reject",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "tankId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "restrict",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "feedGrams": 1,
+            "id": "sample-a",
+            "status": "draft",
+            "tankId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "feedGrams": 2,
+            "id": "sample-b",
+            "status": "scheduled",
+            "tankId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "feedGrams": 3,
+            "id": "sample-c",
+            "status": "served",
+            "tankId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "aquarium:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "tankId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "q": "beacon",
+            "tankId": "parent-a"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "feedGrams": 1,
+            "id": "sample-a",
+            "status": "draft",
+            "tankId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "feedGrams": 2,
+            "id": "sample-b",
+            "status": "scheduled",
+            "tankId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "feedGrams": 3,
+            "id": "sample-c",
+            "status": "served",
+            "tankId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "aquarium:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "feedGrams": 1,
+            "tankId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "feedGrams": 600,
+            "tankId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "feedGrams": 1,
+            "tankId": "parent-a",
+            "title": "  "
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "feedGrams": "abc",
+            "tankId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "feedGrams": 1.25,
+            "tankId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "feedGrams": 0,
+            "tankId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "feedGrams": 601,
+            "tankId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "feedGrams": 1,
+            "tankId": "missing",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "feedGrams": 1,
+            "tankId": "parent-a",
+            "title": "Amber"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "feedGrams": 1,
+            "tankId": null,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "feedGrams": 1,
+            "id": "sample-a",
+            "status": "draft",
+            "tankId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "feedGrams": 2,
+            "id": "sample-b",
+            "status": "scheduled",
+            "tankId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "feedGrams": 3,
+            "id": "sample-c",
+            "status": "served",
+            "tankId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "aquarium:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "draft",
+            "scheduled"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "scheduled",
+            "served"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "draft",
+            "draft"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "draft",
+            "served"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "served",
+            "scheduled"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "scheduled"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "feedGrams": 1,
+            "id": "sample-a",
+            "status": "draft",
+            "tankId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "feedGrams": 2,
+            "id": "sample-b",
+            "status": "scheduled",
+            "tankId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "feedGrams": 3,
+            "id": "sample-c",
+            "status": "served",
+            "tankId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "aquarium:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "scheduled"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "served"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "feedGrams": 1,
+            "id": "sample-a",
+            "status": "draft",
+            "tankId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "feedGrams": 2,
+            "id": "sample-b",
+            "status": "scheduled",
+            "tankId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "feedGrams": 3,
+            "id": "sample-c",
+            "status": "served",
+            "tankId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "aquarium:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "feedGrams": 1,
+            "tankId": "parent-a",
+            "title": "New item"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "feedGrams": 1,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "feedGrams": 1,
+            "tankId": "missing",
+            "title": "Valid"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "feedGrams": 1,
+            "id": "sample-a",
+            "status": "draft",
+            "tankId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "feedGrams": 2,
+            "id": "sample-b",
+            "status": "scheduled",
+            "tankId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "feedGrams": 3,
+            "id": "sample-c",
+            "status": "served",
+            "tankId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "aquarium:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "telescopeId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "telescopeId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "telescopeId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "set-null",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "seconds": 2,
+            "status": "queued",
+            "telescopeId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "seconds": 3,
+            "status": "aligned",
+            "telescopeId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "seconds": 4,
+            "status": "captured",
+            "telescopeId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "observatory:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "telescopeId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "q": "beacon",
+            "telescopeId": "parent-a"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "seconds": 2,
+            "status": "queued",
+            "telescopeId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "seconds": 3,
+            "status": "aligned",
+            "telescopeId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "seconds": 4,
+            "status": "captured",
+            "telescopeId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "observatory:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "seconds": 2,
+            "telescopeId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "seconds": 5400,
+            "telescopeId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "seconds": 2,
+            "telescopeId": "parent-a",
+            "title": "  "
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "seconds": "abc",
+            "telescopeId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "seconds": 2.25,
+            "telescopeId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "seconds": 1,
+            "telescopeId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "seconds": 5401,
+            "telescopeId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "seconds": 2,
+            "telescopeId": "missing",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "seconds": 2,
+            "telescopeId": "parent-a",
+            "title": "Amber"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "seconds": 2,
+            "telescopeId": null,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "seconds": 2,
+            "status": "queued",
+            "telescopeId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "seconds": 3,
+            "status": "aligned",
+            "telescopeId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "seconds": 4,
+            "status": "captured",
+            "telescopeId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "observatory:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "queued",
+            "aligned"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "aligned",
+            "captured"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "queued",
+            "queued"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "queued",
+            "captured"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "captured",
+            "aligned"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "aligned"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "seconds": 2,
+            "status": "queued",
+            "telescopeId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "seconds": 3,
+            "status": "aligned",
+            "telescopeId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "seconds": 4,
+            "status": "captured",
+            "telescopeId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "observatory:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "aligned"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "captured"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "seconds": 2,
+            "status": "queued",
+            "telescopeId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "seconds": 3,
+            "status": "aligned",
+            "telescopeId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "seconds": 4,
+            "status": "captured",
+            "telescopeId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "observatory:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "seconds": 2,
+            "telescopeId": "parent-a",
+            "title": "New item"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "seconds": 2,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "seconds": 2,
+            "telescopeId": "missing",
+            "title": "Valid"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "seconds": 2,
+            "status": "queued",
+            "telescopeId": "parent-a",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "seconds": 3,
+            "status": "aligned",
+            "telescopeId": "parent-a",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "seconds": 4,
+            "status": "captured",
+            "telescopeId": "parent-b",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "observatory:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "depotId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "depotId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "not-null-reject",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "depotId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "restrict",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "depotId": "parent-a",
+            "id": "sample-a",
+            "status": "requested",
+            "title": "Amber",
+            "weightKg": 1
+          },
+          {
+            "depotId": "parent-a",
+            "id": "sample-b",
+            "status": "assigned",
+            "title": "Cobalt",
+            "weightKg": 2
+          },
+          {
+            "depotId": "parent-b",
+            "id": "sample-c",
+            "status": "collected",
+            "title": "Beacon",
+            "weightKg": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "recycling:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "depotId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "depotId": "parent-a",
+            "q": "beacon"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "depotId": "parent-a",
+            "id": "sample-a",
+            "status": "requested",
+            "title": "Amber",
+            "weightKg": 1
+          },
+          {
+            "depotId": "parent-a",
+            "id": "sample-b",
+            "status": "assigned",
+            "title": "Cobalt",
+            "weightKg": 2
+          },
+          {
+            "depotId": "parent-b",
+            "id": "sample-c",
+            "status": "collected",
+            "title": "Beacon",
+            "weightKg": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "recycling:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "depotId": "parent-a",
+            "title": "New item",
+            "weightKg": 1
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "depotId": "parent-a",
+            "title": "New item",
+            "weightKg": 1000
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "depotId": "parent-a",
+            "title": "  ",
+            "weightKg": 1
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "depotId": "parent-a",
+            "title": "New item",
+            "weightKg": "abc"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "depotId": "parent-a",
+            "title": "New item",
+            "weightKg": 1.25
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "depotId": "parent-a",
+            "title": "New item",
+            "weightKg": 0
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "depotId": "parent-a",
+            "title": "New item",
+            "weightKg": 1001
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "depotId": "missing",
+            "title": "New item",
+            "weightKg": 1
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "depotId": "parent-a",
+            "title": "Amber",
+            "weightKg": 1
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "depotId": null,
+            "title": "New item",
+            "weightKg": 1
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "depotId": "parent-a",
+            "id": "sample-a",
+            "status": "requested",
+            "title": "Amber",
+            "weightKg": 1
+          },
+          {
+            "depotId": "parent-a",
+            "id": "sample-b",
+            "status": "assigned",
+            "title": "Cobalt",
+            "weightKg": 2
+          },
+          {
+            "depotId": "parent-b",
+            "id": "sample-c",
+            "status": "collected",
+            "title": "Beacon",
+            "weightKg": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "recycling:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "requested",
+            "assigned"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "assigned",
+            "collected"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "requested",
+            "requested"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "requested",
+            "collected"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "collected",
+            "assigned"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "assigned"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "depotId": "parent-a",
+            "id": "sample-a",
+            "status": "requested",
+            "title": "Amber",
+            "weightKg": 1
+          },
+          {
+            "depotId": "parent-a",
+            "id": "sample-b",
+            "status": "assigned",
+            "title": "Cobalt",
+            "weightKg": 2
+          },
+          {
+            "depotId": "parent-b",
+            "id": "sample-c",
+            "status": "collected",
+            "title": "Beacon",
+            "weightKg": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "recycling:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "assigned"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "collected"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "depotId": "parent-a",
+            "id": "sample-a",
+            "status": "requested",
+            "title": "Amber",
+            "weightKg": 1
+          },
+          {
+            "depotId": "parent-a",
+            "id": "sample-b",
+            "status": "assigned",
+            "title": "Cobalt",
+            "weightKg": 2
+          },
+          {
+            "depotId": "parent-b",
+            "id": "sample-c",
+            "status": "collected",
+            "title": "Beacon",
+            "weightKg": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "recycling:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "depotId": "parent-a",
+            "title": "New item",
+            "weightKg": 1
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "title": " ",
+            "weightKg": 1
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "depotId": "missing",
+            "title": "Valid",
+            "weightKg": 1
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "depotId": "parent-a",
+            "id": "sample-a",
+            "status": "requested",
+            "title": "Amber",
+            "weightKg": 1
+          },
+          {
+            "depotId": "parent-a",
+            "id": "sample-b",
+            "status": "assigned",
+            "title": "Cobalt",
+            "weightKg": 2
+          },
+          {
+            "depotId": "parent-b",
+            "id": "sample-c",
+            "status": "collected",
+            "title": "Beacon",
+            "weightKg": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "recycling:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "cameraId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "cameraId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "cameraId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "set-null",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "id": "sample-a",
+            "status": "planned",
+            "title": "Amber"
+          },
+          {
+            "cameraId": "parent-a",
+            "durationSec": 4,
+            "id": "sample-b",
+            "status": "filmed",
+            "title": "Cobalt"
+          },
+          {
+            "cameraId": "parent-b",
+            "durationSec": 5,
+            "id": "sample-c",
+            "status": "approved",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "filmset:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "cameraId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "cameraId": "parent-a",
+            "q": "beacon"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "id": "sample-a",
+            "status": "planned",
+            "title": "Amber"
+          },
+          {
+            "cameraId": "parent-a",
+            "durationSec": 4,
+            "id": "sample-b",
+            "status": "filmed",
+            "title": "Cobalt"
+          },
+          {
+            "cameraId": "parent-b",
+            "durationSec": 5,
+            "id": "sample-c",
+            "status": "approved",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "filmset:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "cameraId": "parent-a",
+            "durationSec": 1200,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "title": "  "
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "cameraId": "parent-a",
+            "durationSec": "abc",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "cameraId": "parent-a",
+            "durationSec": 3.25,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "cameraId": "parent-a",
+            "durationSec": 2,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "cameraId": "parent-a",
+            "durationSec": 1201,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "cameraId": "missing",
+            "durationSec": 3,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "title": "Amber"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "cameraId": null,
+            "durationSec": 3,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "id": "sample-a",
+            "status": "planned",
+            "title": "Amber"
+          },
+          {
+            "cameraId": "parent-a",
+            "durationSec": 4,
+            "id": "sample-b",
+            "status": "filmed",
+            "title": "Cobalt"
+          },
+          {
+            "cameraId": "parent-b",
+            "durationSec": 5,
+            "id": "sample-c",
+            "status": "approved",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "filmset:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "planned",
+            "filmed"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "filmed",
+            "approved"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "planned",
+            "planned"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "planned",
+            "approved"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "approved",
+            "filmed"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "filmed"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "id": "sample-a",
+            "status": "planned",
+            "title": "Amber"
+          },
+          {
+            "cameraId": "parent-a",
+            "durationSec": 4,
+            "id": "sample-b",
+            "status": "filmed",
+            "title": "Cobalt"
+          },
+          {
+            "cameraId": "parent-b",
+            "durationSec": 5,
+            "id": "sample-c",
+            "status": "approved",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "filmset:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "filmed"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "approved"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "id": "sample-a",
+            "status": "planned",
+            "title": "Amber"
+          },
+          {
+            "cameraId": "parent-a",
+            "durationSec": 4,
+            "id": "sample-b",
+            "status": "filmed",
+            "title": "Cobalt"
+          },
+          {
+            "cameraId": "parent-b",
+            "durationSec": 5,
+            "id": "sample-c",
+            "status": "approved",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "filmset:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "title": "New item"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "durationSec": 3,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "cameraId": "missing",
+            "durationSec": 3,
+            "title": "Valid"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "cameraId": "parent-a",
+            "durationSec": 3,
+            "id": "sample-a",
+            "status": "planned",
+            "title": "Amber"
+          },
+          {
+            "cameraId": "parent-a",
+            "durationSec": 4,
+            "id": "sample-b",
+            "status": "filmed",
+            "title": "Cobalt"
+          },
+          {
+            "cameraId": "parent-b",
+            "durationSec": 5,
+            "id": "sample-c",
+            "status": "approved",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "filmset:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "laserId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "laserId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "not-null-reject",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "laserId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "restrict",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "status": "submitted",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "laserId": "parent-a",
+            "runMinutes": 2,
+            "status": "prepared",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "laserId": "parent-b",
+            "runMinutes": 3,
+            "status": "finished",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "makerspace:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "laserId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "laserId": "parent-a",
+            "q": "beacon"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "status": "submitted",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "laserId": "parent-a",
+            "runMinutes": 2,
+            "status": "prepared",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "laserId": "parent-b",
+            "runMinutes": 3,
+            "status": "finished",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "makerspace:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "laserId": "parent-a",
+            "runMinutes": 180,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "title": "  "
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "laserId": "parent-a",
+            "runMinutes": "abc",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "laserId": "parent-a",
+            "runMinutes": 1.25,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "laserId": "parent-a",
+            "runMinutes": 0,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "laserId": "parent-a",
+            "runMinutes": 181,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "laserId": "missing",
+            "runMinutes": 1,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "title": "Amber"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "laserId": null,
+            "runMinutes": 1,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "status": "submitted",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "laserId": "parent-a",
+            "runMinutes": 2,
+            "status": "prepared",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "laserId": "parent-b",
+            "runMinutes": 3,
+            "status": "finished",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "makerspace:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "submitted",
+            "prepared"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "prepared",
+            "finished"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "submitted",
+            "submitted"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "submitted",
+            "finished"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "finished",
+            "prepared"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "prepared"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "status": "submitted",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "laserId": "parent-a",
+            "runMinutes": 2,
+            "status": "prepared",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "laserId": "parent-b",
+            "runMinutes": 3,
+            "status": "finished",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "makerspace:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "prepared"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "finished"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "status": "submitted",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "laserId": "parent-a",
+            "runMinutes": 2,
+            "status": "prepared",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "laserId": "parent-b",
+            "runMinutes": 3,
+            "status": "finished",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "makerspace:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "title": "New item"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "runMinutes": 1,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "laserId": "missing",
+            "runMinutes": 1,
+            "title": "Valid"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "laserId": "parent-a",
+            "runMinutes": 1,
+            "status": "submitted",
+            "title": "Amber"
+          },
+          {
+            "id": "sample-b",
+            "laserId": "parent-a",
+            "runMinutes": 2,
+            "status": "prepared",
+            "title": "Cobalt"
+          },
+          {
+            "id": "sample-c",
+            "laserId": "parent-b",
+            "runMinutes": 3,
+            "status": "finished",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "makerspace:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "galleryId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "galleryId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "galleryId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "set-null",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "galleryId": "parent-a",
+            "id": "sample-a",
+            "priceUsd": 5,
+            "status": "listed",
+            "title": "Amber"
+          },
+          {
+            "galleryId": "parent-a",
+            "id": "sample-b",
+            "priceUsd": 6,
+            "status": "reserved",
+            "title": "Cobalt"
+          },
+          {
+            "galleryId": "parent-b",
+            "id": "sample-c",
+            "priceUsd": 7,
+            "status": "sold",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "artmarket:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "galleryId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "galleryId": "parent-a",
+            "q": "beacon"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "galleryId": "parent-a",
+            "id": "sample-a",
+            "priceUsd": 5,
+            "status": "listed",
+            "title": "Amber"
+          },
+          {
+            "galleryId": "parent-a",
+            "id": "sample-b",
+            "priceUsd": 6,
+            "status": "reserved",
+            "title": "Cobalt"
+          },
+          {
+            "galleryId": "parent-b",
+            "id": "sample-c",
+            "priceUsd": 7,
+            "status": "sold",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "artmarket:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "galleryId": "parent-a",
+            "priceUsd": 5,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "galleryId": "parent-a",
+            "priceUsd": 100000,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "galleryId": "parent-a",
+            "priceUsd": 5,
+            "title": "  "
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "galleryId": "parent-a",
+            "priceUsd": "abc",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "galleryId": "parent-a",
+            "priceUsd": 5.25,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "galleryId": "parent-a",
+            "priceUsd": 4,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "galleryId": "parent-a",
+            "priceUsd": 100001,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "galleryId": "missing",
+            "priceUsd": 5,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "galleryId": "parent-a",
+            "priceUsd": 5,
+            "title": "Amber"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "galleryId": null,
+            "priceUsd": 5,
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "galleryId": "parent-a",
+            "id": "sample-a",
+            "priceUsd": 5,
+            "status": "listed",
+            "title": "Amber"
+          },
+          {
+            "galleryId": "parent-a",
+            "id": "sample-b",
+            "priceUsd": 6,
+            "status": "reserved",
+            "title": "Cobalt"
+          },
+          {
+            "galleryId": "parent-b",
+            "id": "sample-c",
+            "priceUsd": 7,
+            "status": "sold",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "artmarket:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "listed",
+            "reserved"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "reserved",
+            "sold"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "listed",
+            "listed"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "listed",
+            "sold"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "sold",
+            "reserved"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "reserved"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "galleryId": "parent-a",
+            "id": "sample-a",
+            "priceUsd": 5,
+            "status": "listed",
+            "title": "Amber"
+          },
+          {
+            "galleryId": "parent-a",
+            "id": "sample-b",
+            "priceUsd": 6,
+            "status": "reserved",
+            "title": "Cobalt"
+          },
+          {
+            "galleryId": "parent-b",
+            "id": "sample-c",
+            "priceUsd": 7,
+            "status": "sold",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "artmarket:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "reserved"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "sold"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "galleryId": "parent-a",
+            "id": "sample-a",
+            "priceUsd": 5,
+            "status": "listed",
+            "title": "Amber"
+          },
+          {
+            "galleryId": "parent-a",
+            "id": "sample-b",
+            "priceUsd": 6,
+            "status": "reserved",
+            "title": "Cobalt"
+          },
+          {
+            "galleryId": "parent-b",
+            "id": "sample-c",
+            "priceUsd": 7,
+            "status": "sold",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "artmarket:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "galleryId": "parent-a",
+            "priceUsd": 5,
+            "title": "New item"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "priceUsd": 5,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "galleryId": "missing",
+            "priceUsd": 5,
+            "title": "Valid"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "galleryId": "parent-a",
+            "id": "sample-a",
+            "priceUsd": 5,
+            "status": "listed",
+            "title": "Amber"
+          },
+          {
+            "galleryId": "parent-a",
+            "id": "sample-b",
+            "priceUsd": 6,
+            "status": "reserved",
+            "title": "Cobalt"
+          },
+          {
+            "galleryId": "parent-b",
+            "id": "sample-c",
+            "priceUsd": 7,
+            "status": "sold",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "artmarket:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "sanctuaryId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "sanctuaryId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "not-null-reject",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "sanctuaryId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "restrict",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "count": 1,
+            "id": "sample-a",
+            "sanctuaryId": "parent-a",
+            "status": "reported",
+            "title": "Amber"
+          },
+          {
+            "count": 2,
+            "id": "sample-b",
+            "sanctuaryId": "parent-a",
+            "status": "checked",
+            "title": "Cobalt"
+          },
+          {
+            "count": 3,
+            "id": "sample-c",
+            "sanctuaryId": "parent-b",
+            "status": "released",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "wildlife:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "sanctuaryId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "q": "beacon",
+            "sanctuaryId": "parent-a"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "count": 1,
+            "id": "sample-a",
+            "sanctuaryId": "parent-a",
+            "status": "reported",
+            "title": "Amber"
+          },
+          {
+            "count": 2,
+            "id": "sample-b",
+            "sanctuaryId": "parent-a",
+            "status": "checked",
+            "title": "Cobalt"
+          },
+          {
+            "count": 3,
+            "id": "sample-c",
+            "sanctuaryId": "parent-b",
+            "status": "released",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "wildlife:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "count": 1,
+            "sanctuaryId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "count": 500,
+            "sanctuaryId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "count": 1,
+            "sanctuaryId": "parent-a",
+            "title": "  "
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "count": "abc",
+            "sanctuaryId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "count": 1.25,
+            "sanctuaryId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "count": 0,
+            "sanctuaryId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "count": 501,
+            "sanctuaryId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "count": 1,
+            "sanctuaryId": "missing",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "count": 1,
+            "sanctuaryId": "parent-a",
+            "title": "Amber"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "count": 1,
+            "sanctuaryId": null,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "count": 1,
+            "id": "sample-a",
+            "sanctuaryId": "parent-a",
+            "status": "reported",
+            "title": "Amber"
+          },
+          {
+            "count": 2,
+            "id": "sample-b",
+            "sanctuaryId": "parent-a",
+            "status": "checked",
+            "title": "Cobalt"
+          },
+          {
+            "count": 3,
+            "id": "sample-c",
+            "sanctuaryId": "parent-b",
+            "status": "released",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "wildlife:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "reported",
+            "checked"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "checked",
+            "released"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "reported",
+            "reported"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "reported",
+            "released"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "released",
+            "checked"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "checked"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "count": 1,
+            "id": "sample-a",
+            "sanctuaryId": "parent-a",
+            "status": "reported",
+            "title": "Amber"
+          },
+          {
+            "count": 2,
+            "id": "sample-b",
+            "sanctuaryId": "parent-a",
+            "status": "checked",
+            "title": "Cobalt"
+          },
+          {
+            "count": 3,
+            "id": "sample-c",
+            "sanctuaryId": "parent-b",
+            "status": "released",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "wildlife:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "checked"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "released"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "count": 1,
+            "id": "sample-a",
+            "sanctuaryId": "parent-a",
+            "status": "reported",
+            "title": "Amber"
+          },
+          {
+            "count": 2,
+            "id": "sample-b",
+            "sanctuaryId": "parent-a",
+            "status": "checked",
+            "title": "Cobalt"
+          },
+          {
+            "count": 3,
+            "id": "sample-c",
+            "sanctuaryId": "parent-b",
+            "status": "released",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "wildlife:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "count": 1,
+            "sanctuaryId": "parent-a",
+            "title": "New item"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "count": 1,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "count": 1,
+            "sanctuaryId": "missing",
+            "title": "Valid"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "count": 1,
+            "id": "sample-a",
+            "sanctuaryId": "parent-a",
+            "status": "reported",
+            "title": "Amber"
+          },
+          {
+            "count": 2,
+            "id": "sample-b",
+            "sanctuaryId": "parent-a",
+            "status": "checked",
+            "title": "Cobalt"
+          },
+          {
+            "count": 3,
+            "id": "sample-c",
+            "sanctuaryId": "parent-b",
+            "status": "released",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "wildlife:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "pantryId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "pantryId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "pantryId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "set-null",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "pantryId": "parent-a",
+            "status": "packed",
+            "title": "Amber",
+            "units": 1
+          },
+          {
+            "id": "sample-b",
+            "pantryId": "parent-a",
+            "status": "routed",
+            "title": "Cobalt",
+            "units": 2
+          },
+          {
+            "id": "sample-c",
+            "pantryId": "parent-b",
+            "status": "delivered",
+            "title": "Beacon",
+            "units": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "foodbank:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "pantryId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "pantryId": "parent-a",
+            "q": "beacon"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "pantryId": "parent-a",
+            "status": "packed",
+            "title": "Amber",
+            "units": 1
+          },
+          {
+            "id": "sample-b",
+            "pantryId": "parent-a",
+            "status": "routed",
+            "title": "Cobalt",
+            "units": 2
+          },
+          {
+            "id": "sample-c",
+            "pantryId": "parent-b",
+            "status": "delivered",
+            "title": "Beacon",
+            "units": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "foodbank:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "pantryId": "parent-a",
+            "title": "New item",
+            "units": 1
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "pantryId": "parent-a",
+            "title": "New item",
+            "units": 300
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "pantryId": "parent-a",
+            "title": "  ",
+            "units": 1
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "pantryId": "parent-a",
+            "title": "New item",
+            "units": "abc"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "pantryId": "parent-a",
+            "title": "New item",
+            "units": 1.25
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "pantryId": "parent-a",
+            "title": "New item",
+            "units": 0
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "pantryId": "parent-a",
+            "title": "New item",
+            "units": 301
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "pantryId": "missing",
+            "title": "New item",
+            "units": 1
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "pantryId": "parent-a",
+            "title": "Amber",
+            "units": 1
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "pantryId": null,
+            "title": "New item",
+            "units": 1
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "pantryId": "parent-a",
+            "status": "packed",
+            "title": "Amber",
+            "units": 1
+          },
+          {
+            "id": "sample-b",
+            "pantryId": "parent-a",
+            "status": "routed",
+            "title": "Cobalt",
+            "units": 2
+          },
+          {
+            "id": "sample-c",
+            "pantryId": "parent-b",
+            "status": "delivered",
+            "title": "Beacon",
+            "units": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "foodbank:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "packed",
+            "routed"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "routed",
+            "delivered"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "packed",
+            "packed"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "packed",
+            "delivered"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "delivered",
+            "routed"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "routed"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "pantryId": "parent-a",
+            "status": "packed",
+            "title": "Amber",
+            "units": 1
+          },
+          {
+            "id": "sample-b",
+            "pantryId": "parent-a",
+            "status": "routed",
+            "title": "Cobalt",
+            "units": 2
+          },
+          {
+            "id": "sample-c",
+            "pantryId": "parent-b",
+            "status": "delivered",
+            "title": "Beacon",
+            "units": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "foodbank:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "routed"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "delivered"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "pantryId": "parent-a",
+            "status": "packed",
+            "title": "Amber",
+            "units": 1
+          },
+          {
+            "id": "sample-b",
+            "pantryId": "parent-a",
+            "status": "routed",
+            "title": "Cobalt",
+            "units": 2
+          },
+          {
+            "id": "sample-c",
+            "pantryId": "parent-b",
+            "status": "delivered",
+            "title": "Beacon",
+            "units": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "foodbank:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "pantryId": "parent-a",
+            "title": "New item",
+            "units": 1
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "title": " ",
+            "units": 1
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "pantryId": "missing",
+            "title": "Valid",
+            "units": 1
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "id": "sample-a",
+            "pantryId": "parent-a",
+            "status": "packed",
+            "title": "Amber",
+            "units": 1
+          },
+          {
+            "id": "sample-b",
+            "pantryId": "parent-a",
+            "status": "routed",
+            "title": "Cobalt",
+            "units": 2
+          },
+          {
+            "id": "sample-c",
+            "pantryId": "parent-b",
+            "status": "delivered",
+            "title": "Beacon",
+            "units": 3
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "foodbank:fullstack-integration"
+    },
+    {
+      "cases": [
+        {
+          "action": "insert-parent",
+          "expected": "success",
+          "name": "valid-parent"
+        },
+        {
+          "action": "insert-child",
+          "expected": "success",
+          "name": "valid-child",
+          "record": {
+            "parcelZoneId": "parent-a"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "foreign-key-reject",
+          "name": "bogus-fk",
+          "record": {
+            "parcelZoneId": "absent"
+          }
+        },
+        {
+          "action": "insert-child",
+          "expected": "not-null-reject",
+          "name": "nullable-fk-boundary",
+          "record": {
+            "parcelZoneId": null
+          }
+        },
+        {
+          "action": "delete-parent-with-child",
+          "expected": "restrict",
+          "name": "delete-parent-semantics"
+        },
+        {
+          "action": "load-parent-with-children",
+          "expected": "child-visible",
+          "name": "relation-traversal"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "areaSqm": 10,
+            "id": "sample-a",
+            "parcelZoneId": "parent-a",
+            "status": "opened",
+            "title": "Amber"
+          },
+          {
+            "areaSqm": 11,
+            "id": "sample-b",
+            "parcelZoneId": "parent-a",
+            "status": "inspected",
+            "title": "Cobalt"
+          },
+          {
+            "areaSqm": 12,
+            "id": "sample-c",
+            "parcelZoneId": "parent-b",
+            "status": "closed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "schema-relationship",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "landregistry:schema-relationship"
+    },
+    {
+      "cases": [
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Beacon",
+            "Cobalt"
+          ],
+          "expected_total": 3,
+          "name": "list-all",
+          "params": {}
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Beacon"
+          ],
+          "expected_total": 1,
+          "name": "filter-one",
+          "params": {
+            "q": "beac"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber"
+          ],
+          "expected_total": 1,
+          "name": "case-insensitive",
+          "params": {
+            "q": "AMBER"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [
+            "Amber",
+            "Cobalt"
+          ],
+          "expected_total": 2,
+          "name": "filter-by-parent",
+          "params": {
+            "parcelZoneId": "parent-a"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "no-matches",
+          "params": {
+            "q": "zzz-not-present"
+          }
+        },
+        {
+          "expected_status": 200,
+          "expected_titles": [],
+          "expected_total": 0,
+          "name": "combined-filter",
+          "params": {
+            "parcelZoneId": "parent-a",
+            "q": "beacon"
+          }
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "areaSqm": 10,
+            "id": "sample-a",
+            "parcelZoneId": "parent-a",
+            "status": "opened",
+            "title": "Amber"
+          },
+          {
+            "areaSqm": 11,
+            "id": "sample-b",
+            "parcelZoneId": "parent-a",
+            "status": "inspected",
+            "title": "Cobalt"
+          },
+          {
+            "areaSqm": 12,
+            "id": "sample-c",
+            "parcelZoneId": "parent-b",
+            "status": "closed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-get-filter",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "landregistry:api-get-filter"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "areaSqm": 10,
+            "parcelZoneId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "min-boundary"
+        },
+        {
+          "body": {
+            "areaSqm": 90000,
+            "parcelZoneId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 1,
+          "expected_status": 201,
+          "name": "max-boundary"
+        },
+        {
+          "body": {
+            "areaSqm": 10,
+            "parcelZoneId": "parent-a",
+            "title": "  "
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "empty-title"
+        },
+        {
+          "body": {
+            "areaSqm": "abc",
+            "parcelZoneId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "not-a-number"
+        },
+        {
+          "body": {
+            "areaSqm": 10.25,
+            "parcelZoneId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "non-integer"
+        },
+        {
+          "body": {
+            "areaSqm": 9,
+            "parcelZoneId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "below-min"
+        },
+        {
+          "body": {
+            "areaSqm": 90001,
+            "parcelZoneId": "parent-a",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "above-max"
+        },
+        {
+          "body": {
+            "areaSqm": 10,
+            "parcelZoneId": "missing",
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 404,
+          "name": "unknown-parent"
+        },
+        {
+          "body": {
+            "areaSqm": 10,
+            "parcelZoneId": "parent-a",
+            "title": "Amber"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 409,
+          "name": "duplicate-title"
+        },
+        {
+          "body": {
+            "areaSqm": 10,
+            "parcelZoneId": null,
+            "title": "New item"
+          },
+          "expected_persist_delta": 0,
+          "expected_status": 400,
+          "name": "parent-null"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "areaSqm": 10,
+            "id": "sample-a",
+            "parcelZoneId": "parent-a",
+            "status": "opened",
+            "title": "Amber"
+          },
+          {
+            "areaSqm": 11,
+            "id": "sample-b",
+            "parcelZoneId": "parent-a",
+            "status": "inspected",
+            "title": "Cobalt"
+          },
+          {
+            "areaSqm": 12,
+            "id": "sample-c",
+            "parcelZoneId": "parent-b",
+            "status": "closed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "api-post-validation",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "landregistry:api-post-validation"
+    },
+    {
+      "cases": [
+        {
+          "expected": true,
+          "inputs": [
+            "opened",
+            "inspected"
+          ],
+          "name": "first-transition"
+        },
+        {
+          "expected": true,
+          "inputs": [
+            "inspected",
+            "closed"
+          ],
+          "name": "second-transition"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "opened",
+            "opened"
+          ],
+          "name": "same-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "opened",
+            "closed"
+          ],
+          "name": "skip-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "closed",
+            "inspected"
+          ],
+          "name": "reverse-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "not-a-real-state",
+            "inspected"
+          ],
+          "name": "unknown-state"
+        },
+        {
+          "expected": false,
+          "inputs": [
+            "raw",
+            "edited"
+          ],
+          "name": "demo-vocabulary-copy"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "areaSqm": 10,
+            "id": "sample-a",
+            "parcelZoneId": "parent-a",
+            "status": "opened",
+            "title": "Amber"
+          },
+          {
+            "areaSqm": 11,
+            "id": "sample-b",
+            "parcelZoneId": "parent-a",
+            "status": "inspected",
+            "title": "Cobalt"
+          },
+          {
+            "areaSqm": 12,
+            "id": "sample-c",
+            "parcelZoneId": "parent-b",
+            "status": "closed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "state-invariant",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "landregistry:state-invariant"
+    },
+    {
+      "cases": [
+        {
+          "event": "initial-render",
+          "expected_count": 3,
+          "name": "all-items"
+        },
+        {
+          "event": "type-search",
+          "expected_count": 1,
+          "name": "search",
+          "query": "beacon"
+        },
+        {
+          "event": "choose-status",
+          "expected_count": 1,
+          "name": "status-filter",
+          "status": "inspected"
+        },
+        {
+          "event": "search-and-status",
+          "expected_count": 0,
+          "name": "combined-filter",
+          "query": "amber",
+          "status": "closed"
+        },
+        {
+          "event": "type-search",
+          "expected": "explicit-empty-state",
+          "name": "empty-result-state",
+          "query": "not-found"
+        },
+        {
+          "event": "clear-filters",
+          "expected_count": 3,
+          "name": "clear"
+        },
+        {
+          "event": "keyboard-only-interaction",
+          "expected": "operable-and-labeled",
+          "name": "keyboard"
+        },
+        {
+          "event": "viewport-320",
+          "expected": "no-horizontal-overflow",
+          "name": "mobile-320"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "areaSqm": 10,
+            "id": "sample-a",
+            "parcelZoneId": "parent-a",
+            "status": "opened",
+            "title": "Amber"
+          },
+          {
+            "areaSqm": 11,
+            "id": "sample-b",
+            "parcelZoneId": "parent-a",
+            "status": "inspected",
+            "title": "Cobalt"
+          },
+          {
+            "areaSqm": 12,
+            "id": "sample-c",
+            "parcelZoneId": "parent-b",
+            "status": "closed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "react-interaction",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "landregistry:react-interaction"
+    },
+    {
+      "cases": [
+        {
+          "body": {
+            "areaSqm": 10,
+            "parcelZoneId": "parent-a",
+            "title": "New item"
+          },
+          "event": "submit-form",
+          "expected_status": 201,
+          "name": "create-201"
+        },
+        {
+          "event": "check-dom-after-submit",
+          "expected": "new-item-in-list-and-total-incremented",
+          "name": "visible-immediately"
+        },
+        {
+          "event": "http-get",
+          "expected": "new-item-present",
+          "name": "get-persisted"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "new-item-present",
+          "name": "refresh-survives"
+        },
+        {
+          "body": {
+            "areaSqm": 10,
+            "title": " "
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 400,
+          "name": "post-400"
+        },
+        {
+          "body": {
+            "areaSqm": 10,
+            "parcelZoneId": "missing",
+            "title": "Valid"
+          },
+          "event": "submit-form",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 404,
+          "name": "post-404"
+        },
+        {
+          "event": "submit-duplicate",
+          "expected": "error-visible-no-new-item",
+          "expected_status": 409,
+          "name": "post-409"
+        },
+        {
+          "event": "reload-and-http-get",
+          "expected": "no-phantom-record",
+          "name": "refresh-after-error"
+        }
+      ],
+      "fixture": {
+        "children": [
+          {
+            "areaSqm": 10,
+            "id": "sample-a",
+            "parcelZoneId": "parent-a",
+            "status": "opened",
+            "title": "Amber"
+          },
+          {
+            "areaSqm": 11,
+            "id": "sample-b",
+            "parcelZoneId": "parent-a",
+            "status": "inspected",
+            "title": "Cobalt"
+          },
+          {
+            "areaSqm": 12,
+            "id": "sample-c",
+            "parcelZoneId": "parent-b",
+            "status": "closed",
+            "title": "Beacon"
+          }
+        ],
+        "parents": [
+          {
+            "id": "parent-a"
+          },
+          {
+            "id": "parent-b"
+          }
+        ]
+      },
+      "skill": "fullstack-integration",
+      "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
+      "task_id": "landregistry:fullstack-integration"
+    }
+  ],
+  "training_eligible": 0
+}

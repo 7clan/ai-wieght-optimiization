@@ -107,6 +107,21 @@ cross-module mismatch; it must be resolved with a **versioned new
 suite**, with original v1 bytes kept intact, before asserting integrated
 status-persistence results. Do not silently alter the frozen v1 contracts.
 
+### Phase 2b checkpoint: status contract amended, Docker-only invariant path implemented
+
+A **versioned v2 suite** now resolves the mismatch: the child Prisma
+model stores `status` with the domain's initial state, GET exposes it,
+POST creates it, and integration uses the persisted value. Original v1
+specifications and scenario plans remain intact. The v2 plans are frozen
+in `suite-v2/` and `scenarios-v2/` (train/dev only).
+
+The first Docker-only execution path is implemented for state-transition
+invariants with strict image digest requirement, restricted containers and
+single-verdict result parsing. Its actual runtime compatibility and
+behavioral correctness are **unverified** here because Docker is absent.
+All other API, Prisma, React and full-stack execution paths are still to
+be built. See [`SESSION039_EXECUTION_BOUNDARY.md`](SESSION039_EXECUTION_BOUNDARY.md).
+
 ## Phases 2–4 — not yet run
 
 ### Phase 2b: contract-to-behavior harness

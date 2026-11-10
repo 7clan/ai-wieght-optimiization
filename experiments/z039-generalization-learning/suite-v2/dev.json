@@ -1,0 +1,819 @@
+{
+  "amendment_parent": "suite/MANIFEST.json (v1, immutable)",
+  "amendment_reason": "v1 Prisma schema did not require status, but its UI/integration fixtures did",
+  "amendment_version": 2,
+  "generation_permitted": true,
+  "role": "CONTRACTS_ONLY_NOT_TRAINING_DATA",
+  "sealed_until_final_scoring": false,
+  "session": "039",
+  "split": "dev",
+  "tasks": [
+    {
+      "contract_version": 2,
+      "domain": "radiostation",
+      "entities": {
+        "child": "Broadcast",
+        "foreign_key": "transmitterId",
+        "foreign_key_mode": "optional",
+        "parent": "Transmitter"
+      },
+      "fields": {
+        "amount": "airtimeMin",
+        "label": "title",
+        "max_inclusive": 360,
+        "min_inclusive": 1
+      },
+      "id": "radiostation:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Transmitter and Broadcast, with correct one-to-many relation sides.",
+        "The Broadcast.transmitterId foreign key is optional; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.",
+        "The child model also stores status String @default(\"drafted\"), persisted for UI/API workflows."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Broadcast records linked to Transmitter in the radiostation service.",
+      "workflow": [
+        "drafted",
+        "cleared",
+        "aired"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "radiostation",
+      "entities": {
+        "child": "Broadcast",
+        "foreign_key": "transmitterId",
+        "foreign_key_mode": "optional",
+        "parent": "Transmitter"
+      },
+      "fields": {
+        "amount": "airtimeMin",
+        "label": "title",
+        "max_inclusive": 360,
+        "min_inclusive": 1
+      },
+      "id": "radiostation:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/radiostation-broadcasts using db.broadcast.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional transmitterId, order by title ascending, include transmitter.",
+        "Return { broadcasts: [...], total: number } with status 200; empty results return [] and 0.",
+        "The listed records include the persisted status field."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Broadcast records linked to Transmitter in the radiostation service.",
+      "workflow": [
+        "drafted",
+        "cleared",
+        "aired"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "radiostation",
+      "entities": {
+        "child": "Broadcast",
+        "foreign_key": "transmitterId",
+        "foreign_key_mode": "optional",
+        "parent": "Transmitter"
+      },
+      "fields": {
+        "amount": "airtimeMin",
+        "label": "title",
+        "max_inclusive": 360,
+        "min_inclusive": 1
+      },
+      "id": "radiostation:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/radiostation-broadcasts; trim required title and validate airtimeMin as a finite integer.",
+        "Enforce 1 <= airtimeMin <= 360 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Transmitter.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Transmitter with HTTP 409. Create only after every check and return 201.",
+        "Create status as 'drafted' unless a valid workflow transition changes it later."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Broadcast records linked to Transmitter in the radiostation service.",
+      "workflow": [
+        "drafted",
+        "cleared",
+        "aired"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "radiostation",
+      "entities": {
+        "child": "Broadcast",
+        "foreign_key": "transmitterId",
+        "foreign_key_mode": "optional",
+        "parent": "Transmitter"
+      },
+      "fields": {
+        "amount": "airtimeMin",
+        "label": "title",
+        "max_inclusive": 360,
+        "min_inclusive": 1
+      },
+      "id": "radiostation:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceBroadcast(current, next): boolean for exact transitions drafted→cleared and cleared→aired.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Broadcast records linked to Transmitter in the radiostation service.",
+      "workflow": [
+        "drafted",
+        "cleared",
+        "aired"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "radiostation",
+      "entities": {
+        "child": "Broadcast",
+        "foreign_key": "transmitterId",
+        "foreign_key_mode": "optional",
+        "parent": "Transmitter"
+      },
+      "fields": {
+        "amount": "airtimeMin",
+        "label": "title",
+        "max_inclusive": 360,
+        "min_inclusive": 1
+      },
+      "id": "radiostation:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Broadcast items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, airtimeMin and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Broadcast records linked to Transmitter in the radiostation service.",
+      "workflow": [
+        "drafted",
+        "cleared",
+        "aired"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "radiostation",
+      "entities": {
+        "child": "Broadcast",
+        "foreign_key": "transmitterId",
+        "foreign_key_mode": "optional",
+        "parent": "Transmitter"
+      },
+      "fields": {
+        "amount": "airtimeMin",
+        "label": "title",
+        "max_inclusive": 360,
+        "min_inclusive": 1
+      },
+      "id": "radiostation:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Broadcast model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted.",
+        "The list displays the persisted status, not a fabricated client-only value."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Broadcast records linked to Transmitter in the radiostation service.",
+      "workflow": [
+        "drafted",
+        "cleared",
+        "aired"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "tailorshop",
+      "entities": {
+        "child": "Order",
+        "foreign_key": "worktableId",
+        "foreign_key_mode": "required",
+        "parent": "Worktable"
+      },
+      "fields": {
+        "amount": "fabricCm",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 10
+      },
+      "id": "tailorshop:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Worktable and Order, with correct one-to-many relation sides.",
+        "The Order.worktableId foreign key is required; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.",
+        "The child model also stores status String @default(\"measured\"), persisted for UI/API workflows."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Order records linked to Worktable in the tailorshop service.",
+      "workflow": [
+        "measured",
+        "stitched",
+        "fitted"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "tailorshop",
+      "entities": {
+        "child": "Order",
+        "foreign_key": "worktableId",
+        "foreign_key_mode": "required",
+        "parent": "Worktable"
+      },
+      "fields": {
+        "amount": "fabricCm",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 10
+      },
+      "id": "tailorshop:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/tailorshop-orders using db.order.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional worktableId, order by title ascending, include worktable.",
+        "Return { orders: [...], total: number } with status 200; empty results return [] and 0.",
+        "The listed records include the persisted status field."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Order records linked to Worktable in the tailorshop service.",
+      "workflow": [
+        "measured",
+        "stitched",
+        "fitted"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "tailorshop",
+      "entities": {
+        "child": "Order",
+        "foreign_key": "worktableId",
+        "foreign_key_mode": "required",
+        "parent": "Worktable"
+      },
+      "fields": {
+        "amount": "fabricCm",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 10
+      },
+      "id": "tailorshop:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/tailorshop-orders; trim required title and validate fabricCm as a finite integer.",
+        "Enforce 10 <= fabricCm <= 2000 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Worktable.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Worktable with HTTP 409. Create only after every check and return 201.",
+        "Create status as 'measured' unless a valid workflow transition changes it later."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Order records linked to Worktable in the tailorshop service.",
+      "workflow": [
+        "measured",
+        "stitched",
+        "fitted"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "tailorshop",
+      "entities": {
+        "child": "Order",
+        "foreign_key": "worktableId",
+        "foreign_key_mode": "required",
+        "parent": "Worktable"
+      },
+      "fields": {
+        "amount": "fabricCm",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 10
+      },
+      "id": "tailorshop:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceOrder(current, next): boolean for exact transitions measured→stitched and stitched→fitted.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Order records linked to Worktable in the tailorshop service.",
+      "workflow": [
+        "measured",
+        "stitched",
+        "fitted"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "tailorshop",
+      "entities": {
+        "child": "Order",
+        "foreign_key": "worktableId",
+        "foreign_key_mode": "required",
+        "parent": "Worktable"
+      },
+      "fields": {
+        "amount": "fabricCm",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 10
+      },
+      "id": "tailorshop:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Order items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, fabricCm and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Order records linked to Worktable in the tailorshop service.",
+      "workflow": [
+        "measured",
+        "stitched",
+        "fitted"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "tailorshop",
+      "entities": {
+        "child": "Order",
+        "foreign_key": "worktableId",
+        "foreign_key_mode": "required",
+        "parent": "Worktable"
+      },
+      "fields": {
+        "amount": "fabricCm",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 10
+      },
+      "id": "tailorshop:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Order model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted.",
+        "The list displays the persisted status, not a fabricated client-only value."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Order records linked to Worktable in the tailorshop service.",
+      "workflow": [
+        "measured",
+        "stitched",
+        "fitted"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "sportsarena",
+      "entities": {
+        "child": "Practice",
+        "foreign_key": "courtId",
+        "foreign_key_mode": "optional",
+        "parent": "Court"
+      },
+      "fields": {
+        "amount": "participants",
+        "label": "title",
+        "max_inclusive": 100,
+        "min_inclusive": 2
+      },
+      "id": "sportsarena:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Court and Practice, with correct one-to-many relation sides.",
+        "The Practice.courtId foreign key is optional; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.",
+        "The child model also stores status String @default(\"registered\"), persisted for UI/API workflows."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Practice records linked to Court in the sportsarena service.",
+      "workflow": [
+        "registered",
+        "confirmed",
+        "completed"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "sportsarena",
+      "entities": {
+        "child": "Practice",
+        "foreign_key": "courtId",
+        "foreign_key_mode": "optional",
+        "parent": "Court"
+      },
+      "fields": {
+        "amount": "participants",
+        "label": "title",
+        "max_inclusive": 100,
+        "min_inclusive": 2
+      },
+      "id": "sportsarena:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/sportsarena-practices using db.practice.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional courtId, order by title ascending, include court.",
+        "Return { practices: [...], total: number } with status 200; empty results return [] and 0.",
+        "The listed records include the persisted status field."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Practice records linked to Court in the sportsarena service.",
+      "workflow": [
+        "registered",
+        "confirmed",
+        "completed"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "sportsarena",
+      "entities": {
+        "child": "Practice",
+        "foreign_key": "courtId",
+        "foreign_key_mode": "optional",
+        "parent": "Court"
+      },
+      "fields": {
+        "amount": "participants",
+        "label": "title",
+        "max_inclusive": 100,
+        "min_inclusive": 2
+      },
+      "id": "sportsarena:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/sportsarena-practices; trim required title and validate participants as a finite integer.",
+        "Enforce 2 <= participants <= 100 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Court.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Court with HTTP 409. Create only after every check and return 201.",
+        "Create status as 'registered' unless a valid workflow transition changes it later."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Practice records linked to Court in the sportsarena service.",
+      "workflow": [
+        "registered",
+        "confirmed",
+        "completed"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "sportsarena",
+      "entities": {
+        "child": "Practice",
+        "foreign_key": "courtId",
+        "foreign_key_mode": "optional",
+        "parent": "Court"
+      },
+      "fields": {
+        "amount": "participants",
+        "label": "title",
+        "max_inclusive": 100,
+        "min_inclusive": 2
+      },
+      "id": "sportsarena:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvancePractice(current, next): boolean for exact transitions registered→confirmed and confirmed→completed.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Practice records linked to Court in the sportsarena service.",
+      "workflow": [
+        "registered",
+        "confirmed",
+        "completed"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "sportsarena",
+      "entities": {
+        "child": "Practice",
+        "foreign_key": "courtId",
+        "foreign_key_mode": "optional",
+        "parent": "Court"
+      },
+      "fields": {
+        "amount": "participants",
+        "label": "title",
+        "max_inclusive": 100,
+        "min_inclusive": 2
+      },
+      "id": "sportsarena:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Practice items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, participants and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Practice records linked to Court in the sportsarena service.",
+      "workflow": [
+        "registered",
+        "confirmed",
+        "completed"
+      ]
+    },
+    {
+      "contract_version": 2,
+      "domain": "sportsarena",
+      "entities": {
+        "child": "Practice",
+        "foreign_key": "courtId",
+        "foreign_key_mode": "optional",
+        "parent": "Court"
+      },
+      "fields": {
+        "amount": "participants",
+        "label": "title",
+        "max_inclusive": 100,
+        "min_inclusive": 2
+      },
+      "id": "sportsarena:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Practice model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted.",
+        "The list displays the persisted status, not a fabricated client-only value."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Practice records linked to Court in the sportsarena service.",
+      "workflow": [
+        "registered",
+        "confirmed",
+        "completed"
+      ]
+    }
+  ]
+}

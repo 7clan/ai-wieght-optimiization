@@ -21,12 +21,14 @@ def _bytes(data: dict) -> bytes:
     return (json.dumps(data, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
 
 
-def load_split(root: Path, split: str, *, final_score_unlocked: bool = False) -> dict:
+def load_split(root: Path, split: str, *, final_score_unlocked: bool = False, suite_version: int = 1) -> dict:
     if split not in ("train", "dev", "holdout"):
         raise ValueError("Unknown curriculum split")
     if split == "holdout" and not final_score_unlocked:
         raise PermissionError("Holdout is sealed until all predictions and decisions are frozen")
-    directory = root / SUITE
+    if suite_version not in (1, 2):
+        raise ValueError("Unknown suite version")
+    directory = root / (SUITE if suite_version == 1 else SUITE.parent / "suite-v2")
     manifest = json.loads((directory / "MANIFEST.json").read_text(encoding="utf-8"))
     raw = (directory / f"{split}.json").read_bytes()
     if hashlib.sha256(raw).hexdigest() != manifest["splits"][split]["sha256"]:
@@ -114,8 +116,8 @@ def oracle_cases(task: dict) -> list[dict]:
     raise ValueError(f"Unknown skill: {skill}")
 
 
-def build(root: Path, split: str, *, final_score_unlocked: bool = False) -> dict:
-    suite = load_split(root, split, final_score_unlocked=final_score_unlocked)
+def build(root: Path, split: str, *, final_score_unlocked: bool = False, suite_version: int = 1) -> dict:
+    suite = load_split(root, split, final_score_unlocked=final_score_unlocked, suite_version=suite_version)
     cases = []
     for t in suite["tasks"]:
         fk = t["entities"]["foreign_key"]
@@ -133,14 +135,17 @@ def build(root: Path, split: str, *, final_score_unlocked: bool = False) -> dict
         }
         cases.append({"task_id": t["id"], "skill": t["skill"], "status": "UNEXECUTED_BEHAVIOR_SCENARIOS",
                       "fixture": fixture, "cases": oracle_cases(t)})
-    return {"session": "039", "split": split, "origin": "TRUSTED_ORACLE_PLAN_NOT_QWEN_CODE",
-            "candidate_execution_count": 0, "training_eligible": 0, "tasks": cases}
+    result = {"session": "039", "split": split, "origin": "TRUSTED_ORACLE_PLAN_NOT_QWEN_CODE",
+              "candidate_execution_count": 0, "training_eligible": 0, "tasks": cases}
+    if suite_version != 1:
+        result["suite_version"] = suite_version
+    return result
 
 
-def write(root: Path, split: str, target: Path, *, check: bool) -> None:
+def write(root: Path, split: str, target: Path, *, check: bool, suite_version: int = 1) -> None:
     if split == "holdout":
         raise PermissionError("Never export holdout scenarios before final scoring")
-    content = _bytes(build(root, split))
+    content = _bytes(build(root, split, suite_version=suite_version))
     if check:
         if not target.is_file() or target.read_bytes() != content:
             raise ValueError("Scenario plan drift")
@@ -155,12 +160,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, default=Path("."))
     parser.add_argument("--split", choices=["train", "dev"], required=True)
-    parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT)
+    parser.add_argument("--suite-version", type=int, choices=[1, 2], default=1)
+    parser.add_argument("--out-dir", type=Path)
     modes = parser.add_mutually_exclusive_group(required=True)
     modes.add_argument("--write", action="store_true")
     modes.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    write(args.repo, args.split, args.out_dir / f"{args.split}.json", check=args.check)
+    directory = args.out_dir or (DEFAULT_OUT if args.suite_version == 1 else DEFAULT_OUT.parent / "scenarios-v2")
+    write(args.repo, args.split, directory / f"{args.split}.json", check=args.check, suite_version=args.suite_version)
     print(f"{args.split} scenario plan {'checked' if args.check else 'written'}; candidate code executed: 0")
 
 
