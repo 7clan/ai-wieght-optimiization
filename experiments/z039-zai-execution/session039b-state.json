@@ -1,9 +1,24 @@
 {
   "agent": "Z.ai",
   "branch": "exp/zai-039-docker-execution",
-  "captured_utc": "2026-11-10T01:40:36.704393+00:00",
+  "captured_utc": "2026-11-10T02:39:06+00:00",
   "ci": {
     "approval_requested": true,
+    "review_fixes": {
+      "also_corrected": [
+        "docker/s039-route-eval.Dockerfile header guidance ('{{.Id}}' -> push + RepoDigests)",
+        "experiments/z039-zai-execution/image-pins.json pinning_rule prose + stale prisma version 6.16.2 -> 6.19.3",
+        "docs/ZAI_SESSION039_DOCKER_EXECUTION.md reproduction block"
+      ],
+      "defects": [
+        "image identification: locally built images have empty RepoDigests, so the old silent '{{.Id}}' fallback recorded a repository-less sha256 ID that docker_only.IMAGE_RE rejects (stage-1 would have crashed on its first control); the fixed workflow pushes to GHCR and records RepoDigests[0] post-push, regex-gated against IMAGE_RE with a loud failure and no fallback",
+        "image availability: the candidates job runs on a separate GitHub runner with --pull never, so neither the freshly built image nor a digest pasted from an earlier dispatch existed there; the fixed workflow pushes the pinned image to GHCR (controls job, packages:write) and the candidates job pulls the exact digest reference (packages:read, ephemeral GITHUB_TOKEN) before any evaluation"
+      ],
+      "disclosure": "stage-1 approval now also covers one-time creation of a private repo-linked GHCR package holding only the vetted node+prisma evaluation image; no stored credentials (per-run GITHUB_TOKEN, login/logout bracketed)",
+      "fixed_utc": "2026-11-10",
+      "regression_protection": "tests/test_s039_preparation.py extracts both grep -Eq digest gates from the workflow file and asserts byte-equality with docker_only.IMAGE_RE.pattern, plus accept/reject behavior for the GHCR reference, bare local image ID, floating tags and uppercase names (4 new tests)",
+      "unchanged": "manual-dispatch-only trigger; two-stage approval gate (run_candidates=true AND reviewed digest); all container hardening flags; zero model code executed; holdout sealed"
+    },
     "trigger": "manual workflow_dispatch only; never dispatched",
     "workflow": ".github/workflows/s039-docker-eval.yml"
   },
@@ -37,7 +52,7 @@
     "invariant runner.mjs hardcoded /harness and /candidate paths (broke any non-container staging); now env-parameterized with identical container defaults",
     "both runners bound process.stdout.write at call time, allowing candidate monkey-patching to suppress or spoof the verdict; now bound at startup"
   ],
-  "head_commit_at_write": "8711191233d4620be07c44598699c45eadfe64ea",
+  "head_commit_at_write": "d68203f9 (pre-review-fix HEAD; this update adds the CI workflow review fixes)",
   "image_pinning": {
     "built_eval_image_digest": null,
     "node24_amd64_digest": "sha256:6b9d4ea31e614e29f364bf75758458731eb1e105b80c99667438dd6b3fe262e0",
@@ -49,8 +64,8 @@
     "invariant_evaluator": "hardened (path parameterization + stdout spoof binding), host-smoke validated",
     "react_interaction_evaluator": "NOT_IMPLEMENTED",
     "route_evaluator": "implemented, host-smoke validated on trusted controls, Docker runtime unverified",
-    "unit_tests_new": 18,
-    "unit_tests_total": 53
+    "unit_tests_new": 22,
+    "unit_tests_total": 57
   },
   "known_limitations": [
     "route evaluator invokes exported handler functions with standard Request objects, not a full Next.js server",
@@ -60,6 +75,7 @@
     "host smoke tier is trusted-code-only and does not confer Docker-tier evidence"
   ],
   "phase0": {
+    "adversarial_mjs": "30/30 after restoring the sandbox StockPilot prisma/schema.prisma byte-identically from apps/stockpilot (it had been overwritten by 038A Phase-2 bakery staging; the five other surface files already matched)",
     "freeze_checks": "curriculum v1+v2 and scenarios v2 train/dev all reproduce without drift",
     "holdout_opened": false,
     "reconcile_038a": {
@@ -69,7 +85,7 @@
       "queue_candidates": 22,
       "training_eligible": 0
     },
-    "unit_tests": "35/35 OK (preparation) + 18/18 OK (route evaluator, mocked Docker) = 53/53"
+    "unit_tests": "35/35 OK (preparation) + 18/18 OK (route evaluator, mocked Docker) + 4/4 OK (CI identification contract, post-review) = 57/57"
   },
   "qwen_generation": {
     "candidates_generated": 0,

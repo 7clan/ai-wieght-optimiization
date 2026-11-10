@@ -3,10 +3,15 @@
 # Build ONLY inside an approved image workflow (see
 # .github/workflows/s039-docker-eval.yml or an equivalent user-approved
 # environment). Building downloads Prisma engines at build time so that
-# evaluation containers never need network access. After building, record
-# the resulting image digest (docker image inspect --format '{{.Id}}')
-# and pass that exact image@sha256:<digest> to the evaluators; they refuse
-# floating tags and never pull.
+# evaluation containers never need network access. After building, PUSH the
+# image to a registry (the workflow pushes to GHCR) and record its registry
+# manifest digest with:
+#   docker image inspect --format '{{index .RepoDigests 0}}' <image>:ci
+# (only populated after the push). Pass that exact image@sha256:<digest> to
+# the evaluators. Do NOT use '{{.Id}}': that is the local config digest with
+# no repository name — the evaluators reject bare sha256 IDs, floating tags,
+# and they never pull (--pull never), so the digest-pinned image must also be
+# present on (pulled by) every runner that executes it.
 #
 # Base pinned to the linux/amd64 manifest digest of node:24 recorded on
 # 2026-11-10 (NODE_VERSION=24.22.2, config created 2026-11-05). Re-verify

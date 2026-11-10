@@ -3,6 +3,7 @@
 import hashlib
 import json
 from pathlib import Path
+import re
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -174,6 +175,58 @@ class DockerOnlyHarnessTests(unittest.TestCase):
             self.assertIn(self.IMAGE, args)
             with self.assertRaises(ValueError):
                 docker_only.command("node:latest", cand, harness)
+
+    # ------------------------------------------------------------------
+    # CI identification contract (post-review fix, see
+    # docs/ZAI_SESSION039_DOCKER_EXECUTION.md "CI workflow review fixes").
+    # The workflow records the pushed GHCR reference
+    # ghcr.io/<owner>/<repo>/s039-route-eval@sha256:<64-hex> (RepoDigests[0]
+    # after the push) and gate-checks it with a grep regex that MUST stay
+    # identical to the evaluator's IMAGE_RE. The first workflow draft fell
+    # back to the repository-less local image ID, which the evaluators
+    # reject — these tests pin the fixed behaviour on both sides.
+    # ------------------------------------------------------------------
+    GHCR_IMAGE = "ghcr.io/7clan/ai-wieght-optimiization/s039-route-eval@sha256:" + "c" * 64
+    BARE_LOCAL_ID = "sha256:" + "d" * 64  # `docker image inspect --format '{{.Id}}'`
+
+    def _workflow_grep_patterns(self):
+        text = (ROOT / ".github/workflows/s039-docker-eval.yml").read_text(encoding="utf-8")
+        return re.findall(r"grep -Eq '(\^[^']*\$)'", text)
+
+    def test_ci_workflow_gate_matches_evaluator_regex(self):
+        patterns = self._workflow_grep_patterns()
+        self.assertEqual(len(patterns), 2,
+                         "expected the digest gate in both the build and the pull step")
+        for pattern in patterns:
+            self.assertEqual(pattern, docker_only.IMAGE_RE.pattern)
+
+    def test_ghcr_digest_reference_is_accepted_by_command(self):
+        self.assertIsNotNone(docker_only.IMAGE_RE.fullmatch(self.GHCR_IMAGE))
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            cand, harness = root / "candidate", root / "harness"
+            cand.mkdir(); harness.mkdir()
+            (harness / "runner.mjs").write_text("// trusted fixture", encoding="utf-8")
+            args = docker_only.command(self.GHCR_IMAGE, cand, harness)
+            self.assertIn(self.GHCR_IMAGE, args)
+            self.assertIn("--pull", args)
+            self.assertIn("never", args)  # the image must be pulled by CI beforehand
+
+    def test_bare_local_image_id_is_rejected(self):
+        self.assertIsNone(docker_only.IMAGE_RE.fullmatch(self.BARE_LOCAL_ID))
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            cand, harness = root / "candidate", root / "harness"
+            cand.mkdir(); harness.mkdir()
+            (harness / "runner.mjs").write_text("// trusted fixture", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                docker_only.command(self.BARE_LOCAL_ID, cand, harness)
+
+    def test_uppercase_and_floating_references_are_rejected(self):
+        for bad in ("ghcr.io/7Clan/AIWO/s039-route-eval@sha256:" + "e" * 64,
+                    "ghcr.io/7clan/ai-wieght-optimiization/s039-route-eval:ci",
+                    "s039-route-eval@sha256:" + "F" * 64):
+            self.assertIsNone(docker_only.IMAGE_RE.fullmatch(bad), bad)
 
     def test_missing_docker_is_hard_block_and_no_fallback(self):
         with patch.object(docker_only.shutil, "which", return_value=None):

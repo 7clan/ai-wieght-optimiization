@@ -202,26 +202,94 @@ re-downloaded and its SHA-256 re-verified first.
    `run_candidates=false`). The repository is public so standard hosted
    runners should not consume metered minutes, but the assignment asks for
    explicit approval before any CI job, so nothing has been dispatched.
-   Alternatively, provide a Docker-capable environment and run:
+   Post-review note: stage 1 now also **pushes the vetted image to GHCR** as
+   a private, repository-linked package (see "CI workflow review fixes"
+   below) — approving stage 1 covers that one-time package creation in the
+   account's GHCR namespace. Alternatively, provide a Docker-capable
+   environment and run:
    `python -m archagent.s039.control_run --repo . --image '<built-image@sha256:…>' --out experiments/z039-zai-execution/docker-controls.json`.
 2. After stage 1 reports `all_oracles_validated: true`, **approve candidate
    generation + stage-2 execution** (or provide the environment for both).
+
+## CI workflow review fixes (infrastructure only; post-report)
+
+A pre-dispatch review of `.github/workflows/s039-docker-eval.yml` found two
+infrastructure defects in the **workflow plumbing**. Nothing about the
+evaluators, the trusted controls, or Qwen itself was wrong. Both defects
+are fixed on this branch; the workflow still has never been dispatched.
+
+1. **Image identification.** The build step recorded the image reference
+   via `docker image inspect --format '{{index .RepoDigests 0}}'` with a
+   silent fallback to `'{{.Id}}'`. A locally built image that has never
+   been pushed has an *empty* `RepoDigests` list, so that fallback always
+   fired and recorded the local image ID — a bare `sha256:<hex>` with **no
+   repository name**, which the evaluators (`archagent/s039/docker_only.py`,
+   `IMAGE_RE`) correctly refuse. The stage-1 control run would have crashed
+   on its first control. The same wrong `{{.Id}}` guidance also lived in
+   the Dockerfile header, the `image-pins.json` prose and this report's
+   reproduction block — all corrected. The fixed workflow **pushes** the
+   image to GHCR and records `RepoDigests[0]` *after the push* (a true
+   registry manifest digest,
+   `ghcr.io/<owner>/<repo>/s039-route-eval@sha256:<64-hex>`), validates it
+   against the evaluator's exact regex and **fails loudly** on mismatch;
+   the silent `.Id` fallback is gone.
+2. **Image availability.** The candidates job runs on a *different*
+   GitHub-hosted runner: an image built by the controls job is not present
+   there, and the evaluators deliberately run with `--pull never`, so the
+   stage-2 job could never have found the reviewed image — including a
+   digest pasted from an earlier stage-1 dispatch, which existed on no
+   runner and in no registry. The fixed workflow closes both gaps: the
+   controls job pushes the pinned image to GHCR (job permission
+   `packages: write`), and the candidates job validates the pasted
+   reference, logs into GHCR with the ephemeral per-run `GITHUB_TOKEN`
+   (permission `packages: read`) and `docker pull`s the exact digest before
+   any evaluation starts. Digest references are immutable and
+   content-addressed, so the reviewed image is byte-identical across
+   dispatches.
+
+Notes:
+
+- The GHCR package is created **private** by default and linked to this
+  repository; it only ever contains the vetted node+prisma evaluation
+  image. No stored credentials are used — `GITHUB_TOKEN` is ephemeral and
+  scoped per run (`docker login`/`logout` bracket every use).
+- Regression protection: `tests/test_s039_preparation.py` now extracts both
+  `grep -Eq` digest gates from the workflow file and asserts they are
+  byte-identical to `docker_only.IMAGE_RE.pattern`; it also asserts that
+  `docker_only.command` accepts the exact GHCR reference the workflow
+  records and refuses the bare local image ID, floating tags and uppercase
+  names (4 new tests; evaluator code unchanged — it was correct).
+- Environment repair while re-verifying: the adversarial suite
+  (`archagent/verify/adversarial.test.mjs`) reads the archived StockPilot
+  surface from `/home/z/my-project`; that sandbox `prisma/schema.prisma`
+  had been overwritten by earlier 038A Phase-2 bakery staging. It was
+  restored byte-identically from `apps/stockpilot/prisma/schema.prisma`
+  (the five other surface files already matched). Suite: **30/30** again.
+- Unchanged: manual-dispatch-only trigger, the two-stage approval gate
+  (`run_candidates=true` **plus** the reviewed digest from a prior stage-1
+  run), every container hardening flag, zero model code executed, zero
+  candidates generated, holdout sealed, no training.
 
 ## Reproduction
 
 ```bash
 git checkout exp/zai-039-docker-execution
 python -m unittest tests.test_finetune_audit tests.test_candidate_queue \
-  tests.test_proof_gate tests.test_s039_preparation tests.test_s039_route_eval -v   # 53/53
+  tests.test_proof_gate tests.test_s039_preparation tests.test_s039_route_eval -v   # 57/57 (4 new CI-contract tests)
 python -m archagent.s039.control_run --repo . --host-smoke \
   --out /tmp/host-smoke-controls.json   # 10/10, trusted controls only
 # Docker tier (requires an approved Docker-capable environment):
 docker build -f docker/s039-route-eval.Dockerfile -t s039-route-eval:local .
+# The evaluators require name@sha256:<manifest-digest> and never pull, so push
+# to a registry you control and record the manifest digest AFTER the push
+# (a bare `{{.Id}}` is the local config ID with no repository name and is
+# rejected by IMAGE_RE):
+docker push <your-registry>/s039-route-eval:local
 python -m archagent.s039.control_run --repo . \
-  --image "$(docker image inspect --format '{{.Id}}' s039-route-eval:local)" \
+  --image "$(docker image inspect --format '{{index .RepoDigests 0}}' s039-route-eval:local)" \
   --out experiments/z039-zai-execution/docker-controls.json
 python experiments/z039-zai-execution/run_ci_candidates.py --repo . \
-  --image '<same digest>' --out experiments/z039-zai-execution/docker-candidates.json
+  --image '<same digest reference>' --out experiments/z039-zai-execution/docker-candidates.json
 ```
 
 ## Artifacts

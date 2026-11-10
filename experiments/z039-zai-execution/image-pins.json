@@ -25,8 +25,8 @@
   },
   "planned_evaluation_image": {
     "build_recipe": "docker/s039-route-eval.Dockerfile in this branch",
-    "contents": "node:24 pinned base + globally installed prisma CLI and @prisma/client 6.16.2 with bundled query/migration engines (downloaded at image build time so eval containers need no network)",
-    "pinning_rule": "Build only inside an approved image workflow; record the resulting image@sha256 digest and pass that exact digest to archagent.s039 evaluators. The evaluators refuse floating tags and never pull."
+    "contents": "node:24 pinned base + globally installed prisma CLI and @prisma/client 6.19.3 with bundled query/migration engines (downloaded at image build time so eval containers need no network)",
+    "pinning_rule": "Build only inside an approved image workflow; push the built image to a registry, record its manifest digest (image@sha256:<64-hex>, from RepoDigests after the push — never the bare local image ID) and pass that exact digest to archagent.s039 evaluators. The evaluators refuse floating tags and bare sha256 IDs and never pull, so the digest-pinned image must be pulled onto every runner that executes it."
   },
   "security_notes": [
     "The route evaluator container needs an exec-permitted tmpfs workspace solely because the trusted Prisma query-engine library must be loadable from a writable location; nosuid is retained, the image root stays read-only, all capabilities are dropped and the network is disabled.",

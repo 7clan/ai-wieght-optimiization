@@ -8,16 +8,36 @@
 # proposed compliant path, and it must only be started after explicit user
 # approval.
 #
-# Stage 1 (build-and-controls, dispatch without run_candidates):
-#   builds the pinned evaluation image, records its digest, and runs the
-#   ten trusted teacher controls (positive/negative/failure-mode) inside
-#   the same restricted container settings used for candidates. No
+# Stage 1 (controls job, dispatch without run_candidates):
+#   builds the pinned evaluation image, PUSHES it to GHCR, records its
+#   registry manifest digest (image@sha256:<64-hex>), and runs the ten
+#   trusted teacher controls (positive/negative/failure-mode) inside the
+#   same restricted container settings used for candidates. No
 #   model-generated code is involved.
 #
-# Stage 2 (candidate execution, dispatch with run_candidates=true AND the
-#   digest recorded from a stage-1 run): runs Qwen-generated candidates.
-#   It should only be dispatched after stage 1 reports all_oracles_validated
-#   and the user has separately approved candidate execution.
+#   Why the GHCR push exists (post-review fixes, see
+#   docs/ZAI_SESSION039_DOCKER_EXECUTION.md "CI workflow review fixes"):
+#     * Image identification — a locally built image has an EMPTY
+#       RepoDigests list, and its local image ID (`sha256:<hex>` with no
+#       repository name) is rejected by archagent.s039.docker_only.IMAGE_RE.
+#       After pushing, `RepoDigests[0]` yields exactly the
+#       `name@sha256:<manifest-digest>` reference the evaluators require.
+#       The recorded reference is regex-validated here and there is NO
+#       silent fallback to the (rejected) local image ID.
+#     * Image availability — GitHub-hosted runners do not share a Docker
+#       daemon, so an image built by one job is absent on the next runner,
+#       and the evaluators run with `--pull never`. Pushing to GHCR makes
+#       the digest-pinned image pullable by the candidates job of any later
+#       dispatch. The package is created PRIVATE by default and linked to
+#       this repository; the job authenticates with the ephemeral
+#       GITHUB_TOKEN (no stored credentials).
+#
+# Stage 2 (candidates job, dispatch with run_candidates=true AND the
+#   digest recorded from a prior stage-1 run): pulls the exact reviewed
+#   image from GHCR by immutable digest, then runs Qwen-generated
+#   candidates through the restricted evaluators. It should only be
+#   dispatched after a stage-1 run reports all_oracles_validated and the
+#   user has separately approved candidate execution.
 name: s039-docker-eval
 
 on:
@@ -28,7 +48,7 @@ on:
         type: boolean
         default: false
       image_digest:
-        description: "Image digest recorded from a prior stage-1 run (image@sha256:...)"
+        description: "Image reference recorded from a prior stage-1 run (image@sha256:<64-hex>)"
         type: string
         default: ""
       branch:
@@ -43,20 +63,54 @@ jobs:
   controls:
     name: Build pinned image and run trusted controls
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write  # push the vetted image so the candidates runner can pull it
+    outputs:
+      image_reference: ${{ steps.build.outputs.image_reference }}
+    env:
+      # GHCR and docker_only.IMAGE_RE both require lowercase; the runner's
+      # default shell is bash, so the ,, expansion is applied in the step.
+      EVAL_IMAGE_NAME: ghcr.io/${{ github.repository }}/s039-route-eval
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch || 'exp/zai-039-docker-execution' }}
-      - name: Build the pinned evaluation image
+      - name: Build, push and pin the evaluation image
         run: |
-          docker build -f docker/s039-route-eval.Dockerfile -t s039-route-eval:ci .
-          DIGEST="$(docker image inspect --format '{{index .RepoDigests 0}}' s039-route-eval:ci 2>/dev/null || docker image inspect --format '{{.Id}}' s039-route-eval:ci)"
-          echo "image_reference=$DIGEST" >> "$GITHUB_OUTPUT"
-          echo "Recorded evaluation image: $DIGEST" | tee -a "$GITHUB_STEP_SUMMARY"
+          set -euo pipefail
+          IMAGE="${EVAL_IMAGE_NAME,,}"
+          docker build -f docker/s039-route-eval.Dockerfile -t "$IMAGE:ci" .
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker push "$IMAGE:ci"
+          # After a successful push the local image carries the registry
+          # manifest digest. No fallback to the local image ID: that value
+          # lacks a repository name and is rejected by the evaluators.
+          REF="$(docker image inspect --format '{{index .RepoDigests 0}}' "$IMAGE:ci")"
+          echo "$REF" | grep -Eq '^[a-z0-9][a-z0-9._/:-]*@sha256:[a-f0-9]{64}$' || {
+            echo "::error::recorded image reference '$REF' is not an exact image@sha256:<64-hex> digest" >&2
+            exit 1
+          }
+          # Re-verify the exact pinned reference resolves from the registry
+          # with the same pull path the candidates job will use.
+          docker pull "$REF"
+          docker logout ghcr.io
+          docker image inspect "$REF" >/dev/null
+          echo "image_reference=$REF" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Session-039 evaluation image"
+            echo ""
+            echo "Pinned reference (paste into the \`image_digest\` input when approving candidate execution):"
+            echo ""
+            echo '```'
+            echo "$REF"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
         id: build
       - name: Run the ten trusted teacher controls
         run: |
+          set -euo pipefail
           python -m archagent.s039.control_run \
             --repo . \
             --image "${{ steps.build.outputs.image_reference }}" \
@@ -75,15 +129,38 @@ jobs:
     if: ${{ github.event.inputs.run_candidates == 'true' && github.event.inputs.image_digest != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: read
+      packages: read  # pull the digest-pinned image pushed by a stage-1 run
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch || 'exp/zai-039-docker-execution' }}
-      - name: Run every staged candidate through the restricted evaluators
+      - name: Pull the reviewed evaluation image from GHCR
+        env:
+          IMAGE_REF: ${{ github.event.inputs.image_digest }}
         run: |
+          set -euo pipefail
+          # Fail fast on a malformed reference (the evaluator re-checks this).
+          echo "$IMAGE_REF" | grep -Eq '^[a-z0-9][a-z0-9._/:-]*@sha256:[a-f0-9]{64}$' || {
+            echo "::error::image_digest must be an exact image@sha256:<64-hex> reference, got: $IMAGE_REF" >&2
+            exit 1
+          }
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          # This runner never saw the stage-1 build, and the evaluators run
+          # with --pull never: the pinned image must be present locally
+          # before any evaluation starts.
+          docker pull "$IMAGE_REF"
+          docker logout ghcr.io
+          docker image inspect "$IMAGE_REF" >/dev/null
+      - name: Run every staged candidate through the restricted evaluators
+        env:
+          IMAGE_REF: ${{ github.event.inputs.image_digest }}
+        run: |
+          set -euo pipefail
           python -m archagent.s039.control_run --help >/dev/null  # sanity import
           python experiments/z039-zai-execution/run_ci_candidates.py \
-            --repo . --image "${{ github.event.inputs.image_digest }}" \
+            --repo . --image "$IMAGE_REF" \
             --out experiments/z039-zai-execution/docker-candidates.json
       - name: Upload candidate evidence
         if: always()
