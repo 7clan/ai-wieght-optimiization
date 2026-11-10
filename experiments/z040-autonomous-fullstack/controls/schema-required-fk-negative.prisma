@@ -1,0 +1,25 @@
+// TRUSTED TEACHER CONTROL — NOT QWEN CODE. Negative: FK is required with
+// Restrict while the radiostation contract demands OPTIONAL with SetNull.
+// Proves the nullability + onDelete probes discriminate.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:/work/db.sqlite"
+}
+
+model Transmitter {
+  id         String      @id @default(cuid())
+  broadcasts Broadcast[]
+}
+
+model Broadcast {
+  id           String     @id @default(cuid())
+  title        String
+  airtimeMin   Int
+  transmitterId String
+  status       String     @default("drafted")
+  transmitter  Transmitter @relation(fields: [transmitterId], references: [id], onDelete: Restrict)
+}

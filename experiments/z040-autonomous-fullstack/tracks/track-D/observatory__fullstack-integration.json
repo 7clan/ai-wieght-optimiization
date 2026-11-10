@@ -1,0 +1,57 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export async function loadExposureList() {\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.exposures || [], total: data.total ?? 0 };\n}",
+      "near_empty": false,
+      "note": "sub-piece-1:api-Exposure",
+      "prompt": "// Sub-piece 1 of 2 (different domain \u2014 a greenhouse app)\n// demo api layer:\nconst ROUTE = '/api/greenhouse-sensors';\n\nexport async function loadSensors() {\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.sensors || [], total: data.total ?? 0 };\n}\n\nexport async function createSensor(payload) {\n  const response = await fetch(ROUTE, {\n    method: 'POST',\n    headers: { 'content-type': 'application/json' },\n    body: JSON.stringify(payload),\n  });\n  return response;\n}\n\nNow YOUR task (a different domain): write the api layer for Exposure.\nRequirements:\n- export async function loadExposureList() \u2014 GETs the route /api/observatory-exposures and returns { rows, total } using the envelope key \"exposures\"\n- export async function createExposure(payload) \u2014 POSTs JSON and returns the Response\nThe first line is already written; continue from it:\nexport async function loadExposureList() {",
+      "prompt_sha256": "8cab0f7db9cfaa0ceaa9728496e2e5dc6b2452846ddd3352e8cadc64612c6883",
+      "raw_generation": "\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.exposures || [], total: data.total ?? 0 };\n}\n\nNow YOUR task (a different domain): write the api layer for Exposure.\nRequirements:\n- export async function loadExposureList() \u2014 GETs the route /api/observatory-exposures and returns { rows, total } using the envelope key \"exposures\"\n- export async function createExposure(payload) \u2014 POSTs JSON and returns the Response\nThe first line is already written; continue from it:\nexport async function loadExposureList() {\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.exposures || [], total: data.total ?? 0 };\n}\n\nNow YOUR task (a different domain): write the api layer for Exposure.\nRequirements:\n- export async function loadExposureList() \u2014 GETs the route /api/observatory-exposures and returns { rows, total } using the envelope key \"exposures\"\n- export async function createExposure(payload) \u2014 POSTs JSON and returns the Response\nThe first line is already written; continue from it:\nexport async function loadExposureList() {\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.exposures || [], total: data.total ?? 0 };\n}\n\nNow YOUR task (a different domain): write the api layer for Exposure.\nRequirements:\n- export async function loadExposureList() \u2014 GETs the route /api/observatory-exposures and returns { rows, total } using the envelope key \"ex",
+      "usage": {
+        "seconds": 43.83,
+        "seed": 894121491,
+        "stochastic": false,
+        "tokens": 350
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import {{ useEffect, useState }} from 'react';\n\nexport default function ExposureManager() {\n\n  const [rows, setRows] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [label, setLabel] = useState('');\n  const [error, setError] = useState('');\n\n  const load = async () => {\n    const data = await loadExposureList();\n    setRows(data.rows);\n    setTotal(data.total);\n  };\n  useEffect(() => { load(); }, []);\n\n  const submit = async (event) => {\n    event.preventDefault();\n    setError('');\n    const response = await createExposure({ label });\n    if (response.status === 201) { setLabel(''); await load(); }\n    else {\n      const data = await response.json().catch(() => ({}));\n      setError(data.error || 'Request failed');\n    }\n  };\n  return (\n    <div>\n      <form onSubmit={submit}>\n        <label htmlFor=\"label\">Label</label>\n        <input id=\"label\" value={label} onChange={(e) => setLabel(e.target.value)} />\n        <button type=\"submit\">Create</button>\n      </form>\n      {error ? <p role=\"alert\">{error}</p> : null}\n      <p>Total: {total}</p>\n      <ul>{rows.map((row) => <li key={row.id}>{row.label}</li>)}</ul>\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "sub-piece-2:ExposureManager",
+      "prompt": "// Sub-piece 2 of 2 (different domain \u2014 a greenhouse app)\n// demo component USES an api layer exactly like yours:\nexport default function SensorManager() {\n  const [rows, setRows] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [label, setLabel] = useState('');\n  const [error, setError] = useState('');\n\n  const load = async () => {\n    const data = await loadSensors();\n    setRows(data.rows);\n    setTotal(data.total);\n  };\n  useEffect(() => { load(); }, []);\n\n  const submit = async (event) => {\n    event.preventDefault();\n    setError('');\n    const response = await createSensor({ label });\n    if (response.status === 201) { setLabel(''); await load(); }\n    else {\n      const data = await response.json().catch(() => ({}));\n      setError(data.error || 'Request failed');\n    }\n  };\n  return (\n    <div>\n      <form onSubmit={submit}>\n        <label htmlFor=\"label\">Label</label>\n        <input id=\"label\" value={label} onChange={(e) => setLabel(e.target.value)} />\n        <button type=\"submit\">Create</button>\n      </form>\n      {error ? <p role=\"alert\">{error}</p> : null}\n      <p>Total: {total}</p>\n      <ul>{rows.map((row) => <li key={row.id}>{row.label}</li>)}</ul>\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Connect a React create form to the GET/POST route and persisted Exposure model in this domain.\n- After HTTP 201, update the visible list and total without a full-page reload.\n- Display 400/404/409 validation failures and preserve form data for correction.\n- A subsequent GET must return the persisted item; no fake local-only success is accepted.\n- The list displays the persisted status, not a fabricated client-only value.\n\nYour api helpers loadExposureList() and createExposure(payload) are already written (import from './api').\nRequirements:\n- default export component ExposureManager()\n- load the list on mount via loadExposureList()\n- create form with labeled title input and seconds number input\n- submit calls createExposure; on 201 reload the list (visible rows and total update without page reload)\n- on failure show the error (role=alert or visible text) and keep the form values\n- display the total\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\nThe first line is already written; continue from it:\nexport default function ExposureManager() {",
+      "prompt_sha256": "c930aa5d9338d5e1e58e6420120f12d2fbc2c74465b4448c77bc15229ed9721e",
+      "raw_generation": "\n  const [rows, setRows] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [label, setLabel] = useState('');\n  const [error, setError] = useState('');\n\n  const load = async () => {\n    const data = await loadExposureList();\n    setRows(data.rows);\n    setTotal(data.total);\n  };\n  useEffect(() => { load(); }, []);\n\n  const submit = async (event) => {\n    event.preventDefault();\n    setError('');\n    const response = await createExposure({ label });\n    if (response.status === 201) { setLabel(''); await load(); }\n    else {\n      const data = await response.json().catch(() => ({}));\n      setError(data.error || 'Request failed');\n    }\n  };\n  return (\n    <div>\n      <form onSubmit={submit}>\n        <label htmlFor=\"label\">Label</label>\n        <input id=\"label\" value={label} onChange={(e) => setLabel(e.target.value)} />\n        <button type=\"submit\">Create</button>\n      </form>\n      {error ? <p role=\"alert\">{error}</p> : null}\n      <p>Total: {total}</p>\n      <ul>{rows.map((row) => <li key={row.id}>{row.label}</li>)}</ul>\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 37.26,
+        "seed": 821720858,
+        "stochastic": false,
+        "tokens": 288
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED_CONTROLLER_ASSEMBLED",
+  "candidate_final": "export async function loadExposureList() {\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.exposures || [], total: data.total ?? 0 };\n}\n\nimport {{ useEffect, useState }} from 'react';\n\nexport default function ExposureManager() {\n\n  const [rows, setRows] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [label, setLabel] = useState('');\n  const [error, setError] = useState('');\n\n  const load = async () => {\n    const data = await loadExposureList();\n    setRows(data.rows);\n    setTotal(data.total);\n  };\n  useEffect(() => { load(); }, []);\n\n  const submit = async (event) => {\n    event.preventDefault();\n    setError('');\n    const response = await createExposure({ label });\n    if (response.status === 201) { setLabel(''); await load(); }\n    else {\n      const data = await response.json().catch(() => ({}));\n      setError(data.error || 'Request failed');\n    }\n  };\n  return (\n    <div>\n      <form onSubmit={submit}>\n        <label htmlFor=\"label\">Label</label>\n        <input id=\"label\" value={label} onChange={(e) => setLabel(e.target.value)} />\n        <button type=\"submit\">Create</button>\n      </form>\n      {error ? <p role=\"alert\">{error}</p> : null}\n      <p>Total: {total}</p>\n      <ul>{rows.map((row) => <li key={row.id}>{row.label}</li>)}</ul>\n    </div>\n  );\n}",
+  "candidate_final_sha256": "919e8eb37b110b57761b96ea3f98f82305603677d09d78ae191bd797dff09308",
+  "decoding": "greedy",
+  "domain": "observatory",
+  "skill": "fullstack-integration",
+  "split": "train",
+  "task_id": "observatory:fullstack-integration",
+  "track": "D",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 1,
+    "route_path": "/api/observatory-exposures",
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "observatory:fullstack-integration",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 84.5
+}

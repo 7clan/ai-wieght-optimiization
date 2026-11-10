@@ -1,0 +1,142 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A state invariant is a pure predicate canAdvanceFeedLog(record, parent) that returns true exactly when the workflow allows the child record to advance to its next status. It reads the current status and the related parent, and it must never mutate anything.\n\n// demo (different domain \u2014 a greenhouse app)\n// Pure predicate: true exactly when the sensor may advance one status.\nexport function canAdvanceSensor(record, greenhouse) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement canAdvanceFeedLog(current, next): boolean for exact transitions draft\u2192scheduled and scheduled\u2192served.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: export function canAdvanceFeedLog; pure boolean return; handles statuses ['draft', 'scheduled', 'served']; returns false for unknown/terminal cases.\n\nWrite the complete construct now. The first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n",
+      "prompt_sha256": "0dfdc5ea3dc1e3a5cdd9ca4ced43c746271bfd9ed1e1fe93288435c697e523ee",
+      "raw_generation": "  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if",
+      "usage": {
+        "seconds": 28.87,
+        "seed": 151119763,
+        "stochastic": false,
+        "tokens": 250
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}",
+      "near_empty": false,
+      "note": "repair-1",
+      "prompt": "A state invariant is a pure predicate canAdvanceFeedLog(record, parent) that returns true exactly when the workflow allows the child record to advance to its next status. It reads the current status and the related parent, and it must never mutate anything.\n\n// demo (different domain \u2014 a greenhouse app)\n// Pure predicate: true exactly when the sensor may advance one status.\nexport function canAdvanceSensor(record, greenhouse) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement canAdvanceFeedLog(current, next): boolean for exact transitions draft\u2192scheduled and scheduled\u2192served.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 1):\n\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: export function canAdvanceFeedLog; pure boolean return; handles statuses ['draft', 'scheduled', 'served']; returns false for unknown/terminal cases.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n",
+      "prompt_sha256": "4c26e0c41da299d3bb446225a576378d258180a044505bf94c99772a0eac5edf",
+      "raw_generation": "  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if",
+      "usage": {
+        "seconds": 29.66,
+        "seed": 1057494004,
+        "stochastic": false,
+        "tokens": 250
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}",
+      "near_empty": false,
+      "note": "repair-2",
+      "prompt": "A state invariant is a pure predicate canAdvanceFeedLog(record, parent) that returns true exactly when the workflow allows the child record to advance to its next status. It reads the current status and the related parent, and it must never mutate anything.\n\n// demo (different domain \u2014 a greenhouse app)\n// Pure predicate: true exactly when the sensor may advance one status.\nexport function canAdvanceSensor(record, greenhouse) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement canAdvanceFeedLog(current, next): boolean for exact transitions draft\u2192scheduled and scheduled\u2192served.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 2):\n\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: export function canAdvanceFeedLog; pure boolean return; handles statuses ['draft', 'scheduled', 'served']; returns false for unknown/terminal cases.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n",
+      "prompt_sha256": "0d1e984348ee58db9d1581783d074c87c3fa295ce81195f19f7c415793951456",
+      "raw_generation": "  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if",
+      "usage": {
+        "seconds": 29.3,
+        "seed": 1057494005,
+        "stochastic": false,
+        "tokens": 250
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}",
+      "near_empty": false,
+      "note": "repair-3",
+      "prompt": "A state invariant is a pure predicate canAdvanceFeedLog(record, parent) that returns true exactly when the workflow allows the child record to advance to its next status. It reads the current status and the related parent, and it must never mutate anything.\n\n// demo (different domain \u2014 a greenhouse app)\n// Pure predicate: true exactly when the sensor may advance one status.\nexport function canAdvanceSensor(record, greenhouse) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement canAdvanceFeedLog(current, next): boolean for exact transitions draft\u2192scheduled and scheduled\u2192served.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 3):\n\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: export function canAdvanceFeedLog; pure boolean return; handles statuses ['draft', 'scheduled', 'served']; returns false for unknown/terminal cases.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n",
+      "prompt_sha256": "6bf44877295511cbbc72173eb52b8af45eaf4fa1542dc74181877f20b866f69f",
+      "raw_generation": "  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if",
+      "usage": {
+        "seconds": 28.51,
+        "seed": 1057494006,
+        "stochastic": false,
+        "tokens": 250
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "export function canAdvanceFeedLog(record, parent) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}",
+  "candidate_final_sha256": "deaef28c4e0f2096d22ed16c1a0b0685f4fc4c1b4c967a30c7ce6ae81487bc90",
+  "decoding": "greedy",
+  "domain": "aquarium",
+  "repair_verdicts": [
+    {
+      "candidate_sha256": "deaef28c4e0f2096d22ed16c1a0b0685f4fc4c1b4c967a30c7ce6ae81487bc90",
+      "repair": 1,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 7,
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "split": "train",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "aquarium:state-invariant",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "deaef28c4e0f2096d22ed16c1a0b0685f4fc4c1b4c967a30c7ce6ae81487bc90",
+      "repair": 2,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 7,
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "split": "train",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "aquarium:state-invariant",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "deaef28c4e0f2096d22ed16c1a0b0685f4fc4c1b4c967a30c7ce6ae81487bc90",
+      "repair": 3,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 7,
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "split": "train",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "aquarium:state-invariant",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    }
+  ],
+  "repairs_used": 3,
+  "reuses": {
+    "attempt1_prompt_sha256": "0dfdc5ea3dc1e3a5cdd9ca4ced43c746271bfd9ed1e1fe93288435c697e523ee",
+    "task_id": "aquarium:state-invariant",
+    "track": "B"
+  },
+  "skill": "state-invariant",
+  "split": "train",
+  "task_id": "aquarium:state-invariant",
+  "track": "C",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 7,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "aquarium:state-invariant",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 88.1
+}

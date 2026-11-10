@@ -1,0 +1,42 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { useEffect, useState } from 'react';\n\nexport default function FeedLogManager() {\n  const [feedLog, setFeedLog] = useState(null);\n\n  useEffect(() => {\n    fetch('/api/feedlog')\n      .then(response => response.json())\n      .then(data => setFeedLog(data));\n  }, []);\n\n  return (\n    <div>\n      {feedLog && (\n        <div>\n          <h2>FeedLog</h2>\n          <ul>\n            {feedLog.map(log => (\n              <li key={log.id}>\n                <h3>{log.title}</h3>\n                <p>{log.description}</p>\n              </li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Connect a React create form to the GET/POST route and persisted FeedLog model in this domain.\n- After HTTP 201, update the visible list and total without a full-page reload.\n- Display 400/404/409 validation failures and preserve form data for correction.\n- A subsequent GET must return the persisted item; no fake local-only success is accepted.\n- The list displays the persisted status, not a fabricated client-only value.\n\nWrite the complete React component now. The first line is already written; continue from it:\nimport { useEffect, useState } from 'react';\n\nexport default function FeedLogManager() {\n",
+      "prompt_sha256": "e006dbb91802fe996021173d0bc7bda8c9058a130fdc8c852aa410156a3be6df",
+      "raw_generation": "  const [feedLog, setFeedLog] = useState(null);\n\n  useEffect(() => {\n    fetch('/api/feedlog')\n      .then(response => response.json())\n      .then(data => setFeedLog(data));\n  }, []);\n\n  return (\n    <div>\n      {feedLog && (\n        <div>\n          <h2>FeedLog</h2>\n          <ul>\n            {feedLog.map(log => (\n              <li key={log.id}>\n                <h3>{log.title}</h3>\n                <p>{log.description}</p>\n              </li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 17.13,
+        "seed": 1945442822,
+        "stochastic": false,
+        "tokens": 139
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { useEffect, useState } from 'react';\n\nexport default function FeedLogManager() {\n  const [feedLog, setFeedLog] = useState(null);\n\n  useEffect(() => {\n    fetch('/api/feedlog')\n      .then(response => response.json())\n      .then(data => setFeedLog(data));\n  }, []);\n\n  return (\n    <div>\n      {feedLog && (\n        <div>\n          <h2>FeedLog</h2>\n          <ul>\n            {feedLog.map(log => (\n              <li key={log.id}>\n                <h3>{log.title}</h3>\n                <p>{log.description}</p>\n              </li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}",
+  "candidate_final_sha256": "a3fcf4c0f2490c83e9786aa1d1fe95e8d9a8b37e24d575ad788b70151e9c6940",
+  "decoding": "greedy",
+  "domain": "aquarium",
+  "skill": "fullstack-integration",
+  "split": "train",
+  "task_id": "aquarium:fullstack-integration",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 1,
+    "route_path": "/api/aquarium-feed",
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "aquarium:fullstack-integration",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 19.5
+}

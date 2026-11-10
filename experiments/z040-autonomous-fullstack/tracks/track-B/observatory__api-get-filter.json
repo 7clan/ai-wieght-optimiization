@@ -1,0 +1,42 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.exposure.findMany({\n    where: {\n      ...(search ? { label: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ exposures: filtered, total: filtered.length });\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A Next.js GET route handler returns a JSON envelope with a list of records and a total. Query parameters filter the list; the total counts the FILTERED rows. The response shape must match the contract exactly.\n\n// demo (different domain \u2014 a greenhouse app)\n// Note: use the GLOBAL Response.json (no next/server import) and import db\n// from \"@/lib/db\".\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.sensor.findMany({\n    where: {\n      ...(search ? { label: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { reading: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ sensors: filtered, total: filtered.length });\n}\n\nNow YOUR task (a different domain): Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Implement Next.js GET /api/observatory-exposures using db.exposure.findMany.\n- Use searchParams 'q' as a case-insensitive title substring filter only when supplied.\n- Filter by optional telescopeId, order by title ascending, include telescope.\n- Return { exposures: [...], total: number } with status 200; empty results return [] and 0.\n- The listed records include the persisted status field.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: GET export; envelope with list and total; filters applied; total counts filtered rows; NextResponse.json used.\n\nWrite the complete construct now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n",
+      "prompt_sha256": "bbb8832edbbf3c2aa68e733cd0bb600c0c9bbbcc04d46dc1f8bed124b1aa2666",
+      "raw_generation": "  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.exposure.findMany({\n    where: {\n      ...(search ? { label: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ exposures: filtered, total: filtered.length });\n}\n\nThe first line is already written; continue from it:\n\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.exposure.findMany({\n    where: {\n      ...(search ? { label: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ exposures: filtered, total: filtered.length });\n}\n\nThe first line is already written; continue from it:\n\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.exposure.findMany({\n    where: {\n      ...(search ? { label: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ exposures: filtered, total: filtered.length });\n}\n\nThe first line is already written; continue from it:\n\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams",
+      "usage": {
+        "seconds": 64.25,
+        "seed": 1221887071,
+        "stochastic": false,
+        "tokens": 500
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.exposure.findMany({\n    where: {\n      ...(search ? { label: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ exposures: filtered, total: filtered.length });\n}",
+  "candidate_final_sha256": "48ef2c438903e2f2c775fcbb60eb1e089d2052454506774c60b69bd08cef57ed",
+  "decoding": "greedy",
+  "domain": "observatory",
+  "skill": "api-get-filter",
+  "split": "train",
+  "task_id": "observatory:api-get-filter",
+  "track": "B",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 6,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "route_path": "/api/observatory-exposures",
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "observatory:api-get-filter",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 76.4
+}

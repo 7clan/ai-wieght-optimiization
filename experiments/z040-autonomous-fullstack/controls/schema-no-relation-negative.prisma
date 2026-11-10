@@ -1,0 +1,23 @@
+// TRUSTED TEACHER CONTROL — NOT QWEN CODE. Negative: child model has the FK
+// column but no @relation and no onDelete semantics. Probes that build on
+// relation behavior must fail.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:/work/db.sqlite"
+}
+
+model Transmitter {
+  id String @id @default(cuid())
+}
+
+model Broadcast {
+  id           String @id @default(cuid())
+  title        String
+  airtimeMin   Int
+  transmitterId String?
+  status       String @default("drafted")
+}

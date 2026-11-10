@@ -1,0 +1,56 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export function filterBroadcastRows(rows, search, status) {\n  return (rows || []).filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}",
+      "near_empty": false,
+      "note": "sub-piece-1:filterBroadcastRows",
+      "prompt": "// Sub-piece 1 of 2 (different domain \u2014 a greenhouse app)\n// demo helper:\nexport function applySensorFilters(rows, search, status) {\n  return (rows || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}\n\nNow YOUR task (a different domain): write the filtering helper for Broadcast rows.\nRequirements:\n- export function filterBroadcastRows(rows, search, status)\n- rows have fields title, airtimeMin, status ('drafted' | 'cleared' | 'aired')\n- search matches the title field case-insensitively\n- status 'all' or empty means no status filtering\n- return the filtered array; never mutate rows\nThe first line is already written; continue from it:\nexport function filterBroadcastRows(rows, search, status) {",
+      "prompt_sha256": "87b4d259d4cef68eb95179d018aec0286885d02eb8d0061a58c26ed534e1ed5d",
+      "raw_generation": "\n  return (rows || []).filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}",
+      "usage": {
+        "seconds": 5.75,
+        "seed": 1370115691,
+        "stochastic": false,
+        "tokens": 40
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import {{ useState }} from 'react';\n\nexport default function BroadcastList({ data }) {\n\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applyBroadcastFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search broadcasts</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"drafted\">Drafted</option>\n        <option value=\"cleared\">Cleared</option>\n        <option value=\"aired\">Aired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No broadcasts match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.title} \u2014 {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "sub-piece-2:BroadcastList",
+      "prompt": "// Sub-piece 2 of 2 (different domain \u2014 a greenhouse app)\n// demo component USES a filtering helper exactly like yours:\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applySensorFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search sensors</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No sensors match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.label} \u2014 {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Build a responsive React component listing Broadcast items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, airtimeMin and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nYour helper filterBroadcastRows(rows, search, status) is already written (import it from './helpers').\nRequirements:\n- default export component BroadcastList({ data })\n- call filterBroadcastRows for the visible rows\n- labeled search input, labeled status select with options all/drafted/cleared/aired, clear button\n- explicit empty state when no rows match\n- render title, airtimeMin and status for each row\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\nThe first line is already written; continue from it:\nexport default function BroadcastList({ data }) {",
+      "prompt_sha256": "066c7edbed8d73cbf81d1cce3886dfea6945da59bd23f94535b12840244008e9",
+      "raw_generation": "\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applyBroadcastFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search broadcasts</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"drafted\">Drafted</option>\n        <option value=\"cleared\">Cleared</option>\n        <option value=\"aired\">Aired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No broadcasts match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.title} \u2014 {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 31.31,
+        "seed": 1684846316,
+        "stochastic": false,
+        "tokens": 256
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED_CONTROLLER_ASSEMBLED",
+  "candidate_final": "export function filterBroadcastRows(rows, search, status) {\n  return (rows || []).filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}\n\nimport {{ useState }} from 'react';\n\nexport default function BroadcastList({ data }) {\n\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applyBroadcastFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search broadcasts</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"drafted\">Drafted</option>\n        <option value=\"cleared\">Cleared</option>\n        <option value=\"aired\">Aired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No broadcasts match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.title} \u2014 {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}",
+  "candidate_final_sha256": "a02f7f17916546b518eb8453b106d1c363650fe8c2296522fef5e8e6ea7f1a23",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "skill": "react-interaction",
+  "split": "dev",
+  "task_id": "radiostation:react-interaction",
+  "track": "D",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 1,
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:react-interaction",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 38.0
+}

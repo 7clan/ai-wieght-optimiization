@@ -1,0 +1,56 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceExposure(record, parent) {\n  // Write your code here\n  return false;\n}",
+      "near_empty": true,
+      "note": "single-shot",
+      "prompt": "Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Implement canAdvanceExposure(current, next): boolean for exact transitions queued\u2192aligned and aligned\u2192captured.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nWrite the complete predicate function now. The first line is already written; continue from it:\nexport function canAdvanceExposure(record, parent) {\n",
+      "prompt_sha256": "fbc605e9a52e7f1b443fd937861820151ce796cc9f458087d53d0b3e102854c3",
+      "raw_generation": "  // Write your code here\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceExposure(record, parent) {\n  // Write your code here\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceExposure(record, parent) {\n  // Write your code here\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceExposure(record, parent) {\n  // Write your code here\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceExposure(record, parent) {\n  // Write your code here\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceExposure(record, parent) {\n  // Write your code here\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceExposure(record, parent) {\n  // Write your code here\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceExposure(record, parent) {\n  // Write your code here\n  return false;\n}\n\n",
+      "usage": {
+        "seconds": 29.51,
+        "seed": 1892145802,
+        "stochastic": false,
+        "tokens": 250
+      }
+    },
+    {
+      "brace_balanced": false,
+      "candidate": "export function canAdvanceExposure(record, parent) {\n  const  { current, next } = record;\n  const  { parent: { current: parentCurrent, next: parentNext } } = parent;\n  const  { current: currentCurrent, next: currentNext } = current;\n  const  { current: nextCurrent, next: nextNext } = next;\n  const  { current: parentCurrentCurrent, next: parentCurrentNext } = parentCurrent;\n  const  { current: parentNextCurrent, next: parentNextNext } = parentNext;\n  const  { current: currentCurrentCurrent, next: currentCurrentNext } = currentCurrent;\n  const  { current: currentNextCurrent, next: currentNextNext } = currentNext;\n  const  { current: parentCurrentCurrentCurrent, next: parentCurrentCurrentNext } = parentCurrentCurrent;\n  const  { current: parentCurrentNextCurrent, next: parentCurrentNextNext } = parentCurrentNext;\n  const  { current: currentCurrentCurrentCurrent, next: currentCurrentCurrentNext } = currentCurrentCurrent;\n  const  { current: currentCurrentNextCurrent, next: currentCurrentNextNext } = currentCurrentNext;\n  const  { current: parentCurrentCurrentCurrentCurrent, next: parent",
+      "near_empty": false,
+      "note": "forced-continuation-retry",
+      "prompt": "Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Implement canAdvanceExposure(current, next): boolean for exact transitions queued\u2192aligned and aligned\u2192captured.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nWrite the complete predicate function now. The first line is already written; continue from it:\nexport function canAdvanceExposure(record, parent) {\n  const ",
+      "prompt_sha256": "4950c62b1fb568560dba4b33fd9f1d418fdfaae7f59a6d89df0c7e25e05f567b",
+      "raw_generation": " { current, next } = record;\n  const  { parent: { current: parentCurrent, next: parentNext } } = parent;\n  const  { current: currentCurrent, next: currentNext } = current;\n  const  { current: nextCurrent, next: nextNext } = next;\n  const  { current: parentCurrentCurrent, next: parentCurrentNext } = parentCurrent;\n  const  { current: parentNextCurrent, next: parentNextNext } = parentNext;\n  const  { current: currentCurrentCurrent, next: currentCurrentNext } = currentCurrent;\n  const  { current: currentNextCurrent, next: currentNextNext } = currentNext;\n  const  { current: parentCurrentCurrentCurrent, next: parentCurrentCurrentNext } = parentCurrentCurrent;\n  const  { current: parentCurrentNextCurrent, next: parentCurrentNextNext } = parentCurrentNext;\n  const  { current: currentCurrentCurrentCurrent, next: currentCurrentCurrentNext } = currentCurrentCurrent;\n  const  { current: currentCurrentNextCurrent, next: currentCurrentNextNext } = currentCurrentNext;\n  const  { current: parentCurrentCurrentCurrentCurrent, next: parent",
+      "usage": {
+        "seconds": 27.41,
+        "seed": 1892145803,
+        "stochastic": false,
+        "tokens": 250
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "export function canAdvanceExposure(record, parent) {\n  const  { current, next } = record;\n  const  { parent: { current: parentCurrent, next: parentNext } } = parent;\n  const  { current: currentCurrent, next: currentNext } = current;\n  const  { current: nextCurrent, next: nextNext } = next;\n  const  { current: parentCurrentCurrent, next: parentCurrentNext } = parentCurrent;\n  const  { current: parentNextCurrent, next: parentNextNext } = parentNext;\n  const  { current: currentCurrentCurrent, next: currentCurrentNext } = currentCurrent;\n  const  { current: currentNextCurrent, next: currentNextNext } = currentNext;\n  const  { current: parentCurrentCurrentCurrent, next: parentCurrentCurrentNext } = parentCurrentCurrent;\n  const  { current: parentCurrentNextCurrent, next: parentCurrentNextNext } = parentCurrentNext;\n  const  { current: currentCurrentCurrentCurrent, next: currentCurrentCurrentNext } = currentCurrentCurrent;\n  const  { current: currentCurrentNextCurrent, next: currentCurrentNextNext } = currentCurrentNext;\n  const  { current: parentCurrentCurrentCurrentCurrent, next: parent",
+  "candidate_final_sha256": "2e8fd09930bc7185e52cfe59ba626c189e82132754063dde9442221521993c68",
+  "decoding": "greedy",
+  "domain": "observatory",
+  "skill": "state-invariant",
+  "split": "train",
+  "task_id": "observatory:state-invariant",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 7,
+    "exit_code": 1,
+    "model_weight_change": false,
+    "passed": false,
+    "split": "train",
+    "status": "EXECUTION_FAILED",
+    "suite_version": 2,
+    "task_id": "observatory:state-invariant",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 57.1
+}

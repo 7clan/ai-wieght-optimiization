@@ -1,0 +1,41 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "model Broadcast {\n  id        String @id @default(cuid()) @unique\n  name      String\n  description String\n  status    String @default(\"drafted\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Trans",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Write the Prisma models for Transmitter and Broadcast, with correct one-to-many relation sides.\n- The Broadcast.transmitterId foreign key is optional; its relation field must have matching nullability.\n- Use String @id @default(cuid()) primary keys and an Int measurement field.\n- Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.\n- The child model also stores status String @default(\"drafted\"), persisted for UI/API workflows.\n\nWrite the complete Prisma schema now. The first line is already written; continue from it:\nmodel Broadcast {\n",
+      "prompt_sha256": "5a521279b345d81bcbb325f8ca5ee3040f0248fa2cfbe01d2fe624615472ecf7",
+      "raw_generation": "  id        String @id @default(cuid()) @unique\n  name      String\n  description String\n  status    String @default(\"drafted\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Trans",
+      "usage": {
+        "seconds": 45.72,
+        "seed": 1770128638,
+        "stochastic": false,
+        "tokens": 400
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "model Broadcast {\n  id        String @id @default(cuid()) @unique\n  name      String\n  description String\n  status    String @default(\"drafted\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Transmitter] @relation(fields: [transmitterId], references: [id])\n  transmittersId: ID\n  transmitters: [Trans",
+  "candidate_final_sha256": "cbb5cb0bfa73ae58bcccabd9bbda1d8a6717a098792d7663242209813256623f",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "skill": "schema-relationship",
+  "split": "dev",
+  "task_id": "radiostation:schema-relationship",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "model_weight_change": false,
+    "passed": false,
+    "probe_count": 7,
+    "reported_checks": 1,
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:schema-relationship",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 45.9
+}

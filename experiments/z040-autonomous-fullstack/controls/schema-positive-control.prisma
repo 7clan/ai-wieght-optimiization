@@ -1,0 +1,29 @@
+// TRUSTED TEACHER CONTROL — NOT QWEN CODE. Positive schema-relationship
+// control for the radiostation Broadcast/Transmitter contract (optional FK,
+// SetNull, persisted status).
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:/work/db.sqlite"
+}
+
+model Transmitter {
+  id         String      @id @default(cuid())
+  broadcasts Broadcast[]
+
+  @@map("transmitters")
+}
+
+model Broadcast {
+  id           String      @id @default(cuid())
+  title        String
+  airtimeMin   Int
+  transmitterId String?
+  status       String      @default("drafted")
+  transmitter  Transmitter? @relation(fields: [transmitterId], references: [id], onDelete: SetNull)
+
+  @@map("broadcasts")
+}

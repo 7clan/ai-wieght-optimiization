@@ -1,0 +1,41 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "model FeedLog {\n  id        String @id @default(cuid()) @unique\n  tankId    Int\n  status    String @default(\"draft\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  createdBy String @default(\"admin\")\n  updatedBy String @default(\"admin\")\n  createdByUserId Int\n  updatedByUserId Int\n  createdAtUserId Int\n  updatedAtUserId Int\n  createdByRole String\n  updatedByRole String\n  createdByRoleUserId Int\n  updatedByRoleUserId Int\n  createdByRoleRoleId Int\n  updatedByRoleRoleId Int\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedBy",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Write the Prisma models for Tank and FeedLog, with correct one-to-many relation sides.\n- The FeedLog.tankId foreign key is required; its relation field must have matching nullability.\n- Use String @id @default(cuid()) primary keys and an Int measurement field.\n- Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.\n- The child model also stores status String @default(\"draft\"), persisted for UI/API workflows.\n\nWrite the complete Prisma schema now. The first line is already written; continue from it:\nmodel FeedLog {\n",
+      "prompt_sha256": "93dd113b663cf99643d0d41625d8a45bc311fe05ea3047d8f03415f989d2a884",
+      "raw_generation": "  id        String @id @default(cuid()) @unique\n  tankId    Int\n  status    String @default(\"draft\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  createdBy String @default(\"admin\")\n  updatedBy String @default(\"admin\")\n  createdByUserId Int\n  updatedByUserId Int\n  createdAtUserId Int\n  updatedAtUserId Int\n  createdByRole String\n  updatedByRole String\n  createdByRoleUserId Int\n  updatedByRoleUserId Int\n  createdByRoleRoleId Int\n  updatedByRoleRoleId Int\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedBy",
+      "usage": {
+        "seconds": 46.37,
+        "seed": 626774377,
+        "stochastic": false,
+        "tokens": 400
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "model FeedLog {\n  id        String @id @default(cuid()) @unique\n  tankId    Int\n  status    String @default(\"draft\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  createdBy String @default(\"admin\")\n  updatedBy String @default(\"admin\")\n  createdByUserId Int\n  updatedByUserId Int\n  createdAtUserId Int\n  updatedAtUserId Int\n  createdByRole String\n  updatedByRole String\n  createdByRoleUserId Int\n  updatedByRoleUserId Int\n  createdByRoleRoleId Int\n  updatedByRoleRoleId Int\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedByRoleRoleId String\n  createdByRoleRoleId String\n  updatedBy",
+  "candidate_final_sha256": "7742ba5ea9b02ceba15d262fc5b9ede686561deb977be425e32781f983581836",
+  "decoding": "greedy",
+  "domain": "aquarium",
+  "skill": "schema-relationship",
+  "split": "train",
+  "task_id": "aquarium:schema-relationship",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "model_weight_change": false,
+    "passed": false,
+    "probe_count": 7,
+    "reported_checks": 1,
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "aquarium:schema-relationship",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 46.5
+}

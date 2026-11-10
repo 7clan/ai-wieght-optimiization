@@ -59,7 +59,12 @@ import tempfile
 RESULT_MARKER = "S040-RESULT "
 IMAGE_RE = re.compile(r"^[a-z0-9][a-z0-9._/:-]*@sha256:[a-f0-9]{64}$")
 
-RUNNERS = ("react_runner.mjs", "integration_runner.mjs")
+RUNNERS = ("react_runner.mjs", "integration_runner.mjs", "schema_runner.mjs",
+           "runner.mjs", "route_runner.mjs")
+
+# Session-039 trusted runners executed through this tier (compat mode): they
+# are env-parameterized (S039_*) and emit their own S039-RESULT marker.
+S039_RUNNERS = {"runner.mjs": "invariant", "route_runner.mjs": "route"}
 
 DEFAULT_EVAL_DEPS = Path(__file__).resolve().parents[2] / ".eval-deps"
 
@@ -70,6 +75,9 @@ TIERS = {
     # 2.5 GiB inside the namespace (measured 2026-11-10); 3 GiB is the top of
     # the approved local-evaluation limit range.
     "integration": {"cpu_s": 90, "as_kb": 3_145_728, "work_mb": 512, "wall_s": 200},
+    "schema": {"cpu_s": 60, "as_kb": 3_145_728, "work_mb": 384, "wall_s": 180},
+    "invariant": {"cpu_s": 30, "as_kb": 1_572_864, "work_mb": 64, "wall_s": 60},
+    "route": {"cpu_s": 90, "as_kb": 3_145_728, "work_mb": 512, "wall_s": 200},
 }
 
 
@@ -142,6 +150,11 @@ def unshare_script(candidate_dir: Path, harness_dir: Path, deps_dir: Path, *,
     if newroot.exists():
         raise FileExistsError("Sandbox newroot already exists")
     newroot.mkdir()
+    if runner in S039_RUNNERS:
+        s039_env = ("S039_HARNESS=/harness S039_CANDIDATE=/candidate/output.ts "
+                    "S039_WORK=/work")
+    else:
+        s039_env = ""
     inner = f"""
 set -eu
 R={shlex.quote(str(newroot))}
@@ -181,15 +194,16 @@ exec /usr/bin/setpriv --bounding-set=-all --inh-caps=-all --ambient-caps=-all \
   PRISMA_SCHEMA_ENGINE_BINARY=/eval-deps/node_modules/@prisma/engines/schema-engine-debian-openssl-3.0.x \
   PRISMA_QUERY_ENGINE_LIBRARY=/eval-deps/node_modules/@prisma/engines/libquery_engine-debian-openssl-3.0.x.so.node \
   NODE_ENV=test NO_COLOR=1 \
+  {s039_env}\
   /usr/bin/node --experimental-strip-types /harness/{runner}
 """.strip()
     return ["unshare", "--user", "--map-root-user", "--mount", "--net", "--pid", "--fork",
             "--propagation", "private", "sh", "-c", inner]
 
 
-def _parse_verdict(stdout: str) -> dict:
-    lines = [line[len(RESULT_MARKER):] for line in stdout.splitlines()
-             if line.startswith(RESULT_MARKER)]
+def _parse_verdict(stdout: str, marker: str = RESULT_MARKER) -> dict:
+    lines = [line[len(marker):] for line in stdout.splitlines()
+             if line.startswith(marker)]
     if len(lines) != 1:
         return {"status": "NO_UNAMBIGUOUS_VERDICT", "passed": False, "candidate_executed": True}
     try:
@@ -227,16 +241,21 @@ def _make_rlimits():
     return apply
 
 
-def run(candidate_dir: Path, harness_dir: Path, deps_dir: Path, *, runner: str, tier: str,
-        backend: str = "auto", image: str | None = None) -> dict:
+def run(candidate_dir: Path, harness_dir: Path, deps_dir: Path, *, runner: str,
+        tier: str | None = None, backend: str = "auto", image: str | None = None) -> dict:
     """Execute one restricted evaluation; returns a sanitized fail-closed verdict.
 
     ``backend``: ``"docker"`` (requires ``image``, hard-fails if the Docker
     binary is absent), ``"unshare"`` (the disclosed local tier), or ``"auto"``
     (Docker when available, otherwise the disclosed unshare tier with the
     tier recorded in the result).
+    ``tier`` defaults from the runner name (Session-039 compat runners map to
+    their own approved caps).
     """
+    if tier is None:
+        tier = S039_RUNNERS.get(runner) or runner.split("_")[0]
     caps = _check_resource_caps(tier)
+    marker = "S039-RESULT " if runner in S039_RUNNERS else RESULT_MARKER
     stage_root: Path | None = None
     if backend not in ("auto", "docker", "unshare"):
         raise ValueError("Unknown backend")
@@ -282,7 +301,7 @@ def run(candidate_dir: Path, harness_dir: Path, deps_dir: Path, *, runner: str, 
         if proc.returncode != 0:
             return {"status": "EXECUTION_FAILED", "passed": False,
                     "candidate_executed": True, "exit_code": proc.returncode, "tier": used_tier}
-        result = _parse_verdict(stdout or "")
+        result = _parse_verdict(stdout or "", marker=marker)
         result["tier"] = used_tier
         return result
     finally:

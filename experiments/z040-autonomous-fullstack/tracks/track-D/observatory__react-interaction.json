@@ -1,0 +1,56 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export function filterExposureRows(rows, search, status) {\n  return (rows || []).filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}",
+      "near_empty": false,
+      "note": "sub-piece-1:filterExposureRows",
+      "prompt": "// Sub-piece 1 of 2 (different domain \u2014 a greenhouse app)\n// demo helper:\nexport function applySensorFilters(rows, search, status) {\n  return (rows || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}\n\nNow YOUR task (a different domain): write the filtering helper for Exposure rows.\nRequirements:\n- export function filterExposureRows(rows, search, status)\n- rows have fields title, seconds, status ('queued' | 'aligned' | 'captured')\n- search matches the title field case-insensitively\n- status 'all' or empty means no status filtering\n- return the filtered array; never mutate rows\nThe first line is already written; continue from it:\nexport function filterExposureRows(rows, search, status) {",
+      "prompt_sha256": "ee18b076ea1512221716ea7dbb76ec3af29f8eda392c265669cf2d1376f67801",
+      "raw_generation": "\n  return (rows || []).filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}",
+      "usage": {
+        "seconds": 4.86,
+        "seed": 400314211,
+        "stochastic": false,
+        "tokens": 40
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import {{ useState }} from 'react';\n\nexport default function ExposureList({ data }) {\n\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applyExposureFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search exposures</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"queued\">Queued</option>\n        <option value=\"aligned\">Aligned</option>\n        <option value=\"captured\">Captured</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No exposures match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.title} \u2014 {row.seconds} seconds, {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "sub-piece-2:ExposureList",
+      "prompt": "// Sub-piece 2 of 2 (different domain \u2014 a greenhouse app)\n// demo component USES a filtering helper exactly like yours:\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applySensorFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search sensors</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No sensors match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.label} \u2014 {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Build a responsive React component listing Exposure items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, seconds and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nYour helper filterExposureRows(rows, search, status) is already written (import it from './helpers').\nRequirements:\n- default export component ExposureList({ data })\n- call filterExposureRows for the visible rows\n- labeled search input, labeled status select with options all/queued/aligned/captured, clear button\n- explicit empty state when no rows match\n- render title, seconds and status for each row\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\nThe first line is already written; continue from it:\nexport default function ExposureList({ data }) {",
+      "prompt_sha256": "30964f8f129961d92116f81340f44526946330c6b6d0fd8f0e8754a3899302d9",
+      "raw_generation": "\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applyExposureFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search exposures</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"queued\">Queued</option>\n        <option value=\"aligned\">Aligned</option>\n        <option value=\"captured\">Captured</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No exposures match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.title} \u2014 {row.seconds} seconds, {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 35.04,
+        "seed": 254391810,
+        "stochastic": false,
+        "tokens": 261
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED_CONTROLLER_ASSEMBLED",
+  "candidate_final": "export function filterExposureRows(rows, search, status) {\n  return (rows || []).filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}\n\nimport {{ useState }} from 'react';\n\nexport default function ExposureList({ data }) {\n\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applyExposureFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search exposures</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"queued\">Queued</option>\n        <option value=\"aligned\">Aligned</option>\n        <option value=\"captured\">Captured</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No exposures match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.title} \u2014 {row.seconds} seconds, {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}",
+  "candidate_final_sha256": "0fbe1ad4a7bb66c1f788eb7ef9c42499e3493fa3398b481f1803c73f7ca0f977",
+  "decoding": "greedy",
+  "domain": "observatory",
+  "skill": "react-interaction",
+  "split": "train",
+  "task_id": "observatory:react-interaction",
+  "track": "D",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 1,
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "observatory:react-interaction",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 40.8
+}

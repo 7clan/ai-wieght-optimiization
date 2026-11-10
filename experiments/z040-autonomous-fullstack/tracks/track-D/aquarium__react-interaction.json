@@ -1,0 +1,56 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export function filterFeedLogRows(rows, search, status) {\n  return (rows || []).filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}",
+      "near_empty": false,
+      "note": "sub-piece-1:filterFeedLogRows",
+      "prompt": "// Sub-piece 1 of 2 (different domain \u2014 a greenhouse app)\n// demo helper:\nexport function applySensorFilters(rows, search, status) {\n  return (rows || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}\n\nNow YOUR task (a different domain): write the filtering helper for FeedLog rows.\nRequirements:\n- export function filterFeedLogRows(rows, search, status)\n- rows have fields title, feedGrams, status ('draft' | 'scheduled' | 'served')\n- search matches the title field case-insensitively\n- status 'all' or empty means no status filtering\n- return the filtered array; never mutate rows\nThe first line is already written; continue from it:\nexport function filterFeedLogRows(rows, search, status) {",
+      "prompt_sha256": "04499c802256f2bab34f022e6f8509fec6bd761d7e44a319ec3fea378fa22a4d",
+      "raw_generation": "\n  return (rows || []).filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}",
+      "usage": {
+        "seconds": 5.04,
+        "seed": 1813794521,
+        "stochastic": false,
+        "tokens": 40
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import {{ useState }} from 'react';\n\nexport default function FeedLogList({ data }) {\n\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applyFeedLogFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search FeedLog items</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"draft\">Draft</option>\n        <option value=\"scheduled\">Scheduled</option>\n        <option value=\"served\">Served</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No FeedLog items match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.title} \u2014 {row.feedGrams} {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "sub-piece-2:FeedLogList",
+      "prompt": "// Sub-piece 2 of 2 (different domain \u2014 a greenhouse app)\n// demo component USES a filtering helper exactly like yours:\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applySensorFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search sensors</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No sensors match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.label} \u2014 {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Build a responsive React component listing FeedLog items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, feedGrams and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nYour helper filterFeedLogRows(rows, search, status) is already written (import it from './helpers').\nRequirements:\n- default export component FeedLogList({ data })\n- call filterFeedLogRows for the visible rows\n- labeled search input, labeled status select with options all/draft/scheduled/served, clear button\n- explicit empty state when no rows match\n- render title, feedGrams and status for each row\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\nThe first line is already written; continue from it:\nexport default function FeedLogList({ data }) {",
+      "prompt_sha256": "84375f87a0f3a8d0d6d52b667d3b1e29f138bbbdd07c62d24193a57c73e0da33",
+      "raw_generation": "\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applyFeedLogFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search FeedLog items</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"draft\">Draft</option>\n        <option value=\"scheduled\">Scheduled</option>\n        <option value=\"served\">Served</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No FeedLog items match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.title} \u2014 {row.feedGrams} {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 32.66,
+        "seed": 1375879371,
+        "stochastic": false,
+        "tokens": 264
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED_CONTROLLER_ASSEMBLED",
+  "candidate_final": "export function filterFeedLogRows(rows, search, status) {\n  return (rows || []).filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n}\n\nimport {{ useState }} from 'react';\n\nexport default function FeedLogList({ data }) {\n\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = applyFeedLogFilters(data, search, status);\n  return (\n    <div>\n      <label htmlFor=\"search\">Search FeedLog items</label>\n      <input id=\"search\" type=\"search\" value={search} onChange={(e) => setSearch(e.target.value)} />\n      <label htmlFor=\"status\">Filter by status</label>\n      <select id=\"status\" value={status} onChange={(e) => setStatus(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"draft\">Draft</option>\n        <option value=\"scheduled\">Scheduled</option>\n        <option value=\"served\">Served</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>Clear filters</button>\n      {rows.length === 0 ? <p data-testid=\"empty-state\">No FeedLog items match.</p> : (\n        <ul>{rows.map((row) => <li key={row.id}>{row.title} \u2014 {row.feedGrams} {row.status}</li>)}</ul>\n      )}\n    </div>\n  );\n}",
+  "candidate_final_sha256": "3d7b04a24c6362726b89b62334995707fac141770f9b54f5db969b9337d9392d",
+  "decoding": "greedy",
+  "domain": "aquarium",
+  "skill": "react-interaction",
+  "split": "train",
+  "task_id": "aquarium:react-interaction",
+  "track": "D",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 1,
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "aquarium:react-interaction",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 38.6
+}

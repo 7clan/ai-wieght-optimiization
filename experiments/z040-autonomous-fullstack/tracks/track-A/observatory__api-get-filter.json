@@ -1,0 +1,42 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const { q } = new URL(request.url);\n  const { title, telescopeId } = new URLSearchParams(request.url).get(\"q\") || {};\n\n  const exposures = await db.exposure.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    include: {\n      telescope: true,\n    },\n  });\n\n  return new Response(JSON.stringify({ exposures, total: exposures.length }), {\n    status: 200,\n  });\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Implement Next.js GET /api/observatory-exposures using db.exposure.findMany.\n- Use searchParams 'q' as a case-insensitive title substring filter only when supplied.\n- Filter by optional telescopeId, order by title ascending, include telescope.\n- Return { exposures: [...], total: number } with status 200; empty results return [] and 0.\n- The listed records include the persisted status field.\n\nWrite the complete route handler now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n",
+      "prompt_sha256": "adb98e620ecd5861edecb02c14b0711558a9d056c53c041227ecd4c88b6e26d8",
+      "raw_generation": "  const { q } = new URL(request.url);\n  const { title, telescopeId } = new URLSearchParams(request.url).get(\"q\") || {};\n\n  const exposures = await db.exposure.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    include: {\n      telescope: true,\n    },\n  });\n\n  return new Response(JSON.stringify({ exposures, total: exposures.length }), {\n    status: 200,\n  });\n}",
+      "usage": {
+        "seconds": 12.1,
+        "seed": 1133093404,
+        "stochastic": false,
+        "tokens": 107
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const { q } = new URL(request.url);\n  const { title, telescopeId } = new URLSearchParams(request.url).get(\"q\") || {};\n\n  const exposures = await db.exposure.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    include: {\n      telescope: true,\n    },\n  });\n\n  return new Response(JSON.stringify({ exposures, total: exposures.length }), {\n    status: 200,\n  });\n}",
+  "candidate_final_sha256": "f686cf44b836ddf66dfa8fb6cd9b9593a2eb034482176df9828452bee563700e",
+  "decoding": "greedy",
+  "domain": "observatory",
+  "skill": "api-get-filter",
+  "split": "train",
+  "task_id": "observatory:api-get-filter",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 6,
+    "exit_code": 1,
+    "model_weight_change": false,
+    "passed": false,
+    "route_path": "/api/observatory-exposures",
+    "split": "train",
+    "status": "EXECUTION_FAILED",
+    "suite_version": 2,
+    "task_id": "observatory:api-get-filter",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 24.1
+}

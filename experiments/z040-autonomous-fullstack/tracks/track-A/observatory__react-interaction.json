@@ -1,0 +1,41 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function ExposureList({ data }) {\n  const [searchTerm, setSearchTerm] = useState('');\n  const [filteredData, setFilteredData] = useState(data);\n\n  const handleSearch = (event) => {\n    setSearchTerm(event.target.value);\n    const filteredData = data.filter((item) =>\n      item.title.toLowerCase().includes(searchTerm.toLowerCase())\n    );\n    setFilteredData(filteredData);\n  };\n\n  const handleClearFilters = () => {\n    setSearchTerm('');\n    setFilteredData(data);\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        placeholder=\"Search...\"\n        value={searchTerm}\n        onChange={handleSearch}\n      />\n      <button onClick={handleClearFilters}>Clear Filters</button>\n      <ul>\n        {filteredData.map((item) => (\n          <li key={item.id}>\n            <h3>{item.title}</h3>\n            <p>Seconds: {item.seconds}</p>\n            <p>Workflow: {item.workflow}</p>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Build a responsive React component listing Exposure items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, seconds and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nWrite the complete React component now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function ExposureList({ data }) {\n",
+      "prompt_sha256": "fcbb713670521cc7d4cbb8da0c7462d7acf561979cef6738405e9b755360e093",
+      "raw_generation": "  const [searchTerm, setSearchTerm] = useState('');\n  const [filteredData, setFilteredData] = useState(data);\n\n  const handleSearch = (event) => {\n    setSearchTerm(event.target.value);\n    const filteredData = data.filter((item) =>\n      item.title.toLowerCase().includes(searchTerm.toLowerCase())\n    );\n    setFilteredData(filteredData);\n  };\n\n  const handleClearFilters = () => {\n    setSearchTerm('');\n    setFilteredData(data);\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        placeholder=\"Search...\"\n        value={searchTerm}\n        onChange={handleSearch}\n      />\n      <button onClick={handleClearFilters}>Clear Filters</button>\n      <ul>\n        {filteredData.map((item) => (\n          <li key={item.id}>\n            <h3>{item.title}</h3>\n            <p>Seconds: {item.seconds}</p>\n            <p>Workflow: {item.workflow}</p>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 26.51,
+        "seed": 1899005839,
+        "stochastic": false,
+        "tokens": 220
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { useState } from 'react';\n\nexport default function ExposureList({ data }) {\n  const [searchTerm, setSearchTerm] = useState('');\n  const [filteredData, setFilteredData] = useState(data);\n\n  const handleSearch = (event) => {\n    setSearchTerm(event.target.value);\n    const filteredData = data.filter((item) =>\n      item.title.toLowerCase().includes(searchTerm.toLowerCase())\n    );\n    setFilteredData(filteredData);\n  };\n\n  const handleClearFilters = () => {\n    setSearchTerm('');\n    setFilteredData(data);\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        placeholder=\"Search...\"\n        value={searchTerm}\n        onChange={handleSearch}\n      />\n      <button onClick={handleClearFilters}>Clear Filters</button>\n      <ul>\n        {filteredData.map((item) => (\n          <li key={item.id}>\n            <h3>{item.title}</h3>\n            <p>Seconds: {item.seconds}</p>\n            <p>Workflow: {item.workflow}</p>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+  "candidate_final_sha256": "430d28ac8e4df74edd8b9a409e9ba44c0709d5b734e8daac05091591db9c79dd",
+  "decoding": "greedy",
+  "domain": "observatory",
+  "skill": "react-interaction",
+  "split": "train",
+  "task_id": "observatory:react-interaction",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "observatory:react-interaction",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 27.7
+}

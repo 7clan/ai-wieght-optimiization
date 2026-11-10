@@ -1,0 +1,56 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceBroadcast(record, parent) {\n  // Write your code here\n  return false;\n}",
+      "near_empty": true,
+      "note": "single-shot",
+      "prompt": "Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Implement canAdvanceBroadcast(current, next): boolean for exact transitions drafted\u2192cleared and cleared\u2192aired.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nWrite the complete predicate function now. The first line is already written; continue from it:\nexport function canAdvanceBroadcast(record, parent) {\n",
+      "prompt_sha256": "efe648d6a1a56ba1c27e9f4a607d9552482960950caca9baf4442351a5ebb3e1",
+      "raw_generation": "  // Write your code here\n  return false;\n}",
+      "usage": {
+        "seconds": 2.26,
+        "seed": 1755205741,
+        "stochastic": false,
+        "tokens": 13
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceBroadcast(record, parent) {\n  const  { current, next } = record;\n  const  { parent: { current: parentCurrent, next: parentNext } } = parent;\n  return (\n    current === parentCurrent &&\n    next === parentNext\n  );\n}",
+      "near_empty": false,
+      "note": "forced-continuation-retry",
+      "prompt": "Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Implement canAdvanceBroadcast(current, next): boolean for exact transitions drafted\u2192cleared and cleared\u2192aired.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nWrite the complete predicate function now. The first line is already written; continue from it:\nexport function canAdvanceBroadcast(record, parent) {\n  const ",
+      "prompt_sha256": "cafb2a3a47f1c5c3ac184fffb048187cca5c2b066249f3269ac49644e294ce46",
+      "raw_generation": " { current, next } = record;\n  const  { parent: { current: parentCurrent, next: parentNext } } = parent;\n  return (\n    current === parentCurrent &&\n    next === parentNext\n  );\n}",
+      "usage": {
+        "seconds": 6.34,
+        "seed": 1755205742,
+        "stochastic": false,
+        "tokens": 48
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "export function canAdvanceBroadcast(record, parent) {\n  const  { current, next } = record;\n  const  { parent: { current: parentCurrent, next: parentNext } } = parent;\n  return (\n    current === parentCurrent &&\n    next === parentNext\n  );\n}",
+  "candidate_final_sha256": "6e1854b52f05d86b20c50a4bd101a595c16f45b08c4254863c5d016d215cc60e",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "skill": "state-invariant",
+  "split": "dev",
+  "task_id": "radiostation:state-invariant",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 7,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:state-invariant",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 8.8
+}

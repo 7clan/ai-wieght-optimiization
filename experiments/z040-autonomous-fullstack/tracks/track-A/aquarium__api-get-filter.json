@@ -1,0 +1,42 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const { q, limit, offset } = request.nextUrl.searchParams;\n  const { title, tankId } = db.feedLog.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    include: {\n      tank: true,\n    },\n  });\n\n  const feedLogs = await db.feedLog.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    include: {\n      tank: true,\n    },\n  });\n\n  return new Response(JSON.stringify({ feedLogs, total: feedLogs.length }), {\n    status: 200,\n  });\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement Next.js GET /api/aquarium-feedLogs using db.feedLog.findMany.\n- Use searchParams 'q' as a case-insensitive title substring filter only when supplied.\n- Filter by optional tankId, order by title ascending, include tank.\n- Return { feedLogs: [...], total: number } with status 200; empty results return [] and 0.\n- The listed records include the persisted status field.\n\nWrite the complete route handler now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n",
+      "prompt_sha256": "44ff4e7117c679f87f857d1f7a0b6af70a729f4b5bfcd510c7c67f81f2a0644d",
+      "raw_generation": "  const { q, limit, offset } = request.nextUrl.searchParams;\n  const { title, tankId } = db.feedLog.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    include: {\n      tank: true,\n    },\n  });\n\n  const feedLogs = await db.feedLog.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    include: {\n      tank: true,\n    },\n  });\n\n  return new Response(JSON.stringify({ feedLogs, total: feedLogs.length }), {\n    status: 200,\n  });\n}",
+      "usage": {
+        "seconds": 18.83,
+        "seed": 1085784598,
+        "stochastic": false,
+        "tokens": 146
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const { q, limit, offset } = request.nextUrl.searchParams;\n  const { title, tankId } = db.feedLog.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    include: {\n      tank: true,\n    },\n  });\n\n  const feedLogs = await db.feedLog.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    include: {\n      tank: true,\n    },\n  });\n\n  return new Response(JSON.stringify({ feedLogs, total: feedLogs.length }), {\n    status: 200,\n  });\n}",
+  "candidate_final_sha256": "5fb833563c2930c7f534bad48d0fa3d4c1d101e11ea996606c25438bd3682edd",
+  "decoding": "greedy",
+  "domain": "aquarium",
+  "skill": "api-get-filter",
+  "split": "train",
+  "task_id": "aquarium:api-get-filter",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 6,
+    "exit_code": 1,
+    "model_weight_change": false,
+    "passed": false,
+    "route_path": "/api/aquarium-feed",
+    "split": "train",
+    "status": "EXECUTION_FAILED",
+    "suite_version": 2,
+    "task_id": "aquarium:api-get-filter",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 21.0
+}

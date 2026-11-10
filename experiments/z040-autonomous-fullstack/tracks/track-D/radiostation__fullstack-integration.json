@@ -1,0 +1,57 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export async function loadBroadcastList() {\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.broadcasts || [], total: data.total ?? 0 };\n}",
+      "near_empty": false,
+      "note": "sub-piece-1:api-Broadcast",
+      "prompt": "// Sub-piece 1 of 2 (different domain \u2014 a greenhouse app)\n// demo api layer:\nconst ROUTE = '/api/greenhouse-sensors';\n\nexport async function loadSensors() {\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.sensors || [], total: data.total ?? 0 };\n}\n\nexport async function createSensor(payload) {\n  const response = await fetch(ROUTE, {\n    method: 'POST',\n    headers: { 'content-type': 'application/json' },\n    body: JSON.stringify(payload),\n  });\n  return response;\n}\n\nNow YOUR task (a different domain): write the api layer for Broadcast.\nRequirements:\n- export async function loadBroadcastList() \u2014 GETs the route /api/radiostation-broadcasts and returns { rows, total } using the envelope key \"broadcasts\"\n- export async function createBroadcast(payload) \u2014 POSTs JSON and returns the Response\nThe first line is already written; continue from it:\nexport async function loadBroadcastList() {",
+      "prompt_sha256": "d6a6e7f4f3ed7ae70da34b5204ad4685178d9523d9617cc84645490c115b1246",
+      "raw_generation": "\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.broadcasts || [], total: data.total ?? 0 };\n}",
+      "usage": {
+        "seconds": 5.03,
+        "seed": 804481097,
+        "stochastic": false,
+        "tokens": 38
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import {{ useEffect, useState }} from 'react';\n\nexport default function BroadcastManager() {\n\n  const [rows, setRows] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [label, setLabel] = useState('');\n  const [error, setError] = useState('');\n\n  const load = async () => {\n    const data = await loadBroadcastList();\n    setRows(data.rows);\n    setTotal(data.total);\n  };\n  useEffect(() => { load(); }, []);\n\n  const submit = async (event) => {\n    event.preventDefault();\n    setError('');\n    const response = await createBroadcast({ label });\n    if (response.status === 201) { setLabel(''); await load(); }\n    else {\n      const data = await response.json().catch(() => ({}));\n      setError(data.error || 'Request failed');\n    }\n  };\n  return (\n    <div>\n      <form onSubmit={submit}>\n        <label htmlFor=\"label\">Label</label>\n        <input id=\"label\" value={label} onChange={(e) => setLabel(e.target.value)} />\n        <button type=\"submit\">Create</button>\n      </form>\n      {error ? <p role=\"alert\">{error}</p> : null}\n      <p>Total: {total}</p>\n      <ul>{rows.map((row) => <li key={row.id}>{row.label}</li>)}</ul>\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "sub-piece-2:BroadcastManager",
+      "prompt": "// Sub-piece 2 of 2 (different domain \u2014 a greenhouse app)\n// demo component USES an api layer exactly like yours:\nexport default function SensorManager() {\n  const [rows, setRows] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [label, setLabel] = useState('');\n  const [error, setError] = useState('');\n\n  const load = async () => {\n    const data = await loadSensors();\n    setRows(data.rows);\n    setTotal(data.total);\n  };\n  useEffect(() => { load(); }, []);\n\n  const submit = async (event) => {\n    event.preventDefault();\n    setError('');\n    const response = await createSensor({ label });\n    if (response.status === 201) { setLabel(''); await load(); }\n    else {\n      const data = await response.json().catch(() => ({}));\n      setError(data.error || 'Request failed');\n    }\n  };\n  return (\n    <div>\n      <form onSubmit={submit}>\n        <label htmlFor=\"label\">Label</label>\n        <input id=\"label\" value={label} onChange={(e) => setLabel(e.target.value)} />\n        <button type=\"submit\">Create</button>\n      </form>\n      {error ? <p role=\"alert\">{error}</p> : null}\n      <p>Total: {total}</p>\n      <ul>{rows.map((row) => <li key={row.id}>{row.label}</li>)}</ul>\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Connect a React create form to the GET/POST route and persisted Broadcast model in this domain.\n- After HTTP 201, update the visible list and total without a full-page reload.\n- Display 400/404/409 validation failures and preserve form data for correction.\n- A subsequent GET must return the persisted item; no fake local-only success is accepted.\n- The list displays the persisted status, not a fabricated client-only value.\n\nYour api helpers loadBroadcastList() and createBroadcast(payload) are already written (import from './api').\nRequirements:\n- default export component BroadcastManager()\n- load the list on mount via loadBroadcastList()\n- create form with labeled title input and airtimeMin number input\n- submit calls createBroadcast; on 201 reload the list (visible rows and total update without page reload)\n- on failure show the error (role=alert or visible text) and keep the form values\n- display the total\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\nThe first line is already written; continue from it:\nexport default function BroadcastManager() {",
+      "prompt_sha256": "e54f3f7f856fa94210aa2d5a54a7a6199a2c3f4d3220f2d0b6640507b97902e6",
+      "raw_generation": "\n  const [rows, setRows] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [label, setLabel] = useState('');\n  const [error, setError] = useState('');\n\n  const load = async () => {\n    const data = await loadBroadcastList();\n    setRows(data.rows);\n    setTotal(data.total);\n  };\n  useEffect(() => { load(); }, []);\n\n  const submit = async (event) => {\n    event.preventDefault();\n    setError('');\n    const response = await createBroadcast({ label });\n    if (response.status === 201) { setLabel(''); await load(); }\n    else {\n      const data = await response.json().catch(() => ({}));\n      setError(data.error || 'Request failed');\n    }\n  };\n  return (\n    <div>\n      <form onSubmit={submit}>\n        <label htmlFor=\"label\">Label</label>\n        <input id=\"label\" value={label} onChange={(e) => setLabel(e.target.value)} />\n        <button type=\"submit\">Create</button>\n      </form>\n      {error ? <p role=\"alert\">{error}</p> : null}\n      <p>Total: {total}</p>\n      <ul>{rows.map((row) => <li key={row.id}>{row.label}</li>)}</ul>\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 38.99,
+        "seed": 440392213,
+        "stochastic": false,
+        "tokens": 286
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED_CONTROLLER_ASSEMBLED",
+  "candidate_final": "export async function loadBroadcastList() {\n  const response = await fetch(ROUTE);\n  const data = await response.json();\n  return { rows: data.broadcasts || [], total: data.total ?? 0 };\n}\n\nimport {{ useEffect, useState }} from 'react';\n\nexport default function BroadcastManager() {\n\n  const [rows, setRows] = useState([]);\n  const [total, setTotal] = useState(0);\n  const [label, setLabel] = useState('');\n  const [error, setError] = useState('');\n\n  const load = async () => {\n    const data = await loadBroadcastList();\n    setRows(data.rows);\n    setTotal(data.total);\n  };\n  useEffect(() => { load(); }, []);\n\n  const submit = async (event) => {\n    event.preventDefault();\n    setError('');\n    const response = await createBroadcast({ label });\n    if (response.status === 201) { setLabel(''); await load(); }\n    else {\n      const data = await response.json().catch(() => ({}));\n      setError(data.error || 'Request failed');\n    }\n  };\n  return (\n    <div>\n      <form onSubmit={submit}>\n        <label htmlFor=\"label\">Label</label>\n        <input id=\"label\" value={label} onChange={(e) => setLabel(e.target.value)} />\n        <button type=\"submit\">Create</button>\n      </form>\n      {error ? <p role=\"alert\">{error}</p> : null}\n      <p>Total: {total}</p>\n      <ul>{rows.map((row) => <li key={row.id}>{row.label}</li>)}</ul>\n    </div>\n  );\n}",
+  "candidate_final_sha256": "5553ea9b2f6e6038012a24d823b1a5a334503092893053dce8e06df785b64750",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "skill": "fullstack-integration",
+  "split": "dev",
+  "task_id": "radiostation:fullstack-integration",
+  "track": "D",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 1,
+    "route_path": "/api/radiostation-broadcasts",
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:fullstack-integration",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 47.4
+}

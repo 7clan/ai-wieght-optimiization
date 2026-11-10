@@ -1,0 +1,42 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json();\n  const { title, seconds } = body;\n\n  const telescope = await db.telescope.findUnique({\n    where: { id: body.telescopeId },\n  });\n\n  if (!telescope) {\n    return new Response(\"Telescope not found\", { status: 404 });\n  }\n\n  if (seconds < 2 || seconds > 5400) {\n    return new Response(\"Invalid seconds\", { status: 400 });\n  }\n\n  if (telescope.exposureRecords.some((record) => record.title === title)) {\n    return new Response(\"Duplicate title\", { status: 409 });\n  }\n\n  const newExposureRecord = await db.exposureRecord.create({\n    data: {\n      title,\n      seconds,\n      telescopeId: body.telescopeId,\n    },\n  });\n\n  return new Response(JSON.stringify(newExposureRecord), {\n    status: 201,\n  });\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Implement POST /api/observatory-exposures; trim required title and validate seconds as a finite integer.\n- Enforce 2 <= seconds <= 5400 with HTTP 400 on missing/invalid/out-of-range values.\n- Check Telescope.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.\n- Reject duplicate title within one Telescope with HTTP 409. Create only after every check and return 201.\n- Create status as 'queued' unless a valid workflow transition changes it later.\n\nWrite the complete route handler now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n",
+      "prompt_sha256": "15e493f8ab498ba2b8a05b1bf6346654c3d5df5efed33cebaaa6a840c4c904c1",
+      "raw_generation": "  const body = await request.json();\n  const { title, seconds } = body;\n\n  const telescope = await db.telescope.findUnique({\n    where: { id: body.telescopeId },\n  });\n\n  if (!telescope) {\n    return new Response(\"Telescope not found\", { status: 404 });\n  }\n\n  if (seconds < 2 || seconds > 5400) {\n    return new Response(\"Invalid seconds\", { status: 400 });\n  }\n\n  if (telescope.exposureRecords.some((record) => record.title === title)) {\n    return new Response(\"Duplicate title\", { status: 409 });\n  }\n\n  const newExposureRecord = await db.exposureRecord.create({\n    data: {\n      title,\n      seconds,\n      telescopeId: body.telescopeId,\n    },\n  });\n\n  return new Response(JSON.stringify(newExposureRecord), {\n    status: 201,\n  });\n}",
+      "usage": {
+        "seconds": 23.69,
+        "seed": 351983160,
+        "stochastic": false,
+        "tokens": 202
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json();\n  const { title, seconds } = body;\n\n  const telescope = await db.telescope.findUnique({\n    where: { id: body.telescopeId },\n  });\n\n  if (!telescope) {\n    return new Response(\"Telescope not found\", { status: 404 });\n  }\n\n  if (seconds < 2 || seconds > 5400) {\n    return new Response(\"Invalid seconds\", { status: 400 });\n  }\n\n  if (telescope.exposureRecords.some((record) => record.title === title)) {\n    return new Response(\"Duplicate title\", { status: 409 });\n  }\n\n  const newExposureRecord = await db.exposureRecord.create({\n    data: {\n      title,\n      seconds,\n      telescopeId: body.telescopeId,\n    },\n  });\n\n  return new Response(JSON.stringify(newExposureRecord), {\n    status: 201,\n  });\n}",
+  "candidate_final_sha256": "137ff153d2e3e5e0b09ba9d3f718cc88246a3c96263ea6573efef72bbb5404cf",
+  "decoding": "greedy",
+  "domain": "observatory",
+  "skill": "api-post-validation",
+  "split": "train",
+  "task_id": "observatory:api-post-validation",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 10,
+    "exit_code": 1,
+    "model_weight_change": false,
+    "passed": false,
+    "route_path": "/api/observatory-exposures",
+    "split": "train",
+    "status": "EXECUTION_FAILED",
+    "suite_version": 2,
+    "task_id": "observatory:api-post-validation",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 35.7
+}

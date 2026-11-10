@@ -1,0 +1,41 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [searchTerm, setSearchTerm] = useState('');\n  const [filteredData, setFilteredData] = useState(data);\n\n  const handleSearch = (event) => {\n    setSearchTerm(event.target.value);\n    const filteredData = data.filter((item) =>\n      item.feedGrams.toLowerCase().includes(searchTerm.toLowerCase())\n    );\n    setFilteredData(filteredData);\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        placeholder=\"Search...\"\n        value={searchTerm}\n        onChange={handleSearch}\n      />\n      <ul>\n        {filteredData.map((item) => (\n          <li key={item.id}>\n            <h2>{item.title}</h2>\n            <p>FeedGrams: {item.feedGrams}</p>\n            <p>Current Workflow: {item.currentWorkflow}</p>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Build a responsive React component listing FeedLog items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, feedGrams and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nWrite the complete React component now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n",
+      "prompt_sha256": "8e87c7d3f9111e2381191d173db554d56d787266c5d0b8caba94a119621446de",
+      "raw_generation": "  const [searchTerm, setSearchTerm] = useState('');\n  const [filteredData, setFilteredData] = useState(data);\n\n  const handleSearch = (event) => {\n    setSearchTerm(event.target.value);\n    const filteredData = data.filter((item) =>\n      item.feedGrams.toLowerCase().includes(searchTerm.toLowerCase())\n    );\n    setFilteredData(filteredData);\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        placeholder=\"Search...\"\n        value={searchTerm}\n        onChange={handleSearch}\n      />\n      <ul>\n        {filteredData.map((item) => (\n          <li key={item.id}>\n            <h2>{item.title}</h2>\n            <p>FeedGrams: {item.feedGrams}</p>\n            <p>Current Workflow: {item.currentWorkflow}</p>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 21.49,
+        "seed": 48221303,
+        "stochastic": false,
+        "tokens": 193
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [searchTerm, setSearchTerm] = useState('');\n  const [filteredData, setFilteredData] = useState(data);\n\n  const handleSearch = (event) => {\n    setSearchTerm(event.target.value);\n    const filteredData = data.filter((item) =>\n      item.feedGrams.toLowerCase().includes(searchTerm.toLowerCase())\n    );\n    setFilteredData(filteredData);\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        placeholder=\"Search...\"\n        value={searchTerm}\n        onChange={handleSearch}\n      />\n      <ul>\n        {filteredData.map((item) => (\n          <li key={item.id}>\n            <h2>{item.title}</h2>\n            <p>FeedGrams: {item.feedGrams}</p>\n            <p>Current Workflow: {item.currentWorkflow}</p>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+  "candidate_final_sha256": "d2a36bace846b42c412b422ec1aa5648702772b7a3c5f7f8001ba1de27bab3ca",
+  "decoding": "greedy",
+  "domain": "aquarium",
+  "skill": "react-interaction",
+  "split": "train",
+  "task_id": "aquarium:react-interaction",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "aquarium:react-interaction",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 22.7
+}

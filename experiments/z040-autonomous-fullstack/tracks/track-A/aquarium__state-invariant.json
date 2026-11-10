@@ -1,0 +1,56 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceFeedLog(record, parent) {\n  // Your code here\n}",
+      "near_empty": true,
+      "note": "single-shot",
+      "prompt": "Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement canAdvanceFeedLog(current, next): boolean for exact transitions draft\u2192scheduled and scheduled\u2192served.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nWrite the complete predicate function now. The first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n",
+      "prompt_sha256": "590db3117b6f2bed7755b60886f326841a1314e4bb370ca8ba0b3b8f9cf3fb0e",
+      "raw_generation": "  // Your code here\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  // Your code here\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  // Your code here\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  // Your code here\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  // Your code here\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  // Your code here\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  // Your code here\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  // Your code here\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  // Your code here\n}\n\nThe first line is already written; continue from it:\n",
+      "usage": {
+        "seconds": 30.7,
+        "seed": 418106368,
+        "stochastic": false,
+        "tokens": 250
+      }
+    },
+    {
+      "brace_balanced": false,
+      "candidate": "export function canAdvanceFeedLog(record, parent) {\n  const  { current, next } = record;\n  const  { id, state, scheduled, served } = parent;\n  const  { id: id2, state: state2, scheduled: scheduled2, served: served2 } = next;\n  const  { id: id3, state: state3, scheduled: scheduled3, served: served3 } = current;\n  const  { id: id4, state: state4, scheduled: scheduled4, served: served4 } = parent;\n  const  { id: id5, state: state5, scheduled: scheduled5, served: served5 } = next;\n  const  { id: id6, state: state6, scheduled: scheduled6, served: served6 } = current;\n  const  { id: id7, state: state7, scheduled: scheduled7, served: served7 } = parent;\n  const  { id: id8, state: state8, scheduled: scheduled8, served: served8 } = next;\n  const  { id: id9, state: state9, scheduled: scheduled9, served: served9 } = current;\n  const  { id: id10, state",
+      "near_empty": false,
+      "note": "forced-continuation-retry",
+      "prompt": "Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement canAdvanceFeedLog(current, next): boolean for exact transitions draft\u2192scheduled and scheduled\u2192served.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nWrite the complete predicate function now. The first line is already written; continue from it:\nexport function canAdvanceFeedLog(record, parent) {\n  const ",
+      "prompt_sha256": "c97a2b4c8cbeaafae1a18249b6a0ad6e25da384180a440a8ae99eec9fcbfb778",
+      "raw_generation": " { current, next } = record;\n  const  { id, state, scheduled, served } = parent;\n  const  { id: id2, state: state2, scheduled: scheduled2, served: served2 } = next;\n  const  { id: id3, state: state3, scheduled: scheduled3, served: served3 } = current;\n  const  { id: id4, state: state4, scheduled: scheduled4, served: served4 } = parent;\n  const  { id: id5, state: state5, scheduled: scheduled5, served: served5 } = next;\n  const  { id: id6, state: state6, scheduled: scheduled6, served: served6 } = current;\n  const  { id: id7, state: state7, scheduled: scheduled7, served: served7 } = parent;\n  const  { id: id8, state: state8, scheduled: scheduled8, served: served8 } = next;\n  const  { id: id9, state: state9, scheduled: scheduled9, served: served9 } = current;\n  const  { id: id10, state",
+      "usage": {
+        "seconds": 29.1,
+        "seed": 418106369,
+        "stochastic": false,
+        "tokens": 250
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "export function canAdvanceFeedLog(record, parent) {\n  const  { current, next } = record;\n  const  { id, state, scheduled, served } = parent;\n  const  { id: id2, state: state2, scheduled: scheduled2, served: served2 } = next;\n  const  { id: id3, state: state3, scheduled: scheduled3, served: served3 } = current;\n  const  { id: id4, state: state4, scheduled: scheduled4, served: served4 } = parent;\n  const  { id: id5, state: state5, scheduled: scheduled5, served: served5 } = next;\n  const  { id: id6, state: state6, scheduled: scheduled6, served: served6 } = current;\n  const  { id: id7, state: state7, scheduled: scheduled7, served: served7 } = parent;\n  const  { id: id8, state: state8, scheduled: scheduled8, served: served8 } = next;\n  const  { id: id9, state: state9, scheduled: scheduled9, served: served9 } = current;\n  const  { id: id10, state",
+  "candidate_final_sha256": "6fa18f4b19df73717c0c4c2a4bcdb17f925b859c3d59c7ad0d1231baff70bba4",
+  "decoding": "greedy",
+  "domain": "aquarium",
+  "skill": "state-invariant",
+  "split": "train",
+  "task_id": "aquarium:state-invariant",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 7,
+    "exit_code": 1,
+    "model_weight_change": false,
+    "passed": false,
+    "split": "train",
+    "status": "EXECUTION_FAILED",
+    "suite_version": 2,
+    "task_id": "aquarium:state-invariant",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 60.0
+}

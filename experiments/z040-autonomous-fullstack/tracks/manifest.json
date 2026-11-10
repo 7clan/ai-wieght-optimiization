@@ -1,0 +1,147 @@
+{
+  "evidence_files": [
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/aquarium__schema-relationship.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/aquarium__api-get-filter.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/aquarium__api-post-validation.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/aquarium__state-invariant.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/aquarium__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/aquarium__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/observatory__schema-relationship.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/observatory__api-get-filter.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/observatory__api-post-validation.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/observatory__state-invariant.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/observatory__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/observatory__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/radiostation__schema-relationship.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/radiostation__api-get-filter.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/radiostation__api-post-validation.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/radiostation__state-invariant.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/radiostation__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-A/radiostation__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/aquarium__schema-relationship.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/aquarium__api-get-filter.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/aquarium__api-post-validation.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/aquarium__state-invariant.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/aquarium__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/aquarium__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/observatory__schema-relationship.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/observatory__api-get-filter.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/observatory__api-post-validation.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/observatory__state-invariant.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/observatory__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/observatory__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/radiostation__schema-relationship.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/radiostation__api-get-filter.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/radiostation__api-post-validation.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/radiostation__state-invariant.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/radiostation__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-B/radiostation__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/aquarium__schema-relationship.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/aquarium__api-get-filter.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/aquarium__api-post-validation.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/aquarium__state-invariant.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/aquarium__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/aquarium__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/observatory__schema-relationship.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/observatory__api-get-filter.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/observatory__api-post-validation.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/observatory__state-invariant.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/observatory__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/observatory__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/radiostation__schema-relationship.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/radiostation__api-get-filter.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/radiostation__api-post-validation.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/radiostation__state-invariant.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/radiostation__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-C/radiostation__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-D/aquarium__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-D/aquarium__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-D/observatory__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-D/observatory__fullstack-integration.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-D/radiostation__react-interaction.json",
+    "/home/z/my-project/research/aiwo/experiments/z040-autonomous-fullstack/tracks/track-D/radiostation__fullstack-integration.json"
+  ],
+  "pairs_total": 60,
+  "pass_rates": {
+    "A/api-get-filter": {
+      "n": 3,
+      "passed": 0
+    },
+    "A/api-post-validation": {
+      "n": 3,
+      "passed": 0
+    },
+    "A/fullstack-integration": {
+      "n": 3,
+      "passed": 0
+    },
+    "A/react-interaction": {
+      "n": 3,
+      "passed": 0
+    },
+    "A/schema-relationship": {
+      "n": 3,
+      "passed": 0
+    },
+    "A/state-invariant": {
+      "n": 3,
+      "passed": 0
+    },
+    "B/api-get-filter": {
+      "n": 3,
+      "passed": 0
+    },
+    "B/api-post-validation": {
+      "n": 3,
+      "passed": 1
+    },
+    "B/fullstack-integration": {
+      "n": 3,
+      "passed": 0
+    },
+    "B/react-interaction": {
+      "n": 3,
+      "passed": 0
+    },
+    "B/schema-relationship": {
+      "n": 3,
+      "passed": 0
+    },
+    "B/state-invariant": {
+      "n": 3,
+      "passed": 0
+    },
+    "C/api-get-filter": {
+      "n": 3,
+      "passed": 0
+    },
+    "C/api-post-validation": {
+      "n": 3,
+      "passed": 1
+    },
+    "C/fullstack-integration": {
+      "n": 3,
+      "passed": 0
+    },
+    "C/react-interaction": {
+      "n": 3,
+      "passed": 0
+    },
+    "C/schema-relationship": {
+      "n": 3,
+      "passed": 0
+    },
+    "C/state-invariant": {
+      "n": 3,
+      "passed": 0
+    },
+    "D/fullstack-integration": {
+      "n": 3,
+      "passed": 0
+    },
+    "D/react-interaction": {
+      "n": 3,
+      "passed": 0
+    }
+  }
+}

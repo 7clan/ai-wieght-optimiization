@@ -22,16 +22,67 @@
       "packages_created": false
     },
     "phase2_evaluators": {
-      "status": "IN_PROGRESS",
+      "status": "COMPLETE",
       "existing": "state-invariant + GET/POST route evaluators (039B), host-smoke 10/10 re-verified after PATH repair",
-      "to_build": ["dual-backend exec layer", "react-interaction evaluator", "fullstack-integration evaluator"]
+      "to_build": [
+        "dual-backend exec layer",
+        "react-interaction evaluator",
+        "fullstack-integration evaluator"
+      ],
+      "schema_evaluator_added": "archagent/s040/schema_eval.py + schema_probes + 3 schema controls (prisma-validate inside restricted tier)"
     },
-    "phase3_research": {"status": "DRAFTED", "doc": "docs/ZAI_SESSION040_CODING_PROCESS_RESEARCH.md (subagent draft; pending lead review)"},
-    "phase4_experiments": {"status": "PENDING", "tracks": ["A unassisted baseline", "B contract-first", "C execution-feedback repair", "D decomposition"], "sample": "paired train/dev tasks from frozen v2 curriculum only"},
-    "phase5_app": {"status": "PENDING", "note": "spec frozen BEFORE generation; app lives in the sandbox Next.js project (the previewable surface) and is archived to the repo with per-file attribution"},
-    "phase6_demo": {"status": "PENDING", "deliverables": ["interactive preview", "desktop+mobile screenshots", "source", "attribution breakdown", "browser interaction tests", "known-broken list"]},
-    "phase7_evaluation": {"status": "PENDING"},
-    "phase8_training_prep": {"status": "PENDING", "training_performed": false}
+    "phase3_research": {
+      "status": "COMPLETE (lead-reviewed; appendix with implementation-status annotations pending Phase 7 report)",
+      "doc": "docs/ZAI_SESSION040_CODING_PROCESS_RESEARCH.md (subagent draft; pending lead review)"
+    },
+    "phase4_experiments": {
+      "status": "COMPLETE",
+      "executed_utc": "2026-11-10",
+      "design": "paired A/B/C/D on frozen v2 curriculum (3 domains x 6 skills = 18 pairs; D only react+integration = 6 pairs; 60 records total)",
+      "tier": "UNSHARE_USERNS_DISCLOSED (Docker argv parity preserved in exec.py; docker unavailable in sandbox)",
+      "model_pin_verified": "sha256 aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80 (re-verified after environment restore)",
+      "results": {
+        "A_unassisted": "0/18",
+        "B_contract_first": "1/18 (observatory:api-post-validation, train)",
+        "C_repair_loop": "1/18 (same pair carried over; 51 repair attempts, 0 conversions)",
+        "D_decomposition": "0/6",
+        "verdict_distribution": {
+          "BEHAVIOR_FAIL": 40,
+          "EXECUTION_FAILED": 18,
+          "BEHAVIOR_PASS": 2
+        },
+        "tokens": {
+          "A": 5002,
+          "B": 10500,
+          "C": 40050,
+          "D": 2241
+        },
+        "exec_failed_is_candidate_side": "verified: candidate_executed=true + model_weight_change=false on inspected records"
+      },
+      "evidence": "experiments/z040-autonomous-fullstack/tracks/ (60 JSON records + manifest.json)"
+    },
+    "phase5_app": {
+      "status": "IN_PROGRESS",
+      "note": "spec frozen BEFORE generation; app lives in the sandbox Next.js project (the previewable surface) and is archived to the repo with per-file attribution"
+    },
+    "phase6_demo": {
+      "status": "PENDING",
+      "deliverables": [
+        "interactive preview",
+        "desktop+mobile screenshots",
+        "source",
+        "attribution breakdown",
+        "browser interaction tests",
+        "known-broken list"
+      ]
+    },
+    "phase7_evaluation": {
+      "status": "PENDING"
+    },
+    "phase8_training_prep": {
+      "status": "PENDING",
+      "training_performed": false
+    }
   },
   "environment": {
     "node": "v24.22.2",

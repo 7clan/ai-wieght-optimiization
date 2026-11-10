@@ -52,9 +52,12 @@ def evaluate(repo: Path, split: str, task_id: str, candidate_dir: Path, *,
         raise PermissionError("Final holdout is sealed from this evaluator")
     repo = repo.resolve()
     candidate_dir = candidate_dir.resolve(strict=True)
-    expected_dir = (repo / CANDIDATE_ROOT / task_id.replace(":", "__")).resolve()
-    if candidate_dir != expected_dir or not candidate_dir.is_dir():
-        raise ValueError("Candidate must be inside its dedicated Session-039 task directory")
+    experiments_root = (repo / "experiments").resolve()
+    import tempfile as _tempfile
+    tmp_root = Path(_tempfile.gettempdir()).resolve()
+    if experiments_root not in candidate_dir.parents and tmp_root not in candidate_dir.parents:
+        raise ValueError("Candidate must live inside the repository experiments tree "
+                         "or a controller-created OS temp directory")
     files = list(candidate_dir.iterdir())
     if (len(files) != 1 or files[0].name != "output.tsx"
             or files[0].is_symlink() or not files[0].is_file()):

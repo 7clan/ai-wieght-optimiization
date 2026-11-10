@@ -1,0 +1,41 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "model Exposure {\n  id        String @id @default(cuid()) @unique\n  telescope String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  status    String @default(\"queued\") @db.VarChar(255) @db.ForeignKey(\"status_id\")\n  createdAt DateTime @default(now()) @db.Timestamp\n  updatedAt DateTime @updatedAt\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Write the Prisma models for Telescope and Exposure, with correct one-to-many relation sides.\n- The Exposure.telescopeId foreign key is optional; its relation field must have matching nullability.\n- Use String @id @default(cuid()) primary keys and an Int measurement field.\n- Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.\n- The child model also stores status String @default(\"queued\"), persisted for UI/API workflows.\n\nWrite the complete Prisma schema now. The first line is already written; continue from it:\nmodel Exposure {\n",
+      "prompt_sha256": "66e647eda061ee2b08ce306aa796f75fb5b1f22357fc6aed062be8282f94ef55",
+      "raw_generation": "  id        String @id @default(cuid()) @unique\n  telescope String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  status    String @default(\"queued\") @db.VarChar(255) @db.ForeignKey(\"status_id\")\n  createdAt DateTime @default(now()) @db.Timestamp\n  updatedAt DateTime @updatedAt\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db",
+      "usage": {
+        "seconds": 49.19,
+        "seed": 1861169126,
+        "stochastic": false,
+        "tokens": 400
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "model Exposure {\n  id        String @id @default(cuid()) @unique\n  telescope String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  status    String @default(\"queued\") @db.VarChar(255) @db.ForeignKey(\"status_id\")\n  createdAt DateTime @default(now()) @db.Timestamp\n  updatedAt DateTime @updatedAt\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db.VarChar(255) @db.ForeignKey(\"telescope_id\")\n  telescopeId String @db",
+  "candidate_final_sha256": "150a03c98f4e29181edf3a82e86d81680ccdb1895d1716c2f5c71d8b9363aeb5",
+  "decoding": "greedy",
+  "domain": "observatory",
+  "skill": "schema-relationship",
+  "split": "train",
+  "task_id": "observatory:schema-relationship",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "model_weight_change": false,
+    "passed": false,
+    "probe_count": 7,
+    "reported_checks": 1,
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "observatory:schema-relationship",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 49.3
+}
