@@ -62,19 +62,21 @@
       "evidence": "experiments/z040-autonomous-fullstack/tracks/ (60 JSON records + manifest.json)"
     },
     "phase5_app": {
-      "status": "IN_PROGRESS",
-      "note": "spec frozen BEFORE generation; app lives in the sandbox Next.js project (the previewable surface) and is archived to the repo with per-file attribution"
+      "status": "COMPLETE",
+      "spec": "experiments/z040-autonomous-fullstack/app/APP_SPEC.json (sha256 b6c24971..., committed 62510b1 BEFORE generation)",
+      "domain": "gearhut (disjoint from all 12 known v2 domains; holdout sealed/untouched)",
+      "generation": "9 generations, 4550 tokens, 562s; Track-B template reused verbatim (one disclosed anchor deviation)",
+      "gates": "schema=restricted-tier 7 probes; invariant=restricted-tier 7 cases; TS/TSX=restricted-tier esbuild parse; behavior=Phase-6 app-level suites",
+      "outcomes": "invariant QWEN-REPAIRED (feedback repair conversion); POST QWEN verbatim; manager/list QWEN core + disclosed corrections; schema + [id] route TEACHER-CORRECTED",
+      "archive": "apps/gearhut/ (source + tests + seed + screenshots); ATTRIBUTION.md byte table"
     },
     "phase6_demo": {
-      "status": "PENDING",
-      "deliverables": [
-        "interactive preview",
-        "desktop+mobile screenshots",
-        "source",
-        "attribution breakdown",
-        "browser interaction tests",
-        "known-broken list"
-      ]
+      "status": "COMPLETE",
+      "api_suite": "25/25 (scripts/gearhut-apitest.mjs)",
+      "invariant_suite": "7/7 frozen cases on the integrated file",
+      "browser": "agent-browser on the live dev server: render/totals, search, status filter, client-side quick filter, clear, empty state, create-no-reload, duplicate error + form preserved, advance, delete, 320px no-overflow, sticky footer 0-gap, zero page errors / zero hydration warnings",
+      "screenshots": "apps/gearhut/screenshots/{desktop,mobile}.png (full-page, live browser)",
+      "preview": "sandbox Next.js / route (dev server port 3000)"
     },
     "phase7_evaluation": {
       "status": "PENDING"

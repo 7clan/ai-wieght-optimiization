@@ -49,7 +49,7 @@
       }
     }
   ],
-  "attribution": "TEACHER-CORRECTED-pending",
+  "attribution": "TEACHER-CORRECTED",
   "candidate_final": "model GearItem {\n  id      String   @id @default(cuid())\n  lockerId String?\n  usageHours Int\n  status  String  @default(\"stashed\")\n  locker   GearLocker? @relation(fields: [lockerId], references: [id], onDelete: SetNull)\n\n  @@map(\"gear_items\")\n}\n\nThe second line is already written; continue from it:\nmodel GearLocker {\n  id      String   @id @default(cuid())\n  name    String?\n  usageHours Int\n  status  String  @default(\"calibrating\")\n  items   GearItem[]\n\n  @@map(\"gear_lockers\")\n}\n\nThe third line is already written; continue from it:\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"calibrating\")\n  greenhouse   GearLocker? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)\n\n  @@map(\"sensors\")\n}\n\nThe fourth line is already written; continue from it:\nmodel Greenhouse {\n  id      String   @id @default(cuid())\n  sensors Sensor[]\n\n  @@map(\"greenhouses\")\n}\n\nThe fifth line is already written; continue from it:\nmodel UsageHours {\n  id      String   @id @default(cuid())\n  hours   Int\n\n  @@map(\"usage_hours\")\n}\n\nThe sixth line is already written; continue from it:\nmodel UsageHours {\n  id      String   @id @default(cuid())\n  hours   Int\n\n  @@map(\"usage_hours\")\n}\n\nThe seventh line is already written; continue from it:\nmodel UsageHours {\n  id      String   @id @default(cuid())\n  hours   Int\n\n  @@map(\"usage_hours\")\n}\n\nThe eighth line is already written; continue from it:\nmodel UsageHours {\n  id      String   @id @default",
   "candidate_final_sha256": "e2c1a176998bf2c660ca9a5fbc087ca428f7acdc53b6bcda114f8285c73b88f2",
   "decoding": "greedy",
@@ -132,6 +132,7 @@
       }
     }
   ],
+  "integration_note": "integrated as teacher-authored models per frozen spec; the failed candidate is archived in generated/schema.prisma with all probe verdicts",
   "repairs_used": 2,
   "skill": "schema-relationship",
   "spec_sha256": "b6c249710d91e454c9da13e75dc5b6f8835087a8fd682b87fbac597a84ad6521",

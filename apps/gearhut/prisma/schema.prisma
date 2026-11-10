@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// For more information in using Prisma with Next.js, read this:
+// https://nextjs.org/docs/app/building-your-application/data-fetching
+
+// SESSION040 GearHut — attribution (see research repo
+// experiments/z040-autonomous-fullstack/app/ATTRIBUTION.md):
+//   datasource/generator block: TRUSTED-SCAFFOLD (Next.js boilerplate)
+//   model bytes: TEACHER-CORRECTED (the Qwen2.5-Coder-0.5B attempt failed
+//   the restricted-tier schema probes: optional FK + SetNull instead of the
+//   frozen required-FK + Restrict contract, missing label field, degenerate
+//   follow-on models; archived in app/generated/schema.prisma)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model GearLocker {
+  id    String     @id @default(cuid())
+  name  String?
+  items GearItem[]
+
+  @@map("gear_lockers")
+}
+
+model GearItem {
+  id         String     @id @default(cuid())
+  label      String
+  usageHours Int
+  status     String     @default("stashed")
+  lockerId   String
+  locker     GearLocker @relation(fields: [lockerId], references: [id], onDelete: Restrict)
+
+  @@map("gear_items")
+}
