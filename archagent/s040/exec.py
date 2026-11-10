@@ -205,19 +205,34 @@ def _parse_verdict(stdout: str, marker: str = RESULT_MARKER) -> dict:
     lines = [line[len(marker):] for line in stdout.splitlines()
              if line.startswith(marker)]
     if len(lines) != 1:
-        return {"status": "NO_UNAMBIGUOUS_VERDICT", "passed": False, "candidate_executed": True}
+        return {"status": "NO_UNAMBIGUOUS_VERDICT", "passed": False, "candidate_executed": True,
+                "checks": [{"name": "unambiguous-verdict", "passed": False,
+                            "detail": "runner did not emit exactly one marker line"}]}
     try:
         verdict = json.loads(lines[0])
     except json.JSONDecodeError:
-        return {"status": "INVALID_VERDICT", "passed": False, "candidate_executed": True}
+        return {"status": "INVALID_VERDICT", "passed": False, "candidate_executed": True,
+                "checks": [{"name": "verdict-json-valid", "passed": False,
+                            "detail": "marker line was not valid JSON"}]}
     checks = verdict.get("checks") if isinstance(verdict, dict) else None
     valid = (isinstance(checks, list) and bool(checks)
              and all(isinstance(c, dict) and isinstance(c.get("name"), str)
                      and c.get("passed") is True for c in checks)
              and verdict.get("pass") is True)
+    # Sanitized check table travels WITH the verdict so execution-feedback
+    # repair prompts can quote the actual failures (033 allowlist: public
+    # execution feedback). Defect found 2026-11-10: the pre-fix sanitizer
+    # dropped the list, so every Session-040 Track-C repair prompt quoted an
+    # EMPTY problem section; those records are superseded and re-run.
+    sanitized = ([{"name": str(c.get("name", "check"))[:80],
+                   "passed": c.get("passed") is True,
+                   "detail": str(c.get("detail", ""))[:160]}
+                  for c in checks if isinstance(c, dict)]
+                 if isinstance(checks, list) else [])
     return {"status": "BEHAVIOR_PASS" if valid else "BEHAVIOR_FAIL", "passed": valid,
             "candidate_executed": True,
-            "reported_checks": len(checks) if isinstance(checks, list) else 0}
+            "reported_checks": len(checks) if isinstance(checks, list) else 0,
+            "checks": sanitized}
 
 
 def _make_rlimits():
@@ -297,10 +312,14 @@ def run(candidate_dir: Path, harness_dir: Path, deps_dir: Path, *, runner: str,
                 pass
             stdout, _stderr = proc.communicate()
             return {"status": "TIMEOUT", "passed": False, "candidate_executed": True,
-                    "tier": used_tier}
+                    "tier": used_tier,
+                    "checks": [{"name": "completed-within-wall-clock", "passed": False,
+                                "detail": f"killed after {caps['wall_s']}s"}]}
         if proc.returncode != 0:
             return {"status": "EXECUTION_FAILED", "passed": False,
-                    "candidate_executed": True, "exit_code": proc.returncode, "tier": used_tier}
+                    "candidate_executed": True, "exit_code": proc.returncode, "tier": used_tier,
+                    "checks": [{"name": "exited-cleanly", "passed": False,
+                                "detail": f"process exited with code {proc.returncode}"}]}
         result = _parse_verdict(stdout or "", marker=marker)
         result["tier"] = used_tier
         return result
