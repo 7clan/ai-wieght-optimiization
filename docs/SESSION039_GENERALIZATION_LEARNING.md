@@ -122,6 +122,10 @@ behavioral correctness are **unverified** here because Docker is absent.
 All other API, Prisma, React and full-stack execution paths are still to
 be built. See [`SESSION039_EXECUTION_BOUNDARY.md`](SESSION039_EXECUTION_BOUNDARY.md).
 
+A self-contained continuation assignment for a Docker-capable Z.ai
+environment is preserved in
+[`SESSION039_ZAI_EXECUTION_HANDOFF.md`](SESSION039_ZAI_EXECUTION_HANDOFF.md).
+
 ## Phases 2–4 — not yet run
 
 ### Phase 2b: contract-to-behavior harness

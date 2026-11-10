@@ -827,3 +827,6 @@ status-field mismatch while keeping v1 immutable. A fail-closed Docker-only
 state-invariant evaluator has been implemented and unit-tested, but cannot
 execute candidates in this Docker-less workspace; API/React executors are
 still pending. See `docs/SESSION039_EXECUTION_BOUNDARY.md`.
+The Docker-capable continuation contract is at
+`docs/SESSION039_ZAI_EXECUTION_HANDOFF.md`; no live model evaluation
+is claimed by the preparation branch.
