@@ -804,3 +804,16 @@ examples only; **NO-GO for DPO** (measured: zero same-prompt
 preference pairs in all archives); teacher distillation only after
 the pilot. Full reports: `docs/ZAI_SESSION038A_INDEPENDENT_RETEST.md`,
 `docs/ZAI_SESSION038A_TRAINING_PLANS.md`.
+
+## Session 039 — evidence reconciliation + 96 frozen cross-domain contracts (exp/qwen-generalization-learning-039)
+
+Preparation only, **no inference or training**. The Session-038A metadata
+reconciliation reproduces the 22 locally replayed candidate claims while
+preserving their disclosed `unshare` isolation tier (not Docker-equivalent);
+training-eligible count stays 0. A task curriculum for the model's real
+remaining deficits is now frozen: **54 curriculum / 18 development / 24
+sealed holdout** contracts in 16 domain-disjoint applications, spanning
+Prisma relationships, GET/POST APIs, invariants, interactive React and
+integrated full-stack behavior. These are authored specifications, **not
+verified generated solutions**. See `docs/SESSION039_GENERALIZATION_LEARNING.md`
+for the frozen hashes, tests, missing execution steps and training gate.

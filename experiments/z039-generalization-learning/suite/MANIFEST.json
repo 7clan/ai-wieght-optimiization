@@ -1,0 +1,43 @@
+{
+  "freeze_version": 1,
+  "frozen_before_any_s039_inference": true,
+  "holdout_rule": "Do not load/inspect holdout specs or their oracles in generation, training, controller feedback, hyperparameter search or retrieval",
+  "session": "039",
+  "splits": {
+    "dev": {
+      "domains": [
+        "radiostation",
+        "tailorshop",
+        "sportsarena"
+      ],
+      "sha256": "840500d4b18f5d51f057a09cff38f48b6cab7fb2c5fdd4cd379458327e5063c6",
+      "task_count": 18
+    },
+    "holdout": {
+      "domains": [
+        "mountainrescue",
+        "textilemill",
+        "trafficops",
+        "heritagemuseum"
+      ],
+      "sha256": "9a09d55b7c3eb8b140905fcef44c03b2ed0818b95adbb2f60a1094b0afc93e41",
+      "task_count": 24
+    },
+    "train": {
+      "domains": [
+        "aquarium",
+        "observatory",
+        "recycling",
+        "filmset",
+        "makerspace",
+        "artmarket",
+        "wildlife",
+        "foodbank",
+        "landregistry"
+      ],
+      "sha256": "0e296cf46b838fd4e811853b0ace9e859fa4ad7d9958a6505f253de27d261403",
+      "task_count": 54
+    }
+  },
+  "trainable_records": 0
+}

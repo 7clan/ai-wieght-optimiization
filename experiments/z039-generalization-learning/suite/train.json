@@ -1,0 +1,2394 @@
+{
+  "generation_permitted": true,
+  "role": "CONTRACTS_ONLY_NOT_TRAINING_DATA",
+  "sealed_until_final_scoring": false,
+  "session": "039",
+  "split": "train",
+  "tasks": [
+    {
+      "contract_version": 1,
+      "domain": "aquarium",
+      "entities": {
+        "child": "FeedLog",
+        "foreign_key": "tankId",
+        "foreign_key_mode": "required",
+        "parent": "Tank"
+      },
+      "fields": {
+        "amount": "feedGrams",
+        "label": "title",
+        "max_inclusive": 600,
+        "min_inclusive": 1
+      },
+      "id": "aquarium:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Tank and FeedLog, with correct one-to-many relation sides.",
+        "The FeedLog.tankId foreign key is required; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage FeedLog records linked to Tank in the aquarium service.",
+      "workflow": [
+        "draft",
+        "scheduled",
+        "served"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "aquarium",
+      "entities": {
+        "child": "FeedLog",
+        "foreign_key": "tankId",
+        "foreign_key_mode": "required",
+        "parent": "Tank"
+      },
+      "fields": {
+        "amount": "feedGrams",
+        "label": "title",
+        "max_inclusive": 600,
+        "min_inclusive": 1
+      },
+      "id": "aquarium:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/aquarium-feedLogs using db.feedLog.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional tankId, order by title ascending, include tank.",
+        "Return { feedLogs: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage FeedLog records linked to Tank in the aquarium service.",
+      "workflow": [
+        "draft",
+        "scheduled",
+        "served"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "aquarium",
+      "entities": {
+        "child": "FeedLog",
+        "foreign_key": "tankId",
+        "foreign_key_mode": "required",
+        "parent": "Tank"
+      },
+      "fields": {
+        "amount": "feedGrams",
+        "label": "title",
+        "max_inclusive": 600,
+        "min_inclusive": 1
+      },
+      "id": "aquarium:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/aquarium-feedLogs; trim required title and validate feedGrams as a finite integer.",
+        "Enforce 1 <= feedGrams <= 600 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Tank.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Tank with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage FeedLog records linked to Tank in the aquarium service.",
+      "workflow": [
+        "draft",
+        "scheduled",
+        "served"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "aquarium",
+      "entities": {
+        "child": "FeedLog",
+        "foreign_key": "tankId",
+        "foreign_key_mode": "required",
+        "parent": "Tank"
+      },
+      "fields": {
+        "amount": "feedGrams",
+        "label": "title",
+        "max_inclusive": 600,
+        "min_inclusive": 1
+      },
+      "id": "aquarium:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceFeedLog(current, next): boolean for exact transitions draft→scheduled and scheduled→served.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage FeedLog records linked to Tank in the aquarium service.",
+      "workflow": [
+        "draft",
+        "scheduled",
+        "served"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "aquarium",
+      "entities": {
+        "child": "FeedLog",
+        "foreign_key": "tankId",
+        "foreign_key_mode": "required",
+        "parent": "Tank"
+      },
+      "fields": {
+        "amount": "feedGrams",
+        "label": "title",
+        "max_inclusive": 600,
+        "min_inclusive": 1
+      },
+      "id": "aquarium:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing FeedLog items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, feedGrams and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage FeedLog records linked to Tank in the aquarium service.",
+      "workflow": [
+        "draft",
+        "scheduled",
+        "served"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "aquarium",
+      "entities": {
+        "child": "FeedLog",
+        "foreign_key": "tankId",
+        "foreign_key_mode": "required",
+        "parent": "Tank"
+      },
+      "fields": {
+        "amount": "feedGrams",
+        "label": "title",
+        "max_inclusive": 600,
+        "min_inclusive": 1
+      },
+      "id": "aquarium:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted FeedLog model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage FeedLog records linked to Tank in the aquarium service.",
+      "workflow": [
+        "draft",
+        "scheduled",
+        "served"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "observatory",
+      "entities": {
+        "child": "Exposure",
+        "foreign_key": "telescopeId",
+        "foreign_key_mode": "optional",
+        "parent": "Telescope"
+      },
+      "fields": {
+        "amount": "seconds",
+        "label": "title",
+        "max_inclusive": 5400,
+        "min_inclusive": 2
+      },
+      "id": "observatory:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Telescope and Exposure, with correct one-to-many relation sides.",
+        "The Exposure.telescopeId foreign key is optional; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Exposure records linked to Telescope in the observatory service.",
+      "workflow": [
+        "queued",
+        "aligned",
+        "captured"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "observatory",
+      "entities": {
+        "child": "Exposure",
+        "foreign_key": "telescopeId",
+        "foreign_key_mode": "optional",
+        "parent": "Telescope"
+      },
+      "fields": {
+        "amount": "seconds",
+        "label": "title",
+        "max_inclusive": 5400,
+        "min_inclusive": 2
+      },
+      "id": "observatory:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/observatory-exposures using db.exposure.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional telescopeId, order by title ascending, include telescope.",
+        "Return { exposures: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Exposure records linked to Telescope in the observatory service.",
+      "workflow": [
+        "queued",
+        "aligned",
+        "captured"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "observatory",
+      "entities": {
+        "child": "Exposure",
+        "foreign_key": "telescopeId",
+        "foreign_key_mode": "optional",
+        "parent": "Telescope"
+      },
+      "fields": {
+        "amount": "seconds",
+        "label": "title",
+        "max_inclusive": 5400,
+        "min_inclusive": 2
+      },
+      "id": "observatory:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/observatory-exposures; trim required title and validate seconds as a finite integer.",
+        "Enforce 2 <= seconds <= 5400 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Telescope.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Telescope with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Exposure records linked to Telescope in the observatory service.",
+      "workflow": [
+        "queued",
+        "aligned",
+        "captured"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "observatory",
+      "entities": {
+        "child": "Exposure",
+        "foreign_key": "telescopeId",
+        "foreign_key_mode": "optional",
+        "parent": "Telescope"
+      },
+      "fields": {
+        "amount": "seconds",
+        "label": "title",
+        "max_inclusive": 5400,
+        "min_inclusive": 2
+      },
+      "id": "observatory:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceExposure(current, next): boolean for exact transitions queued→aligned and aligned→captured.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Exposure records linked to Telescope in the observatory service.",
+      "workflow": [
+        "queued",
+        "aligned",
+        "captured"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "observatory",
+      "entities": {
+        "child": "Exposure",
+        "foreign_key": "telescopeId",
+        "foreign_key_mode": "optional",
+        "parent": "Telescope"
+      },
+      "fields": {
+        "amount": "seconds",
+        "label": "title",
+        "max_inclusive": 5400,
+        "min_inclusive": 2
+      },
+      "id": "observatory:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Exposure items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, seconds and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Exposure records linked to Telescope in the observatory service.",
+      "workflow": [
+        "queued",
+        "aligned",
+        "captured"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "observatory",
+      "entities": {
+        "child": "Exposure",
+        "foreign_key": "telescopeId",
+        "foreign_key_mode": "optional",
+        "parent": "Telescope"
+      },
+      "fields": {
+        "amount": "seconds",
+        "label": "title",
+        "max_inclusive": 5400,
+        "min_inclusive": 2
+      },
+      "id": "observatory:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Exposure model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Exposure records linked to Telescope in the observatory service.",
+      "workflow": [
+        "queued",
+        "aligned",
+        "captured"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "recycling",
+      "entities": {
+        "child": "Collection",
+        "foreign_key": "depotId",
+        "foreign_key_mode": "required",
+        "parent": "Depot"
+      },
+      "fields": {
+        "amount": "weightKg",
+        "label": "title",
+        "max_inclusive": 1000,
+        "min_inclusive": 1
+      },
+      "id": "recycling:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Depot and Collection, with correct one-to-many relation sides.",
+        "The Collection.depotId foreign key is required; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Collection records linked to Depot in the recycling service.",
+      "workflow": [
+        "requested",
+        "assigned",
+        "collected"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "recycling",
+      "entities": {
+        "child": "Collection",
+        "foreign_key": "depotId",
+        "foreign_key_mode": "required",
+        "parent": "Depot"
+      },
+      "fields": {
+        "amount": "weightKg",
+        "label": "title",
+        "max_inclusive": 1000,
+        "min_inclusive": 1
+      },
+      "id": "recycling:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/recycling-collections using db.collection.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional depotId, order by title ascending, include depot.",
+        "Return { collections: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Collection records linked to Depot in the recycling service.",
+      "workflow": [
+        "requested",
+        "assigned",
+        "collected"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "recycling",
+      "entities": {
+        "child": "Collection",
+        "foreign_key": "depotId",
+        "foreign_key_mode": "required",
+        "parent": "Depot"
+      },
+      "fields": {
+        "amount": "weightKg",
+        "label": "title",
+        "max_inclusive": 1000,
+        "min_inclusive": 1
+      },
+      "id": "recycling:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/recycling-collections; trim required title and validate weightKg as a finite integer.",
+        "Enforce 1 <= weightKg <= 1000 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Depot.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Depot with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Collection records linked to Depot in the recycling service.",
+      "workflow": [
+        "requested",
+        "assigned",
+        "collected"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "recycling",
+      "entities": {
+        "child": "Collection",
+        "foreign_key": "depotId",
+        "foreign_key_mode": "required",
+        "parent": "Depot"
+      },
+      "fields": {
+        "amount": "weightKg",
+        "label": "title",
+        "max_inclusive": 1000,
+        "min_inclusive": 1
+      },
+      "id": "recycling:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceCollection(current, next): boolean for exact transitions requested→assigned and assigned→collected.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Collection records linked to Depot in the recycling service.",
+      "workflow": [
+        "requested",
+        "assigned",
+        "collected"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "recycling",
+      "entities": {
+        "child": "Collection",
+        "foreign_key": "depotId",
+        "foreign_key_mode": "required",
+        "parent": "Depot"
+      },
+      "fields": {
+        "amount": "weightKg",
+        "label": "title",
+        "max_inclusive": 1000,
+        "min_inclusive": 1
+      },
+      "id": "recycling:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Collection items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, weightKg and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Collection records linked to Depot in the recycling service.",
+      "workflow": [
+        "requested",
+        "assigned",
+        "collected"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "recycling",
+      "entities": {
+        "child": "Collection",
+        "foreign_key": "depotId",
+        "foreign_key_mode": "required",
+        "parent": "Depot"
+      },
+      "fields": {
+        "amount": "weightKg",
+        "label": "title",
+        "max_inclusive": 1000,
+        "min_inclusive": 1
+      },
+      "id": "recycling:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Collection model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Collection records linked to Depot in the recycling service.",
+      "workflow": [
+        "requested",
+        "assigned",
+        "collected"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "filmset",
+      "entities": {
+        "child": "Take",
+        "foreign_key": "cameraId",
+        "foreign_key_mode": "optional",
+        "parent": "Camera"
+      },
+      "fields": {
+        "amount": "durationSec",
+        "label": "title",
+        "max_inclusive": 1200,
+        "min_inclusive": 3
+      },
+      "id": "filmset:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Camera and Take, with correct one-to-many relation sides.",
+        "The Take.cameraId foreign key is optional; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Take records linked to Camera in the filmset service.",
+      "workflow": [
+        "planned",
+        "filmed",
+        "approved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "filmset",
+      "entities": {
+        "child": "Take",
+        "foreign_key": "cameraId",
+        "foreign_key_mode": "optional",
+        "parent": "Camera"
+      },
+      "fields": {
+        "amount": "durationSec",
+        "label": "title",
+        "max_inclusive": 1200,
+        "min_inclusive": 3
+      },
+      "id": "filmset:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/filmset-takes using db.take.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional cameraId, order by title ascending, include camera.",
+        "Return { takes: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Take records linked to Camera in the filmset service.",
+      "workflow": [
+        "planned",
+        "filmed",
+        "approved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "filmset",
+      "entities": {
+        "child": "Take",
+        "foreign_key": "cameraId",
+        "foreign_key_mode": "optional",
+        "parent": "Camera"
+      },
+      "fields": {
+        "amount": "durationSec",
+        "label": "title",
+        "max_inclusive": 1200,
+        "min_inclusive": 3
+      },
+      "id": "filmset:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/filmset-takes; trim required title and validate durationSec as a finite integer.",
+        "Enforce 3 <= durationSec <= 1200 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Camera.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Camera with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Take records linked to Camera in the filmset service.",
+      "workflow": [
+        "planned",
+        "filmed",
+        "approved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "filmset",
+      "entities": {
+        "child": "Take",
+        "foreign_key": "cameraId",
+        "foreign_key_mode": "optional",
+        "parent": "Camera"
+      },
+      "fields": {
+        "amount": "durationSec",
+        "label": "title",
+        "max_inclusive": 1200,
+        "min_inclusive": 3
+      },
+      "id": "filmset:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceTake(current, next): boolean for exact transitions planned→filmed and filmed→approved.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Take records linked to Camera in the filmset service.",
+      "workflow": [
+        "planned",
+        "filmed",
+        "approved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "filmset",
+      "entities": {
+        "child": "Take",
+        "foreign_key": "cameraId",
+        "foreign_key_mode": "optional",
+        "parent": "Camera"
+      },
+      "fields": {
+        "amount": "durationSec",
+        "label": "title",
+        "max_inclusive": 1200,
+        "min_inclusive": 3
+      },
+      "id": "filmset:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Take items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, durationSec and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Take records linked to Camera in the filmset service.",
+      "workflow": [
+        "planned",
+        "filmed",
+        "approved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "filmset",
+      "entities": {
+        "child": "Take",
+        "foreign_key": "cameraId",
+        "foreign_key_mode": "optional",
+        "parent": "Camera"
+      },
+      "fields": {
+        "amount": "durationSec",
+        "label": "title",
+        "max_inclusive": 1200,
+        "min_inclusive": 3
+      },
+      "id": "filmset:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Take model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Take records linked to Camera in the filmset service.",
+      "workflow": [
+        "planned",
+        "filmed",
+        "approved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "makerspace",
+      "entities": {
+        "child": "CutJob",
+        "foreign_key": "laserId",
+        "foreign_key_mode": "required",
+        "parent": "Laser"
+      },
+      "fields": {
+        "amount": "runMinutes",
+        "label": "title",
+        "max_inclusive": 180,
+        "min_inclusive": 1
+      },
+      "id": "makerspace:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Laser and CutJob, with correct one-to-many relation sides.",
+        "The CutJob.laserId foreign key is required; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage CutJob records linked to Laser in the makerspace service.",
+      "workflow": [
+        "submitted",
+        "prepared",
+        "finished"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "makerspace",
+      "entities": {
+        "child": "CutJob",
+        "foreign_key": "laserId",
+        "foreign_key_mode": "required",
+        "parent": "Laser"
+      },
+      "fields": {
+        "amount": "runMinutes",
+        "label": "title",
+        "max_inclusive": 180,
+        "min_inclusive": 1
+      },
+      "id": "makerspace:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/makerspace-cutJobs using db.cutJob.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional laserId, order by title ascending, include laser.",
+        "Return { cutJobs: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage CutJob records linked to Laser in the makerspace service.",
+      "workflow": [
+        "submitted",
+        "prepared",
+        "finished"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "makerspace",
+      "entities": {
+        "child": "CutJob",
+        "foreign_key": "laserId",
+        "foreign_key_mode": "required",
+        "parent": "Laser"
+      },
+      "fields": {
+        "amount": "runMinutes",
+        "label": "title",
+        "max_inclusive": 180,
+        "min_inclusive": 1
+      },
+      "id": "makerspace:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/makerspace-cutJobs; trim required title and validate runMinutes as a finite integer.",
+        "Enforce 1 <= runMinutes <= 180 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Laser.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Laser with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage CutJob records linked to Laser in the makerspace service.",
+      "workflow": [
+        "submitted",
+        "prepared",
+        "finished"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "makerspace",
+      "entities": {
+        "child": "CutJob",
+        "foreign_key": "laserId",
+        "foreign_key_mode": "required",
+        "parent": "Laser"
+      },
+      "fields": {
+        "amount": "runMinutes",
+        "label": "title",
+        "max_inclusive": 180,
+        "min_inclusive": 1
+      },
+      "id": "makerspace:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceCutJob(current, next): boolean for exact transitions submitted→prepared and prepared→finished.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage CutJob records linked to Laser in the makerspace service.",
+      "workflow": [
+        "submitted",
+        "prepared",
+        "finished"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "makerspace",
+      "entities": {
+        "child": "CutJob",
+        "foreign_key": "laserId",
+        "foreign_key_mode": "required",
+        "parent": "Laser"
+      },
+      "fields": {
+        "amount": "runMinutes",
+        "label": "title",
+        "max_inclusive": 180,
+        "min_inclusive": 1
+      },
+      "id": "makerspace:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing CutJob items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, runMinutes and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage CutJob records linked to Laser in the makerspace service.",
+      "workflow": [
+        "submitted",
+        "prepared",
+        "finished"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "makerspace",
+      "entities": {
+        "child": "CutJob",
+        "foreign_key": "laserId",
+        "foreign_key_mode": "required",
+        "parent": "Laser"
+      },
+      "fields": {
+        "amount": "runMinutes",
+        "label": "title",
+        "max_inclusive": 180,
+        "min_inclusive": 1
+      },
+      "id": "makerspace:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted CutJob model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage CutJob records linked to Laser in the makerspace service.",
+      "workflow": [
+        "submitted",
+        "prepared",
+        "finished"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "artmarket",
+      "entities": {
+        "child": "ArtworkSale",
+        "foreign_key": "galleryId",
+        "foreign_key_mode": "optional",
+        "parent": "Gallery"
+      },
+      "fields": {
+        "amount": "priceUsd",
+        "label": "title",
+        "max_inclusive": 100000,
+        "min_inclusive": 5
+      },
+      "id": "artmarket:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Gallery and ArtworkSale, with correct one-to-many relation sides.",
+        "The ArtworkSale.galleryId foreign key is optional; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ArtworkSale records linked to Gallery in the artmarket service.",
+      "workflow": [
+        "listed",
+        "reserved",
+        "sold"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "artmarket",
+      "entities": {
+        "child": "ArtworkSale",
+        "foreign_key": "galleryId",
+        "foreign_key_mode": "optional",
+        "parent": "Gallery"
+      },
+      "fields": {
+        "amount": "priceUsd",
+        "label": "title",
+        "max_inclusive": 100000,
+        "min_inclusive": 5
+      },
+      "id": "artmarket:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/artmarket-artworkSales using db.artworkSale.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional galleryId, order by title ascending, include gallery.",
+        "Return { artworkSales: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ArtworkSale records linked to Gallery in the artmarket service.",
+      "workflow": [
+        "listed",
+        "reserved",
+        "sold"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "artmarket",
+      "entities": {
+        "child": "ArtworkSale",
+        "foreign_key": "galleryId",
+        "foreign_key_mode": "optional",
+        "parent": "Gallery"
+      },
+      "fields": {
+        "amount": "priceUsd",
+        "label": "title",
+        "max_inclusive": 100000,
+        "min_inclusive": 5
+      },
+      "id": "artmarket:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/artmarket-artworkSales; trim required title and validate priceUsd as a finite integer.",
+        "Enforce 5 <= priceUsd <= 100000 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Gallery.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Gallery with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ArtworkSale records linked to Gallery in the artmarket service.",
+      "workflow": [
+        "listed",
+        "reserved",
+        "sold"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "artmarket",
+      "entities": {
+        "child": "ArtworkSale",
+        "foreign_key": "galleryId",
+        "foreign_key_mode": "optional",
+        "parent": "Gallery"
+      },
+      "fields": {
+        "amount": "priceUsd",
+        "label": "title",
+        "max_inclusive": 100000,
+        "min_inclusive": 5
+      },
+      "id": "artmarket:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceArtworkSale(current, next): boolean for exact transitions listed→reserved and reserved→sold.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ArtworkSale records linked to Gallery in the artmarket service.",
+      "workflow": [
+        "listed",
+        "reserved",
+        "sold"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "artmarket",
+      "entities": {
+        "child": "ArtworkSale",
+        "foreign_key": "galleryId",
+        "foreign_key_mode": "optional",
+        "parent": "Gallery"
+      },
+      "fields": {
+        "amount": "priceUsd",
+        "label": "title",
+        "max_inclusive": 100000,
+        "min_inclusive": 5
+      },
+      "id": "artmarket:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing ArtworkSale items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, priceUsd and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ArtworkSale records linked to Gallery in the artmarket service.",
+      "workflow": [
+        "listed",
+        "reserved",
+        "sold"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "artmarket",
+      "entities": {
+        "child": "ArtworkSale",
+        "foreign_key": "galleryId",
+        "foreign_key_mode": "optional",
+        "parent": "Gallery"
+      },
+      "fields": {
+        "amount": "priceUsd",
+        "label": "title",
+        "max_inclusive": 100000,
+        "min_inclusive": 5
+      },
+      "id": "artmarket:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted ArtworkSale model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ArtworkSale records linked to Gallery in the artmarket service.",
+      "workflow": [
+        "listed",
+        "reserved",
+        "sold"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "wildlife",
+      "entities": {
+        "child": "Survey",
+        "foreign_key": "sanctuaryId",
+        "foreign_key_mode": "required",
+        "parent": "Sanctuary"
+      },
+      "fields": {
+        "amount": "count",
+        "label": "title",
+        "max_inclusive": 500,
+        "min_inclusive": 1
+      },
+      "id": "wildlife:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Sanctuary and Survey, with correct one-to-many relation sides.",
+        "The Survey.sanctuaryId foreign key is required; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Survey records linked to Sanctuary in the wildlife service.",
+      "workflow": [
+        "reported",
+        "checked",
+        "released"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "wildlife",
+      "entities": {
+        "child": "Survey",
+        "foreign_key": "sanctuaryId",
+        "foreign_key_mode": "required",
+        "parent": "Sanctuary"
+      },
+      "fields": {
+        "amount": "count",
+        "label": "title",
+        "max_inclusive": 500,
+        "min_inclusive": 1
+      },
+      "id": "wildlife:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/wildlife-surveys using db.survey.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional sanctuaryId, order by title ascending, include sanctuary.",
+        "Return { surveys: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Survey records linked to Sanctuary in the wildlife service.",
+      "workflow": [
+        "reported",
+        "checked",
+        "released"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "wildlife",
+      "entities": {
+        "child": "Survey",
+        "foreign_key": "sanctuaryId",
+        "foreign_key_mode": "required",
+        "parent": "Sanctuary"
+      },
+      "fields": {
+        "amount": "count",
+        "label": "title",
+        "max_inclusive": 500,
+        "min_inclusive": 1
+      },
+      "id": "wildlife:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/wildlife-surveys; trim required title and validate count as a finite integer.",
+        "Enforce 1 <= count <= 500 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Sanctuary.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Sanctuary with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Survey records linked to Sanctuary in the wildlife service.",
+      "workflow": [
+        "reported",
+        "checked",
+        "released"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "wildlife",
+      "entities": {
+        "child": "Survey",
+        "foreign_key": "sanctuaryId",
+        "foreign_key_mode": "required",
+        "parent": "Sanctuary"
+      },
+      "fields": {
+        "amount": "count",
+        "label": "title",
+        "max_inclusive": 500,
+        "min_inclusive": 1
+      },
+      "id": "wildlife:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceSurvey(current, next): boolean for exact transitions reported→checked and checked→released.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Survey records linked to Sanctuary in the wildlife service.",
+      "workflow": [
+        "reported",
+        "checked",
+        "released"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "wildlife",
+      "entities": {
+        "child": "Survey",
+        "foreign_key": "sanctuaryId",
+        "foreign_key_mode": "required",
+        "parent": "Sanctuary"
+      },
+      "fields": {
+        "amount": "count",
+        "label": "title",
+        "max_inclusive": 500,
+        "min_inclusive": 1
+      },
+      "id": "wildlife:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Survey items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, count and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Survey records linked to Sanctuary in the wildlife service.",
+      "workflow": [
+        "reported",
+        "checked",
+        "released"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "wildlife",
+      "entities": {
+        "child": "Survey",
+        "foreign_key": "sanctuaryId",
+        "foreign_key_mode": "required",
+        "parent": "Sanctuary"
+      },
+      "fields": {
+        "amount": "count",
+        "label": "title",
+        "max_inclusive": 500,
+        "min_inclusive": 1
+      },
+      "id": "wildlife:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Survey model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Survey records linked to Sanctuary in the wildlife service.",
+      "workflow": [
+        "reported",
+        "checked",
+        "released"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "foodbank",
+      "entities": {
+        "child": "Parcel",
+        "foreign_key": "pantryId",
+        "foreign_key_mode": "optional",
+        "parent": "Pantry"
+      },
+      "fields": {
+        "amount": "units",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "foodbank:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Pantry and Parcel, with correct one-to-many relation sides.",
+        "The Parcel.pantryId foreign key is optional; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Parcel records linked to Pantry in the foodbank service.",
+      "workflow": [
+        "packed",
+        "routed",
+        "delivered"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "foodbank",
+      "entities": {
+        "child": "Parcel",
+        "foreign_key": "pantryId",
+        "foreign_key_mode": "optional",
+        "parent": "Pantry"
+      },
+      "fields": {
+        "amount": "units",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "foodbank:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/foodbank-parcels using db.parcel.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional pantryId, order by title ascending, include pantry.",
+        "Return { parcels: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Parcel records linked to Pantry in the foodbank service.",
+      "workflow": [
+        "packed",
+        "routed",
+        "delivered"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "foodbank",
+      "entities": {
+        "child": "Parcel",
+        "foreign_key": "pantryId",
+        "foreign_key_mode": "optional",
+        "parent": "Pantry"
+      },
+      "fields": {
+        "amount": "units",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "foodbank:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/foodbank-parcels; trim required title and validate units as a finite integer.",
+        "Enforce 1 <= units <= 300 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Pantry.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Pantry with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Parcel records linked to Pantry in the foodbank service.",
+      "workflow": [
+        "packed",
+        "routed",
+        "delivered"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "foodbank",
+      "entities": {
+        "child": "Parcel",
+        "foreign_key": "pantryId",
+        "foreign_key_mode": "optional",
+        "parent": "Pantry"
+      },
+      "fields": {
+        "amount": "units",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "foodbank:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceParcel(current, next): boolean for exact transitions packed→routed and routed→delivered.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Parcel records linked to Pantry in the foodbank service.",
+      "workflow": [
+        "packed",
+        "routed",
+        "delivered"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "foodbank",
+      "entities": {
+        "child": "Parcel",
+        "foreign_key": "pantryId",
+        "foreign_key_mode": "optional",
+        "parent": "Pantry"
+      },
+      "fields": {
+        "amount": "units",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "foodbank:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Parcel items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, units and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Parcel records linked to Pantry in the foodbank service.",
+      "workflow": [
+        "packed",
+        "routed",
+        "delivered"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "foodbank",
+      "entities": {
+        "child": "Parcel",
+        "foreign_key": "pantryId",
+        "foreign_key_mode": "optional",
+        "parent": "Pantry"
+      },
+      "fields": {
+        "amount": "units",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "foodbank:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Parcel model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Parcel records linked to Pantry in the foodbank service.",
+      "workflow": [
+        "packed",
+        "routed",
+        "delivered"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "landregistry",
+      "entities": {
+        "child": "Inspection",
+        "foreign_key": "parcelZoneId",
+        "foreign_key_mode": "required",
+        "parent": "ParcelZone"
+      },
+      "fields": {
+        "amount": "areaSqm",
+        "label": "title",
+        "max_inclusive": 90000,
+        "min_inclusive": 10
+      },
+      "id": "landregistry:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for ParcelZone and Inspection, with correct one-to-many relation sides.",
+        "The Inspection.parcelZoneId foreign key is required; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Inspection records linked to ParcelZone in the landregistry service.",
+      "workflow": [
+        "opened",
+        "inspected",
+        "closed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "landregistry",
+      "entities": {
+        "child": "Inspection",
+        "foreign_key": "parcelZoneId",
+        "foreign_key_mode": "required",
+        "parent": "ParcelZone"
+      },
+      "fields": {
+        "amount": "areaSqm",
+        "label": "title",
+        "max_inclusive": 90000,
+        "min_inclusive": 10
+      },
+      "id": "landregistry:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/landregistry-inspections using db.inspection.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional parcelZoneId, order by title ascending, include parcelZone.",
+        "Return { inspections: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Inspection records linked to ParcelZone in the landregistry service.",
+      "workflow": [
+        "opened",
+        "inspected",
+        "closed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "landregistry",
+      "entities": {
+        "child": "Inspection",
+        "foreign_key": "parcelZoneId",
+        "foreign_key_mode": "required",
+        "parent": "ParcelZone"
+      },
+      "fields": {
+        "amount": "areaSqm",
+        "label": "title",
+        "max_inclusive": 90000,
+        "min_inclusive": 10
+      },
+      "id": "landregistry:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/landregistry-inspections; trim required title and validate areaSqm as a finite integer.",
+        "Enforce 10 <= areaSqm <= 90000 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check ParcelZone.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one ParcelZone with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Inspection records linked to ParcelZone in the landregistry service.",
+      "workflow": [
+        "opened",
+        "inspected",
+        "closed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "landregistry",
+      "entities": {
+        "child": "Inspection",
+        "foreign_key": "parcelZoneId",
+        "foreign_key_mode": "required",
+        "parent": "ParcelZone"
+      },
+      "fields": {
+        "amount": "areaSqm",
+        "label": "title",
+        "max_inclusive": 90000,
+        "min_inclusive": 10
+      },
+      "id": "landregistry:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceInspection(current, next): boolean for exact transitions opened→inspected and inspected→closed.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Inspection records linked to ParcelZone in the landregistry service.",
+      "workflow": [
+        "opened",
+        "inspected",
+        "closed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "landregistry",
+      "entities": {
+        "child": "Inspection",
+        "foreign_key": "parcelZoneId",
+        "foreign_key_mode": "required",
+        "parent": "ParcelZone"
+      },
+      "fields": {
+        "amount": "areaSqm",
+        "label": "title",
+        "max_inclusive": 90000,
+        "min_inclusive": 10
+      },
+      "id": "landregistry:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Inspection items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, areaSqm and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Inspection records linked to ParcelZone in the landregistry service.",
+      "workflow": [
+        "opened",
+        "inspected",
+        "closed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "landregistry",
+      "entities": {
+        "child": "Inspection",
+        "foreign_key": "parcelZoneId",
+        "foreign_key_mode": "required",
+        "parent": "ParcelZone"
+      },
+      "fields": {
+        "amount": "areaSqm",
+        "label": "title",
+        "max_inclusive": 90000,
+        "min_inclusive": 10
+      },
+      "id": "landregistry:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Inspection model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Inspection records linked to ParcelZone in the landregistry service.",
+      "workflow": [
+        "opened",
+        "inspected",
+        "closed"
+      ]
+    }
+  ]
+}

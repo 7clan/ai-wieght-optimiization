@@ -1,0 +1,26 @@
+{
+  "docker_reproduced": false,
+  "errors": [],
+  "executions_performed_by_this_audit": 0,
+  "interpretation": "Consistent archives are not independent proof of execution, container isolation or generalization",
+  "kind_counts": {
+    "invariant": 3,
+    "prisma-model": 19
+  },
+  "metadata_consistent": true,
+  "normalized_structures": 12,
+  "queue_candidates": 22,
+  "reported_behavior_passes": 22,
+  "reported_isolation": "unshare-user-network-namespaces",
+  "source": "Session 038A archived evidence (metadata only)",
+  "task_family_counts": {
+    "invariant-capacity": 1,
+    "invariant-duplicate-detection": 1,
+    "invariant-numeric-boundary": 1,
+    "relations-child-optional-fk": 1,
+    "relations-child-required-fk": 7,
+    "relations-parent-1tm": 10,
+    "relations-self": 1
+  },
+  "training_eligible": 0
+}

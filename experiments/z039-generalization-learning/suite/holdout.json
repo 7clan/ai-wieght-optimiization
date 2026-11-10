@@ -1,0 +1,1069 @@
+{
+  "generation_permitted": false,
+  "role": "CONTRACTS_ONLY_NOT_TRAINING_DATA",
+  "sealed_until_final_scoring": true,
+  "session": "039",
+  "split": "holdout",
+  "tasks": [
+    {
+      "contract_version": 1,
+      "domain": "mountainrescue",
+      "entities": {
+        "child": "Dispatch",
+        "foreign_key": "outpostId",
+        "foreign_key_mode": "required",
+        "parent": "Outpost"
+      },
+      "fields": {
+        "amount": "distanceKm",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "mountainrescue:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Outpost and Dispatch, with correct one-to-many relation sides.",
+        "The Dispatch.outpostId foreign key is required; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Dispatch records linked to Outpost in the mountainrescue service.",
+      "workflow": [
+        "received",
+        "mobilized",
+        "resolved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "mountainrescue",
+      "entities": {
+        "child": "Dispatch",
+        "foreign_key": "outpostId",
+        "foreign_key_mode": "required",
+        "parent": "Outpost"
+      },
+      "fields": {
+        "amount": "distanceKm",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "mountainrescue:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/mountainrescue-dispatchs using db.dispatch.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional outpostId, order by title ascending, include outpost.",
+        "Return { dispatchs: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Dispatch records linked to Outpost in the mountainrescue service.",
+      "workflow": [
+        "received",
+        "mobilized",
+        "resolved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "mountainrescue",
+      "entities": {
+        "child": "Dispatch",
+        "foreign_key": "outpostId",
+        "foreign_key_mode": "required",
+        "parent": "Outpost"
+      },
+      "fields": {
+        "amount": "distanceKm",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "mountainrescue:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/mountainrescue-dispatchs; trim required title and validate distanceKm as a finite integer.",
+        "Enforce 1 <= distanceKm <= 300 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Outpost.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Outpost with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Dispatch records linked to Outpost in the mountainrescue service.",
+      "workflow": [
+        "received",
+        "mobilized",
+        "resolved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "mountainrescue",
+      "entities": {
+        "child": "Dispatch",
+        "foreign_key": "outpostId",
+        "foreign_key_mode": "required",
+        "parent": "Outpost"
+      },
+      "fields": {
+        "amount": "distanceKm",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "mountainrescue:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceDispatch(current, next): boolean for exact transitions received→mobilized and mobilized→resolved.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Dispatch records linked to Outpost in the mountainrescue service.",
+      "workflow": [
+        "received",
+        "mobilized",
+        "resolved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "mountainrescue",
+      "entities": {
+        "child": "Dispatch",
+        "foreign_key": "outpostId",
+        "foreign_key_mode": "required",
+        "parent": "Outpost"
+      },
+      "fields": {
+        "amount": "distanceKm",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "mountainrescue:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Dispatch items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, distanceKm and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Dispatch records linked to Outpost in the mountainrescue service.",
+      "workflow": [
+        "received",
+        "mobilized",
+        "resolved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "mountainrescue",
+      "entities": {
+        "child": "Dispatch",
+        "foreign_key": "outpostId",
+        "foreign_key_mode": "required",
+        "parent": "Outpost"
+      },
+      "fields": {
+        "amount": "distanceKm",
+        "label": "title",
+        "max_inclusive": 300,
+        "min_inclusive": 1
+      },
+      "id": "mountainrescue:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Dispatch model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Dispatch records linked to Outpost in the mountainrescue service.",
+      "workflow": [
+        "received",
+        "mobilized",
+        "resolved"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "textilemill",
+      "entities": {
+        "child": "ProductionRun",
+        "foreign_key": "loomId",
+        "foreign_key_mode": "optional",
+        "parent": "Loom"
+      },
+      "fields": {
+        "amount": "meters",
+        "label": "title",
+        "max_inclusive": 10000,
+        "min_inclusive": 1
+      },
+      "id": "textilemill:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Loom and ProductionRun, with correct one-to-many relation sides.",
+        "The ProductionRun.loomId foreign key is optional; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ProductionRun records linked to Loom in the textilemill service.",
+      "workflow": [
+        "scheduled",
+        "spun",
+        "packed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "textilemill",
+      "entities": {
+        "child": "ProductionRun",
+        "foreign_key": "loomId",
+        "foreign_key_mode": "optional",
+        "parent": "Loom"
+      },
+      "fields": {
+        "amount": "meters",
+        "label": "title",
+        "max_inclusive": 10000,
+        "min_inclusive": 1
+      },
+      "id": "textilemill:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/textilemill-productionRuns using db.productionRun.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional loomId, order by title ascending, include loom.",
+        "Return { productionRuns: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ProductionRun records linked to Loom in the textilemill service.",
+      "workflow": [
+        "scheduled",
+        "spun",
+        "packed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "textilemill",
+      "entities": {
+        "child": "ProductionRun",
+        "foreign_key": "loomId",
+        "foreign_key_mode": "optional",
+        "parent": "Loom"
+      },
+      "fields": {
+        "amount": "meters",
+        "label": "title",
+        "max_inclusive": 10000,
+        "min_inclusive": 1
+      },
+      "id": "textilemill:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/textilemill-productionRuns; trim required title and validate meters as a finite integer.",
+        "Enforce 1 <= meters <= 10000 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Loom.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Loom with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ProductionRun records linked to Loom in the textilemill service.",
+      "workflow": [
+        "scheduled",
+        "spun",
+        "packed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "textilemill",
+      "entities": {
+        "child": "ProductionRun",
+        "foreign_key": "loomId",
+        "foreign_key_mode": "optional",
+        "parent": "Loom"
+      },
+      "fields": {
+        "amount": "meters",
+        "label": "title",
+        "max_inclusive": 10000,
+        "min_inclusive": 1
+      },
+      "id": "textilemill:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceProductionRun(current, next): boolean for exact transitions scheduled→spun and spun→packed.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ProductionRun records linked to Loom in the textilemill service.",
+      "workflow": [
+        "scheduled",
+        "spun",
+        "packed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "textilemill",
+      "entities": {
+        "child": "ProductionRun",
+        "foreign_key": "loomId",
+        "foreign_key_mode": "optional",
+        "parent": "Loom"
+      },
+      "fields": {
+        "amount": "meters",
+        "label": "title",
+        "max_inclusive": 10000,
+        "min_inclusive": 1
+      },
+      "id": "textilemill:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing ProductionRun items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, meters and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ProductionRun records linked to Loom in the textilemill service.",
+      "workflow": [
+        "scheduled",
+        "spun",
+        "packed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "textilemill",
+      "entities": {
+        "child": "ProductionRun",
+        "foreign_key": "loomId",
+        "foreign_key_mode": "optional",
+        "parent": "Loom"
+      },
+      "fields": {
+        "amount": "meters",
+        "label": "title",
+        "max_inclusive": 10000,
+        "min_inclusive": 1
+      },
+      "id": "textilemill:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted ProductionRun model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage ProductionRun records linked to Loom in the textilemill service.",
+      "workflow": [
+        "scheduled",
+        "spun",
+        "packed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "trafficops",
+      "entities": {
+        "child": "SignalAudit",
+        "foreign_key": "junctionId",
+        "foreign_key_mode": "required",
+        "parent": "Junction"
+      },
+      "fields": {
+        "amount": "delayMs",
+        "label": "title",
+        "max_inclusive": 60000,
+        "min_inclusive": 1
+      },
+      "id": "trafficops:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Junction and SignalAudit, with correct one-to-many relation sides.",
+        "The SignalAudit.junctionId foreign key is required; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage SignalAudit records linked to Junction in the trafficops service.",
+      "workflow": [
+        "created",
+        "checked",
+        "deployed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "trafficops",
+      "entities": {
+        "child": "SignalAudit",
+        "foreign_key": "junctionId",
+        "foreign_key_mode": "required",
+        "parent": "Junction"
+      },
+      "fields": {
+        "amount": "delayMs",
+        "label": "title",
+        "max_inclusive": 60000,
+        "min_inclusive": 1
+      },
+      "id": "trafficops:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/trafficops-signalAudits using db.signalAudit.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional junctionId, order by title ascending, include junction.",
+        "Return { signalAudits: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage SignalAudit records linked to Junction in the trafficops service.",
+      "workflow": [
+        "created",
+        "checked",
+        "deployed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "trafficops",
+      "entities": {
+        "child": "SignalAudit",
+        "foreign_key": "junctionId",
+        "foreign_key_mode": "required",
+        "parent": "Junction"
+      },
+      "fields": {
+        "amount": "delayMs",
+        "label": "title",
+        "max_inclusive": 60000,
+        "min_inclusive": 1
+      },
+      "id": "trafficops:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/trafficops-signalAudits; trim required title and validate delayMs as a finite integer.",
+        "Enforce 1 <= delayMs <= 60000 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Junction.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Junction with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage SignalAudit records linked to Junction in the trafficops service.",
+      "workflow": [
+        "created",
+        "checked",
+        "deployed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "trafficops",
+      "entities": {
+        "child": "SignalAudit",
+        "foreign_key": "junctionId",
+        "foreign_key_mode": "required",
+        "parent": "Junction"
+      },
+      "fields": {
+        "amount": "delayMs",
+        "label": "title",
+        "max_inclusive": 60000,
+        "min_inclusive": 1
+      },
+      "id": "trafficops:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceSignalAudit(current, next): boolean for exact transitions created→checked and checked→deployed.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage SignalAudit records linked to Junction in the trafficops service.",
+      "workflow": [
+        "created",
+        "checked",
+        "deployed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "trafficops",
+      "entities": {
+        "child": "SignalAudit",
+        "foreign_key": "junctionId",
+        "foreign_key_mode": "required",
+        "parent": "Junction"
+      },
+      "fields": {
+        "amount": "delayMs",
+        "label": "title",
+        "max_inclusive": 60000,
+        "min_inclusive": 1
+      },
+      "id": "trafficops:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing SignalAudit items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, delayMs and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage SignalAudit records linked to Junction in the trafficops service.",
+      "workflow": [
+        "created",
+        "checked",
+        "deployed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "trafficops",
+      "entities": {
+        "child": "SignalAudit",
+        "foreign_key": "junctionId",
+        "foreign_key_mode": "required",
+        "parent": "Junction"
+      },
+      "fields": {
+        "amount": "delayMs",
+        "label": "title",
+        "max_inclusive": 60000,
+        "min_inclusive": 1
+      },
+      "id": "trafficops:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted SignalAudit model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage SignalAudit records linked to Junction in the trafficops service.",
+      "workflow": [
+        "created",
+        "checked",
+        "deployed"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "heritagemuseum",
+      "entities": {
+        "child": "Conservation",
+        "foreign_key": "vaultId",
+        "foreign_key_mode": "optional",
+        "parent": "Vault"
+      },
+      "fields": {
+        "amount": "hours",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 1
+      },
+      "id": "heritagemuseum:schema-relationship",
+      "negative_cases_required": [
+        "bogus-fk",
+        "nullable-fk-boundary",
+        "delete-parent-semantics"
+      ],
+      "positive_cases_required": [
+        "valid-parent",
+        "valid-child",
+        "relation-traversal"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Write the Prisma models for Vault and Conservation, with correct one-to-many relation sides.",
+        "The Conservation.vaultId foreign key is optional; its relation field must have matching nullability.",
+        "Use String @id @default(cuid()) primary keys and an Int measurement field.",
+        "Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required."
+      ],
+      "skill": "schema-relationship",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Conservation records linked to Vault in the heritagemuseum service.",
+      "workflow": [
+        "logged",
+        "treated",
+        "exhibited"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "heritagemuseum",
+      "entities": {
+        "child": "Conservation",
+        "foreign_key": "vaultId",
+        "foreign_key_mode": "optional",
+        "parent": "Vault"
+      },
+      "fields": {
+        "amount": "hours",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 1
+      },
+      "id": "heritagemuseum:api-get-filter",
+      "negative_cases_required": [
+        "missing-query",
+        "unknown-parent-filter",
+        "no-accidental-cross-domain-data"
+      ],
+      "positive_cases_required": [
+        "list-all",
+        "filter-multiple",
+        "filter-one",
+        "no-matches"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement Next.js GET /api/heritagemuseum-conservations using db.conservation.findMany.",
+        "Use searchParams 'q' as a case-insensitive title substring filter only when supplied.",
+        "Filter by optional vaultId, order by title ascending, include vault.",
+        "Return { conservations: [...], total: number } with status 200; empty results return [] and 0."
+      ],
+      "skill": "api-get-filter",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Conservation records linked to Vault in the heritagemuseum service.",
+      "workflow": [
+        "logged",
+        "treated",
+        "exhibited"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "heritagemuseum",
+      "entities": {
+        "child": "Conservation",
+        "foreign_key": "vaultId",
+        "foreign_key_mode": "optional",
+        "parent": "Vault"
+      },
+      "fields": {
+        "amount": "hours",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 1
+      },
+      "id": "heritagemuseum:api-post-validation",
+      "negative_cases_required": [
+        "empty-title",
+        "not-a-number",
+        "non-integer",
+        "below-min",
+        "above-max",
+        "unknown-parent",
+        "duplicate-title",
+        "no-write-on-error"
+      ],
+      "positive_cases_required": [
+        "min-boundary",
+        "max-boundary",
+        "persists-valid-create"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement POST /api/heritagemuseum-conservations; trim required title and validate hours as a finite integer.",
+        "Enforce 1 <= hours <= 2000 with HTTP 400 on missing/invalid/out-of-range values.",
+        "Check Vault.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.",
+        "Reject duplicate title within one Vault with HTTP 409. Create only after every check and return 201."
+      ],
+      "skill": "api-post-validation",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Conservation records linked to Vault in the heritagemuseum service.",
+      "workflow": [
+        "logged",
+        "treated",
+        "exhibited"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "heritagemuseum",
+      "entities": {
+        "child": "Conservation",
+        "foreign_key": "vaultId",
+        "foreign_key_mode": "optional",
+        "parent": "Vault"
+      },
+      "fields": {
+        "amount": "hours",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 1
+      },
+      "id": "heritagemuseum:state-invariant",
+      "negative_cases_required": [
+        "same-state",
+        "skip-state",
+        "reverse-state",
+        "unknown-state",
+        "demo-vocabulary-copy"
+      ],
+      "positive_cases_required": [
+        "first-transition",
+        "second-transition"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Implement canAdvanceConservation(current, next): boolean for exact transitions logged→treated and treated→exhibited.",
+        "Every other transition is false, including unknown states, skips, reversals and unchanged states.",
+        "Use these exact domain-specific words; do not copy stage names from any illustrative demo."
+      ],
+      "skill": "state-invariant",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Conservation records linked to Vault in the heritagemuseum service.",
+      "workflow": [
+        "logged",
+        "treated",
+        "exhibited"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "heritagemuseum",
+      "entities": {
+        "child": "Conservation",
+        "foreign_key": "vaultId",
+        "foreign_key_mode": "optional",
+        "parent": "Vault"
+      },
+      "fields": {
+        "amount": "hours",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 1
+      },
+      "id": "heritagemuseum:react-interaction",
+      "negative_cases_required": [
+        "empty-result-state",
+        "missing-label",
+        "overflow",
+        "filter-combination"
+      ],
+      "positive_cases_required": [
+        "all-items",
+        "search",
+        "status-filter",
+        "clear",
+        "mobile-320",
+        "keyboard"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Build a responsive React component listing Conservation items from a provided data prop; no network call required.",
+        "Provide a labeled search field, an accessible status filter and a clear-filters button.",
+        "Render title, hours and current workflow status, with an explicit no-results empty state.",
+        "Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow."
+      ],
+      "skill": "react-interaction",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Conservation records linked to Vault in the heritagemuseum service.",
+      "workflow": [
+        "logged",
+        "treated",
+        "exhibited"
+      ]
+    },
+    {
+      "contract_version": 1,
+      "domain": "heritagemuseum",
+      "entities": {
+        "child": "Conservation",
+        "foreign_key": "vaultId",
+        "foreign_key_mode": "optional",
+        "parent": "Vault"
+      },
+      "fields": {
+        "amount": "hours",
+        "label": "title",
+        "max_inclusive": 2000,
+        "min_inclusive": 1
+      },
+      "id": "heritagemuseum:fullstack-integration",
+      "negative_cases_required": [
+        "post-400",
+        "post-404",
+        "post-409",
+        "no-phantom-create",
+        "refresh-after-error"
+      ],
+      "positive_cases_required": [
+        "create-201",
+        "visible-immediately",
+        "get-persisted",
+        "refresh-survives"
+      ],
+      "provenance": "AUTHOR_SPEC_NOT_QWEN_CODE",
+      "requirements": [
+        "Connect a React create form to the GET/POST route and persisted Conservation model in this domain.",
+        "After HTTP 201, update the visible list and total without a full-page reload.",
+        "Display 400/404/409 validation failures and preserve form data for correction.",
+        "A subsequent GET must return the persisted item; no fake local-only success is accepted."
+      ],
+      "skill": "fullstack-integration",
+      "status": "SPEC_ONLY_NOT_GENERATED",
+      "user_story": "Manage Conservation records linked to Vault in the heritagemuseum service.",
+      "workflow": [
+        "logged",
+        "treated",
+        "exhibited"
+      ]
+    }
+  ]
+}
