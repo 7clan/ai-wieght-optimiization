@@ -1,0 +1,167 @@
+{
+  "agent": "Z.ai",
+  "candidate_code_executed": 0,
+  "captured_utc": "2026-11-10T01:11:39.915123+00:00",
+  "docker_capability_survey": {
+    "checks": [
+      {
+        "cmd": "command -v docker",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v podman",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v nerdctl",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v dockerd",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v containerd",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v runc",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v crun",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v newuidmap",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v newgidmap",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v slirp4netns",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "command -v fuse-overlayfs",
+        "returncode": 127,
+        "stderr": "",
+        "stdout": ""
+      },
+      {
+        "cmd": "ls -la /var/run/docker.sock",
+        "returncode": 2,
+        "stderr": "ls: cannot access '/var/run/docker.sock': No such file or directory",
+        "stdout": ""
+      },
+      {
+        "cmd": "test -e /.dockerenv && echo inside-container",
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "inside-container"
+      },
+      {
+        "cmd": "sudo -n true",
+        "returncode": 1,
+        "stderr": "sudo: a password is required",
+        "stdout": ""
+      },
+      {
+        "cmd": "id",
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "uid=1001(z) gid=1001(z) groups=1001(z)"
+      },
+      {
+        "cmd": "test -w /sys/fs/cgroup && echo cg-writable || echo cg-readonly",
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "cg-readonly"
+      },
+      {
+        "cmd": "unshare -Urn true",
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      }
+    ],
+    "conclusion": "BLOCKED_NO_DOCKER",
+    "docker_binaries_found": {},
+    "rootless_prereqs": "newuidmap/newgidmap/slirp4netns/fuse-overlayfs all absent; sudo requires a password; /sys/fs/cgroup read-only; sandbox is itself an unprivileged Docker container (/.dockerenv present)",
+    "unshare_note": "unshare -Urn works but Session 039 boundary explicitly forbids substituting it for Docker; not used for any candidate execution."
+  },
+  "model_pin": {
+    "local_cache_status": "ABSENT_AFTER_SANDBOX_RESET",
+    "model": "Qwen/Qwen2.5-Coder-0.5B",
+    "note": "HF cache empty post environment reset; must re-download and re-verify before any generation. No generation is permitted in this session (see blocker).",
+    "safetensors_sha256_expected": "aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80"
+  },
+  "model_weight_change": false,
+  "phase": "0-verification-and-environment-survey",
+  "preparation_verification": {
+    "curriculum_v1_check": {
+      "mode": "check",
+      "splits": {
+        "dev": 18,
+        "holdout": 24,
+        "train": 54
+      },
+      "training": false
+    },
+    "curriculum_v2_check": {
+      "counts": {
+        "dev": 18,
+        "holdout": 24,
+        "train": 54
+      },
+      "training": false,
+      "version": 2
+    },
+    "holdout_opened_this_session": false,
+    "holdout_sha256_reference": "9a09d55b7c3eb8b140905fcef44c03b2ed0818b95adbb2f60a1094b0afc93e41",
+    "reconcile_038a": {
+      "docker_reproduced": false,
+      "errors": 0,
+      "metadata_consistent": true,
+      "normalized_structures": 12,
+      "note": "Re-executed on this branch; output identical to archived expectations (22 claims, 12 structures, 7 families, 0 training-approved).",
+      "queue_candidates": 22,
+      "reported_behavior_passes": 22,
+      "reported_isolation": "unshare-user-network-namespaces",
+      "training_eligible": 0
+    },
+    "scenarios_v2_dev_check": "checked; candidate code executed: 0",
+    "scenarios_v2_train_check": "checked; candidate code executed: 0",
+    "unit_tests": {
+      "cmd": "python -m unittest tests.test_finetune_audit tests.test_candidate_queue tests.test_proof_gate tests.test_s039_preparation -v",
+      "result": "35/35 OK"
+    }
+  },
+  "qwen_candidates_generated": 0,
+  "session": "039B",
+  "source_branch": "exp/qwen-generalization-learning-039",
+  "source_commit": "022836449959cd11c3df14d5d587155b41e5bd32",
+  "work_branch": "exp/zai-039-docker-execution"
+}
