@@ -1,0 +1,174 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body.title.trim(),\n      feedGrams,\n      ...(tankId ? { tankId: tankId } : {}),\n      status: \"draft\",\n    },\n  });\n  return Response.json(feedLog, { status: 201 });\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A Next.js POST route handler creates a record. It validates the body first (missing or invalid fields get 400), checks that referenced rows exist (404 when they do not) and rejects duplicates (409); only then does it persist and return 201 with the created record.\n\n// demo (different domain \u2014 a greenhouse app)\n// Note: use the GLOBAL Response.json (no next/server import) and import db\n// from \"@/lib/db\".\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const reading = Number(body.reading);\n  if (!Number.isInteger(reading) || reading < 1 || reading > 500) {\n    return Response.json({ error: \"reading must be 1..500\" }, { status: 400 });\n  }\n  if (body.greenhouseId) {\n    const greenhouse = await db.greenhouse.findUnique({ where: { id: body.greenhouseId } });\n    if (!greenhouse) {\n      return Response.json({ error: \"greenhouse not found\" }, { status: 404 });\n    }\n  }\n  const duplicate = await db.sensor.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const sensor = await db.sensor.create({\n    data: {\n      label: body.label.trim(),\n      reading,\n      ...(body.greenhouseId ? { greenhouseId: body.greenhouseId } : {}),\n      status: \"calibrating\",\n    },\n  });\n  return Response.json(sensor, { status: 201 });\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement POST /api/aquarium-feedLogs; trim required title and validate feedGrams as a finite integer.\n- Enforce 1 <= feedGrams <= 600 with HTTP 400 on missing/invalid/out-of-range values.\n- Check Tank.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.\n- Reject duplicate title within one Tank with HTTP 409. Create only after every check and return 201.\n- Create status as 'draft' unless a valid workflow transition changes it later.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: POST export; 400 for bad/missing fields (feedGrams integer 1..600); 404 for unknown relation; 409 duplicate; 201 created.\n\nWrite the complete construct now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n",
+      "prompt_sha256": "de3c6871051c13ad4c69b9e049a603471ce5b4e3f9968d969d719cd21c42ba69",
+      "raw_generation": "  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body.title.trim(),\n      feedGrams,\n      ...(tankId ? { tankId: tankId } : {}),\n      status: \"draft\",\n    },\n  });\n  return Response.json(feedLog, { status: 201 });\n}\n\nThe first line is already written; continue from it:\n\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title:",
+      "usage": {
+        "seconds": 82.19,
+        "seed": 1707214488,
+        "stochastic": false,
+        "tokens": 650
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body.title.trim(),\n      feedGrams,\n      tankId,\n      status: \"draft\",\n    },\n  });\n  return Response.json(feedLog, { status: 201 });\n}",
+      "near_empty": false,
+      "note": "repair-1",
+      "prompt": "A Next.js POST route handler creates a record. It validates the body first (missing or invalid fields get 400), checks that referenced rows exist (404 when they do not) and rejects duplicates (409); only then does it persist and return 201 with the created record.\n\n// demo (different domain \u2014 a greenhouse app)\n// Note: use the GLOBAL Response.json (no next/server import) and import db\n// from \"@/lib/db\".\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const reading = Number(body.reading);\n  if (!Number.isInteger(reading) || reading < 1 || reading > 500) {\n    return Response.json({ error: \"reading must be 1..500\" }, { status: 400 });\n  }\n  if (body.greenhouseId) {\n    const greenhouse = await db.greenhouse.findUnique({ where: { id: body.greenhouseId } });\n    if (!greenhouse) {\n      return Response.json({ error: \"greenhouse not found\" }, { status: 404 });\n    }\n  }\n  const duplicate = await db.sensor.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const sensor = await db.sensor.create({\n    data: {\n      label: body.label.trim(),\n      reading,\n      ...(body.greenhouseId ? { greenhouseId: body.greenhouseId } : {}),\n      status: \"calibrating\",\n    },\n  });\n  return Response.json(sensor, { status: 201 });\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement POST /api/aquarium-feedLogs; trim required title and validate feedGrams as a finite integer.\n- Enforce 1 <= feedGrams <= 600 with HTTP 400 on missing/invalid/out-of-range values.\n- Check Tank.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.\n- Reject duplicate title within one Tank with HTTP 409. Create only after every check and return 201.\n- Create status as 'draft' unless a valid workflow transition changes it later.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 1):\n\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: POST export; 400 for bad/missing fields (feedGrams integer 1..600); 404 for unknown relation; 409 duplicate; 201 created.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n",
+      "prompt_sha256": "9d01bdb2db9aea6e799ca7d73e1d1739b534ee969f4f2ba52051eae61dcf042b",
+      "raw_generation": "  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body.title.trim(),\n      feedGrams,\n      tankId,\n      status: \"draft\",\n    },\n  });\n  return Response.json(feedLog, { status: 201 });\n}\n\nThe POST route handler now has a new parameter, tankId, which is the ID of the Tank to which the FeedLog belongs. It also has a new parameter, title, which is the title of the FeedLog.\n\nThe POST route handler now has a new parameter, feedGrams, which is the number of grams of feed to be added to the Tank. It also has a new parameter, tankId, which is the ID of the Tank to which the FeedLog belongs.\n\nThe POST route handler now has a new parameter, title, which is the title of the FeedLog.\n\nThe POST route handler now has a new parameter, feedGrams, which is the number of grams of feed to be added to the Tank.\n\nThe POST route handler now has a new parameter, tankId, which is the ID of the Tank to which the FeedLog belongs.\n\nThe POST route handler now has a new parameter, title, which is the title of the FeedLog.\n\nThe POST route handler now has a new parameter, feedGrams, which is the number of grams of feed to be added to the Tank.\n\nThe POST route handler now has a new parameter, tankId, which is the ID of the Tank to which the FeedLog belongs.\n\nThe POST route handler now has a new parameter, title, which is the title of the FeedLog.\n\nThe POST route handler now has a new parameter, feedGrams, which is the number of grams of feed to be added to the Tank.\n\nThe POST route handler now has a new parameter, tankId, which is the ID of the Tank to which the",
+      "usage": {
+        "seconds": 77.11,
+        "seed": 320650041,
+        "stochastic": false,
+        "tokens": 650
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body.title.trim(),\n      feedGrams,\n      ...(tankId ? { tankId: tankId } : {}),\n      status: \"draft\",\n    },\n  });\n  return Response.json(feedLog, { status: 201 });\n}",
+      "near_empty": false,
+      "note": "repair-2",
+      "prompt": "A Next.js POST route handler creates a record. It validates the body first (missing or invalid fields get 400), checks that referenced rows exist (404 when they do not) and rejects duplicates (409); only then does it persist and return 201 with the created record.\n\n// demo (different domain \u2014 a greenhouse app)\n// Note: use the GLOBAL Response.json (no next/server import) and import db\n// from \"@/lib/db\".\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const reading = Number(body.reading);\n  if (!Number.isInteger(reading) || reading < 1 || reading > 500) {\n    return Response.json({ error: \"reading must be 1..500\" }, { status: 400 });\n  }\n  if (body.greenhouseId) {\n    const greenhouse = await db.greenhouse.findUnique({ where: { id: body.greenhouseId } });\n    if (!greenhouse) {\n      return Response.json({ error: \"greenhouse not found\" }, { status: 404 });\n    }\n  }\n  const duplicate = await db.sensor.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const sensor = await db.sensor.create({\n    data: {\n      label: body.label.trim(),\n      reading,\n      ...(body.greenhouseId ? { greenhouseId: body.greenhouseId } : {}),\n      status: \"calibrating\",\n    },\n  });\n  return Response.json(sensor, { status: 201 });\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement POST /api/aquarium-feedLogs; trim required title and validate feedGrams as a finite integer.\n- Enforce 1 <= feedGrams <= 600 with HTTP 400 on missing/invalid/out-of-range values.\n- Check Tank.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.\n- Reject duplicate title within one Tank with HTTP 409. Create only after every check and return 201.\n- Create status as 'draft' unless a valid workflow transition changes it later.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 2):\n- exited-cleanly: process exited with code 1\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: POST export; 400 for bad/missing fields (feedGrams integer 1..600); 404 for unknown relation; 409 duplicate; 201 created.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n",
+      "prompt_sha256": "809e26888044c0b1346725347d25c640b8ae35677b6472d1576007e7c74d5f37",
+      "raw_generation": "  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body.title.trim(),\n      feedGrams,\n      ...(tankId ? { tankId: tankId } : {}),\n      status: \"draft\",\n    },\n  });\n  return Response.json(feedLog, { status: 201 });\n}\n\nThe POST route handler now has the following structure:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body",
+      "usage": {
+        "seconds": 82.22,
+        "seed": 320650042,
+        "stochastic": false,
+        "tokens": 650
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body.title.trim(),\n      feedGrams,\n      ...(tankId ? { tankId: tankId } : {}),\n      status: \"draft\",\n    },\n  });\n  return Response.json(feedLog, { status: 201 });\n}",
+      "near_empty": false,
+      "note": "repair-3",
+      "prompt": "A Next.js POST route handler creates a record. It validates the body first (missing or invalid fields get 400), checks that referenced rows exist (404 when they do not) and rejects duplicates (409); only then does it persist and return 201 with the created record.\n\n// demo (different domain \u2014 a greenhouse app)\n// Note: use the GLOBAL Response.json (no next/server import) and import db\n// from \"@/lib/db\".\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const reading = Number(body.reading);\n  if (!Number.isInteger(reading) || reading < 1 || reading > 500) {\n    return Response.json({ error: \"reading must be 1..500\" }, { status: 400 });\n  }\n  if (body.greenhouseId) {\n    const greenhouse = await db.greenhouse.findUnique({ where: { id: body.greenhouseId } });\n    if (!greenhouse) {\n      return Response.json({ error: \"greenhouse not found\" }, { status: 404 });\n    }\n  }\n  const duplicate = await db.sensor.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const sensor = await db.sensor.create({\n    data: {\n      label: body.label.trim(),\n      reading,\n      ...(body.greenhouseId ? { greenhouseId: body.greenhouseId } : {}),\n      status: \"calibrating\",\n    },\n  });\n  return Response.json(sensor, { status: 201 });\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Implement POST /api/aquarium-feedLogs; trim required title and validate feedGrams as a finite integer.\n- Enforce 1 <= feedGrams <= 600 with HTTP 400 on missing/invalid/out-of-range values.\n- Check Tank.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.\n- Reject duplicate title within one Tank with HTTP 409. Create only after every check and return 201.\n- Create status as 'draft' unless a valid workflow transition changes it later.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 3):\n- exited-cleanly: process exited with code 1\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: POST export; 400 for bad/missing fields (feedGrams integer 1..600); 404 for unknown relation; 409 duplicate; 201 created.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n",
+      "prompt_sha256": "6ab3515211de4d4bfd4d96320187c088e443b4a97d90207a5708bc69bc5faabc",
+      "raw_generation": "  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body.title.trim(),\n      feedGrams,\n      ...(tankId ? { tankId: tankId } : {}),\n      status: \"draft\",\n    },\n  });\n  return Response.json(feedLog, { status: 201 });\n}\n\nThe POST route handler now has the following structure:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body",
+      "usage": {
+        "seconds": 89.47,
+        "seed": 320650043,
+        "stochastic": false,
+        "tokens": 650
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const feedGrams = Number(body.feedGrams);\n  if (!Number.isInteger(feedGrams) || feedGrams < 1 || feedGrams > 600) {\n    return Response.json({ error: \"feedGrams must be 1..600\" }, { status: 400 });\n  }\n  const tankId = body.tankId;\n  if (!tankId) {\n    return Response.json({ error: \"tankId is required\" }, { status: 400 });\n  }\n  const tank = await db.tank.findUnique({ where: { id: tankId } });\n  if (!tank) {\n    return Response.json({ error: \"tank not found\" }, { status: 404 });\n  }\n  const duplicate = await db.feedLog.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const feedLog = await db.feedLog.create({\n    data: {\n      title: body.title.trim(),\n      feedGrams,\n      ...(tankId ? { tankId: tankId } : {}),\n      status: \"draft\",\n    },\n  });\n  return Response.json(feedLog, { status: 201 });\n}",
+  "candidate_final_sha256": "1915df1b14ecdcfc128fd4b84b20b38cbadfb6e6e0ac4a9d5550aeb5288a32d2",
+  "decoding": "greedy",
+  "domain": "aquarium",
+  "repair_verdicts": [
+    {
+      "candidate_sha256": "294afb11a76ced7df58e6632f5578802c9a1f0cb65ceb3f5453610028cf98b63",
+      "repair": 1,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 10,
+        "checks": [
+          {
+            "detail": "process exited with code 1",
+            "name": "exited-cleanly",
+            "passed": false
+          }
+        ],
+        "exit_code": 1,
+        "model_weight_change": false,
+        "passed": false,
+        "route_path": "/api/aquarium-feed",
+        "split": "train",
+        "status": "EXECUTION_FAILED",
+        "suite_version": 2,
+        "task_id": "aquarium:api-post-validation",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "1915df1b14ecdcfc128fd4b84b20b38cbadfb6e6e0ac4a9d5550aeb5288a32d2",
+      "repair": 2,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 10,
+        "checks": [
+          {
+            "detail": "process exited with code 1",
+            "name": "exited-cleanly",
+            "passed": false
+          }
+        ],
+        "exit_code": 1,
+        "model_weight_change": false,
+        "passed": false,
+        "route_path": "/api/aquarium-feed",
+        "split": "train",
+        "status": "EXECUTION_FAILED",
+        "suite_version": 2,
+        "task_id": "aquarium:api-post-validation",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "1915df1b14ecdcfc128fd4b84b20b38cbadfb6e6e0ac4a9d5550aeb5288a32d2",
+      "repair": 3,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 10,
+        "checks": [
+          {
+            "detail": "process exited with code 1",
+            "name": "exited-cleanly",
+            "passed": false
+          }
+        ],
+        "exit_code": 1,
+        "model_weight_change": false,
+        "passed": false,
+        "route_path": "/api/aquarium-feed",
+        "split": "train",
+        "status": "EXECUTION_FAILED",
+        "suite_version": 2,
+        "task_id": "aquarium:api-post-validation",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    }
+  ],
+  "repairs_used": 3,
+  "reuses": {
+    "attempt1_prompt_sha256": "de3c6871051c13ad4c69b9e049a603471ce5b4e3f9968d969d719cd21c42ba69",
+    "task_id": "aquarium:api-post-validation",
+    "track": "B"
+  },
+  "skill": "api-post-validation",
+  "split": "train",
+  "task_id": "aquarium:api-post-validation",
+  "track": "C",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 10,
+    "checks": [
+      {
+        "detail": "process exited with code 1",
+        "name": "exited-cleanly",
+        "passed": false
+      }
+    ],
+    "exit_code": 1,
+    "model_weight_change": false,
+    "passed": false,
+    "route_path": "/api/aquarium-feed",
+    "split": "train",
+    "status": "EXECUTION_FAILED",
+    "suite_version": 2,
+    "task_id": "aquarium:api-post-validation",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 254.9
+}

@@ -1,0 +1,68 @@
+model GearItem {
+  id      String   @id @default(cuid())
+  lockerId String?
+  usageHours Int
+  status  String  @default("stashed")
+  locker   GearLocker? @relation(fields: [lockerId], references: [id], onDelete: SetNull)
+
+  @@map("gear_items")
+}
+
+The second line is already written; continue from it:
+model GearLocker {
+  id      String   @id @default(cuid())
+  name    String?
+  usageHours Int
+  status  String  @default("calibrating")
+  items   GearItem[]
+
+  @@map("gear_lockers")
+}
+
+The third line is already written; continue from it:
+model Sensor {
+  id           String     @id @default(cuid())
+  label        String
+  reading      Int
+  greenhouseId String?
+  status       String     @default("calibrating")
+  greenhouse   GearLocker? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)
+
+  @@map("sensors")
+}
+
+The fourth line is already written; continue from it:
+model Greenhouse {
+  id      String   @id @default(cuid())
+  sensors Sensor[]
+
+  @@map("greenhouses")
+}
+
+The fifth line is already written; continue from it:
+model UsageHours {
+  id      String   @id @default(cuid())
+  hours   Int
+
+  @@map("usage_hours")
+}
+
+The sixth line is already written; continue from it:
+model UsageHours {
+  id      String   @id @default(cuid())
+  hours   Int
+
+  @@map("usage_hours")
+}
+
+The seventh line is already written; continue from it:
+model UsageHours {
+  id      String   @id @default(cuid())
+  hours   Int
+
+  @@map("usage_hours")
+}
+
+The eighth line is already written; continue from it:
+model UsageHours {
+  id      String   @id @default

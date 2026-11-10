@@ -1,0 +1,71 @@
+{
+  "attempts": [
+    {
+      "anchor": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n",
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const usageHours = Number(body.usageHours);\n  if (!Number.isInteger(usageHours) || usageHours < 0 || usageHours > 2000) {\n    return Response.json({ error: \"usageHours must be 0..2000\" }, { status: 400 });\n  }\n  const locker = await db.gearLocker.findUnique({ where: { id: body.lockerId } });\n  if (!locker) {\n    return Response.json({ error: \"locker not found\" }, { status: 404 });\n  }\n  const duplicate = await db.gearItem.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const item = await db.gearItem.create({\n    data: {\n      label: body.label.trim(),\n      usageHours,\n      lockerId: body.lockerId,\n      status: \"stashed\",\n    },\n  });\n  return Response.json(item, { status: 201 });\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A Next.js POST route handler creates a record. It validates the body first (missing or invalid fields get 400), checks that referenced rows exist (404 when they do not) and rejects duplicates (409); only then does it persist and return 201 with the created record.\n\n// demo (different domain \u2014 a greenhouse app)\n// Note: use the GLOBAL Response.json (no next/server import) and import db\n// from \"@/lib/db\".\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const reading = Number(body.reading);\n  if (!Number.isInteger(reading) || reading < 1 || reading > 500) {\n    return Response.json({ error: \"reading must be 1..500\" }, { status: 400 });\n  }\n  if (body.greenhouseId) {\n    const greenhouse = await db.greenhouse.findUnique({ where: { id: body.greenhouseId } });\n    if (!greenhouse) {\n      return Response.json({ error: \"greenhouse not found\" }, { status: 404 });\n    }\n  }\n  const duplicate = await db.sensor.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const sensor = await db.sensor.create({\n    data: {\n      label: body.label.trim(),\n      reading,\n      ...(body.greenhouseId ? { greenhouseId: body.greenhouseId } : {}),\n      status: \"calibrating\",\n    },\n  });\n  return Response.json(sensor, { status: 201 });\n}\n\nNow YOUR task (a different domain): Task: Manage GearItem records linked to GearLocker in the GearHut maintenance service.\nRequirements:\n- POST /api/gearhut-items creates a GearItem from a JSON body { label, usageHours, lockerId }.\n- 400 with { error } when label is missing, not a string, or blank after trim.\n- 400 with { error } when usageHours is not an integer between 0 and 2000.\n- 404 with { error } when lockerId does not reference an existing GearLocker.\n- 409 with { error } when a GearItem with the same label already exists.\n- On success persist with status \"stashed\" and return 201 with the created record as JSON.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: POST export; 400 for bad/missing fields (usageHours integer 0..2000); 404 for unknown relation; 409 duplicate; 201 created.\n\nWrite the complete construct now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n",
+      "prompt_sha256": "1b9cec5ae2c214f7bdbe3d71ae665c8416faba0bfc09d943bf0b0af35c8cb070",
+      "raw_generation": "  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const usageHours = Number(body.usageHours);\n  if (!Number.isInteger(usageHours) || usageHours < 0 || usageHours > 2000) {\n    return Response.json({ error: \"usageHours must be 0..2000\" }, { status: 400 });\n  }\n  const locker = await db.gearLocker.findUnique({ where: { id: body.lockerId } });\n  if (!locker) {\n    return Response.json({ error: \"locker not found\" }, { status: 404 });\n  }\n  const duplicate = await db.gearItem.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const item = await db.gearItem.create({\n    data: {\n      label: body.label.trim(),\n      usageHours,\n      lockerId: body.lockerId,\n      status: \"stashed\",\n    },\n  });\n  return Response.json(item, { status: 201 });\n}\n\nThe first line is already written; continue from it:\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const usageHours = Number(body.usageHours);\n  if (!Number.isInteger(usageHours) || usageHours < 0 || usageHours > 2000) {\n    return Response.json({ error: \"usageHours must be 0..2000\" }, { status: 400 });\n  }\n  const locker = await db.gearLocker.findUnique({ where: { id: body.lockerId } });\n  if (!locker) {\n    return Response.json({ error: \"locker not found\" }, { status: 404 });\n  }\n  const duplicate = await db.gearItem.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const item = await db.gearItem.create({\n    data: {\n      label: body.label.trim(),\n      usageHours,\n      lockerId: body.lockerId,\n      status: \"stashed\",\n    },\n  });\n  return Response.json(item, { status: 201 });\n}\n\nThe first line is already written; continue from it:\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\")",
+      "usage": {
+        "seconds": 84.29,
+        "seed": 1159606602,
+        "stochastic": false,
+        "tokens": 650
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const usageHours = Number(body.usageHours);\n  if (!Number.isInteger(usageHours) || usageHours < 0 || usageHours > 2000) {\n    return Response.json({ error: \"usageHours must be 0..2000\" }, { status: 400 });\n  }\n  const locker = await db.gearLocker.findUnique({ where: { id: body.lockerId } });\n  if (!locker) {\n    return Response.json({ error: \"locker not found\" }, { status: 404 });\n  }\n  const duplicate = await db.gearItem.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const item = await db.gearItem.create({\n    data: {\n      label: body.label.trim(),\n      usageHours,\n      lockerId: body.lockerId,\n      status: \"stashed\",\n    },\n  });\n  return Response.json(item, { status: 201 });\n}",
+  "candidate_final_sha256": "c304d7567e482e06c223121863bd0738a5e0c4278552474275ed4ca9da73ceb0",
+  "decoding": "greedy",
+  "domain": "gearhut",
+  "gate_verdicts": [
+    {
+      "attempt": "initial",
+      "candidate_sha256": "c304d7567e482e06c223121863bd0738a5e0c4278552474275ed4ca9da73ceb0",
+      "verdict": {
+        "candidate_executed": true,
+        "checks": [
+          {
+            "detail": "",
+            "name": "candidate-parses",
+            "passed": true
+          }
+        ],
+        "gate": "parse",
+        "model_weight_change": false,
+        "passed": true,
+        "reported_checks": 1,
+        "status": "BEHAVIOR_PASS",
+        "task_id": "gearhut:api-post-validation",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    }
+  ],
+  "repairs_used": 0,
+  "skill": "api-post-validation",
+  "spec_sha256": "b6c249710d91e454c9da13e75dc5b6f8835087a8fd682b87fbac597a84ad6521",
+  "split": "app",
+  "task_id": "gearhut:api-post-validation",
+  "verdict": {
+    "candidate_executed": true,
+    "checks": [
+      {
+        "detail": "",
+        "name": "candidate-parses",
+        "passed": true
+      }
+    ],
+    "gate": "parse",
+    "model_weight_change": false,
+    "passed": true,
+    "reported_checks": 1,
+    "status": "BEHAVIOR_PASS",
+    "task_id": "gearhut:api-post-validation",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 84.4
+}

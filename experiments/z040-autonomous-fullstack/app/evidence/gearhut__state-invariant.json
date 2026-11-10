@@ -1,0 +1,216 @@
+{
+  "attempts": [
+    {
+      "anchor": "export function canAdvanceGearItem(record, parent) {\n",
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceGearItem(record, parent) {\n  if (record.status === \"stashed\") {\n    return true;\n  }\n  if (record.status === \"inspected\") {\n    return record.usageHours >= 1 && record.usageHours <= 2000;\n  }\n  if (record.status === \"retired\") {\n    return false;\n  }\n  return false;\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A state invariant is a pure predicate canAdvanceGearItem(record, parent) that returns true exactly when the workflow allows the child record to advance to its next status. It reads the current status and the related parent, and it must never mutate anything.\n\n// demo (different domain \u2014 a greenhouse app)\n// Pure predicate: true exactly when the sensor may advance one status.\nexport function canAdvanceSensor(record, greenhouse) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nNow YOUR task (a different domain): Task: Manage GearItem records linked to GearLocker in the GearHut maintenance service.\nRequirements:\n- Export a pure predicate canAdvanceGearItem(record, locker) returning a boolean; it must never mutate its arguments.\n- When record.status is \"stashed\": return true exactly when locker is not null.\n- When record.status is \"inspected\": return true exactly when record.usageHours is between 1 and 2000 inclusive.\n- When record.status is \"retired\" or any unrecognized status: return false.\n- No filesystem, network or database access.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: export function canAdvanceGearItem; pure boolean return; handles statuses ['stashed', 'inspected', 'retired']; returns false for unknown/terminal cases.\n\nWrite the complete construct now. The first line is already written; continue from it:\nexport function canAdvanceGearItem(record, parent) {\n",
+      "prompt_sha256": "4921ecac3f31bc78746bf4c1b5ea8701e65e6fa244f63b9df50fb0e04091166a",
+      "raw_generation": "  if (record.status === \"stashed\") {\n    return true;\n  }\n  if (record.status === \"inspected\") {\n    return record.usageHours >= 1 && record.usageHours <= 2000;\n  }\n  if (record.status === \"retired\") {\n    return false;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceGearItem(record, parent) {\n  if (record.status === \"stashed\") {\n    return true;\n  }\n  if (record.status === \"inspected\") {\n    return record.usageHours >= 1 && record.usageHours <= 2000;\n  }\n  if (record.status === \"retired\") {\n    return false;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceGearItem(record, parent) {\n  if (record.status === \"stashed\") {\n    return true;\n  }\n  if (record.status === \"inspected\") {\n    return record.usageHours >= 1 && record.usageHours <= 2000;\n  }\n  if (record.status === \"retired\") {\n    return false;\n",
+      "usage": {
+        "seconds": 34.08,
+        "seed": 1895036433,
+        "stochastic": false,
+        "tokens": 250
+      }
+    },
+    {
+      "anchor": "export function canAdvanceGearItem(record, parent) {\n",
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceGearItem(record, parent) {\n  if (record.status === \"stashed\") {\n    return parent !== null;\n  }\n  if (record.status === \"inspected\") {\n    return record.usageHours >= 1 && record.usageHours <= 2000;\n  }\n  if (record.status === \"retired\") {\n    return false;\n  }\n  return false;\n}",
+      "near_empty": false,
+      "note": "repair-1",
+      "prompt": "A state invariant is a pure predicate canAdvanceGearItem(record, parent) that returns true exactly when the workflow allows the child record to advance to its next status. It reads the current status and the related parent, and it must never mutate anything.\n\n// demo (different domain \u2014 a greenhouse app)\n// Pure predicate: true exactly when the sensor may advance one status.\nexport function canAdvanceSensor(record, greenhouse) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nNow YOUR task (a different domain): Task: Manage GearItem records linked to GearLocker in the GearHut maintenance service.\nRequirements:\n- Export a pure predicate canAdvanceGearItem(record, locker) returning a boolean; it must never mutate its arguments.\n- When record.status is \"stashed\": return true exactly when locker is not null.\n- When record.status is \"inspected\": return true exactly when record.usageHours is between 1 and 2000 inclusive.\n- When record.status is \"retired\" or any unrecognized status: return false.\n- No filesystem, network or database access.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 1):\n- stashed-null-locker\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: export function canAdvanceGearItem; pure boolean return; handles statuses ['stashed', 'inspected', 'retired']; returns false for unknown/terminal cases.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nexport function canAdvanceGearItem(record, parent) {\n",
+      "prompt_sha256": "18834c5e54a4a78a10591646fa9c7d4f9d29076ddfac2fb6bb6db4b3b4387f55",
+      "raw_generation": "  if (record.status === \"stashed\") {\n    return parent !== null;\n  }\n  if (record.status === \"inspected\") {\n    return record.usageHours >= 1 && record.usageHours <= 2000;\n  }\n  if (record.status === \"retired\") {\n    return false;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceGearItem(record, parent) {\n  if (record.status === \"stashed\") {\n    return parent !== null;\n  }\n  if (record.status === \"inspected\") {\n    return record.usageHours >= 1 && record.usageHours <= 2000;\n  }\n  if (record.status === \"retired\") {\n    return false;\n  }\n  return false;\n}\n\nThe first line is already written; continue from it:\nexport function canAdvanceGearItem(record, parent) {\n  if (record.status === \"stashed\") {\n    return parent !== null;\n  }\n  if (record.status === \"inspected\") {\n    return record.usageHours >= 1 && record.usageHours <= 2000;\n  }\n  if (record.status === \"retired",
+      "usage": {
+        "seconds": 31.51,
+        "seed": 743984919,
+        "stochastic": false,
+        "tokens": 250
+      }
+    }
+  ],
+  "attribution": "QWEN-REPAIRED",
+  "candidate_final": "export function canAdvanceGearItem(record, parent) {\n  if (record.status === \"stashed\") {\n    return parent !== null;\n  }\n  if (record.status === \"inspected\") {\n    return record.usageHours >= 1 && record.usageHours <= 2000;\n  }\n  if (record.status === \"retired\") {\n    return false;\n  }\n  return false;\n}",
+  "candidate_final_sha256": "68bd1905e01631e034e485f67ac714392d2260188c861f11d2fac006ae6c0797",
+  "decoding": "greedy",
+  "domain": "gearhut",
+  "gate_verdicts": [
+    {
+      "attempt": "initial",
+      "candidate_sha256": "89a1c8ad8f557d8b6122a8d1da83eb4a6bb50d1f587fbb53680be2832188b4ac",
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 7,
+        "checks": [
+          {
+            "detail": "",
+            "name": "export-present",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "stashed-with-locker",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "stashed-null-locker",
+            "passed": false
+          },
+          {
+            "detail": "",
+            "name": "inspected-in-range",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "inspected-below-range",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "inspected-above-range",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "retired-terminal",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "unknown-status",
+            "passed": true
+          }
+        ],
+        "gate": "invariant-cases",
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "status": "BEHAVIOR_FAIL",
+        "task_id": "gearhut:state-invariant",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "attempt": "repair-1",
+      "candidate_sha256": "68bd1905e01631e034e485f67ac714392d2260188c861f11d2fac006ae6c0797",
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 7,
+        "checks": [
+          {
+            "detail": "",
+            "name": "export-present",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "stashed-with-locker",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "stashed-null-locker",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "inspected-in-range",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "inspected-below-range",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "inspected-above-range",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "retired-terminal",
+            "passed": true
+          },
+          {
+            "detail": "",
+            "name": "unknown-status",
+            "passed": true
+          }
+        ],
+        "gate": "invariant-cases",
+        "model_weight_change": false,
+        "passed": true,
+        "reported_checks": 8,
+        "status": "BEHAVIOR_PASS",
+        "task_id": "gearhut:state-invariant",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    }
+  ],
+  "repairs_used": 1,
+  "skill": "state-invariant",
+  "spec_sha256": "b6c249710d91e454c9da13e75dc5b6f8835087a8fd682b87fbac597a84ad6521",
+  "split": "app",
+  "task_id": "gearhut:state-invariant",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 7,
+    "checks": [
+      {
+        "detail": "",
+        "name": "export-present",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "stashed-with-locker",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "stashed-null-locker",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "inspected-in-range",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "inspected-below-range",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "inspected-above-range",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "retired-terminal",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "unknown-status",
+        "passed": true
+      }
+    ],
+    "gate": "invariant-cases",
+    "model_weight_change": false,
+    "passed": true,
+    "reported_checks": 8,
+    "status": "BEHAVIOR_PASS",
+    "task_id": "gearhut:state-invariant",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 66.0
+}

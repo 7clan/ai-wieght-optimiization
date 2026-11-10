@@ -1,0 +1,310 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A React list component receives rows through a data prop (no fetch). It renders every row, provides a labeled search input, a labeled status filter select and a clear button, applies the filters together, and shows an explicit empty state when nothing matches.\n\n// demo (different domain \u2014 a greenhouse app)\nimport { useState } from 'react';\n\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Build a responsive React component listing FeedLog items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, feedGrams and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n",
+      "prompt_sha256": "b82028d795dbf9a84cae2a31f5380f97ba3fe8a20e16d553d761ed689ceb7ba3",
+      "raw_generation": "  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\n\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\n\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event)",
+      "usage": {
+        "seconds": 93.0,
+        "seed": 1029222383,
+        "stochastic": false,
+        "tokens": 800
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "repair-1",
+      "prompt": "A React list component receives rows through a data prop (no fetch). It renders every row, provides a labeled search input, a labeled status filter select and a clear button, applies the filters together, and shows an explicit empty state when nothing matches.\n\n// demo (different domain \u2014 a greenhouse app)\nimport { useState } from 'react';\n\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Build a responsive React component listing FeedLog items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, feedGrams and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 1):\n\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n",
+      "prompt_sha256": "fefffac3d3a0f8ce86e81932a6ad2cdbc79c25ab53207bb92cd10f832db43b27",
+      "raw_generation": "  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event)",
+      "usage": {
+        "seconds": 104.58,
+        "seed": 1417083959,
+        "stochastic": false,
+        "tokens": 800
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "repair-2",
+      "prompt": "A React list component receives rows through a data prop (no fetch). It renders every row, provides a labeled search input, a labeled status filter select and a clear button, applies the filters together, and shows an explicit empty state when nothing matches.\n\n// demo (different domain \u2014 a greenhouse app)\nimport { useState } from 'react';\n\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Build a responsive React component listing FeedLog items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, feedGrams and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 2):\n- all-items: count=0\n- search: row.feedGrams.toLowerCase is not a function\n- status-filter: count=0 status=scheduled\n- combined-filter: row.feedGrams.toLowerCase is not a function\n- empty-result-state: row.feedGrams.toLowerCase is not a function\n- clear: row.feedGrams.toLowerCase is not a function\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n",
+      "prompt_sha256": "fe6aca7a6d19ed8ed6a739e0e45d9f57bf7c8b1d5dcb1a3b7666bd04d44b7b09",
+      "raw_generation": "  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event)",
+      "usage": {
+        "seconds": 99.61,
+        "seed": 1417083960,
+        "stochastic": false,
+        "tokens": 800
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "repair-3",
+      "prompt": "A React list component receives rows through a data prop (no fetch). It renders every row, provides a labeled search input, a labeled status filter select and a clear button, applies the filters together, and shows an explicit empty state when nothing matches.\n\n// demo (different domain \u2014 a greenhouse app)\nimport { useState } from 'react';\n\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage FeedLog records linked to Tank in the aquarium service.\nRequirements:\n- Build a responsive React component listing FeedLog items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, feedGrams and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 3):\n- all-items: count=0\n- search: row.feedGrams.toLowerCase is not a function\n- status-filter: count=0 status=scheduled\n- combined-filter: row.feedGrams.toLowerCase is not a function\n- empty-result-state: row.feedGrams.toLowerCase is not a function\n- clear: row.feedGrams.toLowerCase is not a function\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n",
+      "prompt_sha256": "4d0cd6a4210741ac75f40e752a8f37e18f0e3214435bd831dc504afd396d8244",
+      "raw_generation": "  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event)",
+      "usage": {
+        "seconds": 102.97,
+        "seed": 1417083961,
+        "stochastic": false,
+        "tokens": 800
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { useState } from 'react';\n\nexport default function FeedLogList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.feedGrams.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.feedGrams}</strong> \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+  "candidate_final_sha256": "81047a286703377ce8af39a9e09e09d975b396771219adab460d35d325096fa7",
+  "decoding": "greedy",
+  "domain": "aquarium",
+  "repair_verdicts": [
+    {
+      "candidate_sha256": "81047a286703377ce8af39a9e09e09d975b396771219adab460d35d325096fa7",
+      "repair": 1,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 8,
+        "checks": [
+          {
+            "detail": "count=0",
+            "name": "all-items",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "search",
+            "passed": false
+          },
+          {
+            "detail": "count=0 status=scheduled",
+            "name": "status-filter",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "combined-filter",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "empty-result-state",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "clear",
+            "passed": false
+          },
+          {
+            "detail": "ok",
+            "name": "keyboard",
+            "passed": true
+          },
+          {
+            "detail": "ok (static audit; jsdom cannot compute layout)",
+            "name": "mobile-320",
+            "passed": true
+          }
+        ],
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "split": "train",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "aquarium:react-interaction",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "81047a286703377ce8af39a9e09e09d975b396771219adab460d35d325096fa7",
+      "repair": 2,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 8,
+        "checks": [
+          {
+            "detail": "count=0",
+            "name": "all-items",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "search",
+            "passed": false
+          },
+          {
+            "detail": "count=0 status=scheduled",
+            "name": "status-filter",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "combined-filter",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "empty-result-state",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "clear",
+            "passed": false
+          },
+          {
+            "detail": "ok",
+            "name": "keyboard",
+            "passed": true
+          },
+          {
+            "detail": "ok (static audit; jsdom cannot compute layout)",
+            "name": "mobile-320",
+            "passed": true
+          }
+        ],
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "split": "train",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "aquarium:react-interaction",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "81047a286703377ce8af39a9e09e09d975b396771219adab460d35d325096fa7",
+      "repair": 3,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 8,
+        "checks": [
+          {
+            "detail": "count=0",
+            "name": "all-items",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "search",
+            "passed": false
+          },
+          {
+            "detail": "count=0 status=scheduled",
+            "name": "status-filter",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "combined-filter",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "empty-result-state",
+            "passed": false
+          },
+          {
+            "detail": "row.feedGrams.toLowerCase is not a function",
+            "name": "clear",
+            "passed": false
+          },
+          {
+            "detail": "ok",
+            "name": "keyboard",
+            "passed": true
+          },
+          {
+            "detail": "ok (static audit; jsdom cannot compute layout)",
+            "name": "mobile-320",
+            "passed": true
+          }
+        ],
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "split": "train",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "aquarium:react-interaction",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    }
+  ],
+  "repairs_used": 3,
+  "reuses": {
+    "attempt1_prompt_sha256": "b82028d795dbf9a84cae2a31f5380f97ba3fe8a20e16d553d761ed689ceb7ba3",
+    "task_id": "aquarium:react-interaction",
+    "track": "B"
+  },
+  "skill": "react-interaction",
+  "split": "train",
+  "task_id": "aquarium:react-interaction",
+  "track": "C",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "checks": [
+      {
+        "detail": "count=0",
+        "name": "all-items",
+        "passed": false
+      },
+      {
+        "detail": "row.feedGrams.toLowerCase is not a function",
+        "name": "search",
+        "passed": false
+      },
+      {
+        "detail": "count=0 status=scheduled",
+        "name": "status-filter",
+        "passed": false
+      },
+      {
+        "detail": "row.feedGrams.toLowerCase is not a function",
+        "name": "combined-filter",
+        "passed": false
+      },
+      {
+        "detail": "row.feedGrams.toLowerCase is not a function",
+        "name": "empty-result-state",
+        "passed": false
+      },
+      {
+        "detail": "row.feedGrams.toLowerCase is not a function",
+        "name": "clear",
+        "passed": false
+      },
+      {
+        "detail": "ok",
+        "name": "keyboard",
+        "passed": true
+      },
+      {
+        "detail": "ok (static audit; jsdom cannot compute layout)",
+        "name": "mobile-320",
+        "passed": true
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "aquarium:react-interaction",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 309.6
+}

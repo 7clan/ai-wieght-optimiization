@@ -1,0 +1,310 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A React list component receives rows through a data prop (no fetch). It renders every row, provides a labeled search input, a labeled status filter select and a clear button, applies the filters together, and shows an explicit empty state when nothing matches.\n\n// demo (different domain \u2014 a greenhouse app)\nimport { useState } from 'react';\n\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Build a responsive React component listing Broadcast items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, airtimeMin and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n",
+      "prompt_sha256": "4fce00664d6a5c4b81c55cda9e46903c3cfbb36156b13a2f729c0d947d90abc6",
+      "raw_generation": "  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\n\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\n\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target",
+      "usage": {
+        "seconds": 93.9,
+        "seed": 1663232302,
+        "stochastic": false,
+        "tokens": 800
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "repair-1",
+      "prompt": "A React list component receives rows through a data prop (no fetch). It renders every row, provides a labeled search input, a labeled status filter select and a clear button, applies the filters together, and shows an explicit empty state when nothing matches.\n\n// demo (different domain \u2014 a greenhouse app)\nimport { useState } from 'react';\n\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Build a responsive React component listing Broadcast items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, airtimeMin and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 1):\n\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n",
+      "prompt_sha256": "f476fb6b3a6594928f07427e379e887a3decf89b3d886321c9711b9926307216",
+      "raw_generation": "  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target",
+      "usage": {
+        "seconds": 94.67,
+        "seed": 1422416800,
+        "stochastic": false,
+        "tokens": 800
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.airtimeMin} \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "repair-2",
+      "prompt": "A React list component receives rows through a data prop (no fetch). It renders every row, provides a labeled search input, a labeled status filter select and a clear button, applies the filters together, and shows an explicit empty state when nothing matches.\n\n// demo (different domain \u2014 a greenhouse app)\nimport { useState } from 'react';\n\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Build a responsive React component listing Broadcast items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, airtimeMin and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 2):\n- all-items: count=0\n- search: Cannot read properties of undefined (reading 'toLowerCase')\n- status-filter: count=0 status=cleared\n- combined-filter: Cannot read properties of undefined (reading 'toLowerCase')\n- empty-result-state: Cannot read properties of undefined (reading 'toLowerCase')\n- clear: Cannot read properties of undefined (reading 'toLowerCase')\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n",
+      "prompt_sha256": "54e0e10fa735c0e7c671d270a995f33fea2c4030586aefc0b44ba676bc3fad15",
+      "raw_generation": "  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.airtimeMin} \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.airtimeMin} \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(",
+      "usage": {
+        "seconds": 100.15,
+        "seed": 1422416801,
+        "stochastic": false,
+        "tokens": 800
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.airtimeMin} \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "repair-3",
+      "prompt": "A React list component receives rows through a data prop (no fetch). It renders every row, provides a labeled search input, a labeled status filter select and a clear button, applies the filters together, and shows an explicit empty state when nothing matches.\n\n// demo (different domain \u2014 a greenhouse app)\nimport { useState } from 'react';\n\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Build a responsive React component listing Broadcast items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, airtimeMin and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 3):\n- all-items: count=0\n- search: Cannot read properties of undefined (reading 'toLowerCase')\n- status-filter: count=0 status=cleared\n- combined-filter: Cannot read properties of undefined (reading 'toLowerCase')\n- empty-result-state: Cannot read properties of undefined (reading 'toLowerCase')\n- clear: Cannot read properties of undefined (reading 'toLowerCase')\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n",
+      "prompt_sha256": "3faf1c0f1b97d9191722290a488b46dfb1dbbbdb1d7b03e6e811e514dd2c23b2",
+      "raw_generation": "  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.airtimeMin} \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.airtimeMin} \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nThe first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(",
+      "usage": {
+        "seconds": 104.69,
+        "seed": 1422416802,
+        "stochastic": false,
+        "tokens": 800
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search broadcasts</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No broadcasts match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.airtimeMin} \u2014 {row.currentWorkflowStatus}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+  "candidate_final_sha256": "ac46647b2e80bd1e6d79c507dd6cfc38f2e6b4373906fa421ab9393f33ca35f0",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "repair_verdicts": [
+    {
+      "candidate_sha256": "190d0f67d0c5f0ef526ae405bb0498dba14aaff7b74969f315660187622e6826",
+      "repair": 1,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 8,
+        "checks": [
+          {
+            "detail": "count=0",
+            "name": "all-items",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "search",
+            "passed": false
+          },
+          {
+            "detail": "count=0 status=cleared",
+            "name": "status-filter",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "combined-filter",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "empty-result-state",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "clear",
+            "passed": false
+          },
+          {
+            "detail": "ok",
+            "name": "keyboard",
+            "passed": true
+          },
+          {
+            "detail": "ok (static audit; jsdom cannot compute layout)",
+            "name": "mobile-320",
+            "passed": true
+          }
+        ],
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "split": "dev",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "radiostation:react-interaction",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "ac46647b2e80bd1e6d79c507dd6cfc38f2e6b4373906fa421ab9393f33ca35f0",
+      "repair": 2,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 8,
+        "checks": [
+          {
+            "detail": "count=0",
+            "name": "all-items",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "search",
+            "passed": false
+          },
+          {
+            "detail": "count=0 status=cleared",
+            "name": "status-filter",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "combined-filter",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "empty-result-state",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "clear",
+            "passed": false
+          },
+          {
+            "detail": "ok",
+            "name": "keyboard",
+            "passed": true
+          },
+          {
+            "detail": "ok (static audit; jsdom cannot compute layout)",
+            "name": "mobile-320",
+            "passed": true
+          }
+        ],
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "split": "dev",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "radiostation:react-interaction",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "ac46647b2e80bd1e6d79c507dd6cfc38f2e6b4373906fa421ab9393f33ca35f0",
+      "repair": 3,
+      "verdict": {
+        "candidate_executed": true,
+        "case_count": 8,
+        "checks": [
+          {
+            "detail": "count=0",
+            "name": "all-items",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "search",
+            "passed": false
+          },
+          {
+            "detail": "count=0 status=cleared",
+            "name": "status-filter",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "combined-filter",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "empty-result-state",
+            "passed": false
+          },
+          {
+            "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+            "name": "clear",
+            "passed": false
+          },
+          {
+            "detail": "ok",
+            "name": "keyboard",
+            "passed": true
+          },
+          {
+            "detail": "ok (static audit; jsdom cannot compute layout)",
+            "name": "mobile-320",
+            "passed": true
+          }
+        ],
+        "model_weight_change": false,
+        "passed": false,
+        "reported_checks": 8,
+        "split": "dev",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "radiostation:react-interaction",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    }
+  ],
+  "repairs_used": 3,
+  "reuses": {
+    "attempt1_prompt_sha256": "4fce00664d6a5c4b81c55cda9e46903c3cfbb36156b13a2f729c0d947d90abc6",
+    "task_id": "radiostation:react-interaction",
+    "track": "B"
+  },
+  "skill": "react-interaction",
+  "split": "dev",
+  "task_id": "radiostation:react-interaction",
+  "track": "C",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "checks": [
+      {
+        "detail": "count=0",
+        "name": "all-items",
+        "passed": false
+      },
+      {
+        "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+        "name": "search",
+        "passed": false
+      },
+      {
+        "detail": "count=0 status=cleared",
+        "name": "status-filter",
+        "passed": false
+      },
+      {
+        "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+        "name": "combined-filter",
+        "passed": false
+      },
+      {
+        "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+        "name": "empty-result-state",
+        "passed": false
+      },
+      {
+        "detail": "Cannot read properties of undefined (reading 'toLowerCase')",
+        "name": "clear",
+        "passed": false
+      },
+      {
+        "detail": "ok",
+        "name": "keyboard",
+        "passed": true
+      },
+      {
+        "detail": "ok (static audit; jsdom cannot compute layout)",
+        "name": "mobile-320",
+        "passed": true
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:react-interaction",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 301.9
+}

@@ -1,0 +1,180 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "model Exposure {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  measurement  Int\n  status      String @default(\"queued\")\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @default(now())\n\n  @@map(\"exposures\")\n}\n\nmodel Telescope {\n  id      String   @id @default(cuid())\n  name    String\n  measurements Sensor[]\n\n  @@map(\"telescopes\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"calibrating\")\n  greenhouse   Greenhouse? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)\n\n  @@map(\"sensors\")\n}\n\nmodel Greenhouse {\n  id      String   @id @default(cuid())\n  sensors Sensor[]\n\n  @@map(\"greenhouses\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"calibrating\")\n  greenhouse   Greenhouse? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)\n\n  @@map(\"sensors\")\n}\n\nmodel Exposure {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  measurement  Int\n  status      String @default(\"queued\")\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @default(now())\n\n  @@map(\"exposures\")\n}\n\nmodel Telescope {\n  id      String   @id @default(cuid())\n  name    String\n  measurements Sensor[]\n\n  @@map(\"telescopes\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A Prisma schema links a child model Exposure to a parent model Telescope through a foreign-key relation. The relation attribute must declare what happens to children when the parent is deleted.\n\n// demo (different domain \u2014 a greenhouse app)\ngenerator client {\n  provider = \"prisma-client-js\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel Greenhouse {\n  id      String   @id @default(cuid())\n  sensors Sensor[]\n\n  @@map(\"greenhouses\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"calibrating\")\n  greenhouse   Greenhouse? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)\n\n  @@map(\"sensors\")\n}\n\nNow YOUR task (a different domain): Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Write the Prisma models for Telescope and Exposure, with correct one-to-many relation sides.\n- The Exposure.telescopeId foreign key is optional; its relation field must have matching nullability.\n- Use String @id @default(cuid()) primary keys and an Int measurement field.\n- Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.\n- The child model also stores status String @default(\"queued\"), persisted for UI/API workflows.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: model Exposure exists; telescopeId foreign key correct; onDelete semantics correct; status String @default(\"queued\"); seconds Int; both models mapped.\n\nWrite the complete construct now. The first line is already written; continue from it:\nmodel Exposure {\n",
+      "prompt_sha256": "1aca435f8717b6e4a92d42995be83ba94a87c47105578a81d793ff4afa1139c5",
+      "raw_generation": "  id      String   @id @default(cuid())\n  telescopeId String?\n  measurement  Int\n  status      String @default(\"queued\")\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @default(now())\n\n  @@map(\"exposures\")\n}\n\nmodel Telescope {\n  id      String   @id @default(cuid())\n  name    String\n  measurements Sensor[]\n\n  @@map(\"telescopes\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"calibrating\")\n  greenhouse   Greenhouse? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)\n\n  @@map(\"sensors\")\n}\n\nmodel Greenhouse {\n  id      String   @id @default(cuid())\n  sensors Sensor[]\n\n  @@map(\"greenhouses\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"calibrating\")\n  greenhouse   Greenhouse? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)\n\n  @@map(\"sensors\")\n}\n\nmodel Exposure {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  measurement  Int\n  status      String @default(\"queued\")\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @default(now())\n\n  @@map(\"exposures\")\n}\n\nmodel Telescope {\n  id      String   @id @default(cuid())\n  name    String\n  measurements Sensor[]\n\n  @@map(\"telescopes\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"",
+      "usage": {
+        "seconds": 49.95,
+        "seed": 1061160032,
+        "stochastic": false,
+        "tokens": 400
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "model Exposure {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"exposures\")\n}\n\nmodel Telescope {\n  id      String   @id @default(cuid())\n  name    String\n  status  String @default(\"active\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"telescopes\")\n}\n\nmodel Observation {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observations\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_telescope\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_telescope\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_telescope\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_telescope\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_te",
+      "near_empty": false,
+      "note": "repair-1",
+      "prompt": "A Prisma schema links a child model Exposure to a parent model Telescope through a foreign-key relation. The relation attribute must declare what happens to children when the parent is deleted.\n\n// demo (different domain \u2014 a greenhouse app)\ngenerator client {\n  provider = \"prisma-client-js\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel Greenhouse {\n  id      String   @id @default(cuid())\n  sensors Sensor[]\n\n  @@map(\"greenhouses\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"calibrating\")\n  greenhouse   Greenhouse? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)\n\n  @@map(\"sensors\")\n}\n\nNow YOUR task (a different domain): Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Write the Prisma models for Telescope and Exposure, with correct one-to-many relation sides.\n- The Exposure.telescopeId foreign key is optional; its relation field must have matching nullability.\n- Use String @id @default(cuid()) primary keys and an Int measurement field.\n- Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.\n- The child model also stores status String @default(\"queued\"), persisted for UI/API workflows.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 1):\n\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: model Exposure exists; telescopeId foreign key correct; onDelete semantics correct; status String @default(\"queued\"); seconds Int; both models mapped.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nmodel Exposure {\n",
+      "prompt_sha256": "967f234fb0beaa9aaecb05c1cba984fac2e0656070eb237df2bedc3faee01ce9",
+      "raw_generation": "  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"exposures\")\n}\n\nmodel Telescope {\n  id      String   @id @default(cuid())\n  name    String\n  status  String @default(\"active\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"telescopes\")\n}\n\nmodel Observation {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observations\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_telescope\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_telescope\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_telescope\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_telescope\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"observation_te",
+      "usage": {
+        "seconds": 47.33,
+        "seed": 1777902491,
+        "stochastic": false,
+        "tokens": 400
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "model Exposure {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"exposures\")\n}\n\nmodel Telescope {\n  id      String   @id @default(cuid())\n  name    String\n  status  String @default(\"active\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"telescopes\")\n}\n\nmodel Observation {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"observations\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"observation-telescopes\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"observation-telescopes\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"observation-telescopes\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map",
+      "near_empty": false,
+      "note": "repair-2",
+      "prompt": "A Prisma schema links a child model Exposure to a parent model Telescope through a foreign-key relation. The relation attribute must declare what happens to children when the parent is deleted.\n\n// demo (different domain \u2014 a greenhouse app)\ngenerator client {\n  provider = \"prisma-client-js\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel Greenhouse {\n  id      String   @id @default(cuid())\n  sensors Sensor[]\n\n  @@map(\"greenhouses\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"calibrating\")\n  greenhouse   Greenhouse? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)\n\n  @@map(\"sensors\")\n}\n\nNow YOUR task (a different domain): Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Write the Prisma models for Telescope and Exposure, with correct one-to-many relation sides.\n- The Exposure.telescopeId foreign key is optional; its relation field must have matching nullability.\n- Use String @id @default(cuid()) primary keys and an Int measurement field.\n- Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.\n- The child model also stores status String @default(\"queued\"), persisted for UI/API workflows.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 2):\n- schema-builds: rc=1 | out: Prisma schema loaded from schema.prisma\n | err:  |   updatedAt DateTime @updatedAt\n79 | \n   | \n\n\nerror: Error validating: This line is invalid. It d\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: model Exposure exists; telescopeId foreign key correct; onDelete semantics correct; status String @default(\"queued\"); seconds Int; both models mapped.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nmodel Exposure {\n",
+      "prompt_sha256": "4e373ab7de40726a5546c883a4f7fd342999a6e894d1190315d9f02ffda34597",
+      "raw_generation": "  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"exposures\")\n}\n\nmodel Telescope {\n  id      String   @id @default(cuid())\n  name    String\n  status  String @default(\"active\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"telescopes\")\n}\n\nmodel Observation {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"observations\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"observation-telescopes\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"observation-telescopes\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map(\"observation-telescopes\")\n}\n\nmodel ObservationTelescope {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  observationId String?\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n\n  @@map",
+      "usage": {
+        "seconds": 46.62,
+        "seed": 1777902492,
+        "stochastic": false,
+        "tokens": 400
+      }
+    },
+    {
+      "brace_balanced": true,
+      "candidate": "model Exposure {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n}\n\nThe next line is already written; continue from it:\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written",
+      "near_empty": false,
+      "note": "repair-3",
+      "prompt": "A Prisma schema links a child model Exposure to a parent model Telescope through a foreign-key relation. The relation attribute must declare what happens to children when the parent is deleted.\n\n// demo (different domain \u2014 a greenhouse app)\ngenerator client {\n  provider = \"prisma-client-js\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel Greenhouse {\n  id      String   @id @default(cuid())\n  sensors Sensor[]\n\n  @@map(\"greenhouses\")\n}\n\nmodel Sensor {\n  id           String     @id @default(cuid())\n  label        String\n  reading      Int\n  greenhouseId String?\n  status       String     @default(\"calibrating\")\n  greenhouse   Greenhouse? @relation(fields: [greenhouseId], references: [id], onDelete: SetNull)\n\n  @@map(\"sensors\")\n}\n\nNow YOUR task (a different domain): Task: Manage Exposure records linked to Telescope in the observatory service.\nRequirements:\n- Write the Prisma models for Telescope and Exposure, with correct one-to-many relation sides.\n- The Exposure.telescopeId foreign key is optional; its relation field must have matching nullability.\n- Use String @id @default(cuid()) primary keys and an Int measurement field.\n- Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.\n- The child model also stores status String @default(\"queued\"), persisted for UI/API workflows.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nYour previous attempt had these VERIFIED problems (attempt 3):\n- schema-builds: rc=1 | out: Prisma schema loaded from schema.prisma\n | err: me @updatedAt\n75 |   deletedAt DateTime @updatedAt\n76 | \n   | \n\n\nerror: Error validating: This line\nFix exactly those problems; keep everything else that was correct.\n\nChecklist: model Exposure exists; telescopeId foreign key correct; onDelete semantics correct; status String @default(\"queued\"); seconds Int; both models mapped.\n\nWrite the corrected complete construct now. The first line is already written; continue from it:\nmodel Exposure {\n",
+      "prompt_sha256": "5dd63ed793e492457934d1ac4e3d3ae8ab562112d0736a17ce4d2fc291e17c10",
+      "raw_generation": "  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n}\n\nThe next line is already written; continue from it:\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written",
+      "usage": {
+        "seconds": 53.23,
+        "seed": 1777902493,
+        "stochastic": false,
+        "tokens": 400
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "model Exposure {\n  id      String   @id @default(cuid())\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n}\n\nThe next line is already written; continue from it:\n  telescopeId String?\n  reading  Int\n  status   String @default(\"queued\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deletedAt DateTime @updatedAt\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written; continue from it:\n  deleted Boolean @default(false)\n  telescope Greenhouse @relation(fields: [telescopeId], references: [id], onDelete: SetNull)\n\nThe next line is already written",
+  "candidate_final_sha256": "b6b15db005a5cc6983fe69247b6eb17a8737dd8072acccba9008655b4e2044b9",
+  "decoding": "greedy",
+  "domain": "observatory",
+  "repair_verdicts": [
+    {
+      "candidate_sha256": "fcb1fcdd58ab106e1ddd05500ab5f98b7e91f1ee5e285b8a40f6915137bf27b7",
+      "repair": 1,
+      "verdict": {
+        "candidate_executed": true,
+        "checks": [
+          {
+            "detail": "",
+            "name": "models-and-fk-present",
+            "passed": true
+          },
+          {
+            "detail": "rc=1 | out: Prisma schema loaded from schema.prisma\n | err:  |   updatedAt DateTime @updatedAt\n79 | \n   | \n\n\nerror: Error validating: This line is invalid. It d",
+            "name": "schema-builds",
+            "passed": false
+          }
+        ],
+        "model_weight_change": false,
+        "passed": false,
+        "probe_count": 7,
+        "reported_checks": 2,
+        "split": "train",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "observatory:schema-relationship",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "b8bfe788fa2899d7e0ea27be41dc264ba3b1c4f9844113ef111fdce8c45f91a8",
+      "repair": 2,
+      "verdict": {
+        "candidate_executed": true,
+        "checks": [
+          {
+            "detail": "",
+            "name": "models-and-fk-present",
+            "passed": true
+          },
+          {
+            "detail": "rc=1 | out: Prisma schema loaded from schema.prisma\n | err: me @updatedAt\n75 |   deletedAt DateTime @updatedAt\n76 | \n   | \n\n\nerror: Error validating: This line ",
+            "name": "schema-builds",
+            "passed": false
+          }
+        ],
+        "model_weight_change": false,
+        "passed": false,
+        "probe_count": 7,
+        "reported_checks": 2,
+        "split": "train",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "observatory:schema-relationship",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    },
+    {
+      "candidate_sha256": "b6b15db005a5cc6983fe69247b6eb17a8737dd8072acccba9008655b4e2044b9",
+      "repair": 3,
+      "verdict": {
+        "candidate_executed": true,
+        "checks": [
+          {
+            "detail": "model Telescope missing",
+            "name": "parent-model-present",
+            "passed": false
+          }
+        ],
+        "model_weight_change": false,
+        "passed": false,
+        "probe_count": 7,
+        "reported_checks": 1,
+        "split": "train",
+        "status": "BEHAVIOR_FAIL",
+        "suite_version": 2,
+        "task_id": "observatory:schema-relationship",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    }
+  ],
+  "repairs_used": 3,
+  "reuses": {
+    "attempt1_prompt_sha256": "1aca435f8717b6e4a92d42995be83ba94a87c47105578a81d793ff4afa1139c5",
+    "task_id": "observatory:schema-relationship",
+    "track": "B"
+  },
+  "skill": "schema-relationship",
+  "split": "train",
+  "task_id": "observatory:schema-relationship",
+  "track": "C",
+  "verdict": {
+    "candidate_executed": true,
+    "checks": [
+      {
+        "detail": "model Telescope missing",
+        "name": "parent-model-present",
+        "passed": false
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "probe_count": 7,
+    "reported_checks": 1,
+    "split": "train",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "observatory:schema-relationship",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 149.3
+}

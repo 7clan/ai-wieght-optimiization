@@ -1,0 +1,71 @@
+{
+  "attempts": [
+    {
+      "anchor": "import { useState } from 'react';\n\nexport default function GearItemList({ data }) {\n",
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function GearItemList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A React list component receives rows through a data prop (no fetch). It renders every row, provides a labeled search input, a labeled status filter select and a clear button, applies the filters together, and shows an explicit empty state when nothing matches.\n\n// demo (different domain \u2014 a greenhouse app)\nimport { useState } from 'react';\n\nexport default function SensorList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage GearItem records linked to GearLocker in the GearHut maintenance service.\nRequirements:\n- Default-export a GearItemList({ data }) component that renders every row it receives through the data prop (no fetch).\n- A labeled search input filters rows by label case-insensitively.\n- A labeled status select offers all/stashed/inspected/retired and filters by exact status.\n- A Clear filters button resets both filters.\n- When no rows match, render an explicit empty state with data-testid=\"empty-state\".\n- Render label, usageHours and status for each row.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function GearItemList({ data }) {\n",
+      "prompt_sha256": "e4ded4729d8378ae9a2f1c13c345907f9b482ac41bdc78b66b35924d0cc6b20d",
+      "raw_generation": "  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}\n\nNow YOUR task (a different domain): Task: Manage GearItem records linked to GearLocker in the GearHut maintenance service.\nRequirements:\n- Default-export a GearItemList({ data }) component that renders every row it receives through the data prop (no fetch).\n- A labeled search input filters rows by label case-insensitively.\n- A labeled status select offers all/stashed/inspected/retired and filters by exact status.\n- A Clear filters button resets both filters.\n- When no rows match, render an explicit empty state with data-testid=\"empty-state\".\n- Render label, usageHours and status for each row.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: default export component; uses the data prop; labeled search; labeled status select; clear button; empty state; no fixed widths.\n\nWrite the complete construct now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function GearItemList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows",
+      "usage": {
+        "seconds": 106.46,
+        "seed": 1920439744,
+        "stochastic": false,
+        "tokens": 800
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { useState } from 'react';\n\nexport default function GearItemList({ data }) {\n  const [search, setSearch] = useState('');\n  const [status, setStatus] = useState('all');\n  const rows = (data || []).filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (status === 'all' || row.status === status));\n  return (\n    <div>\n      <label htmlFor=\"sensor-search\">Search sensors</label>\n      <input id=\"sensor-search\" type=\"search\" value={search}\n             onChange={(event) => setSearch(event.target.value)} />\n      <label htmlFor=\"sensor-status\">Filter by status</label>\n      <select id=\"sensor-status\" value={status}\n              onChange={(event) => setStatus(event.target.value)}>\n        <option value=\"all\">All statuses</option>\n        <option value=\"calibrating\">Calibrating</option>\n        <option value=\"monitoring\">Monitoring</option>\n        <option value=\"retired\">Retired</option>\n      </select>\n      <button type=\"button\" onClick={() => { setSearch(''); setStatus('all'); }}>\n        Clear filters\n      </button>\n      {rows.length === 0 ? (\n        <p data-testid=\"empty-state\">No sensors match your filters.</p>\n      ) : (\n        <ul>\n          {rows.map((row) => (\n            <li key={row.id}>\n              <strong>{row.label}</strong> \u2014 {row.reading} \u2014 {row.status}\n            </li>\n          ))}\n        </ul>\n      )}\n    </div>\n  );\n}",
+  "candidate_final_sha256": "70338c80525ecde6bfa15cd1f2762af0f723d550924eff71277d3f36938b64fc",
+  "decoding": "greedy",
+  "domain": "gearhut",
+  "gate_verdicts": [
+    {
+      "attempt": "initial",
+      "candidate_sha256": "70338c80525ecde6bfa15cd1f2762af0f723d550924eff71277d3f36938b64fc",
+      "verdict": {
+        "candidate_executed": true,
+        "checks": [
+          {
+            "detail": "",
+            "name": "candidate-parses",
+            "passed": true
+          }
+        ],
+        "gate": "parse",
+        "model_weight_change": false,
+        "passed": true,
+        "reported_checks": 1,
+        "status": "BEHAVIOR_PASS",
+        "task_id": "gearhut:react-interaction",
+        "tier": "UNSHARE_USERNS_DISCLOSED"
+      }
+    }
+  ],
+  "repairs_used": 0,
+  "skill": "react-interaction",
+  "spec_sha256": "b6c249710d91e454c9da13e75dc5b6f8835087a8fd682b87fbac597a84ad6521",
+  "split": "app",
+  "task_id": "gearhut:react-interaction",
+  "verdict": {
+    "candidate_executed": true,
+    "checks": [
+      {
+        "detail": "",
+        "name": "candidate-parses",
+        "passed": true
+      }
+    ],
+    "gate": "parse",
+    "model_weight_change": false,
+    "passed": true,
+    "reported_checks": 1,
+    "status": "BEHAVIOR_PASS",
+    "task_id": "gearhut:react-interaction",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "wall_seconds": 106.7
+}
