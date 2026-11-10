@@ -93,3 +93,15 @@ be stdout spoofing.
 **Mocked harness-command tests pass. No generated candidate has been
 executed and no behavior score is reported for Session 039.** The test
 coverage is a control on our wrapper, not a measurement of Qwen skill.
+
+## Session 039B addendum (exp/zai-039-docker-execution)
+
+The GET/POST portion of "next implementation work" noted above now exists:
+`archagent/s039/route_eval.py` + `harness/route_runner.mjs` implement
+genuine Prisma+SQLite route evaluation (offline staging, import
+redirection, per-case reseeded persistence probes, fail-closed verdicts)
+with a ten-control trusted matrix validated at the disclosed host tier
+(10/10). Docker remains unavailable in the Z.ai sandbox, so the container
+tier is unexecuted and React/integration evaluators are still pending.
+See `docs/ZAI_SESSION039_DOCKER_EXECUTION.md` for the full evidence and
+the requested CI approval.

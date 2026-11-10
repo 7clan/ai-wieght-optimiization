@@ -1,0 +1,88 @@
+{
+  "agent": "Z.ai",
+  "branch": "exp/zai-039-docker-execution",
+  "captured_utc": "2026-11-10T01:40:36.704393+00:00",
+  "ci": {
+    "approval_requested": true,
+    "trigger": "manual workflow_dispatch only; never dispatched",
+    "workflow": ".github/workflows/s039-docker-eval.yml"
+  },
+  "controls": {
+    "count": 10,
+    "docker_result": "NOT_RUN_BLOCKED_NO_DOCKER",
+    "host_smoke_result": "10/10 oracles validated (experiments/z039-zai-execution/host-smoke-controls.json)",
+    "negatives": [
+      "invariant-negative-control.ts",
+      "invariant-invalid-ts-control.ts",
+      "invariant-missing-export-control.ts",
+      "get-negative-control.ts",
+      "get-partial-order-control.ts",
+      "get-async-hang-control.ts",
+      "post-negative-control.ts"
+    ],
+    "positives": [
+      "invariant-positive-control.ts",
+      "get-positive-control.ts",
+      "post-positive-control.ts"
+    ]
+  },
+  "docker": {
+    "evidence": "experiments/z039-zai-execution/phase0-verification.json",
+    "host_candidate_execution": false,
+    "status": "BLOCKED_NO_DOCKER",
+    "unshare_substituted": false,
+    "workaround_attempted": false
+  },
+  "harness_defects_found_and_fixed": [
+    "invariant runner.mjs hardcoded /harness and /candidate paths (broke any non-container staging); now env-parameterized with identical container defaults",
+    "both runners bound process.stdout.write at call time, allowing candidate monkey-patching to suppress or spoof the verdict; now bound at startup"
+  ],
+  "head_commit_at_write": "8711191233d4620be07c44598699c45eadfe64ea",
+  "image_pinning": {
+    "built_eval_image_digest": null,
+    "node24_amd64_digest": "sha256:6b9d4ea31e614e29f364bf75758458731eb1e105b80c99667438dd6b3fe262e0",
+    "note": "build only in approved workflow; record and pin the built image digest",
+    "prisma_version_pinned": "6.19.3"
+  },
+  "implementation": {
+    "fullstack_integration_evaluator": "NOT_IMPLEMENTED",
+    "invariant_evaluator": "hardened (path parameterization + stdout spoof binding), host-smoke validated",
+    "react_interaction_evaluator": "NOT_IMPLEMENTED",
+    "route_evaluator": "implemented, host-smoke validated on trusted controls, Docker runtime unverified",
+    "unit_tests_new": 18,
+    "unit_tests_total": 53
+  },
+  "known_limitations": [
+    "route evaluator invokes exported handler functions with standard Request objects, not a full Next.js server",
+    "frozen GET oracle cases do not assert the include-relation shape",
+    "Prisma SQLite lacks mode:insensitive; case-insensitive search must use LOWER()-based filtering (prompt convention required)",
+    "/work tmpfs permits exec (nosuid kept) for the trusted prisma engine; disclosed deviation from the invariant path's noexec",
+    "host smoke tier is trusted-code-only and does not confer Docker-tier evidence"
+  ],
+  "phase0": {
+    "freeze_checks": "curriculum v1+v2 and scenarios v2 train/dev all reproduce without drift",
+    "holdout_opened": false,
+    "reconcile_038a": {
+      "errors": 0,
+      "metadata_consistent": true,
+      "normalized_structures": 12,
+      "queue_candidates": 22,
+      "training_eligible": 0
+    },
+    "unit_tests": "35/35 OK (preparation) + 18/18 OK (route evaluator, mocked Docker) = 53/53"
+  },
+  "qwen_generation": {
+    "candidates_generated": 0,
+    "model_cache": "absent after environment reset; re-download + SHA-256 re-verification required first",
+    "reason": "work order sequences generation after Docker-validated controls; gate unmet"
+  },
+  "report": "docs/ZAI_SESSION039_DOCKER_EXECUTION.md",
+  "session": "039B",
+  "source_commit": "022836449959cd11c3df14d5d587155b41e5bd32",
+  "training": {
+    "gradients": false,
+    "lora": false,
+    "occurred": false,
+    "weight_change": false
+  }
+}

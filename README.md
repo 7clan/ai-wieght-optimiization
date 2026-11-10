@@ -830,3 +830,32 @@ still pending. See `docs/SESSION039_EXECUTION_BOUNDARY.md`.
 The Docker-capable continuation contract is at
 `docs/SESSION039_ZAI_EXECUTION_HANDOFF.md`; no live model evaluation
 is claimed by the preparation branch.
+
+## Session 039B — Z.ai Docker-execution assignment: static preparation complete, live phase blocked (exp/zai-039-docker-execution)
+
+Assignment issue #2. All 35/35 preparation tests, freeze checks and the
+038A reconciliation reproduce on the new branch. **Docker is unavailable
+in this sandbox** (it is itself an unprivileged container; no runtime
+binary, socket, or rootless prerequisites), and the Session-039 boundary
+explicitly forbids host execution or `unshare` substitution — so **zero
+model-generated code ran and zero Qwen candidates were generated** (the
+work order gates generation on Docker-validated controls). What was
+delivered instead: a complete **GET/POST Prisma+SQLite route evaluator**
+(trusted fixtures derived from the frozen v2 contracts, offline
+`prisma db push/generate/seed`, import redirection that never edits
+candidate bytes, per-case reseeded persistence-delta probes, per-probe
+timeouts, single fail-closed verdict), a **ten-control trusted matrix**
+(3 spec-faithful positives, 7 known-bad: demo-vocabulary copier,
+fixture-copy, write-before-validate, invalid TS, missing export,
+partial-order, async-hang), a pinned node:24 digest + prisma 6.19.3 image
+recipe, and a **manual-dispatch-only two-stage GitHub Actions workflow**
+(stage 1 controls, stage 2 candidates) awaiting explicit approval. The
+trusted controls were validated at the disclosed host tier: **10/10
+oracles discriminate**, including a partial implementation that fails
+exactly the order-sensitive case; the smoke run itself caught and fixed
+two real harness defects (hardcoded runner paths; stdout spoof/suppress
+binding). React and integration evaluators remain unimplemented. 53/53
+unit tests. No training, no weight changes, holdout sealed. Approval to
+dispatch the CI control job (or a Docker-capable environment) is the
+blocking decision. Full report:
+`docs/ZAI_SESSION039_DOCKER_EXECUTION.md`.
