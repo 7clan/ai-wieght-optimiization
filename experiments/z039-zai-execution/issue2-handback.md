@@ -1,7 +1,7 @@
 ## Session 039B hand-back — Z.ai
 
 **Branch:** [`exp/zai-039-docker-execution`](https://github.com/7clan/ai-wieght-optimiization/tree/exp/zai-039-docker-execution) (created from the required source commit `0228364`; all other branches untouched)
-**Final commit:** https://github.com/7clan/ai-wieght-optimiization/commit/e70f265d28d625f31670ac5f5847af01886d3ed2
+**Latest commit (post-review CI fixes):** https://github.com/7clan/ai-wieght-optimiization/commit/821cc8908a850a67b57cbc10177d982925418fee
 **Full report:** [`docs/ZAI_SESSION039_DOCKER_EXECUTION.md`](https://github.com/7clan/ai-wieght-optimiization/blob/exp/zai-039-docker-execution/docs/ZAI_SESSION039_DOCKER_EXECUTION.md) · machine-readable state: `experiments/z039-zai-execution/session039b-state.json`
 
 ### 1. Starting-point verification — reproduced
@@ -27,7 +27,13 @@ Genuine Prisma+SQLite route evaluation now exists (`archagent/s039/route_eval.py
 Model weights **unchanged** (no gradients, LoRA, fine-tuning or checkpoints). Model-written bytes: **0**; every harness/control byte is teacher-authored and labeled `TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE`. `main` and all prior branches untouched; no force pushes. No working app and no trained model is claimed.
 
 ### 8. Requested decisions (blocking)
-1. **Approve dispatching the stage-1 control job**: `.github/workflows/s039-docker-eval.yml` (manual `workflow_dispatch` only — it never runs on push; stage 1 builds the pinned image and runs the ten controls with zero model code; stage 2 requires a separate dispatch with the recorded digest). The repo is public so standard runners should be unmetered, but per the assignment nothing was dispatched without approval.
+1. **Approve dispatching the stage-1 control job**: `.github/workflows/s039-docker-eval.yml` (manual `workflow_dispatch` only — it never runs on push; stage 1 builds the pinned image, **pushes it to GHCR as a private repo-linked package**, and runs the ten controls with zero model code; stage 2 requires a separate dispatch with the recorded digest). The repo is public so standard runners should be unmetered, but per the assignment nothing was dispatched without approval. Approving stage 1 also covers the one-time GHCR package creation (vetted node+prisma evaluation image only; ephemeral per-run `GITHUB_TOKEN`, no stored credentials).
 2. Alternatively, **provide a Docker-capable environment** and run the reproduction commands at the end of the report.
+
+### 9. Post-review CI fixes (commit `821cc89`)
+A pre-dispatch review caught two **workflow-plumbing** defects (infrastructure only — the evaluators, controls and Qwen itself were never at fault), both fixed and regression-tested:
+- **Image identification**: locally built images have empty `RepoDigests`, so the old silent `{{.Id}}` fallback recorded a repository-less `sha256:<hex>` ID the evaluators reject — stage 1 would have crashed on its first control. The workflow now pushes to GHCR and records `RepoDigests[0]` (a true `image@sha256:<64-hex>` manifest digest), regex-gated against the evaluator's exact pattern, failing loudly with no fallback. Stale `{{.Id}}` guidance in the Dockerfile header, `image-pins.json` and the report reproduction block was corrected too.
+- **Image availability**: the candidates job runs on a **different GitHub runner** and the evaluators use `--pull never`, so neither the fresh build nor a digest pasted from an earlier dispatch existed there. The controls job now pushes the pinned image to GHCR (`packages: write`) and the candidates job pulls the exact immutable digest (`packages: read`, ephemeral `GITHUB_TOKEN`) before any evaluation.
+- **Regression protection**: 4 new contract tests extract the workflow's digest gates and assert byte-equality with `docker_only.IMAGE_RE`, plus accept/reject behavior for the GHCR reference, bare image ID, floating tags and uppercase names. Suite now **57/57**; adversarial **30/30** (after restoring the sandbox StockPilot schema byte-identically from `apps/stockpilot` — environmental repair, documented in the report). Still **never dispatched**; zero model code executed; holdout sealed.
 
 Once stage-1 controls pass in-container and candidate generation is approved, the Phase-2 balanced sample (2 train + 2 dev, one invariant + one GET/POST) and the React/integration executors are the immediate next steps.
