@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from archagent.finetune import reconcile_038a
-from archagent.s039 import curriculum
+from archagent.s039 import curriculum, scenarios
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -97,6 +97,45 @@ class CurriculumTests(unittest.TestCase):
             data = (path / f"{split}.json").read_bytes()
             self.assertEqual(hashlib.sha256(data).hexdigest(), detail["sha256"])
         self.assertEqual(manifest["trainable_records"], 0)
+
+
+class ScenarioPlanTests(unittest.TestCase):
+    def test_train_and_dev_scenarios_are_nonexecuting_plans(self):
+        for split, expected in (("train", 54), ("dev", 18)):
+            result = scenarios.build(ROOT, split)
+            self.assertEqual(len(result["tasks"]), expected)
+            self.assertEqual(result["candidate_execution_count"], 0)
+            self.assertEqual(result["training_eligible"], 0)
+            for item in result["tasks"]:
+                self.assertTrue(item["cases"])
+                self.assertEqual(len(item["fixture"]["children"]), 3)
+                self.assertEqual(item["status"], "UNEXECUTED_BEHAVIOR_SCENARIOS")
+
+    def test_holdout_is_never_opened_by_preparation(self):
+        with self.assertRaises(PermissionError):
+            scenarios.load_split(ROOT, "holdout")
+        with self.assertRaises(PermissionError):
+            scenarios.build(ROOT, "holdout")
+        with tempfile.TemporaryDirectory() as temp:
+            with self.assertRaises(PermissionError):
+                scenarios.write(ROOT, "holdout", Path(temp) / "x.json", check=False)
+
+    def test_get_and_post_scenarios_discriminate_valid_invalid(self):
+        suite = scenarios.build(ROOT, "dev")
+        get = next(t for t in suite["tasks"] if t["skill"] == "api-get-filter")
+        post = next(t for t in suite["tasks"] if t["skill"] == "api-post-validation")
+        self.assertEqual(next(c for c in get["cases"] if c["name"] == "list-all")["expected_titles"], ["Amber", "Beacon", "Cobalt"])
+        self.assertEqual(next(c for c in get["cases"] if c["name"] == "no-matches")["expected_total"], 0)
+        self.assertEqual(next(c for c in post["cases"] if c["name"] == "below-min")["expected_persist_delta"], 0)
+        self.assertEqual(next(c for c in post["cases"] if c["name"] == "min-boundary")["expected_persist_delta"], 1)
+        self.assertEqual(next(c for c in post["cases"] if c["name"] == "duplicate-title")["expected_status"], 409)
+
+    def test_scenario_files_reproduce_without_overwrite(self):
+        for split in ("train", "dev"):
+            target = ROOT / "experiments/z039-generalization-learning/scenarios" / f"{split}.json"
+            scenarios.write(ROOT, split, target, check=True)
+            with self.assertRaises(FileExistsError):
+                scenarios.write(ROOT, split, target, check=False)
 
 
 if __name__ == "__main__":

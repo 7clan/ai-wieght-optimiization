@@ -817,3 +817,7 @@ Prisma relationships, GET/POST APIs, invariants, interactive React and
 integrated full-stack behavior. These are authored specifications, **not
 verified generated solutions**. See `docs/SESSION039_GENERALIZATION_LEARNING.md`
 for the frozen hashes, tests, missing execution steps and training gate.
+Train/dev black-box scenario plans now specify independent fixtures and
+positive/negative cases without executing any candidate; holdout scenarios
+remain sealed. The v1 cross-module status-field ambiguity is disclosed,
+not silently patched into the frozen suite.

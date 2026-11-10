@@ -3,7 +3,8 @@
 **Branch:** `exp/qwen-generalization-learning-039`  
 **Base:** Z.ai's completed Session 038A (`8501fc3f8711bc042ed6d70be659f726a8f2ac93`)  
 **Model:** frozen `Qwen/Qwen2.5-Coder-0.5B`  
-**Status:** Phase 0 evidence reconciliation + Phase 1 authored curriculum **complete**. No inference or training run here.
+**Status:** Phase 0 evidence reconciliation + Phase 1 authored curriculum **complete**;
+Phase 2 scenario plans prepared, execution harness pending. No inference or training run here.
 
 ## The research milestone
 
@@ -73,9 +74,42 @@ check refuses edits, and the freeze writer refuses to replace existing
 files. The holdout suite SHA-256 is
 `9a09d55b7c3eb8b140905fcef44c03b2ed0818b95adbb2f60a1094b0afc93e41`.
 
+### Phase 2a: reproducible scenario plans (prepared, not executed)
+
+`archagent/s039/scenarios.py` maps each train/dev contract to independent
+fixture rows plus required positive and negative test cases. It covers
+boundary values, missing/invalid foreign keys, duplicate writes, case
+insensitive and combined search filters, valid/invalid state transitions,
+keyboard/mobile interaction and persistence across UI refresh.
+
+```
+python -m archagent.s039.scenarios --split train --check
+python -m archagent.s039.scenarios --split dev --check
+```
+
+Output files:
+
+- `experiments/z039-generalization-learning/scenarios/train.json` — 54
+  tasks with unexecuted behavior scenarios.
+- `experiments/z039-generalization-learning/scenarios/dev.json` — 18
+  tasks with unexecuted behavior scenarios.
+
+The builder expressly refuses to load or export holdout scenarios before
+final scoring. No generated code has been run, so **0 behavior passes**
+are claimed at this stage. The scenario specifications must themselves
+be independently reviewed and run against known-good/known-bad controls
+before an eventual grading outcome is trusted.
+
+**Contract review note:** the v1 `schema-relationship` specification
+includes a measurement field but does not explicitly require persisting
+the state field later used by some UI fixtures. This is a potential
+cross-module mismatch; it must be resolved with a **versioned new
+suite**, with original v1 bytes kept intact, before asserting integrated
+status-persistence results. Do not silently alter the frozen v1 contracts.
+
 ## Phases 2–4 — not yet run
 
-### Phase 2: contract-to-behavior harness
+### Phase 2b: contract-to-behavior harness
 
 - Implement *trusted* reference oracles and independent behavioral checks,
   with negative controls proving failures are detected. Prioritize GET and
