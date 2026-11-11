@@ -1,0 +1,92 @@
+# SESSION 041A — Direct Weight Improvement: MEMORIAL AND LOSS REPORT
+
+**Date:** 2026-11-11
+**Branch:** `exp/zai-041-direct-weight-improvement` (re-created from `84dbc39`,
+the SESSION040 final commit)
+**Status:** COMPLETED ELSEWHERE, VERDICT DELIVERED, ARTIFACTS LOST
+
+---
+
+## 1. What this document records
+
+Session 041A (direct weight improvement: closed-form, norm-bounded, reversible
+weight edits targeting the demo-vocabulary copying failure mode) **was completed
+in a prior incarnation of this session's sandbox**, concluding with local commit
+`d535474`. The environment subsequently reset; this branch was re-created from
+the `84dbc39` baseline by the successor session after the reset. This document
+preserves, in-repo, (a) the completed session's verdict as reported by the user,
+and (b) the forensic record establishing exactly what survived the reset and
+what did not.
+
+## 2. The 041A verdict (as reported by the user, 2026-11-11)
+
+> "Session 041A was already completed. The completed work was committed as
+> `d535474`, with a REJECT verdict: Track B remained 0/18 and Track A remained
+> 0/6."
+
+Per the session brief's stop discipline, a REJECT verdict (no credible coding
+improvement on the dev evaluation relative to the frozen base) ends the
+weight-editing line of work on this checkpoint. **The experiments are not to be
+repeated** — the verdict is known and documented here, even though the commit's
+contents are lost (see §3).
+
+## 3. Forensic recovery record (successor session, 2026-11-11 ~09:40–11:00 UTC)
+
+Every recovery avenue was checked before declaring commit `d535474` lost:
+
+| avenue | result |
+|---|---|
+| Local git history (`git log --all`) | absent — history ends at `84dbc39` |
+| Local HEAD reflog | `84dbc39` commit → this session's branch checkout; **no 041A-era entries** |
+| `git fsck --lost-found` | one dangling commit `76e88d3` (known SESSION040 amend, already in reflog) + two dangling blobs (SESSION039-era test files); **no 041A objects** |
+| Stashes / packed-refs / FETCH_HEAD | empty of 041A material |
+| GitHub commit API (`GET /repos/…/commits/d535474`) | **422 "No commit found for SHA"** — never pushed |
+| GitHub commit search (`041A`) | 0 results |
+| GitHub push events (repo) | none containing `d535474` |
+| All remote branches + `refs/pull/*` | only `exp/zai-041-coding-finetune` (`adf668f`, the parallel 041B agent) post-dates `84dbc39`; no weight-edit branch |
+| All 22 repos visible to the session PAT | only `7clan/ai-wieght-optimiization` recently pushed; no other candidate location |
+| Filesystem content search (`rg d535474` over `/home/z`, `/tmp`, `/root`) | 0 hits |
+| Filesystem artifact search (`archagent/s041*`, `experiments/z041*weight*`, other clones) | none; `/tmp/my-project/research/aiwo` exists but is empty (dir dated 2026-11-09) |
+| Boot-restore manifest (`/tmp/my-project/.initial_snapshot.json`, 213 files written at boot 2026-11-11T09:41Z) | restores Next.js scaffolding + db/eval artifacts (newest mtimes 2026-11-10 ~20:55Z); **the `research/` subtree was not snapshotted** (only a bare `research/aiwo` dir entry, mtime 2026-11-10T13:23Z) and neither were `site-packages` nor the HF cache |
+
+**Conclusion:** commit `d535474` was created in a sandbox whose on-disk state
+(including its `.git` object database and the edited checkpoint) did not
+survive the environment reset, and it was never pushed to GitHub. It is
+**genuinely unrecoverable**. Its scientific content that matters — the REJECT
+verdict — survives via §2 and requires no repetition.
+
+## 4. What survived the reset (authoritative inventory)
+
+| item | state | location |
+|---|---|---|
+| SESSION 040 final (`84dbc39`) | intact | local clone + `origin/exp/zai-040-autonomous-fullstack` |
+| **SESSION 041B complete (`adf668f`)** — LoRA Stage-1 fine-tune: dataset (sha-chained `sft-25.jsonl`), training logs, **committed 26 MB adapter**, merge manifest (all sha256s), 24 paired dev-eval records, CPU benchmarks, report | intact | `origin/exp/zai-041-coding-finetune` |
+| 041B merged bf16 checkpoint | reproducible (not in git by convention: `*.safetensors` ignored, 100 MB limit) | `ARCHAGENT_MODEL_DIR=<frozen base> python -m archagent.z041.merge_verify` from the 041B branch; base re-downloaded + sha `aff8914e…a47f80` re-verified after the reset |
+| Frozen base model pin (`aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80`) | re-verified byte-identical after reset | HF snapshot `8123ea2e…` |
+| Sealed 24-task v2 holdout | sealed, untouched (loader refusal re-verified by 041B §7; nothing holdout-adjacent anywhere) | `suite-v2/holdout.json` |
+| **041A weight-edit artifacts (edited checkpoint, edit factors, eval records, report, commit `d535474`)** | **LOST** | nowhere |
+
+## 5. Consequences for the evaluation plan
+
+The user's instruction: once both modified checkpoints are frozen, the
+original, weight-edited and fine-tuned models are evaluated together on the
+sealed 24-task holdout, and neither agent may tune on those results.
+
+- The **fine-tuned** checkpoint (041B, `adf668f`) is frozen and verified.
+- The **weight-edited** checkpoint cannot join the ceremony: its artifacts are
+  unrecoverable (§3) and its dev evaluation already returned REJECT (§2), so
+  under the session brief's stop discipline it would not advance regardless.
+
+The holdout ceremony therefore reduces to **original vs fine-tuned**, pending
+the user's decision to unseal. Unsealing is irreversible and remains, as
+declared, a user-gated joint event — it is not performed by this branch.
+
+## 6. This branch going forward
+
+This branch now serves as the record holder for the 041A outcome (this
+document + the branch-action ledger). No weight-editing experiments are
+repeated. No other branch, and no holdout material, is touched.
+
+*Every claim above traces to a command output captured in the successor
+session's transcript; user-reported facts are attributed as such. Nothing is
+simulated or inferred beyond what the evidence states.*
