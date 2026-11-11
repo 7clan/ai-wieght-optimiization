@@ -4,7 +4,8 @@
 // finite-integer airtimeMin within 1..360, Transmitter existence check
 // (404), duplicate title within one transmitter (409), create only after
 // every check (201) and status created as "drafted". The evaluator MUST
-// pass this control on all ten frozen cases.
+// pass this control on all eleven cases (the 039B plan plus the 041C
+// duplicate-title scope amendment).
 import { db } from "@/lib/db";
 
 const MIN_AIRTIME = 1;

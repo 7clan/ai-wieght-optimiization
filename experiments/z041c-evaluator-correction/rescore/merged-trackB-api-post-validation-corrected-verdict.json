@@ -1,0 +1,92 @@
+{
+  "candidate_executed": true,
+  "candidate_final_sha256": "8e659add25b2051e46ad344203c183c914b97cb607418c3ddfc371337d53e078",
+  "case_amendment": "041C-duplicate-title-scope",
+  "case_count": 11,
+  "checks": [
+    {
+      "detail": "",
+      "name": "export-POST-present",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "trusted-db-model-present",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "min-boundary",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "max-boundary",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "empty-title",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "not-a-number",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "non-integer",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "below-min",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "above-max",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "unknown-parent",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "duplicate-title",
+      "passed": true
+    },
+    {
+      "detail": "",
+      "name": "duplicate-title-other-parent",
+      "passed": false
+    },
+    {
+      "detail": "",
+      "name": "parent-null",
+      "passed": true
+    }
+  ],
+  "elapsed_seconds": 12.0,
+  "model_label": "merged",
+  "model_weight_change": false,
+  "original_verdict": {
+    "case_count": 10,
+    "passed": true,
+    "status": "BEHAVIOR_PASS"
+  },
+  "passed": false,
+  "reason": "duplicate-title evaluator corrected (041C-duplicate-title-scope); the only archived route PASS is re-scored under the corrected probe plan",
+  "reported_checks": 13,
+  "rescore_session": "041C",
+  "route_path": "/api/radiostation-broadcasts",
+  "source_evidence": "experiments/z041-coding-finetune/eval/merged/track-B/radiostation__api-post-validation.json",
+  "split": "dev",
+  "status": "BEHAVIOR_FAIL",
+  "suite_version": 2,
+  "task_id": "radiostation:api-post-validation",
+  "tier": "UNSHARE_USERNS_DISCLOSED"
+}

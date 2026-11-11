@@ -72,4 +72,5 @@ def evaluate_route(repo: Path, split: str, task_id: str, candidate_dir: Path, *,
                               runner="route_runner.mjs", backend=backend, image=image)
     return {"task_id": task_id, "split": split, "suite_version": 2,
             "route_path": spec["route_path"], "case_count": len(spec["cases"]),
+            "case_amendment": spec.get("case_amendment"),
             **result, "model_weight_change": False}

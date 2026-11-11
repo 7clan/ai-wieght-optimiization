@@ -75,6 +75,30 @@ class RouteCommandTests(unittest.TestCase):
 
 
 class RouteVerdictTests(unittest.TestCase):
+    def test_evaluate_surfaces_the_case_amendment_for_evidence(self):
+        # docker_only.run_route is mocked away: this checks only that the
+        # wrapper's evidence record discloses the amended case plan and the
+        # corrected case count.
+        candidate_root = ROOT / "experiments/z039-generalization-learning/candidates"
+        target = candidate_root / "radiostation__api-post-validation"
+        created = not target.exists()
+        target.mkdir(parents=True, exist_ok=True)
+        try:
+            (target / "output.ts").write_text("export const POST = 1;", encoding="utf-8")
+            canned = {"status": "BLOCKED_NO_DOCKER", "passed": False,
+                      "candidate_executed": False}
+            with patch.object(route_eval.docker_only, "run_route", return_value=canned):
+                result = route_eval.evaluate(ROOT, "dev", "radiostation:api-post-validation",
+                                             target, IMAGE)
+            self.assertEqual(result["case_count"], 11)
+            self.assertEqual(result["case_amendment"], scenarios.CASE_AMENDMENT_041C)
+        finally:
+            if created:
+                for child in target.iterdir():
+                    child.unlink()
+                target.rmdir()
+                candidate_root.rmdir()
+
     def test_missing_docker_is_hard_block_for_routes_too(self):
         with patch.object(docker_only.shutil, "which", return_value=None):
             result = docker_only.run_route(IMAGE, Path("/nonexistent"), Path("/nonexistent"))
@@ -116,7 +140,8 @@ class FixtureStagingTests(unittest.TestCase):
         self.assertEqual(spec["entities"]["foreign_key_optional"], True)
         post = route_fixtures.task_spec(ROOT, "dev", "radiostation:api-post-validation")
         self.assertEqual(post["route_path"], "/api/radiostation-broadcasts")
-        self.assertEqual(len(post["cases"]), 10)
+        self.assertEqual(len(post["cases"]), 11)  # 039B plan + 041C scope amendment
+        self.assertEqual(post["case_amendment"], "041C-duplicate-title-scope")
         self.assertNotIn("envelope_key", post)
 
     def test_fixture_rows_match_frozen_scenario_plans(self):
@@ -127,6 +152,53 @@ class FixtureStagingTests(unittest.TestCase):
             for item in plan["tasks"]:
                 self.assertEqual(route_fixtures.fixture_rows(by_id[item["task_id"]]),
                                  item["fixture"], item["task_id"])
+
+class CaseAmendment041CTests(unittest.TestCase):
+    """Session-041C duplicate-title scope amendment.
+
+    The 039B probe plan verified duplicate->409 but never the per-parent
+    scoping half of the frozen requirement, so GLOBALLY scoped duplicate
+    checks (a contract violation) passed every probe. The amendment adds
+    one probe: the same title used by a row under a DIFFERENT parent must
+    be accepted (201, +1).
+    """
+
+    def test_corrected_post_plan_is_a_strict_superset_of_the_frozen_plan(self):
+        for split in ("train", "dev"):
+            suite = scenarios.load_split(ROOT, split, suite_version=2)
+            for entry in suite["tasks"]:
+                v1 = scenarios.oracle_cases(entry)
+                v2 = scenarios.oracle_cases_corrected(entry)
+                if entry["skill"] == "api-post-validation":
+                    self.assertEqual(len(v2), len(v1) + 1, entry["id"])
+                    probe = next(c for c in v2
+                                  if c["name"] == "duplicate-title-other-parent")
+                    self.assertEqual(probe["expected_status"], 201)
+                    self.assertEqual(probe["expected_persist_delta"], 1)
+                    # The probe must target a parent with NO seeded "Amber" row.
+                    fk = entry["entities"]["foreign_key"]
+                    fixture = route_fixtures.fixture_rows(entry)
+                    amber_parents = {row[fk] for row in fixture["children"]
+                                     if row["title"] == "Amber"}
+                    self.assertEqual(amber_parents, {"parent-a"})
+                    self.assertNotIn(probe["body"][fk], amber_parents)
+                    # Inserted directly after duplicate-title, everything else
+                    # byte-identical and in order.
+                    names = [c["name"] for c in v2]
+                    self.assertEqual(names.index("duplicate-title-other-parent"),
+                                     names.index("duplicate-title") + 1)
+                    self.assertEqual(
+                        [c for c in v2 if c["name"] != "duplicate-title-other-parent"], v1)
+                else:
+                    self.assertEqual(v2, v1, entry["id"])
+
+    def test_task_spec_discloses_the_amendment_and_leaves_get_alone(self):
+        get = route_fixtures.task_spec(ROOT, "dev", "radiostation:api-get-filter")
+        self.assertNotIn("case_amendment", get)
+        self.assertEqual(len(get["cases"]), 6)
+        post = route_fixtures.task_spec(ROOT, "dev", "radiostation:api-post-validation")
+        self.assertEqual(post["case_amendment"], scenarios.CASE_AMENDMENT_041C)
+        self.assertEqual(len(post["cases"]), 11)
 
     def test_route_extraction_covers_every_train_and_dev_contract(self):
         count = 0
@@ -233,12 +305,12 @@ class ControlTests(unittest.TestCase):
             self.assertIn("TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE", text, name)
             if "negative" in name:
                 self.assertIn("KNOWN-BAD", text, name)
-        self.assertEqual(len(control_run.CONTROL_MATRIX), 10)
+        self.assertEqual(len(control_run.CONTROL_MATRIX), 11)
 
     def test_positive_and_negative_expectations_are_balanced(self):
         expected = [v[2] for v in control_run.CONTROL_MATRIX.values()]
         self.assertEqual(expected.count(True), 3)
-        self.assertEqual(expected.count(False), 7)
+        self.assertEqual(expected.count(False), 8)  # + the 041C global-duplicate control
 
     def test_control_staging_rejects_paths_outside_controls_directory(self):
         with tempfile.TemporaryDirectory() as temp:

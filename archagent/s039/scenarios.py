@@ -116,6 +116,43 @@ def oracle_cases(task: dict) -> list[dict]:
     raise ValueError(f"Unknown skill: {skill}")
 
 
+CASE_AMENDMENT_041C = "041C-duplicate-title-scope"
+
+
+def oracle_cases_corrected(task: dict) -> list[dict]:
+    """Session-041C corrected probe plan over the frozen 039B oracle cases.
+
+    Defect corrected: the frozen ``api-post-validation`` plan verified the
+    "duplicate title -> 409" half of the frozen requirement but never the
+    scoping half ("Reject duplicate title WITHIN ONE parent"). A candidate
+    that implements a GLOBAL title-uniqueness check — a contract
+    violation — passed every probe (this is exactly how the Session-041B
+    merged-model Track-B pass on ``radiostation:api-post-validation`` was
+    scored). The amendment inserts one probe right after ``duplicate-title``:
+    the same title used by a row under a DIFFERENT parent must be ACCEPTED
+    (201, persist +1). For every other skill the plan is a byte-identical
+    pass-through of :func:`oracle_cases`. The frozen suite, the frozen v1
+    scenario-plan files and every other skill's probes stay untouched; the
+    result is unit-tested to be a strict superset of the v1 plan.
+    """
+    cases = oracle_cases(task)
+    if task["skill"] == "api-post-validation":
+        fk = task["entities"]["foreign_key"]
+        value = task["fields"]["amount"]
+        lo = task["fields"]["min_inclusive"]
+        valid = {"title": "New item", value: lo, fk: "parent-a"}
+        scope_probe = {
+            "name": "duplicate-title-other-parent",
+            "body": {**valid, "title": "Amber", fk: "parent-b"},
+            "expected_status": 201,
+            "expected_persist_delta": 1,
+        }
+        index = next(i for i, case in enumerate(cases)
+                     if case["name"] == "duplicate-title")
+        cases.insert(index + 1, scope_probe)
+    return cases
+
+
 def build(root: Path, split: str, *, final_score_unlocked: bool = False, suite_version: int = 1) -> dict:
     suite = load_split(root, split, final_score_unlocked=final_score_unlocked, suite_version=suite_version)
     cases = []

@@ -178,7 +178,14 @@ def task_spec(repo: Path, split: str, task_id: str) -> dict:
     spec = route_contract(repo, split, task_id)
     suite = scenarios.load_split(repo, split, suite_version=2)
     entry = next(task for task in suite["tasks"] if task["id"] == task_id)
-    cases = scenarios.oracle_cases(entry)
+    # Session-041C: stage the corrected probe plan. The 039B plan verified
+    # duplicate->409 but never the per-parent scoping half of the frozen
+    # requirement, so global-duplicate implementations passed (see
+    # scenarios.oracle_cases_corrected). The amendment is disclosed in the
+    # staged spec and surfaces in every evidence record.
+    cases = scenarios.oracle_cases_corrected(entry)
+    if entry["skill"] == "api-post-validation":
+        spec["case_amendment"] = scenarios.CASE_AMENDMENT_041C
     if spec["skill"] == "api-get-filter":
         valid = all(
             isinstance(c.get("params"), dict) and isinstance(c.get("expected_status"), int)

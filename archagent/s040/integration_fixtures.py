@@ -109,7 +109,14 @@ export async function POST(request) {{
       return jsonErr(404, "unknown-{fk}", "Related {parent} was not found.");
     }}
   }}
-  const duplicate = await db.{child}.findFirst({{ where: {{ {label}: title }} }});
+  // Session-041C consistency fix: the duplicate check is scoped to the
+  // submitted parent id (the frozen requirement is "duplicate title within
+  // ONE parent"), not a global title check. Behavior is identical on every
+  // existing probe (the integration post-409 case submits a same-parent
+  // duplicate); a missing/null parent value is normalized to null so the
+  // comparison stays scoped to null-parent rows instead of silently
+  // becoming global (Prisma ignores undefined filter keys).
+  const duplicate = await db.{child}.findFirst({{ where: {{ {label}: title, {fk}: fkValue ?? null }} }});
   if (duplicate) {{
     return jsonErr(409, "duplicate-{label}", "A record with this {label} already exists.");
   }}

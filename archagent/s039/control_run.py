@@ -155,6 +155,10 @@ CONTROL_MATRIX = {
     "get-async-hang-control.ts": ("route", GET_TASK, False),
     "post-positive-control.ts": ("route", POST_TASK, True),
     "post-negative-control.ts": ("route", POST_TASK, False),
+    # Session-041C corrected-probe control: otherwise spec-faithful but with
+    # a GLOBALLY scoped duplicate-title check — must fail the
+    # duplicate-title-other-parent probe (and nothing else).
+    "post-global-duplicate-control.ts": ("route", POST_TASK, False),
 }
 
 

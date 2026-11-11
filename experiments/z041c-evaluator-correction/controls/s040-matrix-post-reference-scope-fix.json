@@ -1,0 +1,565 @@
+{
+  "all_oracles_validated": true,
+  "backend": "unshare",
+  "controls": {
+    "integration-hang-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "process exited with code -11",
+          "name": "exited-cleanly",
+          "passed": false
+        }
+      ],
+      "exit_code": -11,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "status": "EXECUTION_FAILED",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-invalid-ts-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "Expected identifier but found \")\"",
+          "name": "candidate-transpiles",
+          "passed": false
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 1,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-missing-export-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "default export must be a React component",
+          "name": "default-export-component",
+          "passed": false
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 1,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-no-error-display.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "POST status=201",
+          "name": "create-201",
+          "passed": true
+        },
+        {
+          "detail": "visible=true total=4 before=3",
+          "name": "visible-immediately",
+          "passed": true
+        },
+        {
+          "detail": "GET status=200 present=true",
+          "name": "get-persisted",
+          "passed": true
+        },
+        {
+          "detail": "remountVisible=true",
+          "name": "refresh-survives",
+          "passed": true
+        },
+        {
+          "detail": "status=400 error=false noPhantom=true",
+          "name": "post-400",
+          "passed": false
+        },
+        {
+          "detail": "no relation select in form (404 case requires the relation field)",
+          "name": "post-404",
+          "passed": false
+        },
+        {
+          "detail": "status=201 error=false noPhantom=false",
+          "name": "post-409",
+          "passed": false
+        },
+        {
+          "detail": "rows=3 expected=3",
+          "name": "refresh-after-error",
+          "passed": true
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-phantom.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "POST status=201",
+          "name": "create-201",
+          "passed": true
+        },
+        {
+          "detail": "visible=true total=4 before=3",
+          "name": "visible-immediately",
+          "passed": true
+        },
+        {
+          "detail": "GET status=200 present=true",
+          "name": "get-persisted",
+          "passed": true
+        },
+        {
+          "detail": "remountVisible=true",
+          "name": "refresh-survives",
+          "passed": true
+        },
+        {
+          "detail": "status=400 error=false noPhantom=false",
+          "name": "post-400",
+          "passed": false
+        },
+        {
+          "detail": "no relation select in form (404 case requires the relation field)",
+          "name": "post-404",
+          "passed": false
+        },
+        {
+          "detail": "status=201 error=false noPhantom=false",
+          "name": "post-409",
+          "passed": false
+        },
+        {
+          "detail": "rows=3 expected=3",
+          "name": "refresh-after-error",
+          "passed": true
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-positive-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "POST status=201",
+          "name": "create-201",
+          "passed": true
+        },
+        {
+          "detail": "visible=true total=4 before=3",
+          "name": "visible-immediately",
+          "passed": true
+        },
+        {
+          "detail": "GET status=200 present=true",
+          "name": "get-persisted",
+          "passed": true
+        },
+        {
+          "detail": "remountVisible=true",
+          "name": "refresh-survives",
+          "passed": true
+        },
+        {
+          "detail": "status=400 error=true noPhantom=true",
+          "name": "post-400",
+          "passed": true
+        },
+        {
+          "detail": "status=404 error=true noPhantom=true",
+          "name": "post-404",
+          "passed": true
+        },
+        {
+          "detail": "status=409 error=true noPhantom=true",
+          "name": "post-409",
+          "passed": true
+        },
+        {
+          "detail": "rows=3 expected=3",
+          "name": "refresh-after-error",
+          "passed": true
+        }
+      ],
+      "expected_pass": true,
+      "oracle_validated": true,
+      "passed": true,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_PASS",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "integration-wrong-path.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "POST status=404",
+          "name": "create-201",
+          "passed": false
+        },
+        {
+          "detail": "visible=false total=0 before=0",
+          "name": "visible-immediately",
+          "passed": false
+        },
+        {
+          "detail": "GET status=200 present=false",
+          "name": "get-persisted",
+          "passed": false
+        },
+        {
+          "detail": "remountVisible=false",
+          "name": "refresh-survives",
+          "passed": false
+        },
+        {
+          "detail": "status=404 error=false noPhantom=true",
+          "name": "post-400",
+          "passed": false
+        },
+        {
+          "detail": "no relation select in form (404 case requires the relation field)",
+          "name": "post-404",
+          "passed": false
+        },
+        {
+          "detail": "status=404 error=false noPhantom=true",
+          "name": "post-409",
+          "passed": false
+        },
+        {
+          "detail": "rows=3 expected=3",
+          "name": "refresh-after-error",
+          "passed": true
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-hang-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "process exited with code -11",
+          "name": "exited-cleanly",
+          "passed": false
+        }
+      ],
+      "exit_code": -11,
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "status": "EXECUTION_FAILED",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-invalid-ts-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "Expected \"}\" but found \")\"",
+          "name": "candidate-transpiles",
+          "passed": false
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 1,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-missing-export-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "default export must be a React component",
+          "name": "default-export-component",
+          "passed": false
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 1,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-no-clear-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "count=3",
+          "name": "all-items",
+          "passed": true
+        },
+        {
+          "detail": "count=1 query=beacon",
+          "name": "search",
+          "passed": true
+        },
+        {
+          "detail": "count=1 status=cleared",
+          "name": "status-filter",
+          "passed": true
+        },
+        {
+          "detail": "count=0",
+          "name": "combined-filter",
+          "passed": true
+        },
+        {
+          "detail": "count=0 emptyState=true",
+          "name": "empty-result-state",
+          "passed": true
+        },
+        {
+          "detail": "missing search input or clear button",
+          "name": "clear",
+          "passed": false
+        },
+        {
+          "detail": "fewer than 3 interactive elements",
+          "name": "keyboard",
+          "passed": false
+        },
+        {
+          "detail": "ok (static audit; jsdom cannot compute layout)",
+          "name": "mobile-320",
+          "passed": true
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-positive-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "count=3",
+          "name": "all-items",
+          "passed": true
+        },
+        {
+          "detail": "count=1 query=beacon",
+          "name": "search",
+          "passed": true
+        },
+        {
+          "detail": "count=1 status=cleared",
+          "name": "status-filter",
+          "passed": true
+        },
+        {
+          "detail": "count=0",
+          "name": "combined-filter",
+          "passed": true
+        },
+        {
+          "detail": "count=0 emptyState=true",
+          "name": "empty-result-state",
+          "passed": true
+        },
+        {
+          "detail": "count=3 after clear",
+          "name": "clear",
+          "passed": true
+        },
+        {
+          "detail": "ok",
+          "name": "keyboard",
+          "passed": true
+        },
+        {
+          "detail": "ok (static audit; jsdom cannot compute layout)",
+          "name": "mobile-320",
+          "passed": true
+        }
+      ],
+      "expected_pass": true,
+      "oracle_validated": true,
+      "passed": true,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_PASS",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-search-ignored-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "count=3",
+          "name": "all-items",
+          "passed": true
+        },
+        {
+          "detail": "count=3 query=beacon",
+          "name": "search",
+          "passed": false
+        },
+        {
+          "detail": "count=1 status=cleared",
+          "name": "status-filter",
+          "passed": true
+        },
+        {
+          "detail": "count=1",
+          "name": "combined-filter",
+          "passed": false
+        },
+        {
+          "detail": "count=3 emptyState=false",
+          "name": "empty-result-state",
+          "passed": false
+        },
+        {
+          "detail": "missing search input or clear button",
+          "name": "clear",
+          "passed": false
+        },
+        {
+          "detail": "fewer than 3 interactive elements",
+          "name": "keyboard",
+          "passed": false
+        },
+        {
+          "detail": "ok (static audit; jsdom cannot compute layout)",
+          "name": "mobile-320",
+          "passed": true
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-status-ignored-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "count=3",
+          "name": "all-items",
+          "passed": true
+        },
+        {
+          "detail": "count=1 query=beacon",
+          "name": "search",
+          "passed": true
+        },
+        {
+          "detail": "count=3 status=cleared",
+          "name": "status-filter",
+          "passed": false
+        },
+        {
+          "detail": "count=1",
+          "name": "combined-filter",
+          "passed": false
+        },
+        {
+          "detail": "count=0 emptyState=true",
+          "name": "empty-result-state",
+          "passed": true
+        },
+        {
+          "detail": "missing search input or clear button",
+          "name": "clear",
+          "passed": false
+        },
+        {
+          "detail": "fewer than 3 interactive elements",
+          "name": "keyboard",
+          "passed": false
+        },
+        {
+          "detail": "ok (static audit; jsdom cannot compute layout)",
+          "name": "mobile-320",
+          "passed": true
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    },
+    "react-unlabeled-control.tsx": {
+      "candidate_executed": true,
+      "checks": [
+        {
+          "detail": "count=3",
+          "name": "all-items",
+          "passed": true
+        },
+        {
+          "detail": "count=1 query=beacon",
+          "name": "search",
+          "passed": true
+        },
+        {
+          "detail": "no labeled status select found",
+          "name": "status-filter",
+          "passed": false
+        },
+        {
+          "detail": "missing input/select",
+          "name": "combined-filter",
+          "passed": false
+        },
+        {
+          "detail": "count=0 emptyState=true",
+          "name": "empty-result-state",
+          "passed": true
+        },
+        {
+          "detail": "count=3 after clear",
+          "name": "clear",
+          "passed": true
+        },
+        {
+          "detail": "unlabeled <input>; unlabeled <select>",
+          "name": "keyboard",
+          "passed": false
+        },
+        {
+          "detail": "ok (static audit; jsdom cannot compute layout)",
+          "name": "mobile-320",
+          "passed": true
+        }
+      ],
+      "expected_pass": false,
+      "oracle_validated": true,
+      "passed": false,
+      "reported_checks": 8,
+      "status": "BEHAVIOR_FAIL",
+      "tier": "UNSHARE_USERNS_DISCLOSED"
+    }
+  },
+  "elapsed_seconds": 53.0,
+  "mode": "RESTRICTED_TIER_TRUSTED_CONTROLS_ONLY",
+  "model_generated_code_executed": false,
+  "origin": "TRUSTED_TEACHER_CONTROL_NOT_QWEN_CODE"
+}
