@@ -19,3 +19,9 @@ apps/*/data/
 node_modules/
 experiments/z037-generalization/workspace-snapshots/*.tar.gz
 .eval-deps/node_modules/
+
+# Session 041A (mirrors the 041B branch rule): the recovered 041B merged
+# checkpoint is on-disk-only, reproducible from the 041B branch artifacts
+# (frozen base sha + committed adapter + archagent/z041/merge_verify.py);
+# verified byte-exact post-reset on this branch (see memorial §4)
+experiments/z041-coding-finetune/merged-checkpoint/*
