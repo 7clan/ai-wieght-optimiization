@@ -41,6 +41,19 @@ GitHub Actions Docker behavior job in
 filters, mutation, and persistence inside a network-disabled, read-only,
 non-root container. Failed checks are real failures.
 
+### Independent Docker execution (completed)
+
+[GitHub Actions run 43025748673](https://github.com/7clan/ai-wieght-optimiization/actions/runs/43025748673)
+finished **FAILURE**: provenance and HTML checks passed; Docker image build
+passed; the actual model-generated JavaScript failed its behavioral checks.
+Four of thirteen checks passed (app renders, add controls present, Completed
+and Active filter controls present), and nine failed. In particular, neither
+task could be added, no mutation was saved, filtering did not show the
+correct data, deletion failed, and reload did not preserve tasks. The
+isolated JS runtime raised `Cannot read properties of undefined (reading
+'value')` and `Assignment to constant variable.`. This is model output
+failure, not a sandbox setup failure.
+
 ## Verdict
 
 **NOT A WORKING APP.** The pretrained Instruct model exhibited a better
