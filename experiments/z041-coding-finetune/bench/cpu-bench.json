@@ -1,0 +1,119 @@
+{
+  "merged": {
+    "model_load_s": [
+      1.24,
+      0.683,
+      0.647
+    ],
+    "model_load_s_mean": 0.857,
+    "params": 494032768,
+    "peak_rss_mb": [
+      3242.3,
+      3308.2,
+      3308.8
+    ],
+    "peak_rss_mb_max": 3308.8,
+    "tokens_per_s": [
+      7.042,
+      6.918,
+      6.889
+    ],
+    "tokens_per_s_mean": 6.95
+  },
+  "original": {
+    "model_load_s": [
+      1.124,
+      0.721,
+      0.635
+    ],
+    "model_load_s_mean": 0.827,
+    "params": 494032768,
+    "peak_rss_mb": [
+      3309.6,
+      3308.6,
+      3308.8
+    ],
+    "peak_rss_mb_max": 3309.6,
+    "tokens_per_s": [
+      6.713,
+      7.01,
+      7.122
+    ],
+    "tokens_per_s_mean": 6.948
+  },
+  "protocol": {
+    "decoding": "greedy",
+    "dtype": "fp32 load (harness path)",
+    "machine": "2 vCPU sandbox, 3.9 GiB RAM, no GPU",
+    "new_tokens": 128,
+    "prompt": "// utility helpers for a small booking tool\nexport function nights(checkIn, checkOut) {\n  const msPerDay = 24 * 60 * 60 * 1000;\n  return Math.round((Date.parse(checkOut) - Date.parse(checkIn)) / msPerDay);\n}\n\nexport function totalPrice(nights, ratePerNight) {\n",
+    "threads": 2,
+    "trials": 3
+  },
+  "raw_trials": {
+    "merged": [
+      {
+        "gen_s": 1.42,
+        "gen_tokens": 10,
+        "model_load_s": 1.24,
+        "params": 494032768,
+        "peak_rss_mb": 3242.3,
+        "rss_after_load_mb": 3242.3,
+        "tokenizer_load_s": 0.251,
+        "tokens_per_s": 7.042
+      },
+      {
+        "gen_s": 1.446,
+        "gen_tokens": 10,
+        "model_load_s": 0.683,
+        "params": 494032768,
+        "peak_rss_mb": 3308.2,
+        "rss_after_load_mb": 3308.2,
+        "tokenizer_load_s": 0.254,
+        "tokens_per_s": 6.918
+      },
+      {
+        "gen_s": 1.452,
+        "gen_tokens": 10,
+        "model_load_s": 0.647,
+        "params": 494032768,
+        "peak_rss_mb": 3308.8,
+        "rss_after_load_mb": 3308.8,
+        "tokenizer_load_s": 0.256,
+        "tokens_per_s": 6.889
+      }
+    ],
+    "original": [
+      {
+        "gen_s": 1.49,
+        "gen_tokens": 10,
+        "model_load_s": 1.124,
+        "params": 494032768,
+        "peak_rss_mb": 3309.6,
+        "rss_after_load_mb": 3309.6,
+        "tokenizer_load_s": 0.265,
+        "tokens_per_s": 6.713
+      },
+      {
+        "gen_s": 1.427,
+        "gen_tokens": 10,
+        "model_load_s": 0.721,
+        "params": 494032768,
+        "peak_rss_mb": 3308.6,
+        "rss_after_load_mb": 3308.6,
+        "tokenizer_load_s": 0.245,
+        "tokens_per_s": 7.01
+      },
+      {
+        "gen_s": 1.404,
+        "gen_tokens": 10,
+        "model_load_s": 0.635,
+        "params": 494032768,
+        "peak_rss_mb": 3308.8,
+        "rss_after_load_mb": 3308.8,
+        "tokenizer_load_s": 0.25,
+        "tokens_per_s": 7.122
+      }
+    ]
+  }
+}

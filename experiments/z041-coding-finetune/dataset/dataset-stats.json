@@ -1,0 +1,219 @@
+{
+  "boundary_rule": "completion = candidate minus longest prompt-suffix/candidate-prefix overlap (the harness anchor); z037-era records carry no overlap, z040-era records carry the full anchor",
+  "contamination_scan": {
+    "dev_vocabulary_scanned": [
+      "radiostation",
+      "tailorshop",
+      "sportsarena",
+      "airtimeMin",
+      "fabricCm",
+      "airtime",
+      "fabric",
+      "spotslot",
+      "adslot",
+      "ad break",
+      "airing"
+    ],
+    "violations": 0
+  },
+  "eos_rule": "one tokenizer EOS token supervised after the completion (disclosed amendment; teaches termination)",
+  "family_counts": {
+    "api-post-validation": 2,
+    "invariant-capacity": 1,
+    "invariant-duplicate-detection": 1,
+    "invariant-numeric-boundary": 1,
+    "relations-child-optional-fk": 1,
+    "relations-child-required-fk": 7,
+    "relations-parent-1tm": 10,
+    "relations-self": 1,
+    "state-invariant": 1
+  },
+  "model_pin_sha256": "aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80",
+  "n_examples": 25,
+  "sampling": {
+    "draw_counts_per_family": {
+      "api-post-validation": 36,
+      "invariant-capacity": 27,
+      "invariant-duplicate-detection": 34,
+      "invariant-numeric-boundary": 18,
+      "relations-child-optional-fk": 26,
+      "relations-child-required-fk": 39,
+      "relations-parent-1tm": 40,
+      "relations-self": 41,
+      "state-invariant": 39
+    },
+    "draws": 300,
+    "epochs": 12,
+    "rule": "family-weighted with replacement, weight = 1/family_count",
+    "seed": 4141
+  },
+  "session": "041B",
+  "sources": "038A 22 (z037 curricula/challenge) + 040 3 (v2 train + gearhut app)",
+  "split_tags": [
+    "z037/challenge",
+    "z037/curriculum-a",
+    "z037/curriculum-b",
+    "z037/suite-approvals",
+    "z037/suite-maintenance",
+    "z037/suite-pricing",
+    "z040/app",
+    "z040/train"
+  ],
+  "token_stats": {
+    "max_total_incl_eos": 979,
+    "mean_completion": 80.36,
+    "mean_prompt": 241.04,
+    "per_example": [
+      {
+        "completion": 59,
+        "id": "gh-plant",
+        "prompt": 215,
+        "total": 275
+      },
+      {
+        "completion": 71,
+        "id": "gh-watering",
+        "prompt": 227,
+        "total": 299
+      },
+      {
+        "completion": 95,
+        "id": "rel-1tm-album",
+        "prompt": 271,
+        "total": 367
+      },
+      {
+        "completion": 50,
+        "id": "rel-1tm-band",
+        "prompt": 179,
+        "total": 230
+      },
+      {
+        "completion": 113,
+        "id": "rel-opt-planting",
+        "prompt": 268,
+        "total": 382
+      },
+      {
+        "completion": 53,
+        "id": "rel-opt-plot",
+        "prompt": 186,
+        "total": 240
+      },
+      {
+        "completion": 52,
+        "id": "rel-req-screen",
+        "prompt": 181,
+        "total": 234
+      },
+      {
+        "completion": 82,
+        "id": "rel-req-showing",
+        "prompt": 209,
+        "total": 292
+      },
+      {
+        "completion": 42,
+        "id": "rel-two-coupon",
+        "prompt": 173,
+        "total": 216
+      },
+      {
+        "completion": 42,
+        "id": "rel-two-customer",
+        "prompt": 173,
+        "total": 216
+      },
+      {
+        "completion": 90,
+        "id": "rel-self-category",
+        "prompt": 192,
+        "total": 283
+      },
+      {
+        "completion": 43,
+        "id": "rel-cascade-aisle",
+        "prompt": 174,
+        "total": 218
+      },
+      {
+        "completion": 76,
+        "id": "rel-cascade-bin",
+        "prompt": 204,
+        "total": 281
+      },
+      {
+        "completion": 22,
+        "id": "inv-weight",
+        "prompt": 105,
+        "total": 128
+      },
+      {
+        "completion": 19,
+        "id": "inv-capacity",
+        "prompt": 98,
+        "total": 118
+      },
+      {
+        "completion": 37,
+        "id": "inv-duplicate",
+        "prompt": 112,
+        "total": 150
+      },
+      {
+        "completion": 51,
+        "id": "ap-approver",
+        "prompt": 206,
+        "total": 258
+      },
+      {
+        "completion": 91,
+        "id": "ap-request",
+        "prompt": 244,
+        "total": 336
+      },
+      {
+        "completion": 80,
+        "id": "mn-log",
+        "prompt": 225,
+        "total": 306
+      },
+      {
+        "completion": 50,
+        "id": "mn-machine",
+        "prompt": 195,
+        "total": 246
+      },
+      {
+        "completion": 49,
+        "id": "pr-plan",
+        "prompt": 197,
+        "total": 247
+      },
+      {
+        "completion": 80,
+        "id": "pr-subscription",
+        "prompt": 229,
+        "total": 310
+      },
+      {
+        "completion": 300,
+        "id": "s040-B-observatory-api-post-validation",
+        "prompt": 664,
+        "total": 965
+      },
+      {
+        "completion": 73,
+        "id": "s040-APP-gearhut-invariant",
+        "prompt": 410,
+        "total": 484
+      },
+      {
+        "completion": 289,
+        "id": "s040-APP-gearhut-api-post-validation",
+        "prompt": 689,
+        "total": 979
+      }
+    ]
+  }
+}

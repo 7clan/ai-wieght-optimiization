@@ -1,0 +1,86 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceBroadcast(record, parent) {\n  return record === parent || record === parent + 1 || record === parent - 1;\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Implement canAdvanceBroadcast(current, next): boolean for exact transitions drafted\u2192cleared and cleared\u2192aired.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nWrite the complete predicate function now. The first line is already written; continue from it:\nexport function canAdvanceBroadcast(record, parent) {\n",
+      "prompt_sha256": "efe648d6a1a56ba1c27e9f4a607d9552482960950caca9baf4442351a5ebb3e1",
+      "raw_generation": "  return record === parent || record === parent + 1 || record === parent - 1;\n}",
+      "usage": {
+        "seconds": 2.81,
+        "seed": 1755205741,
+        "stochastic": false,
+        "tokens": 22
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "export function canAdvanceBroadcast(record, parent) {\n  return record === parent || record === parent + 1 || record === parent - 1;\n}",
+  "candidate_final_sha256": "d53e6e804f5a1d39693fd050d2340da851d98a8be3c49a2871669e9f6de654ae",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "model_dir": "experiments/z041-coding-finetune/merged-checkpoint",
+  "model_label": "merged",
+  "skill": "state-invariant",
+  "split": "dev",
+  "task_id": "radiostation:state-invariant",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 7,
+    "checks": [
+      {
+        "detail": "",
+        "name": "export-present",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "first-transition",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "second-transition",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "same-state",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "skip-state",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "reverse-state",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "unknown-state",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "demo-vocabulary-copy",
+        "passed": true
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:state-invariant",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "vocab_lock_violations": 0,
+  "wall_seconds": 3.0
+}

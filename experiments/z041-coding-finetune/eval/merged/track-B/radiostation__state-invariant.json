@@ -1,0 +1,86 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "export function canAdvanceBroadcast(record, parent) {\n  if (record.status === \"drafted\") {\n    return false;\n  }\n  if (record.status === \"cleared\") {\n    return record.reading > 0 && parent !== null;\n  }\n  if (record.status === \"aired\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A state invariant is a pure predicate canAdvanceBroadcast(record, parent) that returns true exactly when the workflow allows the child record to advance to its next status. It reads the current status and the related parent, and it must never mutate anything.\n\n// demo (different domain \u2014 a greenhouse app)\n// Pure predicate: true exactly when the sensor may advance one status.\nexport function canAdvanceSensor(record, greenhouse) {\n  if (record.status === \"retired\") {\n    return false;\n  }\n  if (record.status === \"calibrating\") {\n    return record.reading > 0 && greenhouse !== null;\n  }\n  if (record.status === \"monitoring\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}\n\nNow YOUR task (a different domain): Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Implement canAdvanceBroadcast(current, next): boolean for exact transitions drafted\u2192cleared and cleared\u2192aired.\n- Every other transition is false, including unknown states, skips, reversals and unchanged states.\n- Use these exact domain-specific words; do not copy stage names from any illustrative demo.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: export function canAdvanceBroadcast; pure boolean return; handles statuses ['drafted', 'cleared', 'aired']; returns false for unknown/terminal cases.\n\nWrite the complete construct now. The first line is already written; continue from it:\nexport function canAdvanceBroadcast(record, parent) {\n",
+      "prompt_sha256": "c2d7e8c1ae9ec859da02748c6a849b396027ed95bda59568325e2c89e905948e",
+      "raw_generation": "  if (record.status === \"drafted\") {\n    return false;\n  }\n  if (record.status === \"cleared\") {\n    return record.reading > 0 && parent !== null;\n  }\n  if (record.status === \"aired\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}",
+      "usage": {
+        "seconds": 10.36,
+        "seed": 1013690505,
+        "stochastic": false,
+        "tokens": 79
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "export function canAdvanceBroadcast(record, parent) {\n  if (record.status === \"drafted\") {\n    return false;\n  }\n  if (record.status === \"cleared\") {\n    return record.reading > 0 && parent !== null;\n  }\n  if (record.status === \"aired\") {\n    return record.reading >= 1 && record.reading <= 500;\n  }\n  return false;\n}",
+  "candidate_final_sha256": "2250cdd3d8f6cd09b305a563285db28d4e72d62c117176baae55b73af8f46979",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "model_dir": "experiments/z041-coding-finetune/merged-checkpoint",
+  "model_label": "merged",
+  "skill": "state-invariant",
+  "split": "dev",
+  "task_id": "radiostation:state-invariant",
+  "track": "B",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 7,
+    "checks": [
+      {
+        "detail": "",
+        "name": "export-present",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "first-transition",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "second-transition",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "same-state",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "skip-state",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "reverse-state",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "unknown-state",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "demo-vocabulary-copy",
+        "passed": true
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:state-invariant",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "vocab_lock_violations": 3,
+  "wall_seconds": 10.5
+}

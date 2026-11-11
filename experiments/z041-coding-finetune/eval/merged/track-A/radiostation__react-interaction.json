@@ -1,0 +1,86 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [searchTerm, setSearchTerm] = useState('');\n  const [filteredData, setFilteredData] = useState(data);\n\n  const handleSearch = (event) => {\n    setSearchTerm(event.target.value);\n    setFilteredData(data.filter((item) =>\n      item.title.toLowerCase().includes(searchTerm.toLowerCase())\n    ));\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        placeholder=\"Search...\"\n        value={searchTerm}\n        onChange={handleSearch}\n      />\n      <ul>\n        {filteredData.map((item) => (\n          <li key={item.id}>\n            <h3>{item.title}</h3>\n            <p>Airtime Min: {item.airtimeMin} mins</p>\n            <p>Current Workflow Status: {item.currentWorkflowStatus}</p>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Build a responsive React component listing Broadcast items from a provided data prop; no network call required.\n- Provide a labeled search field, an accessible status filter and a clear-filters button.\n- Render title, airtimeMin and current workflow status, with an explicit no-results empty state.\n- Keyboard operation and a 320px mobile viewport must remain usable without horizontal overflow.\n\nWrite the complete React component now. The first line is already written; continue from it:\nimport { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n",
+      "prompt_sha256": "d6d806916fdf821d82406a8379c5333be42dbd7fa9ef9f118818a3b0a6c5136f",
+      "raw_generation": "  const [searchTerm, setSearchTerm] = useState('');\n  const [filteredData, setFilteredData] = useState(data);\n\n  const handleSearch = (event) => {\n    setSearchTerm(event.target.value);\n    setFilteredData(data.filter((item) =>\n      item.title.toLowerCase().includes(searchTerm.toLowerCase())\n    ));\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        placeholder=\"Search...\"\n        value={searchTerm}\n        onChange={handleSearch}\n      />\n      <ul>\n        {filteredData.map((item) => (\n          <li key={item.id}>\n            <h3>{item.title}</h3>\n            <p>Airtime Min: {item.airtimeMin} mins</p>\n            <p>Current Workflow Status: {item.currentWorkflowStatus}</p>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 21.35,
+        "seed": 682996136,
+        "stochastic": false,
+        "tokens": 187
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { useState } from 'react';\n\nexport default function BroadcastList({ data }) {\n  const [searchTerm, setSearchTerm] = useState('');\n  const [filteredData, setFilteredData] = useState(data);\n\n  const handleSearch = (event) => {\n    setSearchTerm(event.target.value);\n    setFilteredData(data.filter((item) =>\n      item.title.toLowerCase().includes(searchTerm.toLowerCase())\n    ));\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        placeholder=\"Search...\"\n        value={searchTerm}\n        onChange={handleSearch}\n      />\n      <ul>\n        {filteredData.map((item) => (\n          <li key={item.id}>\n            <h3>{item.title}</h3>\n            <p>Airtime Min: {item.airtimeMin} mins</p>\n            <p>Current Workflow Status: {item.currentWorkflowStatus}</p>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+  "candidate_final_sha256": "24ac948f2ebcd27ebfa4329a0053d03293a57ffdfbad002c9aedd36a78f4a7f6",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "model_dir": "experiments/z041-coding-finetune/merged-checkpoint",
+  "model_label": "merged",
+  "skill": "react-interaction",
+  "split": "dev",
+  "task_id": "radiostation:react-interaction",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "checks": [
+      {
+        "detail": "count=3",
+        "name": "all-items",
+        "passed": true
+      },
+      {
+        "detail": "count=3 query=beacon",
+        "name": "search",
+        "passed": false
+      },
+      {
+        "detail": "no labeled status select found",
+        "name": "status-filter",
+        "passed": false
+      },
+      {
+        "detail": "missing input/select",
+        "name": "combined-filter",
+        "passed": false
+      },
+      {
+        "detail": "count=3 emptyState=false",
+        "name": "empty-result-state",
+        "passed": false
+      },
+      {
+        "detail": "missing search input or clear button",
+        "name": "clear",
+        "passed": false
+      },
+      {
+        "detail": "fewer than 3 interactive elements",
+        "name": "keyboard",
+        "passed": false
+      },
+      {
+        "detail": "ok (static audit; jsdom cannot compute layout)",
+        "name": "mobile-320",
+        "passed": true
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:react-interaction",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "vocab_lock_violations": 0,
+  "wall_seconds": 22.4
+}

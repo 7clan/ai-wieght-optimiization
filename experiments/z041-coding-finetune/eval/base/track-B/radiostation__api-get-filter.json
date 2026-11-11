@@ -1,0 +1,87 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.broadcast.findMany({\n    where: {\n      ...(search ? { title: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ broadcasts: filtered, total: filtered.length });\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A Next.js GET route handler returns a JSON envelope with a list of records and a total. Query parameters filter the list; the total counts the FILTERED rows. The response shape must match the contract exactly.\n\n// demo (different domain \u2014 a greenhouse app)\n// Note: use the GLOBAL Response.json (no next/server import) and import db\n// from \"@/lib/db\".\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.sensor.findMany({\n    where: {\n      ...(search ? { label: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { reading: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.label.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ sensors: filtered, total: filtered.length });\n}\n\nNow YOUR task (a different domain): Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Implement Next.js GET /api/radiostation-broadcasts using db.broadcast.findMany.\n- Use searchParams 'q' as a case-insensitive title substring filter only when supplied.\n- Filter by optional transmitterId, order by title ascending, include transmitter.\n- Return { broadcasts: [...], total: number } with status 200; empty results return [] and 0.\n- The listed records include the persisted status field.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: GET export; envelope with list and total; filters applied; total counts filtered rows; NextResponse.json used.\n\nWrite the complete construct now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n",
+      "prompt_sha256": "63469d02fabdad03f19b0143fdc3a3c6f44a6e0dcf923cef47fc3b14253197e8",
+      "raw_generation": "  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.broadcast.findMany({\n    where: {\n      ...(search ? { title: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ broadcasts: filtered, total: filtered.length });\n}\n\nThe first line is already written; continue from it:\n\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.broadcast.findMany({\n    where: {\n      ...(search ? { title: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ broadcasts: filtered, total: filtered.length });\n}\n\nThe first line is already written; continue from it:\n\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.broadcast.findMany({\n    where: {\n      ...(search ? { title: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ broadcasts: filtered, total: filtered.length });\n}\n\nThe first line is already written; continue from it:\n\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const",
+      "usage": {
+        "seconds": 59.09,
+        "seed": 1995617021,
+        "stochastic": false,
+        "tokens": 500
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const params = new URL(request.url).searchParams;\n  const search = params.get(\"search\") ?? \"\";\n  const status = params.get(\"status\") ?? \"\";\n  const rows = await db.broadcast.findMany({\n    where: {\n      ...(search ? { title: { contains: search } } : {}),\n      ...(status ? { status } : {}),\n    },\n    orderBy: { title: \"asc\" },\n  });\n  const filtered = rows.filter((row) =>\n    (!search || row.title.toLowerCase().includes(search.toLowerCase()))\n    && (!status || row.status === status));\n  return Response.json({ broadcasts: filtered, total: filtered.length });\n}",
+  "candidate_final_sha256": "c492b025da436563c506e0f5f1712913750c5c91f227662334554792af6e85f6",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "model_dir": "/home/z/my-project/models/Qwen2.5-Coder-0.5B",
+  "model_label": "base",
+  "skill": "api-get-filter",
+  "split": "dev",
+  "task_id": "radiostation:api-get-filter",
+  "track": "B",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 6,
+    "checks": [
+      {
+        "detail": "",
+        "name": "export-GET-present",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "trusted-db-model-present",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "list-all",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "filter-one",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "case-insensitive",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "filter-by-parent",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "no-matches",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "combined-filter",
+        "passed": false
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 8,
+    "route_path": "/api/radiostation-broadcasts",
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:api-get-filter",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "vocab_lock_violations": 0,
+  "wall_seconds": 71.1
+}

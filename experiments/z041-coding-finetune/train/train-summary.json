@@ -1,0 +1,16 @@
+{
+  "adapter_dir": "/home/z/my-project/repo/experiments/z041-coding-finetune/train/adapter",
+  "complete": true,
+  "log_entries": 37,
+  "micro_steps_done": 296,
+  "optimizer_steps_done": 37,
+  "peak_rss_mb": 2272.5,
+  "planned": {
+    "micro_steps": 296,
+    "optimizer_steps": 37
+  },
+  "stopped_reason": "plan-complete",
+  "train_seconds_cumulative": 1292.5,
+  "train_time_cap_s": 2400,
+  "trainable_params": 6586368
+}

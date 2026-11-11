@@ -1,0 +1,43 @@
+{
+  "amendments": [
+    "epochs 3 -> 12 (038A Plan-1 used 20; within its envelope)",
+    "one supervised EOS token after each completion",
+    "grad-accum tail: 296 of 300 draws used",
+    "bf16 trunk per measured probe (038A plan's own choice)"
+  ],
+  "chunked_ce_chunk": 128,
+  "draws_total": 300,
+  "dtype_choice": "bf16 per bench_dtype probe (fp32 not measurable on this 3.9 GiB box); 038A Plan-1 intent",
+  "dtype_trunk": "bf16",
+  "effective_batch": 8,
+  "epochs_plan": 12,
+  "execution": "resumable across sandbox invocations; identical math (adapter+optimizer+scheduler+rng checkpointed after every optimizer step)",
+  "grad_accum": 8,
+  "invocation_cap_s": 420,
+  "lora": {
+    "alpha": 32,
+    "bias": "none",
+    "dropout": 0.05,
+    "r": 16,
+    "targets": [
+      "down_proj",
+      "k_proj",
+      "o_proj",
+      "q_proj",
+      "up_proj",
+      "v_proj"
+    ]
+  },
+  "loss": "CE on completion tokens + 1 EOS (prompt masked -100)",
+  "lr": 0.0002,
+  "micro_batch": 1,
+  "micro_steps": 296,
+  "model_pin_sha256": "aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80",
+  "n_trainable_params": 6586368,
+  "optimizer_steps": 37,
+  "schedule": "cosine",
+  "seed": 4141,
+  "session": "041B",
+  "train_time_cap_s": 2400,
+  "warmup": 0
+}

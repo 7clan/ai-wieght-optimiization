@@ -1,0 +1,33 @@
+{
+  "label": "merged",
+  "model_dir": "experiments/z041-coding-finetune/merged-checkpoint",
+  "pairs": 12,
+  "protocol": "s040 frozen v2 dev split (radiostation), greedy, seed_for(track,task) \u2014 identical to Session 040",
+  "track_A": {
+    "candidates_with_violations": 0,
+    "gen_seconds": 84.6,
+    "gen_tokens": 722,
+    "n": 6,
+    "passed": 0,
+    "statuses": {
+      "BEHAVIOR_FAIL": 5,
+      "EXECUTION_FAILED": 1
+    },
+    "vocab_lock_violations_total": 0,
+    "wall_seconds": 113.3
+  },
+  "track_B": {
+    "candidates_with_violations": 3,
+    "gen_seconds": 169.4,
+    "gen_tokens": 1327,
+    "n": 6,
+    "passed": 1,
+    "statuses": {
+      "BEHAVIOR_FAIL": 4,
+      "BEHAVIOR_PASS": 1,
+      "EXECUTION_FAILED": 1
+    },
+    "vocab_lock_violations_total": 15,
+    "wall_seconds": 197.2
+  }
+}

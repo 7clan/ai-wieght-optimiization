@@ -1,0 +1,51 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "model Broadcast {\n  // Define the model for Broadcast\n  model Broadcast {\n    // Define the model for Broadcast\n    id        String @id @default(cuid())\n    transmitterId  String @default(cuid())\n    status     String @default(\"drafted\")\n    createdAt  DateTime @default(now())\n    updatedAt  DateTime @default(now())\n  }\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Write the Prisma models for Transmitter and Broadcast, with correct one-to-many relation sides.\n- The Broadcast.transmitterId foreign key is optional; its relation field must have matching nullability.\n- Use String @id @default(cuid()) primary keys and an Int measurement field.\n- Declared delete semantics must match foreign-key optionality: SetNull if optional, Restrict if required.\n- The child model also stores status String @default(\"drafted\"), persisted for UI/API workflows.\n\nWrite the complete Prisma schema now. The first line is already written; continue from it:\nmodel Broadcast {\n",
+      "prompt_sha256": "5a521279b345d81bcbb325f8ca5ee3040f0248fa2cfbe01d2fe624615472ecf7",
+      "raw_generation": "  // Define the model for Broadcast\n  model Broadcast {\n    // Define the model for Broadcast\n    id        String @id @default(cuid())\n    transmitterId  String @default(cuid())\n    status     String @default(\"drafted\")\n    createdAt  DateTime @default(now())\n    updatedAt  DateTime @default(now())\n  }\n}",
+      "usage": {
+        "seconds": 8.71,
+        "seed": 1770128638,
+        "stochastic": false,
+        "tokens": 71
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "model Broadcast {\n  // Define the model for Broadcast\n  model Broadcast {\n    // Define the model for Broadcast\n    id        String @id @default(cuid())\n    transmitterId  String @default(cuid())\n    status     String @default(\"drafted\")\n    createdAt  DateTime @default(now())\n    updatedAt  DateTime @default(now())\n  }\n}",
+  "candidate_final_sha256": "c05b8e8093cfd5d36359f21a42c2ec49121d4360522de3acee3368f4f8767df0",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "model_dir": "experiments/z041-coding-finetune/merged-checkpoint",
+  "model_label": "merged",
+  "skill": "schema-relationship",
+  "split": "dev",
+  "task_id": "radiostation:schema-relationship",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "checks": [
+      {
+        "detail": "model Transmitter missing",
+        "name": "parent-model-present",
+        "passed": false
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "probe_count": 7,
+    "reported_checks": 1,
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:schema-relationship",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "vocab_lock_violations": 0,
+  "wall_seconds": 8.8
+}

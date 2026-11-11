@@ -1,0 +1,107 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  try {\n    const body = await request.json();\n    const { title, airtimeMin } = body;\n\n    if (!title || !airtimeMin) {\n      return new Response(\"Title and airtimeMin are required\", { status: 400 });\n    }\n\n    if (airtimeMin < 1 || airtimeMin > 360) {\n      return new Response(\"AirtimeMin must be a finite integer between 1 and 360\", { status: 400 });\n    }\n\n    const existingBroadcast = await db.broadcast.findUnique({\n      where: { title },\n    });\n\n    if (existingBroadcast) {\n      return new Response(\"Broadcast with the same title already exists\", { status: 409 });\n    }\n\n    const newBroadcast = await db.broadcast.create({\n      data: {\n        title,\n        airtimeMin,\n      },\n    });\n\n    return new Response(JSON.stringify(newBroadcast), { status: 201 });\n  } catch (error) {\n    console.error(\"Error creating broadcast:\", error);\n    return new Response(\"Internal Server Error\", { status: 500 });\n  }\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Implement POST /api/radiostation-broadcasts; trim required title and validate airtimeMin as a finite integer.\n- Enforce 1 <= airtimeMin <= 360 with HTTP 400 on missing/invalid/out-of-range values.\n- Check Transmitter.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.\n- Reject duplicate title within one Transmitter with HTTP 409. Create only after every check and return 201.\n- Create status as 'drafted' unless a valid workflow transition changes it later.\n\nWrite the complete route handler now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n",
+      "prompt_sha256": "196898acdb8561fa85b33e71732fc174d66360959a9b8ef9b4be39c6af88f6a8",
+      "raw_generation": "  try {\n    const body = await request.json();\n    const { title, airtimeMin } = body;\n\n    if (!title || !airtimeMin) {\n      return new Response(\"Title and airtimeMin are required\", { status: 400 });\n    }\n\n    if (airtimeMin < 1 || airtimeMin > 360) {\n      return new Response(\"AirtimeMin must be a finite integer between 1 and 360\", { status: 400 });\n    }\n\n    const existingBroadcast = await db.broadcast.findUnique({\n      where: { title },\n    });\n\n    if (existingBroadcast) {\n      return new Response(\"Broadcast with the same title already exists\", { status: 409 });\n    }\n\n    const newBroadcast = await db.broadcast.create({\n      data: {\n        title,\n        airtimeMin,\n      },\n    });\n\n    return new Response(JSON.stringify(newBroadcast), { status: 201 });\n  } catch (error) {\n    console.error(\"Error creating broadcast:\", error);\n    return new Response(\"Internal Server Error\", { status: 500 });\n  }\n}",
+      "usage": {
+        "seconds": 27.3,
+        "seed": 1162178156,
+        "stochastic": false,
+        "tokens": 239
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  try {\n    const body = await request.json();\n    const { title, airtimeMin } = body;\n\n    if (!title || !airtimeMin) {\n      return new Response(\"Title and airtimeMin are required\", { status: 400 });\n    }\n\n    if (airtimeMin < 1 || airtimeMin > 360) {\n      return new Response(\"AirtimeMin must be a finite integer between 1 and 360\", { status: 400 });\n    }\n\n    const existingBroadcast = await db.broadcast.findUnique({\n      where: { title },\n    });\n\n    if (existingBroadcast) {\n      return new Response(\"Broadcast with the same title already exists\", { status: 409 });\n    }\n\n    const newBroadcast = await db.broadcast.create({\n      data: {\n        title,\n        airtimeMin,\n      },\n    });\n\n    return new Response(JSON.stringify(newBroadcast), { status: 201 });\n  } catch (error) {\n    console.error(\"Error creating broadcast:\", error);\n    return new Response(\"Internal Server Error\", { status: 500 });\n  }\n}",
+  "candidate_final_sha256": "d6c800a73476e1d024dabff0513e3e1f8dde66c164910197bfeb133e9d5ae5b6",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "model_dir": "experiments/z041-coding-finetune/merged-checkpoint",
+  "model_label": "merged",
+  "skill": "api-post-validation",
+  "split": "dev",
+  "task_id": "radiostation:api-post-validation",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 10,
+    "checks": [
+      {
+        "detail": "",
+        "name": "export-POST-present",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "trusted-db-model-present",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "min-boundary",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "max-boundary",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "empty-title",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "not-a-number",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "non-integer",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "below-min",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "above-max",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "unknown-parent",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "duplicate-title",
+        "passed": false
+      },
+      {
+        "detail": "",
+        "name": "parent-null",
+        "passed": false
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 12,
+    "route_path": "/api/radiostation-broadcasts",
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:api-post-validation",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "vocab_lock_violations": 0,
+  "wall_seconds": 39.4
+}

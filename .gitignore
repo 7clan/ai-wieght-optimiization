@@ -19,3 +19,12 @@ apps/*/data/
 node_modules/
 experiments/z037-generalization/workspace-snapshots/*.tar.gz
 .eval-deps/node_modules/
+
+# Session 041B: the trained LoRA adapter is a branch artifact (merged
+# checkpoint weights stay out of git per the *.safetensors rule; the
+# merge is reproducible from this adapter + the frozen base sha)
+!experiments/z041-coding-finetune/train/adapter/adapter_model.safetensors
+# merged checkpoint: only the manifest is a git artifact (weights are
+# reproducible: frozen base + committed adapter + merge_verify.py)
+experiments/z041-coding-finetune/merged-checkpoint/*
+!experiments/z041-coding-finetune/merged-checkpoint/merge-manifest.json

@@ -1,0 +1,52 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { useEffect, useState } from 'react';\n\nexport default function BroadcastManager() {\n  const [broadcasts, setBroadcasts] = useState([]);\n\n  useEffect(() => {\n    fetch('/api/broadcasts')\n      .then(response => response.json())\n      .then(data => setBroadcasts(data));\n  }, []);\n\n  return (\n    <div>\n      <h1>Broadcast Manager</h1>\n      <ul>\n        {broadcasts.map(broadcast => (\n          <li key={broadcast.id}>\n            {broadcast.title} - {broadcast.description}\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Connect a React create form to the GET/POST route and persisted Broadcast model in this domain.\n- After HTTP 201, update the visible list and total without a full-page reload.\n- Display 400/404/409 validation failures and preserve form data for correction.\n- A subsequent GET must return the persisted item; no fake local-only success is accepted.\n- The list displays the persisted status, not a fabricated client-only value.\n\nWrite the complete React component now. The first line is already written; continue from it:\nimport { useEffect, useState } from 'react';\n\nexport default function BroadcastManager() {\n",
+      "prompt_sha256": "18d182a9906ac4e547a248b5140664572dc672edfe7cd4f3cd32b357d5081389",
+      "raw_generation": "  const [broadcasts, setBroadcasts] = useState([]);\n\n  useEffect(() => {\n    fetch('/api/broadcasts')\n      .then(response => response.json())\n      .then(data => setBroadcasts(data));\n  }, []);\n\n  return (\n    <div>\n      <h1>Broadcast Manager</h1>\n      <ul>\n        {broadcasts.map(broadcast => (\n          <li key={broadcast.id}>\n            {broadcast.title} - {broadcast.description}\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+      "usage": {
+        "seconds": 13.61,
+        "seed": 983387738,
+        "stochastic": false,
+        "tokens": 114
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { useEffect, useState } from 'react';\n\nexport default function BroadcastManager() {\n  const [broadcasts, setBroadcasts] = useState([]);\n\n  useEffect(() => {\n    fetch('/api/broadcasts')\n      .then(response => response.json())\n      .then(data => setBroadcasts(data));\n  }, []);\n\n  return (\n    <div>\n      <h1>Broadcast Manager</h1>\n      <ul>\n        {broadcasts.map(broadcast => (\n          <li key={broadcast.id}>\n            {broadcast.title} - {broadcast.description}\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}",
+  "candidate_final_sha256": "161081c14f10e91f50b04162899ff8b87aff01e02e1c4d9bc483541c6df7c932",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "model_dir": "/home/z/my-project/models/Qwen2.5-Coder-0.5B",
+  "model_label": "base",
+  "skill": "fullstack-integration",
+  "split": "dev",
+  "task_id": "radiostation:fullstack-integration",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 8,
+    "checks": [
+      {
+        "detail": "TypeError: broadcasts.map is not a function\n    at BroadcastManager (file:///work/component.mjs:10:54)\n    at Object.react_stack_bottom_frame (/eval-deps/node_m",
+        "name": "runner-error",
+        "passed": false
+      }
+    ],
+    "model_weight_change": false,
+    "passed": false,
+    "reported_checks": 1,
+    "route_path": "/api/radiostation-broadcasts",
+    "split": "dev",
+    "status": "BEHAVIOR_FAIL",
+    "suite_version": 2,
+    "task_id": "radiostation:fullstack-integration",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "vocab_lock_violations": 0,
+  "wall_seconds": 16.4
+}

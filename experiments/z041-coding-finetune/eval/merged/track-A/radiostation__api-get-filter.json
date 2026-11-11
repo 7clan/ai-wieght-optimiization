@@ -1,0 +1,52 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const { q } = request.nextUrl.searchParams;\n  const broadcasts = await db.broadcast.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    orderBy: {\n      title: \"asc\",\n    },\n    include: {\n      transmitter: true,\n    },\n  });\n\n  return {\n    broadcasts: broadcasts,\n    total: broadcasts.length,\n  };\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Implement Next.js GET /api/radiostation-broadcasts using db.broadcast.findMany.\n- Use searchParams 'q' as a case-insensitive title substring filter only when supplied.\n- Filter by optional transmitterId, order by title ascending, include transmitter.\n- Return { broadcasts: [...], total: number } with status 200; empty results return [] and 0.\n- The listed records include the persisted status field.\n\nWrite the complete route handler now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n",
+      "prompt_sha256": "356a91974ea140c89ce4124db0e14c20d36b75a4a7c67484edb3fa40b6d96733",
+      "raw_generation": "  const { q } = request.nextUrl.searchParams;\n  const broadcasts = await db.broadcast.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    orderBy: {\n      title: \"asc\",\n    },\n    include: {\n      transmitter: true,\n    },\n  });\n\n  return {\n    broadcasts: broadcasts,\n    total: broadcasts.length,\n  };\n}",
+      "usage": {
+        "seconds": 10.85,
+        "seed": 1867041282,
+        "stochastic": false,
+        "tokens": 89
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function GET(request: Request) {\n  const { q } = request.nextUrl.searchParams;\n  const broadcasts = await db.broadcast.findMany({\n    where: {\n      title: {\n        contains: q,\n        mode: \"insensitive\",\n      },\n    },\n    orderBy: {\n      title: \"asc\",\n    },\n    include: {\n      transmitter: true,\n    },\n  });\n\n  return {\n    broadcasts: broadcasts,\n    total: broadcasts.length,\n  };\n}",
+  "candidate_final_sha256": "608741e363b70bc02e644805ab862b914d579c1924a80894df0529f1c7feb938",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "model_dir": "experiments/z041-coding-finetune/merged-checkpoint",
+  "model_label": "merged",
+  "skill": "api-get-filter",
+  "split": "dev",
+  "task_id": "radiostation:api-get-filter",
+  "track": "A",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 6,
+    "checks": [
+      {
+        "detail": "process exited with code 1",
+        "name": "exited-cleanly",
+        "passed": false
+      }
+    ],
+    "exit_code": 1,
+    "model_weight_change": false,
+    "passed": false,
+    "route_path": "/api/radiostation-broadcasts",
+    "split": "dev",
+    "status": "EXECUTION_FAILED",
+    "suite_version": 2,
+    "task_id": "radiostation:api-get-filter",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "vocab_lock_violations": 0,
+  "wall_seconds": 23.3
+}

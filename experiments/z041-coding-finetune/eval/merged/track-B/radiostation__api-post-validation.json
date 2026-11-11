@@ -1,0 +1,107 @@
+{
+  "attempts": [
+    {
+      "brace_balanced": true,
+      "candidate": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const airtimeMin = Number(body.airtimeMin);\n  if (!Number.isInteger(airtimeMin) || airtimeMin < 1 || airtimeMin > 360) {\n    return Response.json({ error: \"airtimeMin must be 1..360\" }, { status: 400 });\n  }\n  if (body.transmitterId) {\n    const transmitter = await db.transmitter.findUnique({ where: { id: body.transmitterId } });\n    if (!transmitter) {\n      return Response.json({ error: \"transmitter not found\" }, { status: 404 });\n    }\n  }\n  const duplicate = await db.broadcast.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const broadcast = await db.broadcast.create({\n    data: {\n      title: body.title.trim(),\n      airtimeMin,\n      ...(body.transmitterId ? { transmitterId: body.transmitterId } : {}),\n      status: \"drafted\",\n    },\n  });\n  return Response.json(broadcast, { status: 201 });\n}",
+      "near_empty": false,
+      "note": "single-shot",
+      "prompt": "A Next.js POST route handler creates a record. It validates the body first (missing or invalid fields get 400), checks that referenced rows exist (404 when they do not) and rejects duplicates (409); only then does it persist and return 201 with the created record.\n\n// demo (different domain \u2014 a greenhouse app)\n// Note: use the GLOBAL Response.json (no next/server import) and import db\n// from \"@/lib/db\".\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.label !== \"string\" || body.label.trim() === \"\") {\n    return Response.json({ error: \"label is required\" }, { status: 400 });\n  }\n  const reading = Number(body.reading);\n  if (!Number.isInteger(reading) || reading < 1 || reading > 500) {\n    return Response.json({ error: \"reading must be 1..500\" }, { status: 400 });\n  }\n  if (body.greenhouseId) {\n    const greenhouse = await db.greenhouse.findUnique({ where: { id: body.greenhouseId } });\n    if (!greenhouse) {\n      return Response.json({ error: \"greenhouse not found\" }, { status: 404 });\n    }\n  }\n  const duplicate = await db.sensor.findFirst({ where: { label: body.label.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"label already exists\" }, { status: 409 });\n  }\n  const sensor = await db.sensor.create({\n    data: {\n      label: body.label.trim(),\n      reading,\n      ...(body.greenhouseId ? { greenhouseId: body.greenhouseId } : {}),\n      status: \"calibrating\",\n    },\n  });\n  return Response.json(sensor, { status: 201 });\n}\n\nNow YOUR task (a different domain): Task: Manage Broadcast records linked to Transmitter in the radiostation service.\nRequirements:\n- Implement POST /api/radiostation-broadcasts; trim required title and validate airtimeMin as a finite integer.\n- Enforce 1 <= airtimeMin <= 360 with HTTP 400 on missing/invalid/out-of-range values.\n- Check Transmitter.id existence with findUnique; unknown parent returns HTTP 404, except null is allowed if FK optional.\n- Reject duplicate title within one Transmitter with HTTP 409. Create only after every check and return 201.\n- Create status as 'drafted' unless a valid workflow transition changes it later.\n\nAdapt the demo's PATTERNS to this task's real names and domain \u2014 never copy the demo's domain words.\n\nChecklist: POST export; 400 for bad/missing fields (airtimeMin integer 1..360); 404 for unknown relation; 409 duplicate; 201 created.\n\nWrite the complete construct now. The first line is already written; continue from it:\nimport { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n",
+      "prompt_sha256": "5343c107368101995ff925ac2e167ff742566573b5b106604ab2858c6ee62961",
+      "raw_generation": "  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const airtimeMin = Number(body.airtimeMin);\n  if (!Number.isInteger(airtimeMin) || airtimeMin < 1 || airtimeMin > 360) {\n    return Response.json({ error: \"airtimeMin must be 1..360\" }, { status: 400 });\n  }\n  if (body.transmitterId) {\n    const transmitter = await db.transmitter.findUnique({ where: { id: body.transmitterId } });\n    if (!transmitter) {\n      return Response.json({ error: \"transmitter not found\" }, { status: 404 });\n    }\n  }\n  const duplicate = await db.broadcast.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const broadcast = await db.broadcast.create({\n    data: {\n      title: body.title.trim(),\n      airtimeMin,\n      ...(body.transmitterId ? { transmitterId: body.transmitterId } : {}),\n      status: \"drafted\",\n    },\n  });\n  return Response.json(broadcast, { status: 201 });\n}",
+      "usage": {
+        "seconds": 39.42,
+        "seed": 1370756550,
+        "stochastic": false,
+        "tokens": 313
+      }
+    }
+  ],
+  "attribution": "QWEN_GENERATED",
+  "candidate_final": "import { db } from \"@/lib/db\";\n\nexport async function POST(request: Request) {\n  const body = await request.json().catch(() => null);\n  if (!body || typeof body.title !== \"string\" || body.title.trim() === \"\") {\n    return Response.json({ error: \"title is required\" }, { status: 400 });\n  }\n  const airtimeMin = Number(body.airtimeMin);\n  if (!Number.isInteger(airtimeMin) || airtimeMin < 1 || airtimeMin > 360) {\n    return Response.json({ error: \"airtimeMin must be 1..360\" }, { status: 400 });\n  }\n  if (body.transmitterId) {\n    const transmitter = await db.transmitter.findUnique({ where: { id: body.transmitterId } });\n    if (!transmitter) {\n      return Response.json({ error: \"transmitter not found\" }, { status: 404 });\n    }\n  }\n  const duplicate = await db.broadcast.findFirst({ where: { title: body.title.trim() } });\n  if (duplicate) {\n    return Response.json({ error: \"title already exists\" }, { status: 409 });\n  }\n  const broadcast = await db.broadcast.create({\n    data: {\n      title: body.title.trim(),\n      airtimeMin,\n      ...(body.transmitterId ? { transmitterId: body.transmitterId } : {}),\n      status: \"drafted\",\n    },\n  });\n  return Response.json(broadcast, { status: 201 });\n}",
+  "candidate_final_sha256": "8e659add25b2051e46ad344203c183c914b97cb607418c3ddfc371337d53e078",
+  "decoding": "greedy",
+  "domain": "radiostation",
+  "model_dir": "experiments/z041-coding-finetune/merged-checkpoint",
+  "model_label": "merged",
+  "skill": "api-post-validation",
+  "split": "dev",
+  "task_id": "radiostation:api-post-validation",
+  "track": "B",
+  "verdict": {
+    "candidate_executed": true,
+    "case_count": 10,
+    "checks": [
+      {
+        "detail": "",
+        "name": "export-POST-present",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "trusted-db-model-present",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "min-boundary",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "max-boundary",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "empty-title",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "not-a-number",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "non-integer",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "below-min",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "above-max",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "unknown-parent",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "duplicate-title",
+        "passed": true
+      },
+      {
+        "detail": "",
+        "name": "parent-null",
+        "passed": true
+      }
+    ],
+    "model_weight_change": false,
+    "passed": true,
+    "reported_checks": 12,
+    "route_path": "/api/radiostation-broadcasts",
+    "split": "dev",
+    "status": "BEHAVIOR_PASS",
+    "suite_version": 2,
+    "task_id": "radiostation:api-post-validation",
+    "tier": "UNSHARE_USERNS_DISCLOSED"
+  },
+  "vocab_lock_violations": 0,
+  "wall_seconds": 51.6
+}
