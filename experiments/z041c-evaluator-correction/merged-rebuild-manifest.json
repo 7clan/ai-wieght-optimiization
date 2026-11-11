@@ -1,0 +1,115 @@
+{
+  "adapter_dir": "/home/z/my-project/repo/experiments/z041-coding-finetune/train/adapter",
+  "adapter_files_sha256": {
+    "README.md": "2f59c8d1673936bf40af735ec000cfb28699a4d802d23c2188286d9635104142",
+    "adapter_config.json": "bf14300f58ec0a47787af8d75ee28fa8819407f0d33298c4e21b91652b76d586",
+    "adapter_model.safetensors": "7d272330b83051a7341c4925ac043722a1fa20564bdb0853009a69ce9ed58c32",
+    "added_tokens.json": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b",
+    "chat_template.jinja": "44d5f08f3f72b837eaad09f13a54c1f9f4eb58d75240334548b7fd52a5437fa5",
+    "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+    "special_tokens_map.json": "6676f091c8bc4d1b50146427cfde92073402866b87b6e39223227931b70083e9",
+    "tokenizer.json": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa",
+    "tokenizer_config.json": "03b92675a127fe2fecefa4801bcfb276897393707e2d13ce785b446234c15383",
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  "architecture": {
+    "class": "Qwen2ForCausalLM",
+    "config_identical_to_base": true,
+    "hidden": 896,
+    "layers": 24,
+    "params": 494032768
+  },
+  "base_model_sha256": "aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80",
+  "changed_matrices": 144,
+  "changed_matrix_examples": [
+    {
+      "max_abs_diff": 0.0016922777285799384,
+      "mean_abs_diff": 0.00015150349645409733,
+      "param": "model.layers.21.mlp.up_proj.weight",
+      "rel_to_weight_norm": 0.009130806662142277
+    },
+    {
+      "max_abs_diff": 0.0014567025937139988,
+      "mean_abs_diff": 0.00013771474186796695,
+      "param": "model.layers.11.self_attn.v_proj.weight",
+      "rel_to_weight_norm": 0.010743058286607265
+    },
+    {
+      "max_abs_diff": 0.0013992590829730034,
+      "mean_abs_diff": 0.00015153536514844745,
+      "param": "model.layers.19.mlp.up_proj.weight",
+      "rel_to_weight_norm": 0.009656665846705437
+    },
+    {
+      "max_abs_diff": 0.001333586871623993,
+      "mean_abs_diff": 0.00015076725685503334,
+      "param": "model.layers.22.self_attn.q_proj.weight",
+      "rel_to_weight_norm": 0.009135020896792412
+    },
+    {
+      "max_abs_diff": 0.001270826905965805,
+      "mean_abs_diff": 0.00013510885764844716,
+      "param": "model.layers.15.mlp.up_proj.weight",
+      "rel_to_weight_norm": 0.008725027553737164
+    },
+    {
+      "max_abs_diff": 0.0012347688898444176,
+      "mean_abs_diff": 0.00014514887880068272,
+      "param": "model.layers.17.mlp.up_proj.weight",
+      "rel_to_weight_norm": 0.009893139824271202
+    },
+    {
+      "max_abs_diff": 0.0012298952788114548,
+      "mean_abs_diff": 0.0001455034507671371,
+      "param": "model.layers.20.self_attn.o_proj.weight",
+      "rel_to_weight_norm": 0.009094085544347763
+    },
+    {
+      "max_abs_diff": 0.0012021053116768599,
+      "mean_abs_diff": 0.0001352965773548931,
+      "param": "model.layers.11.mlp.up_proj.weight",
+      "rel_to_weight_norm": 0.009434906765818596
+    }
+  ],
+  "files": {
+    "config.json": {
+      "bytes": 659,
+      "sha256": "e6bf24d1cf58278dcb4ded7e885b71cb1c56299b34c8046b1b64395d17b1891f"
+    },
+    "generation_config.json": {
+      "bytes": 139,
+      "sha256": "215d4506cf90f3590fe821bee47dc92e99caa06f2c1b36076693b5209980009c"
+    },
+    "merges.txt": {
+      "bytes": 1671839,
+      "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+    },
+    "model.safetensors": {
+      "bytes": 988097824,
+      "sha256": "fc743be4598e14c52f12213f0eee49c31206ba37771dacb39b7b438b62d2ba06"
+    },
+    "tokenizer.json": {
+      "bytes": 7031645,
+      "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+    },
+    "tokenizer_config.json": {
+      "bytes": 7228,
+      "sha256": "283ec39d07ebfd1904aa2dee3c7d73524ed96c489fdb3915629900d3ab3ac319"
+    },
+    "vocab.json": {
+      "bytes": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "largest_relative_change": 0.01400422677397728,
+  "matrices_checked": 290,
+  "max_abs_diff_overall": 0.0016922777285799384,
+  "merge_method": "peft merge_and_unload() on the fp32 base, saved bf16 (the original checkpoint's on-disk dtype; fp32->bf16 rounding on save is the standard merge convention)",
+  "merged_dir": "/home/z/my-project/repo/experiments/z041-coding-finetune/merged-checkpoint",
+  "timing_s": {
+    "base_load_fp32": 1.2,
+    "merge": 0.6,
+    "save_bf16": 0.7
+  },
+  "unchanged_matrices": 146
+}

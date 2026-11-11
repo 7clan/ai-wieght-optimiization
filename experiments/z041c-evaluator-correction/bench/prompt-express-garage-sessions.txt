@@ -1,0 +1,6 @@
+Write a complete Express router module (JavaScript, CommonJS) for a parking garage session API on an existing express Router. Implement: GET /sessions returning a JSON envelope { sessions: [...], total } with optional query filters level (integer) and paid (true/false); POST /sessions creating a session from a body with plate (non-empty string), level (integer 0..5), validating everything and answering 400 with a machine-readable code on any violation, 409 if an open session for the plate already exists, 201 with the created record otherwise; PATCH /sessions/:id/pay marking a session paid (400 when already paid, 404 when unknown id); DELETE /sessions/:id closing a session (404 when unknown). Use a small in-memory store module passed in via router-level dependency injection.
+
+Write the complete file now. The first line is already written; continue from it:
+"use strict";
+
+const express = require("express");

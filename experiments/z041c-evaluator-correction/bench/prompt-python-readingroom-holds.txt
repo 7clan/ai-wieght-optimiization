@@ -1,0 +1,8 @@
+Write a complete Python module (standard library only) implementing the hold logic for a library reading room: a frozen Seat dataclass (id, capacity 1..6), a Hold dataclass (id, seat_id, patron, state with exactly the states placed/claimed/cancelled), a HoldBook class with place_hold/claim/cancel/list_holds methods enforcing: no two open holds on the same seat, unknown ids raise LookupError, invalid state transitions raise ValueError, and a module-level validate_patron(name) helper rejecting empty or non-string names. Include type hints and docstrings.
+
+Write the complete file now. The first line is already written; continue from it:
+"""Reading-room seat hold logic (pure, standard library only)."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field

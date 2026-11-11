@@ -1,0 +1,7 @@
+// utility helpers for a small booking tool
+export function nights(checkIn, checkOut) {
+  const msPerDay = 24 * 60 * 60 * 1000;
+  return Math.round((Date.parse(checkOut) - Date.parse(checkIn)) / msPerDay);
+}
+
+export function totalPrice(nights, ratePerNight) {

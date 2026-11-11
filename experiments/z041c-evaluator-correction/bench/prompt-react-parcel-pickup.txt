@@ -1,0 +1,6 @@
+Write a complete React client component file (TypeScript, no server actions) for a parcel pickup point desk. The page shows: a text search box filtering parcels by recipient name, a status filter with the three states waiting/picked-up/returned, the full parcel list with sender, recipient and shelf code columns, an add-parcel form (recipient, shelf code, weight in grams 1..30000) with inline validation, and an error banner that appears only after failed submissions. Keep component state in hooks; no external UI library; only the global fetch API.
+
+Write the complete file now. The first line is already written; continue from it:
+"use client";
+
+import { useEffect, useMemo, useState } from "react";

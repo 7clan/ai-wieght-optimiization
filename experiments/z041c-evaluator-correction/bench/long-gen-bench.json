@@ -1,0 +1,254 @@
+{
+  "base": {
+    "continuity_128": {
+      "model_load_s_mean": 0.956,
+      "peak_rss_mb_max": 3314.4,
+      "tokens_per_s_mean": 6.865,
+      "trials": 3
+    },
+    "long_budgets": {
+      "1024": {
+        "balanced_braces_runs": 4,
+        "distinct_3_mean": 0.4221,
+        "gen_s_mean": 93.5,
+        "natural_eos_runs": 2,
+        "peak_rss_mb_max": 3314.5,
+        "per_prompt": {
+          "express-garage-sessions": {
+            "brace_balance": 0,
+            "chars": 4416,
+            "distinct_3": 0.0788,
+            "gen_s": 119.483,
+            "gen_tokens": 1024,
+            "lines": 70,
+            "natural_eos": false,
+            "tokens_per_s": 8.57
+          },
+          "prisma-repairshop-orders": {
+            "brace_balance": 0,
+            "chars": 1287,
+            "distinct_3": 0.8793,
+            "gen_s": 39.891,
+            "gen_tokens": 341,
+            "lines": 61,
+            "natural_eos": true,
+            "tokens_per_s": 8.548
+          },
+          "python-readingroom-holds": {
+            "brace_balance": 0,
+            "chars": 3032,
+            "distinct_3": 0.7156,
+            "gen_s": 93.775,
+            "gen_tokens": 807,
+            "lines": 90,
+            "natural_eos": true,
+            "tokens_per_s": 8.606
+          },
+          "react-parcel-pickup": {
+            "brace_balance": 0,
+            "chars": 5222,
+            "distinct_3": 0.0147,
+            "gen_s": 120.834,
+            "gen_tokens": 1024,
+            "lines": 102,
+            "natural_eos": false,
+            "tokens_per_s": 8.474
+          }
+        },
+        "runs": 4,
+        "tokens_per_s_mean": 8.55,
+        "tokens_total": 3196,
+        "truncated_runs": 2
+      },
+      "512": {
+        "balanced_braces_runs": 3,
+        "distinct_3_mean": 0.4587,
+        "gen_s_mean": 54.34,
+        "natural_eos_runs": 1,
+        "peak_rss_mb_max": 3314.7,
+        "per_prompt": {
+          "express-garage-sessions": {
+            "brace_balance": 0,
+            "chars": 2197,
+            "distinct_3": 0.1612,
+            "gen_s": 60.609,
+            "gen_tokens": 512,
+            "lines": 35,
+            "natural_eos": false,
+            "tokens_per_s": 8.448
+          },
+          "prisma-repairshop-orders": {
+            "brace_balance": 0,
+            "chars": 1287,
+            "distinct_3": 0.8793,
+            "gen_s": 38.358,
+            "gen_tokens": 341,
+            "lines": 61,
+            "natural_eos": true,
+            "tokens_per_s": 8.89
+          },
+          "python-readingroom-holds": {
+            "brace_balance": 0,
+            "chars": 2020,
+            "distinct_3": 0.7619,
+            "gen_s": 59.497,
+            "gen_tokens": 512,
+            "lines": 58,
+            "natural_eos": false,
+            "tokens_per_s": 8.606
+          },
+          "react-parcel-pickup": {
+            "brace_balance": 1,
+            "chars": 2607,
+            "distinct_3": 0.0326,
+            "gen_s": 58.905,
+            "gen_tokens": 512,
+            "lines": 51,
+            "natural_eos": false,
+            "tokens_per_s": 8.692
+          }
+        },
+        "runs": 4,
+        "tokens_per_s_mean": 8.659,
+        "tokens_total": 1877,
+        "truncated_runs": 3
+      }
+    }
+  },
+  "merged": {
+    "continuity_128": {
+      "model_load_s_mean": 1.005,
+      "peak_rss_mb_max": 3314.4,
+      "tokens_per_s_mean": 6.882,
+      "trials": 3
+    },
+    "long_budgets": {
+      "1024": {
+        "balanced_braces_runs": 4,
+        "distinct_3_mean": 0.8521,
+        "gen_s_mean": 48.91,
+        "natural_eos_runs": 4,
+        "peak_rss_mb_max": 3314.9,
+        "per_prompt": {
+          "express-garage-sessions": {
+            "brace_balance": 0,
+            "chars": 1703,
+            "distinct_3": 0.7889,
+            "gen_s": 52.25,
+            "gen_tokens": 446,
+            "lines": 65,
+            "natural_eos": true,
+            "tokens_per_s": 8.536
+          },
+          "prisma-repairshop-orders": {
+            "brace_balance": 0,
+            "chars": 729,
+            "distinct_3": 0.878,
+            "gen_s": 20.699,
+            "gen_tokens": 175,
+            "lines": 33,
+            "natural_eos": true,
+            "tokens_per_s": 8.455
+          },
+          "python-readingroom-holds": {
+            "brace_balance": 0,
+            "chars": 965,
+            "distinct_3": 0.8704,
+            "gen_s": 28.185,
+            "gen_tokens": 241,
+            "lines": 36,
+            "natural_eos": true,
+            "tokens_per_s": 8.551
+          },
+          "react-parcel-pickup": {
+            "brace_balance": 0,
+            "chars": 3576,
+            "distinct_3": 0.871,
+            "gen_s": 94.509,
+            "gen_tokens": 828,
+            "lines": 114,
+            "natural_eos": true,
+            "tokens_per_s": 8.761
+          }
+        },
+        "runs": 4,
+        "tokens_per_s_mean": 8.576,
+        "tokens_total": 1690,
+        "truncated_runs": 0
+      },
+      "512": {
+        "balanced_braces_runs": 3,
+        "distinct_3_mean": 0.8683,
+        "gen_s_mean": 40.45,
+        "natural_eos_runs": 3,
+        "peak_rss_mb_max": 3314.7,
+        "per_prompt": {
+          "express-garage-sessions": {
+            "brace_balance": 0,
+            "chars": 1703,
+            "distinct_3": 0.7889,
+            "gen_s": 52.252,
+            "gen_tokens": 446,
+            "lines": 65,
+            "natural_eos": true,
+            "tokens_per_s": 8.536
+          },
+          "prisma-repairshop-orders": {
+            "brace_balance": 0,
+            "chars": 729,
+            "distinct_3": 0.878,
+            "gen_s": 20.776,
+            "gen_tokens": 175,
+            "lines": 33,
+            "natural_eos": true,
+            "tokens_per_s": 8.423
+          },
+          "python-readingroom-holds": {
+            "brace_balance": 0,
+            "chars": 965,
+            "distinct_3": 0.8704,
+            "gen_s": 28.719,
+            "gen_tokens": 241,
+            "lines": 36,
+            "natural_eos": true,
+            "tokens_per_s": 8.392
+          },
+          "react-parcel-pickup": {
+            "brace_balance": 1,
+            "chars": 2219,
+            "distinct_3": 0.936,
+            "gen_s": 60.052,
+            "gen_tokens": 512,
+            "lines": 74,
+            "natural_eos": false,
+            "tokens_per_s": 8.526
+          }
+        },
+        "runs": 4,
+        "tokens_per_s_mean": 8.469,
+        "tokens_total": 1374,
+        "truncated_runs": 1
+      }
+    }
+  },
+  "models": {
+    "base": {
+      "dir": "/home/z/my-project/models/qwen25-coder-05b",
+      "safetensors_sha256": "aff8914ec707fcaf9e2d4dc97197cded50b1c63e1d3a7a82e56f54d83ea47f80"
+    },
+    "merged": {
+      "dir": "/home/z/my-project/repo/experiments/z041-coding-finetune/merged-checkpoint",
+      "safetensors_sha256": "fc743be4598e14c52f12213f0eee49c31206ba37771dacb39b7b438b62d2ba06"
+    }
+  },
+  "n_runs": 22,
+  "protocol": {
+    "continuity_with": "041B bench_cpu (128-token prompt, 3 trials)",
+    "decoding": "greedy",
+    "dtype": "fp32 load",
+    "one_shot_subprocess": true,
+    "seed": 20261111,
+    "threads": 2
+  },
+  "session": "041C"
+}

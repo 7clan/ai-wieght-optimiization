@@ -1,0 +1,30 @@
+{
+  "prompts": {
+    "continuity-128": {
+      "chars": 260,
+      "sha256": "d3c674347352546f0b478e5187e8e5d6716409d14dc83927e2528f1683c4b131",
+      "text": "// utility helpers for a small booking tool\nexport function nights(checkIn, checkOut) {\n  const msPerDay = 24 * 60 * 60 * 1000;\n  return Math.round((Date.parse(checkOut) - Date.parse(checkIn)) / msPerDay);\n}\n\nexport function totalPrice(nights, ratePerNight) {\n"
+    },
+    "express-garage-sessions": {
+      "chars": 919,
+      "sha256": "eb3db9078eff11f88a5bb210e215858e2d34203f772966f5d0a2b432f103a7b9",
+      "text": "Write a complete Express router module (JavaScript, CommonJS) for a parking garage session API on an existing express Router. Implement: GET /sessions returning a JSON envelope { sessions: [...], total } with optional query filters level (integer) and paid (true/false); POST /sessions creating a session from a body with plate (non-empty string), level (integer 0..5), validating everything and answering 400 with a machine-readable code on any violation, 409 if an open session for the plate already exists, 201 with the created record otherwise; PATCH /sessions/:id/pay marking a session paid (400 when already paid, 404 when unknown id); DELETE /sessions/:id closing a session (404 when unknown). Use a small in-memory store module passed in via router-level dependency injection.\n\nWrite the complete file now. The first line is already written; continue from it:\n\"use strict\";\n\nconst express = require(\"express\");\n"
+    },
+    "prisma-repairshop-orders": {
+      "chars": 751,
+      "sha256": "afb9c06292e80d6026c42469413596c3c8cf81cf6b366d4bc49706b0f8e281e1",
+      "text": "Write a complete file for a repair shop work-order backend: first a Prisma schema block as a comment string (datasource sqlite, two models \u2014 Technician with id and name, WorkOrder with id, title, notes, status with default intake, and a required relation to Technician with onDelete Restrict), then a TypeScript client script that imports PrismaClient from \"@prisma/client\", exports async functions list_open_orders(), create_order(title, notes, technician_id) with input validation, and assign_status(order_id, status) validating the status transition chain intake->diagnosed->repaired->delivered. No default export.\n\nWrite the complete file now. The first line is already written; continue from it:\n// repair shop work-orders: schema + typed client\n"
+    },
+    "python-readingroom-holds": {
+      "chars": 786,
+      "sha256": "2817e0c72340ba95c3d29fa2c6dae8c5b3538e19746c05972b64ad9dbe506942",
+      "text": "Write a complete Python module (standard library only) implementing the hold logic for a library reading room: a frozen Seat dataclass (id, capacity 1..6), a Hold dataclass (id, seat_id, patron, state with exactly the states placed/claimed/cancelled), a HoldBook class with place_hold/claim/cancel/list_holds methods enforcing: no two open holds on the same seat, unknown ids raise LookupError, invalid state transitions raise ValueError, and a module-level validate_patron(name) helper rejecting empty or non-string names. Include type hints and docstrings.\n\nWrite the complete file now. The first line is already written; continue from it:\n\"\"\"Reading-room seat hold logic (pure, standard library only).\"\"\"\n\nfrom __future__ import annotations\n\nfrom dataclasses import dataclass, field\n"
+    },
+    "react-parcel-pickup": {
+      "chars": 705,
+      "sha256": "bf8b5341a8c397809fc5a345e939d56a053009e19a03f841ecb02dcffaa2fd05",
+      "text": "Write a complete React client component file (TypeScript, no server actions) for a parcel pickup point desk. The page shows: a text search box filtering parcels by recipient name, a status filter with the three states waiting/picked-up/returned, the full parcel list with sender, recipient and shelf code columns, an add-parcel form (recipient, shelf code, weight in grams 1..30000) with inline validation, and an error banner that appears only after failed submissions. Keep component state in hooks; no external UI library; only the global fetch API.\n\nWrite the complete file now. The first line is already written; continue from it:\n\"use client\";\n\nimport { useEffect, useMemo, useState } from \"react\";\n"
+    }
+  },
+  "seed": 20261111
+}

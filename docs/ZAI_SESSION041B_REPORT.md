@@ -218,3 +218,38 @@ cannot support broad generalization claims — the honest summary is:
 pipeline proven end-to-end, one verified cross-domain family gain, crash
 rate halved, dominant failure mode reduced but unresolved, pre-declared
 success criteria not met.*
+
+---
+
+## ERRATUM (Session 041C, appended — the sections above are the original
+2026-11-11 publication and are preserved unmodified)
+
+**The Track-B pass on `radiostation:api-post-validation` does not survive
+the corrected duplicate-title evaluator.** Post-publication review (Session
+041C, per the user's instruction) found the 039B probe plan verified only
+"duplicate → 409", never the per-parent scoping half of the frozen
+requirement ("Reject duplicate title **within one Transmitter**"), so a
+GLOBALLY scoped duplicate check — a contract violation — passed every
+probe. This session's merged-model candidate implemented exactly that
+global check (`findFirst({ where: { title } })`, no transmitter scoping).
+The corrected evaluator (additive amendment `041C-duplicate-title-scope`,
+new probe `duplicate-title-other-parent`: same title under a different
+parent must be accepted with 201) was validated on 11/11 trusted oracle
+controls including a new KNOWN-BAD global-duplicate control that fails on
+exactly the new probe. Re-scoring the archived candidate byte-identically
+inside the restricted tier flips it:
+
+| endpoint | as published above | corrected (041C) |
+|---|---|---|
+| Track-B pass@1 (dev) | **1/6** | **0/6** (BEHAVIOR_FAIL, fails exactly `duplicate-title-other-parent`) |
+
+Corrected headline: the 041B LoRA Stage-1 shows **no dev-split correctness
+gain** under the corrected evaluator. The probe-independent 041B findings
+stand unchanged: EXECUTION_FAILED 4→2, vocabulary-lock 23→15, zero runtime
+overhead. The one-pass's "genuine transfer signal" claim is RETRACTED.
+Full correction evidence: `experiments/z041c-evaluator-correction/`
+(controls 11/11 + s040 matrix 15/15 re-validation, re-score record, and
+this session's longer-code-generation benchmark: base collapses into
+repetition on long prompts, merged terminates 4/4 at 1024 tokens — see
+its README). The 24-task holdout remains sealed; the merged checkpoint
+stays frozen for the planned three-way evaluation.

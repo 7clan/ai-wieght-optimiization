@@ -67,16 +67,58 @@ vocabulary-lock 23→15 reductions in the 041B report are probe-independent
 and stand as measured. `docs/ZAI_SESSION041B_REPORT.md` carries the erratum
 addendum; the original evidence files are preserved unmodified.
 
-## 4. Longer code generation benchmark
+## 4. Longer code generation benchmark (measured)
 
-`archagent/z041c/bench_long.py` — original vs merged (LoRA-merged
-checkpoint re-materialized from the committed adapter + frozen base, params
-re-verified 494,032,768), fp32, threads=2, greedy, one-shot subprocess per
-run (peak RSS via resource.getrusage). Trusted neutral prompts (authored
-for this benchmark, not from any suite split) spanning four longer-form
-coding shapes at 512/1024-token budgets. Metrics: sustained tokens/s, wall
-seconds, peak RSS, natural-EOS vs truncation, brace balance, distinct-3
-repetition. Full data: `bench/long-gen-bench.json`.
+`archagent/z041c/bench_long.py` + `bench_long_child.py` — original vs merged
+(the merged checkpoint re-materialized byte-identically from the committed
+adapter + frozen base: safetensors sha256 `fc743be4…ba06`, matching the 041B
+manifest; merge re-verified 494,032,768 params, exactly 144/290 matrices
+changed, max |ΔW| = 0.0016923). Protocol identical to 041B `bench_cpu`
+wherever it applies: fp32 load, threads=2, greedy, seed 20261111, one-shot
+isolated subprocess per run, peak RSS via getrusage. New: four trusted
+teacher-authored longer-form prompts (neutral domains, archived with
+sha256 in `bench/prompts.json`; NOT from any suite split) spanning React
+component / Express API router / Python logic module / Prisma schema+
+client, at budgets 512 and 1024; plus the exact 041B 128-token continuity
+prompt, 3 trials per model. Raw outputs archived verbatim per run
+(`bench/runs/`, attribution QWEN_GENERATED_RAW_UNEDITED).
+
+**Environment:** matched to the 041B ledger exactly (torch 2.15.0+cpu,
+transformers 4.57.6, peft 0.21.2, accelerate 1.15.0). A first pass under
+transformers 4.57.1 produced identical texts (same EOS token counts, same
+distinct-3 to 4 decimals) and was superseded pre-publication; the archived
+runs are the 4.57.6 ones.
+
+**Continuity control (041B anchor):** the 128-token prompt ends in natural
+EOS at 10 tokens in BOTH sessions' environments; tokens/s mean — base
+6.865 vs merged 6.882 this session (041B: 6.948 vs 6.95). Same regime,
+environment-drift control holds.
+
+**Longer generations (4 prompts per model per budget):**
+
+| metric | base | merged |
+|---|---|---|
+| sustained tokens/s @512 / @1024 | 8.659 / 8.550 | 8.469 / 8.576 |
+| natural-EOS runs @512 / @1024 | 1/4 / 2/4 | **3/4 / 4/4** |
+| brace-balanced runs @512 / @1024 | 3/4 / 4/4 | 3/4 / 4/4 |
+| distinct-3 mean @512 / @1024 | 0.459 / 0.422 | **0.868 / 0.852** |
+| gen seconds mean @512 / @1024 | 54.3 / 93.5 | 40.5 / 48.9 |
+| peak RSS (max over all runs) | 3,314.7 MiB | 3,314.9 MiB |
+| model load (mean) | 0.96 s | 1.01 s |
+
+Read: throughput and RAM are unchanged (the merge adds zero runtime cost,
+now confirmed on long generations too). The behavioral difference is
+termination: the base model degenerates into repetition collapse on longer
+form-factor prompts — e.g. `react-parcel-pickup` @1024 is ~1,000 tokens of
+the identical `import { useSearchParams } from "next/navigation";` line
+(distinct-3 0.015) — while the merged model terminates its files naturally
+(EOS 4/4 at 1024) with high text diversity (distinct-3 ≥ 0.71 on every
+prompt). A spot-check of the merged react output shows a coherent,
+balanced JSX file (with an in-file quality slip: a doubled identifier
+`addParcelErrorBannerErrorBanner`), i.e. these are STRUCTURAL termination
+metrics, not correctness verdicts — correctness remains the dev-split
+evaluator's job (0/6 → 0/6 after the §3 erratum). No generalization claim:
+4 prompts, one seed, greedy only.
 
 ## 5. Not done
 
