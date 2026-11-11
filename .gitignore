@@ -25,3 +25,8 @@ experiments/z037-generalization/workspace-snapshots/*.tar.gz
 # (frozen base sha + committed adapter + archagent/z041/merge_verify.py);
 # verified byte-exact post-reset on this branch (see memorial §4)
 experiments/z041-coding-finetune/merged-checkpoint/*
+
+# Session 042: range-fetched donor embedding tensor (231MB probe cache;
+# reproducible via archagent/s042/probe_alignment.py, offsets verified
+# against the live safetensors header on every run)
+experiments/z042-glm-transfer/*.bf16

@@ -1,0 +1,512 @@
+{
+  "donor": "zai-org/glm-edge-1.5b-chat",
+  "donor_tensor": "model.embed_tokens.weight [59264, 2048] bf16 (range-fetched)",
+  "recipient": "Qwen/Qwen2.5-Coder-0.5B model.embed_tokens.weight [151936, 896] bf16",
+  "n_shared_ascii_tokens": 13773,
+  "n_train": 6887,
+  "n_test": 6886,
+  "procrustes": {
+    "train_cos_mean": 0.484,
+    "train_explained_var": -0.6311,
+    "heldout_cos_mean": 0.0859,
+    "heldout_cos_median": 0.0854,
+    "heldout_cos_p90": 0.1516,
+    "heldout_explained_var": -1.5199,
+    "null_shuffled_cos_mean": 0.0766,
+    "null_random_orth_cos_mean": -0.0019
+  },
+  "cross_correlation_spectrum": {
+    "top10_singular_values": [
+      205.0483,
+      7.7379,
+      3.5471,
+      3.1824,
+      2.9377,
+      2.8141,
+      2.7248,
+      2.6752,
+      2.6563,
+      2.6138
+    ],
+    "effective_rank (>1% of s1)": 75,
+    "total": 896
+  },
+  "knn_code_tokens": [
+    {
+      "token": "def",
+      "same_string_rank": 1,
+      "same_string_cos": 0.5031217336654663,
+      "top3": [
+        {
+          "tok": "def",
+          "cos": 0.5031217336654663
+        },
+        {
+          "tok": "\u0120def",
+          "cos": 0.40438657999038696
+        },
+        {
+          "tok": "\u0109def",
+          "cos": 0.36681950092315674
+        }
+      ]
+    },
+    {
+      "token": "class",
+      "same_string_rank": 1,
+      "same_string_cos": 0.5094478130340576,
+      "top3": [
+        {
+          "tok": "class",
+          "cos": 0.5094478130340576
+        },
+        {
+          "tok": "\u0109class",
+          "cos": 0.4470996558666229
+        },
+        {
+          "tok": "\u0120class",
+          "cos": 0.43686550855636597
+        }
+      ]
+    },
+    {
+      "token": "import",
+      "same_string_rank": 106432,
+      "same_string_cos": -0.006199863273650408,
+      "top3": [
+        {
+          "tok": "acking",
+          "cos": 0.14713376760482788
+        },
+        {
+          "tok": "_property",
+          "cos": 0.14659996330738068
+        },
+        {
+          "tok": "JM",
+          "cos": 0.1465962529182434
+        }
+      ]
+    },
+    {
+      "token": "return",
+      "same_string_rank": 1,
+      "same_string_cos": 0.4584682285785675,
+      "top3": [
+        {
+          "tok": "return",
+          "cos": 0.4584682285785675
+        },
+        {
+          "tok": "\u0109return",
+          "cos": 0.389987975358963
+        },
+        {
+          "tok": "\u0120return",
+          "cos": 0.38886362314224243
+        }
+      ]
+    },
+    {
+      "token": "function",
+      "same_string_rank": 134208,
+      "same_string_cos": 0.03787032514810562,
+      "top3": [
+        {
+          "tok": "\u00d8\u00aa\u00d8\u00ae\u00d8\u00b0",
+          "cos": 0.23935826122760773
+        },
+        {
+          "tok": "\u00e1\u013d\u0141",
+          "cos": 0.23791171610355377
+        },
+        {
+          "tok": "\u00e2\u013a\u012f",
+          "cos": 0.23399889469146729
+        }
+      ]
+    },
+    {
+      "token": "const",
+      "same_string_rank": 1,
+      "same_string_cos": 0.5606582760810852,
+      "top3": [
+        {
+          "tok": "const",
+          "cos": 0.5606582760810852
+        },
+        {
+          "tok": "\u0109const",
+          "cos": 0.49933314323425293
+        },
+        {
+          "tok": "\u0120const",
+          "cos": 0.46527308225631714
+        }
+      ]
+    },
+    {
+      "token": "async",
+      "same_string_rank": 134479,
+      "same_string_cos": 0.0206518042832613,
+      "top3": [
+        {
+          "tok": "intptr",
+          "cos": 0.20642611384391785
+        },
+        {
+          "tok": "\u00d0\u00b8\u00d0\u00bb\u00d0\u00b8",
+          "cos": 0.20602740347385406
+        },
+        {
+          "tok": "\u00f0\u013f\u0137\u00b4",
+          "cos": 0.20519639551639557
+        }
+      ]
+    },
+    {
+      "token": "await",
+      "same_string_rank": 1,
+      "same_string_cos": 0.4966054856777191,
+      "top3": [
+        {
+          "tok": "await",
+          "cos": 0.4966054856777191
+        },
+        {
+          "tok": "\u0109await",
+          "cos": 0.44512948393821716
+        },
+        {
+          "tok": "\u0120await",
+          "cos": 0.41096556186676025
+        }
+      ]
+    },
+    {
+      "token": "if",
+      "same_string_rank": 1,
+      "same_string_cos": 0.4564763605594635,
+      "top3": [
+        {
+          "tok": "if",
+          "cos": 0.4564763605594635
+        },
+        {
+          "tok": "\u0120if",
+          "cos": 0.3248681426048279
+        },
+        {
+          "tok": "\u0109if",
+          "cos": 0.28648272156715393
+        }
+      ]
+    },
+    {
+      "token": "for",
+      "same_string_rank": 122198,
+      "same_string_cos": 0.02648887410759926,
+      "top3": [
+        {
+          "tok": "Startup",
+          "cos": 0.1943291276693344
+        },
+        {
+          "tok": "\u00e0\u00b8\u0139\u00e0\u00b8\u0143\u00e0\u00b8\u0136",
+          "cos": 0.1925434172153473
+        },
+        {
+          "tok": "\u00c3\u00bchrung",
+          "cos": 0.19034859538078308
+        }
+      ]
+    },
+    {
+      "token": "while",
+      "same_string_rank": 11516,
+      "same_string_cos": 0.14142009615898132,
+      "top3": [
+        {
+          "tok": "_Update",
+          "cos": 0.21640028059482574
+        },
+        {
+          "tok": "\u00e9\u0136\u0131",
+          "cos": 0.21532030403614044
+        },
+        {
+          "tok": "\u00f0\u0141\u0135\u00b0",
+          "cos": 0.21506503224372864
+        }
+      ]
+    },
+    {
+      "token": "true",
+      "same_string_rank": 1,
+      "same_string_cos": 0.47257858514785767,
+      "top3": [
+        {
+          "tok": "true",
+          "cos": 0.47257858514785767
+        },
+        {
+          "tok": "\u0109true",
+          "cos": 0.41752973198890686
+        },
+        {
+          "tok": "\u0120true",
+          "cos": 0.38487187027931213
+        }
+      ]
+    },
+    {
+      "token": "false",
+      "same_string_rank": 80429,
+      "same_string_cos": 0.09001220762729645,
+      "top3": [
+        {
+          "tok": "\u0120\u00d8\u00a7\u00d9\u0126\u00d8\u00b9\u00d8\u00b3\u00d9\u0125\u00d8\u00b1\u00d9\u012c\u00d8\u00a9",
+          "cos": 0.26655906438827515
+        },
+        {
+          "tok": "\u00ea\u00b9\u0128",
+          "cos": 0.2575506269931793
+        },
+        {
+          "tok": "\u0120\u00d7\u013e\u00d7\u013b\u00d7\u013e\u00d7\u0135\u00d7\u013b\u00d7\u013f",
+          "cos": 0.2565385699272156
+        }
+      ]
+    },
+    {
+      "token": "None",
+      "same_string_rank": 1,
+      "same_string_cos": 0.4922422766685486,
+      "top3": [
+        {
+          "tok": "None",
+          "cos": 0.4922422766685486
+        },
+        {
+          "tok": "\u0109None",
+          "cos": 0.4294144809246063
+        },
+        {
+          "tok": "\u0120None",
+          "cos": 0.42379695177078247
+        }
+      ]
+    },
+    {
+      "token": "print",
+      "same_string_rank": 1,
+      "same_string_cos": 0.530242383480072,
+      "top3": [
+        {
+          "tok": "print",
+          "cos": 0.530242383480072
+        },
+        {
+          "tok": "\u0120print",
+          "cos": 0.48243802785873413
+        },
+        {
+          "tok": "\u0109print",
+          "cos": 0.4805320203304291
+        }
+      ]
+    },
+    {
+      "token": "export",
+      "same_string_rank": 142624,
+      "same_string_cos": -0.007699168287217617,
+      "top3": [
+        {
+          "tok": "eday",
+          "cos": 0.18400081992149353
+        },
+        {
+          "tok": "cej",
+          "cos": 0.16868039965629578
+        },
+        {
+          "tok": "RESOURCE",
+          "cos": 0.16863951086997986
+        }
+      ]
+    },
+    {
+      "token": "await",
+      "same_string_rank": 1,
+      "same_string_cos": 0.4966054856777191,
+      "top3": [
+        {
+          "tok": "await",
+          "cos": 0.4966054856777191
+        },
+        {
+          "tok": "\u0109await",
+          "cos": 0.44512948393821716
+        },
+        {
+          "tok": "\u0120await",
+          "cos": 0.41096556186676025
+        }
+      ]
+    },
+    {
+      "token": "request",
+      "same_string_rank": 1,
+      "same_string_cos": 0.429410457611084,
+      "top3": [
+        {
+          "tok": "request",
+          "cos": 0.429410457611084
+        },
+        {
+          "tok": "\u0109request",
+          "cos": 0.3892044126987457
+        },
+        {
+          "tok": "(request",
+          "cos": 0.36614567041397095
+        }
+      ]
+    },
+    {
+      "token": "data",
+      "same_string_rank": 109496,
+      "same_string_cos": 0.033527620136737823,
+      "top3": [
+        {
+          "tok": ":%",
+          "cos": 0.19917747378349304
+        },
+        {
+          "tok": "\u00f0\u013f\u0139\u00bf",
+          "cos": 0.19746768474578857
+        },
+        {
+          "tok": "\u00d7\u0139\u00d7\u0137\u00d7\u0135",
+          "cos": 0.19495634734630585
+        }
+      ]
+    },
+    {
+      "token": "error",
+      "same_string_rank": 1,
+      "same_string_cos": 0.397007554769516,
+      "top3": [
+        {
+          "tok": "error",
+          "cos": 0.397007554769516
+        },
+        {
+          "tok": "\u0109error",
+          "cos": 0.343412846326828
+        },
+        {
+          "tok": "\u0120error",
+          "cos": 0.3296110928058624
+        }
+      ]
+    },
+    {
+      "token": "status",
+      "same_string_rank": 1,
+      "same_string_cos": 0.4875929653644562,
+      "top3": [
+        {
+          "tok": "status",
+          "cos": 0.4875929653644562
+        },
+        {
+          "tok": "\u0109status",
+          "cos": 0.4614551365375519
+        },
+        {
+          "tok": ".status",
+          "cos": 0.4558992087841034
+        }
+      ]
+    },
+    {
+      "token": "schema",
+      "same_string_rank": 36628,
+      "same_string_cos": 0.13090795278549194,
+      "top3": [
+        {
+          "tok": "\u00ec\u012c\u0143",
+          "cos": 0.2718530297279358
+        },
+        {
+          "tok": "\u00ec\u00be\u0127",
+          "cos": 0.26579415798187256
+        },
+        {
+          "tok": "\u00e0\u00b9\u0123\u00e0\u00b8\u012c\u00e0\u00b8\u00a1\u00e0\u00b8\u013d",
+          "cos": 0.26570937037467957
+        }
+      ]
+    },
+    {
+      "token": "model",
+      "same_string_rank": 58534,
+      "same_string_cos": 0.06281471997499466,
+      "top3": [
+        {
+          "tok": "anto",
+          "cos": 0.27496078610420227
+        },
+        {
+          "tok": "History",
+          "cos": 0.1988474577665329
+        },
+        {
+          "tok": "\u0120kto",
+          "cos": 0.187508225440979
+        }
+      ]
+    },
+    {
+      "token": "route",
+      "same_string_rank": 1,
+      "same_string_cos": 0.4452332556247711,
+      "top3": [
+        {
+          "tok": "route",
+          "cos": 0.4452332556247711
+        },
+        {
+          "tok": "\u0120route",
+          "cos": 0.3746049404144287
+        },
+        {
+          "tok": "(route",
+          "cos": 0.3741092383861542
+        }
+      ]
+    },
+    {
+      "token": "state",
+      "same_string_rank": 150760,
+      "same_string_cos": -0.01274579856544733,
+      "top3": [
+        {
+          "tok": "\u00d7\u0140\u00d7\u00a2\u00d7\u00a6\u00d7\u0133",
+          "cos": 0.27910342812538147
+        },
+        {
+          "tok": "\u00d7\u0140\u00d7\u00a1\u00d7\u0137\u00d7\u0134\u00d7\u013e",
+          "cos": 0.2747653126716614
+        },
+        {
+          "tok": "przedsi\u00c4\u013bbior",
+          "cos": 0.2743719518184662
+        }
+      ]
+    }
+  ],
+  "notes": "Procrustes is the BEST-case linear alignment at the shallowest layer (embeddings, tied to lm_head on both sides). Held-out cosine near the null baselines means no linear cross-space structure exists to build any closed-form transfer on."
+}

@@ -1,0 +1,23 @@
+{
+  "purpose": "verify the embedding-alignment probe before accepting its verdict",
+  "checks": [
+    {
+      "name": "kNN train/held-out split audit",
+      "finding": "Every rank-1 same-string kNN result (def, class, return, const, await, if, true, None, print, request, error, status, route) is a TRAIN-anchor of the Procrustes fit; every failed probe (import, function, async, for, while, false, export, data, schema, model, state) is held-out. The apparent alignment of code tokens is train-set memorization with zero generalization, matching the train-cos 0.484 vs held-out-cos 0.086 gap.",
+      "verdict": "apparent alignment = leakage, confirmed"
+    },
+    {
+      "name": "probe machinery sanity (Qwen-to-Qwen self-alignment)",
+      "protocol": "identical Procrustes pipeline, GLM side replaced by Qwen itself; fit on even-index anchors, evaluate on odd-index",
+      "heldout_cos_mean": 1.0,
+      "verdict": "pipeline exact (1.0000); the GLM result is real, not a bug"
+    },
+    {
+      "name": "centered variant (mean-removed embeddings)",
+      "heldout_cos_mean": 0.0094,
+      "explained_variance": -1.6904,
+      "verdict": "the raw probe's +0.009-over-null signal was the shared mean direction; with means removed the cross-space linear structure is zero"
+    }
+  ],
+  "conclusion": "No generalizable linear alignment exists between GLM-Edge-1.5B and Qwen2.5-Coder-0.5B embedding spaces at 13,773 shared ASCII anchors. This falsifies the necessary condition for ANY closed-form (gradient-free) weight-transfer method at the most favorable site (embeddings, tied to lm_head on both models)."
+}
