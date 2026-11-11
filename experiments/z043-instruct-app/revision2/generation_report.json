@@ -1,0 +1,26 @@
+{
+  "attribution": "QWEN_2_5_CODER_0_5B_INSTRUCT_RAW_UNEDITED",
+  "model": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+  "prompt": {
+    "system": "You are a careful web developer. Output only the complete HTML source. No Markdown fences, explanations, placeholders, or external dependencies.",
+    "task": "Create ONE standalone index.html app named FocusBoard for a person managing daily tasks.\nThe app must really work completely offline (no fetch, CDN, imports, frameworks, or remote resources).\nRequirements:\n1. An accessible form with a text input and Add Task button that inserts nonempty tasks.\n2. A visible task list that shows all saved tasks.\n3. A checkbox/button to mark each task completed and undo completion.\n4. A Delete button for each task.\n5. All, Active, and Completed filters that genuinely change the visible list.\n6. Persist changes in localStorage and restore saved tasks after reload.\n7. Show remaining active task count; provide an empty-state message.\n8. Responsive professional CSS embedded in a style tag.\nUse simple vanilla JavaScript (no TypeScript). Attach event listeners after the elements exist.\nKeep implementation compact. End with </html>. Return only source, starting with <!DOCTYPE html>.\n\nPUBLIC FEEDBACK FROM THE PREVIOUS ATTEMPT (not secret tests):\n- The Add Task form submitted without preventDefault(), causing navigation.\n- Appending bare task strings to innerHTML did not create actual task-list items.\n- There were no completion or delete controls for individual tasks.\n- Filters modified HTML strings instead of filtering task objects.\n- Saving was never called after mutations; NodeList.map is invalid.\nGenerate a NEW, complete HTML file from scratch. Do not reuse the previous failed code.\nUse a JavaScript array of task objects with id, text and completed boolean.\nEvery action must update that array, save JSON to localStorage, and render the list.\nCreate one <li> per task with a checkbox, label and Delete button.\nImplement separate All, Active and Completed buttons and filter the task array.\nThe form submit handler MUST call preventDefault().\nPlease prioritize correct JavaScript over decorative CSS. Keep it short and executable."
+  },
+  "repair_from_public_feedback": true,
+  "prompt_sha256": "1dcf337d4be44086a2785f72a983ea234a0ce1f26d4931d71c9742176bdd4b6f",
+  "raw_sha256": "3363c3cbe2a9831a5da2e3ed4f8319e72c240053722f2f0622c47f15d0c7e70e",
+  "extracted_sha256": "3363c3cbe2a9831a5da2e3ed4f8319e72c240053722f2f0622c47f15d0c7e70e",
+  "extraction": "doctype through final html closing tag, with optional fenced-code removal",
+  "structural_checks": {
+    "doctype": true,
+    "closed_html": true,
+    "contains_style": true,
+    "contains_script": true,
+    "no_external_imports": true
+  },
+  "generation_tokens": 1076,
+  "max_new_tokens": 2400,
+  "wall_seconds_including_load": 182.19,
+  "behavior_tested": false,
+  "safe_to_run_unsandboxed": false,
+  "note": "Output requires independent restricted-container behavioral validation."
+}

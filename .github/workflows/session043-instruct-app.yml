@@ -1,0 +1,49 @@
+name: Session 043 Qwen Instruct genuine offline-app behavior
+
+on:
+  push:
+    branches:
+      - exp/043-instruct-real-app
+    paths:
+      - .github/workflows/session043-instruct-app.yml
+      - archagent/s043/**
+      - experiments/z043-instruct-app/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  real-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify honest model-output provenance and HTML structure
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from archagent.s043.generate_instruct_app import extract_html, sha256
+          root = Path('experiments/z043-instruct-app/revision2')
+          report = json.loads((root/'generation_report.json').read_text())
+          raw = (root/'raw_completion.txt').read_text()
+          html, checks = extract_html(raw)
+          assert sha256(raw) == report['raw_sha256']
+          assert sha256(html) == report['extracted_sha256']
+          assert html == (root/'index.html').read_text()
+          assert all(checks.values()), checks
+          assert report['model'] == 'Qwen/Qwen2.5-Coder-0.5B-Instruct'
+          print('Unedited model generation provenance verified')
+          PY
+      - name: Build restricted browser behavior evaluator
+        run: docker build -f archagent/s043/Dockerfile -t qwen-s043-test:1 archagent/s043
+      - name: Run actual generated JavaScript in isolated offline DOM
+        run: |
+          docker run --rm --pull never --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --pids-limit 96 --cpus 2 \
+            --memory 512m --memory-swap 512m --user 65534:65534 \
+            --tmpfs /tmp:rw,nosuid,noexec,size=32m \
+            --mount type=bind,src="$PWD/archagent/s043/behavior_check.cjs",dst=/evaluator/behavior_check.cjs,readonly \
+            --mount type=bind,src="$PWD/experiments/z043-instruct-app/revision2",dst=/candidate,readonly \
+            qwen-s043-test:1

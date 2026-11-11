@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusBoard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form {
+            margin-bottom: 20px;
+        }
+        .input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .add-task-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .task-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+        .delete {
+            color: red;
+            cursor: pointer;
+        }
+        .active {
+            background-color: #f0f0f0;
+        }
+        .empty-state {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FocusBoard</h1>
+        <form id="focusForm">
+            <label for="tasks">Add Tasks:</label>
+            <input type="text" id="tasks" name="tasks" placeholder="Enter tasks...">
+            <button type="submit">Add Task</button>
+        </form>
+        <ul id="taskList"></ul>
+        <div class="filters">
+            <label for="activeFilter">Active:</label>
+            <input type="checkbox" id="activeFilter" name="activeFilter">
+            <label for="completedFilter">Completed:</label>
+            <input type="checkbox" id="completedFilter" name="completedFilter">
+        </div>
+        <button onclick="toggleFilters()">Toggle Filters</button>
+        <p id="remainingActiveCount"></p>
+    </div>
+
+    <script>
+        const focusForm = document.getElementById('focusForm');
+        const taskList = document.getElementById('taskList');
+        const activeFilter = document.getElementById('activeFilter');
+        const completedFilter = document.getElementById('completedFilter');
+        const remainingActiveCount = document.getElementById('remainingActiveCount');
+
+        // Function to add a new task
+        function addTask() {
+            const tasks = taskList.innerHTML.split('\n');
+            tasks.push(focusForm.tasks.value.trim());
+            taskList.innerHTML = tasks.join('\n');
+            focusForm.tasks.value = '';
+        }
+
+        // Function to toggle filters
+        function toggleFilters() {
+            const activeFilterChecked = activeFilter.checked;
+            const completedFilterChecked = completedFilter.checked;
+
+            if (activeFilterChecked) {
+                taskList.innerHTML = taskList.innerHTML.replace(/<li>/g, '<li class="active">');
+            } else {
+                taskList.innerHTML = taskList.innerHTML.replace(/<li>/g, '');
+            }
+
+            if (completedFilterChecked) {
+                taskList.innerHTML = taskList.innerHTML.replace(/<li>/g, '<li class="completed">');
+            } else {
+                taskList.innerHTML = taskList.innerHTML.replace(/<li>/g, '');
+            }
+        }
+
+        // Load saved tasks from localStorage
+        function loadTasks() {
+            const savedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+            taskList.innerHTML = savedTasks.map(task => `<li>${task}</li>`);
+        }
+
+        // Save tasks to localStorage
+        function saveTasks() {
+            const tasks = taskList.querySelectorAll('li');
+            localStorage.setItem('tasks', tasks.map(task => task.textContent));
+        }
+
+        // Initial load of tasks
+        loadTasks();
+
+        // Event listener for form submission
+        focusForm.addEventListener('submit', addTask);
+
+        // Event listener for filter changes
+        activeFilter.addEventListener('change', toggleFilters);
+        completedFilter.addEventListener('change', toggleFilters);
+    </script>
+</body>
+</html>

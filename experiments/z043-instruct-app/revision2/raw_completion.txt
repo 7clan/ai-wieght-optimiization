@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusBoard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form {
+            display: flex;
+            align-items: center;
+        }
+        .input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .task-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FocusBoard</h1>
+        <form id="taskForm">
+            <input type="text" id="newTask" placeholder="Enter a new task...">
+            <button type="submit">Add Task</button>
+        </form>
+        <ul id="taskList"></ul>
+        <button id="allButton">All</button>
+        <button id="activeButton">Active</button>
+        <button id="completedButton">Completed</button>
+        <p id="remainingActiveCount">Remaining Active Tasks: 0</p>
+        <script>
+            const taskList = document.getElementById('taskList');
+            const taskForm = document.getElementById('taskForm');
+            const allButton = document.getElementById('allButton');
+            const activeButton = document.getElementById('activeButton');
+            const completedButton = document.getElementById('completedButton');
+            const remainingActiveCount = document.getElementById('remainingActiveCount');
+
+            // Initialize task array
+            const tasks = [
+                { id: 1, text: 'Buy groceries', completed: false },
+                { id: 2, text: 'Read a book', completed: true },
+                { id: 3, text: 'Go to the park', completed: false },
+                { id: 4, text: 'Write a letter', completed: true }
+            ];
+
+            // Function to add a new task
+            function addTask() {
+                const newTask = taskForm.newTask.value.trim();
+                if (newTask) {
+                    tasks.push({ id: tasks.length + 1, text: newTask, completed: false });
+                    taskForm.newTask.value = '';
+                    renderTasks();
+                }
+            }
+
+            // Function to render tasks
+            function renderTasks() {
+                taskList.innerHTML = '';
+                tasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task.text;
+                    li.addEventListener('click', () => {
+                        toggleCompletion(task.id);
+                    });
+                    li.addEventListener('dblclick', () => {
+                        deleteTask(task.id);
+                    });
+                    li.classList.add(task.completed ? 'completed' : '');
+                    taskList.appendChild(li);
+                });
+                remainingActiveCount.textContent = `Remaining Active Tasks: ${tasks.filter(task => !task.completed).length}`;
+            }
+
+            // Function to toggle completion of a task
+            function toggleCompletion(id) {
+                tasks.forEach(task => {
+                    if (task.id === id) {
+                        task.completed = !task.completed;
+                        renderTasks();
+                    }
+                });
+            }
+
+            // Function to delete a task
+            function deleteTask(id) {
+                tasks = tasks.filter(task => task.id !== id);
+                renderTasks();
+            }
+
+            // Event listener for form submission
+            taskForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                addTask();
+            });
+
+            // Event listener for all button clicks
+            allButton.addEventListener('click', () => {
+                tasks = tasks.filter(task => !task.completed);
+                renderTasks();
+            });
+
+            // Event listener for active button clicks
+            activeButton.addEventListener('click', () => {
+                tasks = tasks.filter(task => task.completed);
+                renderTasks();
+            });
+
+            // Event listener for completed button clicks
+            completedButton.addEventListener('click', () => {
+                tasks = tasks.filter(task => task.completed);
+                renderTasks();
+            });
+        </script>
+    </div>
+</body>
+</html>
